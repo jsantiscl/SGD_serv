@@ -1,0 +1,93 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Bandeja Denuncias Pendientes Clasificación</h3>
+
+<form action="{% url 'jefe_pendientes' %}" method = "POST">{% csrf_token %}
+    <table>
+        <tr>
+            <th>Numero</th>
+            <th>Fecha Ingreso</th>
+            <th>Via de Ingreso</th>
+            <th>Nombre Denunciante</th>
+            <th>Nombre Denunciado</th>
+            <th>Tipo de Denunciado</th>
+            <th>Elecciones</th>
+            <th>Candidatura</th>
+            <th>Territorio Electoral</th>
+            <th>Adjuntos</th>
+            <th>Materia</th>
+            <th>Infraccion Denunciada</th>
+            <th>Observacion Ingreso</th>
+        </tr>
+
+        {% for denuncia in todasdenuncias %}
+        <tr>
+            <td>{{ denuncia.numero }}</td>
+            <td>{{ denuncia.fecha_ingreso|date:'d-m-y' }}</td>
+            <td>{{ denuncia.via_de_ingreso }}</td>
+            <td>{{ denuncia.nombre_denunciante }}</td>
+            <td>{{ denuncia.nombre_denunciado }}</td>
+            <td>{{ denuncia.tipo_de_denunciado }}</td>
+            <td>{{ denuncia.elecciones }}</td>
+            <td>{{ denuncia.candidatura }}</td>
+            <td>{{ denuncia.territorio_electoral }}</td>
+            <td>
+                {% if denuncia.adjunto_denuncia == None or denuncia.adjunto_denuncia == ''  %}
+                Sin
+                {% else %}
+                <div class="w3-container">
+   <h6 onclick="document.getElementById('id01 {{ denuncia.id }}').style.display='block'" class="w3-button w3-black">Ver</h6>
+
+  <div id="id01 {{ denuncia.id }}" class="w3-modal">
+    <div class="w3-modal-content w3-card-4">
+      <header class="w3-container w3-dark-grey">
+        <span onclick="document.getElementById('id01 {{ denuncia.id }}').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+        <h3>Adjuntos Denuncia</h3>
+      </header>
+      <div class="w3-container">
+          {% for adjunto in todosadjuntos %}
+              {% if denuncia.id == adjunto.id_denuncia_id  %}
+        <p>
+                <div class="img-preview img-preview-sm">
+                    <i><img id=”blah” src="http://127.0.0.1:8000/media/{{adjunto.archivos}}" alt="Vista Previa No Disponible" width="100" height="100" /></i>
+                 </div>
+
+            <a href="http://127.0.0.1:8000/media/{{adjunto.archivos}}">{{adjunto.archivos}}</a></p>
+              {% endif %}
+          {%  endfor %}
+      </div>
+      <footer class="w3-container w3-dark-grey">
+        <p></p>
+      </footer>
+    </div>
+  </div>
+</div>
+                {% endif %}
+            </td>
+            <td><select name={{ denuncia.id |add:"100000000"}}>
+                <option value="Pendiente" selected>Pendiente</option>
+                <option value="Financiamiento Electoral">Financiamiento Electoral</option>
+                <option value="Rendición de Cuenta">Rendición de Cuenta</option>
+                <option value="Medios de Comunicación">Medios de Comunicación</option>
+                <option value="Espacios Privados">Espacios Privados</option>
+                <option value="Otros Medios de Difusión">Otros Medios de Difusión</option>
+                <option value="Otra Materia - No Competencia SCGFE">Otra Materia - No Competencia SCGFE</option></select></td>
+
+            <td><input type="text" name={{ denuncia.id |add:"200000000"}}></td>
+            <td style="min-width:250px">{{ denuncia.obs_ingreso }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+    <input type="submit" value="Enviar" onClick="return confirm('¿Seguro que quieres Enviar?');">
+</form>
+</section>
+</div>
+{% endblock %}

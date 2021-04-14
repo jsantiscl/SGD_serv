@@ -1,0 +1,148 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Bandeja Denuncias Pendientes Instrucción</h3>
+
+<form action="{% url 'jefe_pendientes_i' %}" method = "POST">{% csrf_token %}
+    <table>
+        <tr>
+            <th>Numero</th>
+            <th>Fecha Ingreso</th>
+            <th>Via de Ingreso</th>
+            <th>Nombre Denunciante</th>
+            <th>Nombre Denunciado</th>
+            <th>Tipo de Denunciado</th>
+            <th>Elecciones</th>
+            <th>Candidatura</th>
+            <th>Territorio Electoral</th>
+            <th>Adjuntos</th>
+            <th>Materia</th>
+            <th>Infraccion Denunciada</th>
+            <th>Gestión</th>
+            <th>Asignación</th>
+            <th>SAD</th>
+            <th>Req. Inf.</th>
+            <th>Citacion</th>
+            <th>Insp. Terr.</th>
+            <th>Insp. Remota.</th>
+            <th>Subsanación</th>
+            <th>Orden Retiro</th>
+            <th>Otra</th>
+            <th>Plazo</th>
+            <th>Abogado Asistente</th>
+        </tr>
+
+        {% for denuncia in todasdenuncias %}
+        <tr>
+            <td>{{ denuncia.numero }}</td>
+            <td>{{ denuncia.fecha_ingreso|date:'d-m-y' }}</td>
+            <td>{{ denuncia.via_de_ingreso }}</td>
+            <td>{{ denuncia.nombre_denunciante }}</td>
+            <td>{{ denuncia.nombre_denunciado }}</td>
+            <td>{{ denuncia.tipo_de_denunciado }}</td>
+            <td>{{ denuncia.elecciones }}</td>
+            <td>{{ denuncia.candidatura }}</td>
+            <td>{{ denuncia.territorio_electoral }}</td>
+            <td>
+                {% if denuncia.adjunto_denuncia == None or denuncia.adjunto_denuncia == ''  %}
+                Sin
+                {% else %}
+                <div class="w3-container">
+   <h6 onclick="document.getElementById('id01 {{ denuncia.id }}').style.display='block'" class="w3-button w3-black">Ver</h6>
+
+  <div id="id01 {{ denuncia.id }}" class="w3-modal">
+    <div class="w3-modal-content w3-card-4">
+      <header class="w3-container w3-dark-grey">
+        <span onclick="document.getElementById('id01 {{ denuncia.id }}').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+        <h3>Adjuntos Denuncia</h3>
+      </header>
+      <div class="w3-container">
+          {% for adjunto in todosadjuntos %}
+              {% if denuncia.id == adjunto.id_denuncia_id  %}
+        <p>
+                <div class="img-preview img-preview-sm">
+                    <i><img id=”blah” src="http://127.0.0.1:8000/media/{{adjunto.archivos}}" alt="Vista Previa No Disponible" width="100" height="100" /></i>
+                 </div>
+
+            <a href="http://127.0.0.1:8000/media/{{adjunto.archivos}}">{{adjunto.archivos}}</a></p>
+              {% endif %}
+          {%  endfor %}
+      </div>
+      <footer class="w3-container w3-dark-grey">
+        <p></p>
+      </footer>
+    </div>
+  </div>
+</div>
+                {% endif %}
+            </td>
+            <td>{{ denuncia.materia }}</td>
+            <td>{{ denuncia.infraccion_denunciada }}</td>
+            <td><select name={{ denuncia.id |add:"300000000"}}>
+                <option value="Pendiente" selected>Pendiente</option>
+                <option value="Pre Instrucción">Pre Instrucción</option>
+                <option value="Archivar">Archivar</option>
+                <option value="Instruir Sancionador">Instruir Sancionador</option>
+                <option value="Derivar">Derivar</option></select>
+            </td>
+            <td><select name={{ denuncia.id |add:"400000000"}}>
+                <option value="Pendiente" selected>Pendiente</option>
+                <option value="Dirección Regional de Arica y Parinacota">Dirección Regional de Arica y Parinacota</option>
+                <option value="Dirección Regional de Tarapacá">Dirección Regional de Tarapacá</option>
+                <option value="Dirección Regional de Antofagasta">Dirección Regional de Antofagasta</option>
+                <option value="Dirección Regional de Atacama">Dirección Regional de Atacama</option>
+                <option value="Dirección Regional de Coquimbo">Dirección Regional de Coquimbo</option>
+                <option value="Dirección Regional de Valparaíso">Dirección Regional de Valparaíso</option>
+                <option value="Dirección Regional de O'Higgins">Dirección Regional de O'Higgins</option>
+                <option value="Dirección Regional del Maule">Dirección Regional del Maule</option>
+                <option value="Dirección Regional de Ñuble">Dirección Regional de Ñuble</option>
+                <option value="Dirección Regional del Biobio">Dirección Regional del Biobio</option>
+                <option value="Dirección Regional de La Araucanía">Dirección Regional de La Araucanía</option>
+                <option value="Dirección Regional de Los Rios">Dirección Regional de Los Rios</option>
+                <option value="Dirección Regional de Los Lagos">Dirección Regional de Los Lagos</option>
+                <option value="Dirección Regional de Aysén">Dirección Regional de Aysén</option>
+                <option value="Dirección Regional de Magallanes">Dirección Regional de Magallanes</option>
+                <option value="Dirección Regional Metropolitana">Dirección Regional Metropolitana</option>
+                <option value="División de Fiscalización">División de Fiscalización</option>
+                <option value="Unidad de Procedimientos Administrativos Sancionatorios">Unidad de Procedimientos Administrativos Sancionatorios</option>
+                <option value="Sub. Partidos Políticos">Sub. Partidos Políticos</option>
+                <option value="Sub. Registro">Sub. Registro</option>
+                <option value="U. Atención Ciudadana">U. Atención Ciudadana</option>
+                <option value="Otro Órgano del Estado">Otro Órgano del Estado</option>
+                <option value="Abogado Asistente">Abogado Asistente</option></select></td>
+            <td><input type="checkbox" name={{ denuncia.id |add:"500000000"}} value=True /></td>
+            <td><input type="checkbox" name={{ denuncia.id |add:"600000000"}} value=True /></td>
+            <td><input type="checkbox" name={{ denuncia.id |add:"700000000"}} value=True /></td>
+            <td><input type="checkbox" name={{ denuncia.id |add:"800000000"}} value=True /></td>
+            <td><input type="checkbox" name={{ denuncia.id |add:"900000000"}} value=True /></td>
+            <td><input type="checkbox" name={{ denuncia.id |add:"1000000000"}} value=True /></td>
+            <td><input type="checkbox" name={{ denuncia.id |add:"1100000000"}} value=True /></td>
+            <td><input type="checkbox" name={{ denuncia.id |add:"1200000000"}} value=True /></td>
+            <td><select name={{ denuncia.id |add:"1300000000"}}>
+                <option value="No Aplica" selected>No Aplica</option>
+                <option value="3">3 días</option>
+                <option value="5">5 días</option>
+                <option value="10">10 días</option>></select>
+            </td>
+            <td><select name={{ denuncia.id |add:"1400000000"}}>
+                <option value="Sin Asignar" selected>Sin Asignar</option>
+                <option value="lisla">Luz Catalina Isla</option>
+                <option value="sfernandez">Susana Fernández A.</option>
+                <option value="mabad">María José Abad</option>
+                <option value="eparedes">Eduardo Paredes M.</option>
+                <option value="dsadler">Doménica Sadler B.</option>
+                <option value="No Aplica">No Aplica</option></select></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <input type="submit" value="Enviar" onClick="return confirm('¿Seguro que quieres Enviar?');">
+</form>
+</section>
+</div>
+{% endblock %}

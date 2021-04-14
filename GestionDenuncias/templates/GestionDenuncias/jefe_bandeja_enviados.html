@@ -1,0 +1,54 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Bandeja Denuncias Enviadas</h3>
+
+
+    <table>
+        <tr>
+            <th>Numero</th>
+            <th>Fecha Ingreso</th>
+            <th>Via de Ingreso</th>
+            <th>Nombre Denunciante</th>
+            <th>Nombre Denunciado</th>
+            <th>Tipo de Denunciado</th>
+            <th>Elecciones</th>
+            <th>Candidatura</th>
+            <th>Territorio Electoral</th>
+            <th>Materia</th>
+            <th>Infraccion Denunciada</th>
+            <th>Gestion</th>
+            <th>Asignacion</th>
+            <th>Abogado</th>
+            <th>Estado</th>
+        </tr>
+
+        {% for denuncia in todasdenuncias %}
+        <tr>
+            <td>{{ denuncia.numero }}</td>
+            <td>{{ denuncia.fecha_ingreso|date:'d-m-y' }}</td>
+            <td>{{ denuncia.via_de_ingreso }}</td>
+            <td>{{ denuncia.nombre_denunciante }}</td>
+            <td>{{ denuncia.nombre_denunciado }}</td>
+            <td>{{ denuncia.tipo_de_denunciado }}</td>
+            <td>{{ denuncia.elecciones }}</td>
+            <td>{{ denuncia.candidatura }}</td>
+            <td>{{ denuncia.territorio_electoral }}</td>
+            <td>{{ denuncia.materia }}</td>
+            <td>{{ denuncia.infraccion_denunciada }}</td>
+            <td>{{ denuncia.gestion }}</td>
+            <td>{{ denuncia.asignacion }}</td>
+            <td>{{ denuncia.abogado_asistente }}</td>
+            <td>{{ denuncia.estado_jefe }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+</section>
+</div>
+{% endblock %}

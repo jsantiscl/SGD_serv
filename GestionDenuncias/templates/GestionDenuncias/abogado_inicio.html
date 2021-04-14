@@ -1,0 +1,15 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+<div class="container">
+
+<section class="section1">
+<h3>Bienvenida/o {{user.first_name}} {{user.last_name}}</h3>
+    {% for group in user.groups.all %}
+<h4>{{ group.name }}</h4>
+    {% endfor %}
+</form>
+</section>
+</div>
+{% endblock %}

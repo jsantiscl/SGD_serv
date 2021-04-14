@@ -1,0 +1,679 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+<div class="container">
+
+<section class="section1">
+    {% for denuncia in todasdenuncias %}
+     <h3>Resultado Denuncia {{ denuncia.numero }}</h3>
+<form action="{% url 'rechazo-denuncia' id_denuncia=denuncia.id %}" method = "POST" enctype="multipart/form-data">{% csrf_token %}
+    <table>
+        <tr>
+            <th>1.</th>
+            <th colspan="6">SAD</th>
+        </tr>
+        <tr>
+            <th colspan="1"> Solicitado Jefe Unidad</th>
+            <th colspan="2"> Fecha de solicitud</th>
+            <th colspan="1"> Adjuntos Gestión</th>
+            <th colspan="1"> Fecha de respuesta</th>
+            <th colspan="1"> Resultado</th>
+            <th colspan="1"> Adjunto Resultado</th>
+
+        </tr>
+        <tr>
+            <td colspan="1">
+                {% if denuncia.diligencia_sad  == True %}
+                Si
+                {% else %}
+                No
+                {% endif %}
+            </td>
+            <td colspan="2"><input
+                    {% if denuncia.fecha_sol_sad is null %}
+                     value=""
+                    {% else %}
+                    value={{denuncia.fecha_sol_sad|date:'Y-m-d'}}
+                    {% endif %}
+                    type="date" name={{ denuncia.id |add:"1500000000"}}></td>
+
+            <td colspan="1">
+                {% if denuncia.adjunto_sol_sad is null or denuncia.adjunto_sol_sad  == "" %}
+                <input type="file" name={{ denuncia.id |add:"3900000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_sol_sad }}">{{ denuncia.adjunto_sol_sad }}</a>
+                {% endif %}
+            </td>
+
+            <td>
+
+            <input
+                    {% if denuncia.fecha_res_sad is null %}
+                     value=""
+                    {% else %}
+                    value={{denuncia.fecha_res_sad|date:'Y-m-d'}}
+                    {% endif %}
+                    type="date" name={{ denuncia.id |add:"12500000000"}}>
+            </td>
+
+            <td><select name={{ denuncia.id |add:"2600000000" }}>
+                {% if denuncia.resultado_sad == "Aporta Nuevos Ant. Útiles" %}
+                <option value="Aporta Nuevos Ant. Útiles" selected>Aporta Nuevos Ant. Útiles</option>
+                <option value="No Aporta Nuevos Ant. Útiles">No Aporta Nuevos Ant. Útiles</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_sad == "No Aporta Nuevos Ant. Útiles" %}
+                <option value="Aporta Nuevos Ant. Útiles">Aporta Nuevos Ant. Útiles</option>
+                <option value="No Aporta Nuevos Ant. Útiles" selected>No Aporta Nuevos Ant. Útiles</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_sad == "Sin Respuesta" %}
+                <option value="Aporta Nuevos Ant. Útiles">Aporta Nuevos Ant. Útiles</option>
+                <option value="No Aporta Nuevos Ant. Útiles">No Aporta Nuevos Ant. Útiles</option>
+                <option value="Sin Respuesta" selected>Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% else %}
+                <option value="Aporta Nuevos Ant. Útiles">Aporta Nuevos Ant. Útiles</option>
+                <option value="No Aporta Nuevos Ant. Útiles">No Aporta Nuevos Ant. Útiles</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                {% endif %}
+
+                </select>
+            </td>
+
+            <td colspan="1">
+                {% if denuncia.adjunto_res_sad is null or denuncia.adjunto_res_sad  == "" %}
+                <input type="file" name={{ denuncia.id |add:"4600000000" }}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_res_sad }}">{{ denuncia.adjunto_res_sad }}</a>
+                {% endif %}
+            </td>
+
+        </tr>
+    </table>
+
+        <table>
+        <tr>
+            <th>2.</th>
+            <th colspan="7">Requerimiento de información</th>
+        </tr>
+        <tr>
+            <th colspan="1"> Solicitado Jefe Unidad</th>
+            <th colspan="3">Fecha de requerimiento</th>
+            <th colspan="1"> Adjuntos Gestión</th>
+            <th colspan="1"> Fecha de respuesta</th>
+            <th colspan="1"> Resultado</th>
+            <th colspan="1"> Adjunto Resultado</th>
+        </tr>
+        <tr>
+            <td colspan="1">
+                {% if denuncia.diligencia_req_inf  == True %}
+                Si
+                {% else %}
+                No
+                {% endif %}
+            </td>
+            <td colspan="3"><input
+                    {% if denuncia.fecha_sol_req is null %}
+                     value=""
+                    {% else %}
+                    value={{denuncia.fecha_sol_req|date:'Y-m-d'}}
+                    {% endif %}
+                    type="date" name={{ denuncia.id |add:"1600000000"}}></td>
+             <td colspan="1">
+                {% if denuncia.adjunto_sol_req_inf is null or denuncia.adjunto_sol_req_inf  == "" %}
+                <input type="file" name={{ denuncia.id |add:"4000000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_sol_req_inf }}">{{ denuncia.adjunto_sol_req_inf }}</a>
+                {% endif %}
+            </td>
+
+
+             <td>
+
+            <input
+                    {% if denuncia.fecha_res_req is null %}
+                     value=""
+                    {% else %}
+                    value={{denuncia.fecha_res_req|date:'Y-m-d'}}
+                    {% endif %}
+                    type="date" name={{ denuncia.id |add:"2700000000"}}>
+            </td>
+
+            <td><select name={{ denuncia.id |add:"2800000000" }}>
+                {% if denuncia.resultado_req == "Aporta Info. Requerida" %}
+                <option value="Aporta Info. Requerida" selected>Aporta Info. Requerida</option>
+                <option value="No Aporta Nuevos Ant. Útiles">No Aporta Nuevos Ant. Útiles</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_req == "No Aporta Info. Requerida" %}
+                <option value="Aporta Info. Requerida">Aporta Info. Requerida</option>
+                <option value="No Aporta Info. Requerida" selected>No Aporta Info. Requerida</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_req == "Sin Respuesta" %}
+                <option value="Aporta Info. Requerida">Aporta Info. Requerida</option>
+                <option value="No Aporta Info. Requerida">No Aporta Info. Requerida</option>
+                <option value="Sin Respuesta" selected>Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% else %}
+                <option value="Aporta Info. Requerida">Aporta Info. Requerida</option>
+                <option value="No Aporta Info. Requerida">No Aporta Info. Requerida</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                {% endif %}
+
+                </select>
+            </td>
+
+            <td colspan="1">
+                {% if denuncia.adjunto_res_req_inf is null or denuncia.adjunto_res_req_inf  == "" %}
+                <input type="file" name={{ denuncia.id |add:"4700000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_res_req_inf }}">{{ denuncia.adjunto_res_req_inf }}</a>
+                {% endif %}
+            </td>
+
+        </tr>
+    </table>
+
+
+        <table>
+        <tr>
+            <th>3.</th>
+            <th colspan="7">Citación</th>
+        </tr>
+        <tr>
+            <th colspan="1"> Solicitado Jefe Unidad</th>
+            <th colspan="3">Fecha de citación</th>
+            <th colspan="1"> Adjuntos Gestión</th>
+            <th colspan="1"> Fecha de comparecencia</th>
+            <th colspan="1"> Resultado</th>
+            <th colspan="1"> Adjunto Resultado</th>
+        </tr>
+        <tr>
+            <td colspan="1">
+                {% if denuncia.diligencia_citacion  == True %}
+                Si
+                {% else %}
+                No
+                {% endif %}
+            </td>
+            <td colspan="3"><input
+                    {% if denuncia.fecha_citacion is null %}
+                     value=""
+                    {% else %}
+                    value={{denuncia.fecha_citacion|date:'Y-m-d'}}
+                    {% endif %}
+                    type="date" name={{ denuncia.id |add:"1700000000"}}></td>
+
+            <td colspan="1">
+                {% if denuncia.adjunto_sol_cit is null or denuncia.adjunto_sol_cit  == "" %}
+                <input type="file" name={{ denuncia.id |add:"4100000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_sol_cit }}">{{ denuncia.adjunto_sol_cit }}</a>
+                {% endif %}
+            </td>
+
+             <td>
+
+            <input
+                    {% if denuncia.fecha_comparecencia is null %}
+                     value=""
+                    {% else %}
+                    value={{denuncia.fecha_comparecencia|date:'Y-m-d'}}
+                    {% endif %}
+                    type="date" name={{ denuncia.id |add:"2900000000"}}>
+            </td>
+
+            <td><select name={{ denuncia.id |add:"3000000000" }}>
+                {% if denuncia.resultado_cit == "Comparece" %}
+                <option value="Comparece" selected>Comparece</option>
+                <option value="No Comparece">No Comparece</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_cit == "No Comparece" %}
+                <option value="Comparece">Comparece</option>
+                <option value="No Comparece" selected>No Comparece</option>
+                <option value="Pendiente">Pendiente</option>
+                {% else %}
+                <option value="Comparece">Comparece</option>
+                <option value="No Comparece">No Comparece</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                {% endif %}
+
+                </select>
+            </td>
+            <td colspan="1">
+                {% if denuncia.adjunto_res_cit is null or denuncia.adjunto_res_cit  == "" %}
+                <input type="file" name={{ denuncia.id |add:"4800000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_res_cit }}">{{ denuncia.adjunto_res_cit }}</a>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+        <table>
+        <tr>
+            <th>4.</th>
+            <th colspan="5">Inspección en terreno</th>
+        </tr>
+        <tr>
+            <th colspan="1"> Solicitado Jefe Unidad</th>
+            <th> Fecha de inspección</th>
+            <th>Unidad Fiscalizada</th>
+            <th colspan="1"> Adjuntos Gestión</th>
+            <th colspan="1"> Resultado</th>
+            <th colspan="1"> Adjunto Resultado</th>
+        </tr>
+        <tr>
+            <td colspan="1">
+                {% if denuncia.diligencia_insp_terreno  == True %}
+                Si
+                {% else %}
+                No
+                {% endif %}
+            </td>
+            <td><input
+                    {% if denuncia.fecha_inspeccion_terr is null %}
+                     value=""
+                    {% else %}
+                    value={{denuncia.fecha_inspeccion_terr|date:'Y-m-d'}}
+                    {% endif %}
+                    type="date" name={{ denuncia.id |add:"1800000000"}}></td>
+            <td><input
+                    {% if denuncia.unidad_fiscalizada_terr is null %}
+                     value=""
+                    {% else %}
+                    value={{denuncia.unidad_fiscalizada_terr}}
+                    {% endif %}
+                    type="text" name={{ denuncia.id |add:"1900000000"}}>
+            </td>
+            <td colspan="1">
+                {% if denuncia.adjunto_sol_ins_terr is null or denuncia.adjunto_sol_ins_terr  == "" %}
+                <input type="file" name={{ denuncia.id |add:"4200000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_sol_ins_terr }}">{{ denuncia.adjunto_sol_ins_terr }}</a>
+                {% endif %}
+            </td>
+
+            <td><select name={{ denuncia.id |add:"3100000000" }}>
+                {% if denuncia.resultado_insp_terr == "Con Hallazgos" %}
+                <option value="Con Hallazgos" selected>Con Hallazgos</option>
+                <option value="Sin Hallazgos">Sin Hallazgos</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_insp_terr == "Sin Hallazgos" %}
+                <option value="Con Hallazgos">Con Hallazgos</option>
+                <option value="Sin Hallazgos" selected>Sin Hallazgos</option>
+                <option value="Pendiente">Pendiente</option>
+                {% else %}
+                <option value="Con Hallazgos">Con Hallazgos</option>
+                <option value="Sin Hallazgos">Sin Hallazgos</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                {% endif %}
+
+                </select>
+            </td>
+            <td colspan="1">
+                {% if denuncia.adjunto_res_ins_terr is null or denuncia.adjunto_res_ins_terr  == "" %}
+                <input type="file" name={{ denuncia.id |add:"4900000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_res_ins_terr }}">{{ denuncia.adjunto_res_ins_terr }}</a>
+                {% endif %}
+            </td>
+
+        </tr>
+
+    </table>
+
+        <table>
+        <tr>
+            <th>5.</th>
+            <th colspan="5">Inspección remota</th>
+        </tr>
+        <tr>
+            <th colspan="1"> Solicitado Jefe Unidad</th>
+            <th>Fecha de inspección</th>
+            <th>Unidad Fiscalizada</th>
+            <th colspan="1"> Adjuntos Gestión</th>
+            <th colspan="1"> Resultado</th>
+            <th colspan="1"> Adjunto Resultado</th>
+        </tr>
+        <tr>
+            <td colspan="1">
+                {% if denuncia.diligencia_insp_remota  == True %}
+                Si
+                {% else %}
+                No
+                {% endif %}
+            </td>
+            <td><input
+                    {% if denuncia.fecha_inspeccion_rem is null %}
+                     value=""
+                    {% else %}
+                    value={{denuncia.fecha_inspeccion_rem|date:'Y-m-d'}}
+                    {% endif %}
+                    type="date" name={{ denuncia.id |add:"2000000000"}}>
+            </td>
+
+            <td><input
+                    {% if denuncia.unidad_fiscalizada_rem is null %}
+                     value=""
+                    {% else %}
+                    value="{{denuncia.unidad_fiscalizada_rem}}"
+                    {% endif %}
+                    type="text" name={{ denuncia.id |add:"2100000000"}}></td>
+
+            <td colspan="1">
+                {% if denuncia.adjunto_sol_ins_rem is null or denuncia.adjunto_sol_ins_rem  == "" %}
+                <input type="file" name={{ denuncia.id |add:"4300000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_sol_ins_rem }}">{{ denuncia.adjunto_sol_ins_rem }}</a>
+                {% endif %}
+            </td>
+
+            <td><select name={{ denuncia.id |add:"3200000000" }}>
+                {% if denuncia.resultado_insp_rem == "Con Hallazgos" %}
+                <option value="Con Hallazgos" selected>Con Hallazgos</option>
+                <option value="Sin Hallazgos">Sin Hallazgos</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_insp_rem == "Sin Hallazgos" %}
+                <option value="Con Hallazgos">Con Hallazgos</option>
+                <option value="Sin Hallazgos" selected>Sin Hallazgos</option>
+                <option value="Pendiente">Pendiente</option>
+                {% else %}
+                <option value="Con Hallazgos">Con Hallazgos</option>
+                <option value="Sin Hallazgos">Sin Hallazgos</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                {% endif %}
+
+                </select>
+            </td>
+
+
+            <td colspan="1">
+                {% if denuncia.adjunto_res_ins_rem is null or denuncia.adjunto_res_ins_rem  == "" %}
+                <input type="file" name={{ denuncia.id |add:"5000000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_res_ins_rem }}">{{ denuncia.adjunto_res_ins_rem }}</a>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+        <table>
+        <tr>
+            <th>6.</th>
+            <th colspan="5">Requerimiento de subsanación</th>
+        </tr>
+        <tr>
+            <th colspan="1"> Solicitado Jefe Unidad</th>
+            <th>Fecha de requerimiento</th>
+            <th>Unidad Fiscalizada</th>
+            <th colspan="1"> Adjuntos Gestión</th>
+            <th colspan="1"> Resultado</th>
+            <th colspan="1"> Adjunto Resultado</th>
+        </tr>
+        <tr>
+            <td colspan="1">
+                {% if denuncia.diligencia_subsanacion  == True %}
+                Si
+                {% else %}
+                No
+                {% endif %}
+            </td>
+            <td><input
+                    {% if denuncia.fecha_inspeccion_sub is null %}
+                     value=""
+                    {% else %}
+                    value={{denuncia.fecha_inspeccion_sub|date:'Y-m-d'}}
+                    {% endif %}
+                    type="date" name={{ denuncia.id |add:"2200000000"}}></td>
+
+
+            <td><input
+                    {% if denuncia.unidad_fiscalizada_sub is null %}
+                     value=""
+                    {% else %}
+                    value="{{denuncia.unidad_fiscalizada_sub}}"
+                    {% endif %}
+                    type="text" name={{ denuncia.id |add:"2300000000"}}></td>
+
+            <td colspan="1">
+                {% if denuncia.adjunto_sol_req_sub is null or denuncia.adjunto_sol_req_sub  == "" %}
+                <input type="file" name={{ denuncia.id |add:"4400000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_sol_req_sub }}">{{ denuncia.adjunto_sol_req_sub }}</a>
+                {% endif %}
+            </td>
+
+            <td><select name={{ denuncia.id |add:"3300000000" }}>
+                {% if denuncia.resultado_insp_sub == "Subsana" %}
+                <option value="Subsana" selected>Subsana</option>
+                <option value="No Subsana">No Subsana</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_insp_sub == "No Subsana" %}
+                <option value="Subsana">Subsana</option>
+                <option value="No Subsana" selected>No Subsana</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_insp_sub == "Sin Respuesta" %}
+                <option value="Subsana">Subsana</option>
+                <option value="No Subsana">No Subsana</option>
+                <option value="Sin Respuesta" selected>Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% else %}
+                <option value="Subsana">Subsana</option>
+                <option value="No Subsana">No Subsana</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                {% endif %}
+
+                </select>
+            </td>
+
+
+            <td colspan="1">
+                {% if denuncia.adjunto_res_req_sub is null or denuncia.adjunto_res_req_sub  == "" %}
+                <input type="file" name={{ denuncia.id |add:"5100000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_res_req_sub }}">{{ denuncia.adjunto_res_req_sub }}</a>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+        <table>
+        <tr>
+            <th>7.</th>
+            <th colspan="5">Orden de Retiro</th>
+        </tr>
+        <tr>
+            <th colspan="1"> Solicitado Jefe Unidad</th>
+            <th>Fecha de requerimiento</th>
+            <th>Municipalidad</th>
+            <th colspan="1"> Adjuntos Gestión</th>
+            <th colspan="1"> Resultado</th>
+            <th colspan="1"> Adjunto Resultado</th>
+        </tr>
+        <tr>
+            <td colspan="1">
+                {% if denuncia.diligencia_orden_retiro  == True %}
+                Si
+                {% else %}
+                No
+                {% endif %}
+            </td>
+            <td><input
+                    {% if denuncia.fecha_requer is null %}
+                     value=""
+                    {% else %}
+                    value={{denuncia.fecha_requer|date:'Y-m-d'}}
+                    {% endif %}
+                    type="date" name={{ denuncia.id |add:"2400000000"}}></td>
+            <td><input
+                    {% if denuncia.municipalidad is null %}
+                     value=""
+                    {% else %}
+                    value="{{ denuncia.municipalidad }}"
+                    {% endif %}
+
+                    type="text" name={{ denuncia.id |add:"2500000000"}}></td>
+
+            <td colspan="1">
+                {% if denuncia.adjunto_sol_ord_ret is null or denuncia.adjunto_sol_ord_ret  == "" %}
+                <input type="file" name={{ denuncia.id |add:"4500000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_sol_ord_ret }}">{{ denuncia.adjunto_sol_ord_ret }}</a>
+                {% endif %}
+            </td>
+
+            <td><select name={{ denuncia.id |add:"3400000000" }}>
+                {% if denuncia.resultado_orden_ret == "Retira" %}
+                <option value="Retira" selected>Retira</option>
+                <option value="No Retira">No Retira</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_orden_ret == "No Retira" %}
+                <option value="Retira">Retira</option>
+                <option value="No Retira" selected>No Retira</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_orden_ret == "Sin Respuesta" %}
+                <option value="Retira">Retira</option>
+                <option value="No Retira">No Retira</option>
+                <option value="Sin Respuesta" selected>Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% else %}
+                <option value="Retira">Retira</option>
+                <option value="No Retira">No Retira</option>
+                <option value="Sin Respuesta">Sin Respuesta</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                {% endif %}
+
+                </select>
+            </td>
+
+
+                        <td colspan="1">
+                {% if denuncia.adjunto_res_ord_ret is null or denuncia.adjunto_res_ord_ret  == "" %}
+                <input type="file" name={{ denuncia.id |add:"5200000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_res_ord_ret }}">{{ denuncia.adjunto_res_ord_ret }}</a>
+                {% endif %}
+            </td>
+
+        </tr>
+    </table>
+
+     <table>
+        <tr>
+            <th>Resultado</th>
+            <th colspan="1">Motivo</th>
+            <th>Adjunto</th>
+
+        </tr>
+        <tr>
+            <td><select name={{ denuncia.id |add:"3500000000" }}>
+                {% if denuncia.resultado_abogado == "Archivar" %}
+                <option value="Archivar" selected>Archivar</option>
+                <option value="Instruir Sancionatorio">Instruir Sancionatorio</option>
+                <option value="Derivar">Derivar</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_abogado == "Instruir Sancionatorio" %}
+                <option value="Archivar">Archivar</option>
+                <option value="Instruir Sancionatorio" selected>Instruir Sancionatorio</option>
+                <option value="Derivar">Sin Respuesta</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.resultado_abogado == "Derivar" %}
+                <option value="Archivar">Archivar</option>
+                <option value="Instruir Sancionatorio">Instruir Sancionatorio</option>
+                <option value="Derivar" selected>Derivar</option>
+                <option value="Pendiente">Pendiente</option>
+                {% else %}
+                <option value="Archivar">Archivar</option>
+                <option value="Instruir Sancionatorio">Instruir Sancionatorio</option>
+                <option value="Derivar">Derivar</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                {% endif %}
+
+                </select>
+            </td>
+            <td><select name={{ denuncia.id |add:"3600000000" }}>
+                {% if denuncia.motivo_abogado == "Presunta Infracción" %}
+                <option value="Presunta Infracción" selected>Presunta Infracción</option>
+                <option value="No Competencia">No Competencia</option>
+                <option value="Falta de Mérito">Falta de Mérito</option>
+                <option value="Falta de Plausibilidad">Falta de Plausibilidad</option>
+                <option value="Falta de Seriedad">Falta de Seriedad</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.motivo_abogado == "No Competencia" %}
+                <option value="Presunta Infracción">Presunta Infracción</option>
+                <option value="No Competencia" selected>No Competencia</option>
+                <option value="Falta de Mérito"Falta de Mérito</option>
+                <option value="Falta de Plausibilidad">Falta de Plausibilidad</option>
+                <option value="Falta de Seriedad">Falta de Seriedad</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.motivo_abogado == "Falta de Mérito" %}
+                <option value="Presunta Infracción">Presunta Infracción</option>
+                <option value="No Competencia">No Competencia</option>
+                <option value="Falta de Mérito" selected>Falta de Mérito</option>
+                <option value="Falta de Plausibilidad">Falta de Plausibilidad</option>
+                <option value="Falta de Seriedad">Falta de Seriedad</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.motivo_abogado == "Falta de Plausibilidad" %}
+                <option value="Presunta Infracción">Presunta Infracción</option>
+                <option value="No Competencia">No Competencia</option>
+                <option value="Falta de Mérito" >Falta de Mérito</option>
+                <option value="Falta de Plausibilidad" selected>Falta de Plausibilidad</option>
+                <option value="Falta de Seriedad">Falta de Seriedad</option>
+                <option value="Pendiente">Pendiente</option>
+                {% elif denuncia.motivo_abogado == "Falta de Seriedad" %}
+                <option value="Presunta Infracción">Presunta Infracción</option>
+                <option value="No Competencia">No Competencia</option>
+                <option value="Falta de Mérito" >Falta de Mérito</option>
+                <option value="Falta de Plausibilidad">Falta de Plausibilidad</option>
+                <option value="Falta de Seriedad" selected>Falta de Seriedad</option>
+                <option value="Pendiente">Pendiente</option>
+                {% else %}
+                <option value="Presunta Infracción">Presunta Infracción</option>
+                <option value="No Competencia">No Competencia</option>
+                <option value="Falta de Mérito">Falta de Mérito</option>
+                <option value="Falta de Plausibilidad">Falta de Plausibilidad</option>
+                <option value="Falta de Seriedad">Falta de Seriedad</option>
+                <option value="Pendiente" selected>Pendiente</option>
+                {% endif %}
+
+                </select>
+            </td>
+            <td>
+                {% if denuncia.adjunto_informe is null or denuncia.adjunto_informe  == "" or denuncia.adjunto_informe  == None %}
+                <input type="file" name={{ denuncia.id |add:"5300000000"}}>
+                {% else %}
+                <a href="http://127.0.0.1:8000/media/{{ denuncia.adjunto_informe }}">{{ denuncia.adjunto_informe }}</a>
+                {% endif %}
+            </td>
+
+        </tr>
+        <tr>
+            <th colspan="1"> Observacion Jefe</th>
+            <th> Respuesta Abogado</th>
+        </tr>
+         <tr>
+             <td> {{ denuncia.obs_jefe }} </td>
+             <td> <input type="text" name={{ denuncia.id |add:"5400000000"}} value="{{ denuncia.obs_abogado }}" >
+
+             </td>
+         </tr>
+    </table>
+
+    <input type="submit" name="button_guardar" value="Guardar Datos">
+    <input type="submit" name="button_enviar" value="Enviar a Siguiente Paso" onClick="return confirm('¿Seguro que quieres Enviar?');">
+</form>
+     {% endfor %}
+</section>
+</div>
+{% endblock %}

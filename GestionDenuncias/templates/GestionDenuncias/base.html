@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <meta charset="UTF-8">
+    {% block title %}  {% endblock %}
+</head>
+<body>
+    <header>
+
+{% block nav %}
+        <div class="w3-bar w3-black ">
+    <a href="{% url 'abogado_inicio' %}" class="w3-bar-item w3-button">{% load static %} <img class="logo_home" src="{% static 'img/logo_header.png' %}" alt="Servicio Electoral de Chile" /></a>
+     {% for group in user.groups.all %}
+            <a href="{% url 'abogado_inicio' %}" class="w3-bar-item w3-button">Inicio</a>
+
+                {% if group.name == 'Administrador' %}
+    <div class="w3-dropdown-hover">
+      <button class="w3-button">Ingreso</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="{% url 'denuncias_ingreso' %}" class="w3-bar-item w3-button">Individual</a>
+        <a href="#" class="w3-bar-item w3-button">Masivo</a>
+      </div>
+      </div>
+                        <div class="w3-dropdown-hover">
+      <button class="w3-button">Bandeja</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="{% url 'denuncias_enviadas_ad' %}" class="w3-bar-item w3-button">Enviados</a>
+
+      </div>
+      </div>
+                             <div class="w3-dropdown-hover">
+      <button class="w3-button">Reportes</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="#" class="w3-bar-item w3-button">Reporte 1</a>
+           <a href="#" class="w3-bar-item w3-button">Reporte 2</a>
+           <a href="#" class="w3-bar-item w3-button">Reporte 3</a>
+           <a href="#" class="w3-bar-item w3-button">Reporte 4</a>
+      </div>
+      </div>
+                {% endif %}
+         {% if group.name == 'Abogado' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Bandeja</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="{% url 'abogado_gestiones' %}" class="w3-bar-item w3-button">Gestiones</a>
+           <a href="{% url 'abogado_resultados' %}" class="w3-bar-item w3-button">Resultados</a>
+           <a href="{% url 'abogado_enviados' %}" class="w3-bar-item w3-button">Enviados</a>
+            </div>
+      </div>
+                        <div class="w3-dropdown-hover">
+      <button class="w3-button">Reportes</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="#" class="w3-bar-item w3-button">Reporte 1</a>
+           <a href="#" class="w3-bar-item w3-button">Reporte 2</a>
+           <a href="#" class="w3-bar-item w3-button">Reporte 3</a>
+           <a href="#" class="w3-bar-item w3-button">Reporte 4</a>
+      </div>
+      </div>
+         {% endif %}
+
+                  {% if group.name == 'Jefe' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Bandeja</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="{% url 'jefe_pendientes' %}" class="w3-bar-item w3-button">Pendientes Clasificacion</a>
+           <a href="{% url 'jefe_pendientes_i' %}" class="w3-bar-item w3-button">Pendientes Instruccion</a>
+           <a href="{% url 'jefe_enviados' %}" class="w3-bar-item w3-button">Enviados</a>
+           <a href="{% url 'jefe_validacion' %}" class="w3-bar-item w3-button">Validacion</a>
+      </div>
+      </div>
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Reportes</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="#" class="w3-bar-item w3-button">Reporte 1</a>
+           <a href="#" class="w3-bar-item w3-button">Reporte 2</a>
+           <a href="#" class="w3-bar-item w3-button">Reporte 3</a>
+           <a href="#" class="w3-bar-item w3-button">Reporte 4</a>
+      </div>
+      </div>
+
+
+
+         {% endif %}
+        {% endfor %}
+         {% if user.is_staff %}
+             <a href="http://127.0.0.1:8000/admin/" class="w3-bar-item w3-button">Admin</a>
+         {% endif %}
+        {% if user.is_authenticated %}
+           <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-black w3-right">Cerrar Sesion</a>
+
+    <div class="w3-dropdown-hover w3-right">
+    <button class="w3-button">{{ user.username }}</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4 w3-right">
+        <a href="{% url 'password_change' %}" class="w3-bar-item w3-button w3-right">Cambiar Contraseña</a>
+      </div>
+    </div>
+
+            <!--<a href="" class="w3-bar-item w3-button w3-black w3-right"> {{ user.username }}</a>-->
+        {% endif %}
+  </div>
+{% endblock %}
+
+
+    </header>
+
+{% block body %} {% endblock %}
+
+    <footer>
+
+    </footer>
+
+</body>
+</html>

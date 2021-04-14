@@ -1,0 +1,19 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Recepcion de Denuncias</h3>
+
+<form action=" {% url 'denuncias_ingreso' %}" method="post" enctype ="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value ="Ingresar Denuncia" onClick="return confirm('¿Seguro que quieres Agregar la Denuncia?');">
+
+</form>
+
+</section>
+</div>
+{% endblock %}
