@@ -38,7 +38,7 @@
 
 {% block nav %}
         <div class="w3-bar w3-black ">
-    <a href="{% url 'abogado_inicio' %}" class="w3-bar-item w3-button">{% load static %} <img class="logo_home" src="img/logo_header.png" alt="Servicio Electoral de Chile" /></a>
+    <a href="{% url 'abogado_inicio' %}" class="w3-bar-item w3-button">{% load static %} <img class="logo_home" src="{% static 'img/logo_header.png' %}" alt="Servicio Electoral de Chile" /></a>
      {% for group in user.groups.all %}
             <a href="{% url 'abogado_inicio' %}" class="w3-bar-item w3-button">Inicio</a>
 
