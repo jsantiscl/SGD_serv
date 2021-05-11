@@ -1,0 +1,36 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+<div class="w3-responsive">
+<div class = "w3-row">
+     <div class="w3-half w3-container">
+ <br>
+
+        {% for denuncia in todasdenuncias %}
+        {% if denuncia.abogado_asistente.username == user.get_username and denuncia.estado_jefe == 'GEST_INGRESO_ABOGADO_REALIZADA' %}
+         <h3>Activar Denuncia {{ denuncia.numero }}</h3>
+    <form action="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}" method = "POST" enctype="multipart/form-data">{% csrf_token %}
+        {% csrf_token %}
+        {{ form.as_table }}
+
+
+        <input type="submit" name="button_guardar" value="Guardar Datos">
+        <input type="submit" name="button_enviar" value="Enviar a Siguiente Paso" onClick="return confirm('¿Seguro que quieres Enviar?');">
+    </form>
+            </div>
+              <div class="w3-half w3-container">
+               <br>
+                 <h3>Detalles Denuncia</h3>
+
+               {{ form2.as_table }}
+             </div>
+        {% else %}
+        <h3>No Autorizado</h3>
+        {% endif %}
+        {% endfor %}
+
+</div>
+</div>
+
+{% endblock %}

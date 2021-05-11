@@ -3,9 +3,11 @@
 
 {% block body %}
 
-        <script type="text/javascript" class="init">
+            <script type="text/javascript" class="init">
+
+
 $(document).ready(function() {
-	$('#example').DataTable({
+	$('#example2').DataTable({
         "language": {
             "lengthMenu": "Ver _MENU_ registros por pagina",
             "zeroRecords": "Sin Resultados",
@@ -34,64 +36,48 @@ $(document).ready(function() {
     } );
 } );</script>
 
+
 <div class="w3-responsive">
 
 <section class="section1">
+<h3>Bandeja Denuncias Pendientes Evaluación</h3>
 
-<h3>Bandeja Denuncias Enviadas</h3>
-
-    <table id="example" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
     <thead>
         <tr>
             <th>Numero</th>
             <th>Fecha Ingreso</th>
-            <th>Asignación</th>
             <th>Via de Ingreso</th>
             <th>Nombre Denunciante</th>
             <th>Nombre Denunciado</th>
-            <th>Tipo de Denunciado</th>
-            <th>Elecciones</th>
-            <th>Candidatura</th>
-            <th>Territorio Electoral</th>
-            <th>Materia</th>
-            <th>Infraccion Denunciada</th>
-            <th>Gestión</th>
-            <th>Plazo</th>
-            <th>Estado</th>
+            <th style="text-align:center">Adjuntos</th>
+            <th colspan="2" style="text-align:center">Accion</th>
+            <th>Observaciones</th>
+
+
         </tr>
-    </thead>
+
+            </thead>
     <tbody>
+
         {% for denuncia in todasdenuncias %}
+        {% if denuncia.abogado_asistente.username == user.get_username and denuncia.estado_jefe == 'INGRESO'%}
         <tr>
             <td>{{ denuncia.numero }}</td>
             <td>{{ denuncia.fecha_ingreso|date:'d-m-y' }}</td>
-            <td>{{ denuncia.abogado_asistente }}</td>
             <td>{{ denuncia.via_de_ingreso }}</td>
             <td>{{ denuncia.nombre_denunciante }}</td>
             <td>{{ denuncia.nombre_denunciado }}</td>
-            <td>{{ denuncia.tipo_de_denunciado }}</td>
-            <td>{{ denuncia.elecciones }}</td>
-            <td>{{ denuncia.candidatura }}</td>
-            <td>{{ denuncia.territorio_electoral }}</td>
-            <td>{{ denuncia.materia }}</td>
-            <td>{{ denuncia.infraccion_denunciada }}</td>
-            <td>{{ denuncia.gestion }}</td>
-            <td>{{ denuncia.plazo_investigacion }}</td>
-            <td>
-                {% if denuncia.estado_jefe == "RESULTADO_ABOGADO_INGRESADO" %}
-                Pendiente Revisión
-                {% elif denuncia.estado_jefe == "RESULTADO_RECHAZADO" %}
-                Rechazado
-                {% elif denuncia.estado_jefe == "RESULTADO_ABOGADO_DEVUELTO" %}
-                Pendiente Nueva Revisión
-                {% else %}
-                Aceptado
-                {% endif %}
-            </td>
+            <td style="text-align:center" > <a class="btn btn-outline-primary" href="{{ denuncia.link_adjuntos }}">Ver</a></td>
+            <td><a class="btn btn-success" href="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}">Activar</a></td>
+            <td><a class="btn btn-secondary" href="{% url 'gestion-denuncia_desac' id_denuncia=denuncia.id %}">Desactivar</a></td>
+            <td>{{ denuncia.obs_ingreso }}</td>
         </tr>
+        {% endif %}
         {% endfor %}
     </tbody>
     </table>
+
 
 </section>
 </div>

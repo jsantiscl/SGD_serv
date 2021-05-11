@@ -5,6 +5,8 @@ class Abogados(models.Model):
     rut = models.IntegerField(primary_key=True)
     dv = models.CharField(max_length=1)
     nombre = models.CharField(max_length=200)
+    habilitado = models.BooleanField(default=True)
+    username = models.CharField(max_length=50, default='SIN')
 
     def __str__(self):
         return self.nombre
@@ -112,16 +114,6 @@ class Denuncias(models.Model):
         ("No Aplica", "No Aplica"),
     )
 
-    ABOGADO_ASISTENTE = (
-        ("Sin Asignar", "Sin Asignar"),
-        ("lisla", "Luz Catalina Isla"),
-        ("sfernandez", "Susana Fernández"),
-        ("mabad", "María José Abad"),
-        ("eparedes", "Eduardo Paredes"),
-        ("dsadler", "Doménica Sadler"),
-        ("No Aplica", "No Aplica"),
-    )
-
     RESULTADO_SAD = (
         ("Aporta Nuevos Ant. Útiles", "Aporta Nuevos Ant. Útiles"),
         ("No Aporta Nuevos Ant. Útiles", "No Aporta Nuevos Ant. Útiles"),
@@ -167,6 +159,7 @@ class Denuncias(models.Model):
         ("CLASIFICADO", "CLASIFICADO"),
         ("ENVIADO_JEFE", "ENVIADO_JEFE"),
         ("GEST_INGRESO_ABOGADO_REALIZADA", "GEST_INGRESO_ABOGADO_REALIZADA"),
+        ("DESACTIVADO_ENVIADO_ABOGADO", "DESACTIVADO_ENVIADO_ABOGADO"),
         ("RESULTADO_ABOGADO_INGRESADO", "RESULTADO_ABOGADO_INGRESADO"),
         ("RESULTADO_ACEPTADO", "Aceptado"),
         ("RESULTADO_RECHAZADO", "Rechazado"),
@@ -191,6 +184,8 @@ class Denuncias(models.Model):
     candidatura = models.CharField(max_length=50,
                              choices=CANDIDATURA,
                              default="Alcalde")
+    link_adjuntos = models.CharField(max_length=500, null=True, blank=True)
+
     territorio_electoral = models.CharField(max_length=200)
     materia = models.CharField(max_length=50,  choices=MATERIA, default="Pendiente")
     infraccion_denunciada = models.CharField(max_length=200, default="Pendiente")
@@ -235,7 +230,7 @@ class Denuncias(models.Model):
     diligencia_otra = models.BooleanField(default=False)
 
     plazo_investigacion = models.CharField(max_length=50,  choices=PLAZO, null=True, blank=True)
-    abogado_asistente = models.CharField(max_length=100,  choices=ABOGADO_ASISTENTE, null=True, blank=True)
+    abogado_asistente = models.ForeignKey(Abogados, on_delete=models.SET_NULL, null=True)
 
     resultado_abogado = models.CharField(max_length=50, choices=RESULTADO_ABG, null=True, blank=True)
     motivo_abogado = models.CharField(max_length=50, choices=MOTIVO_ABG, null=True, blank=True)
@@ -275,6 +270,7 @@ class Denuncias(models.Model):
     tiene_adjunto_res_req_sub = models.BooleanField(default=False)
     tiene_adjunto_res_ord_ret = models.BooleanField(default=False)
     tiene_adjunto_informe = models.BooleanField(default=False)
+    codigo_desactivacion = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         return self.numero

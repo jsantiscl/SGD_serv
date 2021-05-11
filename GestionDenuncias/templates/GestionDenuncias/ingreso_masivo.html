@@ -38,10 +38,10 @@ $(document).ready(function() {
 <div class = "w3-row">
      <div class="w3-half w3-container">
  <br>
-<h4>Recepción de Individual de Denuncias</h4>
+<h4>Recepción de Masiva de Denuncias</h4>
          <br>
 <table>
-<form action=" {% url 'denuncias_ingreso' %}" method="post" enctype ="multipart/form-data">
+<form action=" {% url 'denuncias_ingreso_mass' %}" method="post" enctype ="multipart/form-data">
     {% csrf_token %}
     {{ form.as_table }}
 

@@ -2,13 +2,14 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 
 
-from .models import Denuncias, Adjuntos
-from .forms import DenunciasForm, ResumeUpload
+from .models import Denuncias, Adjuntos, Abogados
+from .forms import DenunciasForm, ResumeUpload, UpdateDetailsForm, ActivaDenuncia, DetallesDenuncia, DesactivaDenuncia, CompruebaDenuncia
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import os
-
+import xlrd
+from django.shortcuts import get_object_or_404
 
 def denuncias_ingreso(request):
     if request.method == 'POST':
@@ -20,12 +21,57 @@ def denuncias_ingreso(request):
             for f in files:
                 file_instance = Adjuntos(id_denuncia=instancia, archivos=f, tipo='adjunto_denuncia')
                 file_instance.save()
-            return redirect('abogado_inicio')
+            return redirect('denuncias_ingreso')
     else:
         form = DenunciasForm()
 
-    context = {'form': form}
+    lista_abogados = Abogados.objects.filter(habilitado=True)
+
+
+    context = {'form': form, 'lista_abogados': lista_abogados}
     return render(request, 'GestionDenuncias/admin_ingreso_individual.html', context)
+
+
+def denuncias_ingreso_mass(request):
+    message = ''
+    if request.method == 'POST':
+        form = UpdateDetailsForm(request.POST, request.FILES)
+        if form.is_valid():
+            # import your django model here like from django.appname.models import model_name
+            excel_file = request.FILES['excel_file']
+            import os
+            import tempfile
+            import xlrd
+            fd, path = tempfile.mkstemp()  # mkstemp returns a tuple: an integer (index) called file descriptor used by OS to refer to a file and its path
+            try:
+                with os.fdopen(fd, 'wb') as tmp:
+                    tmp.write(excel_file.read())
+                book = xlrd.open_workbook(path)
+                sheet = book.sheet_by_index(0)
+                for rx in range(1, sheet.nrows):
+                    obj = Denuncias(
+                        numero=sheet.cell_value(rowx=rx, colx=0),
+                        link_adjuntos=sheet.cell_value(rowx=rx, colx=1),
+                        fecha_ingreso=sheet.cell_value(rowx=rx, colx=2),
+                        via_de_ingreso=sheet.cell_value(rowx=rx, colx=3),
+                        nombre_denunciante=sheet.cell_value(rowx=rx, colx=4),
+                        nombre_denunciado=sheet.cell_value(rowx=rx, colx=5),
+                        obs_ingreso=sheet.cell_value(rowx=rx, colx=6),
+                        abogado_asistente_id=sheet.cell_value(rowx=rx, colx=7)
+                    )
+                    obj.save()
+            finally:
+                os.remove(path)
+        else:
+            message = 'Invalid Entries'
+    else:
+        form = UpdateDetailsForm()
+
+    context = {'form': form, 'message': message}
+    return render(request,'GestionDenuncias/ingreso_masivo.html', context)
+
+    #return render(request, 'GestionDenuncias/ingreso_masivo.html', context)
+
 
 def jefe_inicio(request):
     return render(request, 'GestionDenuncias/jefe_inicio.html')
@@ -113,7 +159,39 @@ def abogado_gestiones(request):
     context = {'todasdenuncias': denuncia_obj_3, 'todosadjuntos': adjuntos_obj}
     return render(request, 'GestionDenuncias/abogado_gestiones.html', context)
 
+def abogado_evaluacion(request):
+    adjuntos_obj = Adjuntos.objects.filter(tipo__icontains="adjunto_denuncia")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="INGRESO")
+    context = {'todasdenuncias': denuncia_obj_3, 'todosadjuntos': adjuntos_obj}
+    return render(request, 'GestionDenuncias/abogado_evaluacion.html', context)
 
+def abogado_comprobacion(request):
+    adjuntos_obj = Adjuntos.objects.filter(tipo__icontains="adjunto_denuncia")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="INGRESO")
+    context = {'todasdenuncias': denuncia_obj_3, 'todosadjuntos': adjuntos_obj}
+    return render(request, 'GestionDenuncias/abogado_comprobacion.html', context)
+
+def gestion_denuncia_comp(request, id_denuncia):
+    instance = get_object_or_404(Denuncias, id=id_denuncia)
+    denuncia_obj_4 = Denuncias.objects.filter(id=id_denuncia)
+    form = CompruebaDenuncia(request.POST or None, instance=instance)
+    form2 = DetallesDenuncia(request.POST or None, instance=instance)
+
+    context = {'todasdenuncias': denuncia_obj_4, 'form': form, 'form2': form2}
+
+    if request.method == 'POST':
+
+        if form.is_valid():
+            form.save()
+        if request.POST.get(str("button_enviar")):
+            Denuncias.objects.filter(id=str(id_denuncia)).update(estado_jefe="GEST_INGRESO_ABOGADO_REALIZADA")
+            return redirect("abogado_evaluacion")
+        if request.POST.get(str("button_guardar")):
+            return redirect("abogado_evaluacion")
+
+    return render(request, 'GestionDenuncias/abogado_gestionar_denuncia_comprob.html', context)
 
 ############## TENGO QUE AGREGAR LA VIEW abogado_gestion_denuncia ver como hacer para tener los path el id
 
@@ -264,6 +342,51 @@ def abogado_gestion_denuncia(request, id_denuncia):
                 return redirect("abogado_gestiones")
 
     return render(request, 'GestionDenuncias/abogado_gestionar_denuncia.html', context)
+
+
+
+
+def abogado_gestion_denuncia_ac(request, id_denuncia):
+
+    instance = get_object_or_404(Denuncias, id=id_denuncia)
+    denuncia_obj_4 = Denuncias.objects.filter(id=id_denuncia)
+    form = ActivaDenuncia(request.POST or None, instance=instance)
+    form2 = DetallesDenuncia(request.POST or None, instance=instance)
+
+    context = {'todasdenuncias': denuncia_obj_4, 'form': form, 'form2': form2}
+
+    if request.method == 'POST':
+
+            if form.is_valid():
+                form.save()
+            if request.POST.get(str("button_enviar")):
+                Denuncias.objects.filter(id=str(id_denuncia)).update(estado_jefe="GEST_INGRESO_ABOGADO_REALIZADA")
+                return redirect("abogado_evaluacion")
+            if request.POST.get(str("button_guardar")):
+                return redirect("abogado_evaluacion")
+
+    return render(request, 'GestionDenuncias/abogado_gestionar_denuncia_activar.html', context)
+
+def abogado_gestion_denuncia_desac(request, id_denuncia):
+
+    instance = get_object_or_404(Denuncias, id=id_denuncia)
+    denuncia_obj_4 = Denuncias.objects.filter(id=id_denuncia)
+    form = DesactivaDenuncia(request.POST or None, instance=instance)
+    form2 = DetallesDenuncia(request.POST or None, instance=instance)
+
+    context = {'todasdenuncias': denuncia_obj_4, 'form': form, 'form2': form2}
+
+    if request.method == 'POST':
+
+            if form.is_valid():
+                form.save()
+            if request.POST.get(str("button_enviar")):
+                Denuncias.objects.filter(id=str(id_denuncia)).update(estado_jefe="DESACTIVADO_ENVIADO_ABOGADO")
+                return redirect("abogado_evaluacion")
+            if request.POST.get(str("button_guardar")):
+                return redirect("abogado_evaluacion")
+
+    return render(request, 'GestionDenuncias/abogado_gestionar_denuncia_desactivar.html', context)
 
 def abogado_resultados(request):
     adjuntos_obj = Adjuntos.objects.filter(tipo__icontains="adjunto_denuncia")

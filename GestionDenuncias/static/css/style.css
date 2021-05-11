@@ -3,10 +3,6 @@
 font-family: sans-serif;
 }
 
-a{
-color: darkred;
-}
-
 .logo_home{
 width:70px;
 
@@ -30,12 +26,11 @@ padding: 10px;
 
 footer {
 width : 100%;
-
 background-color : gray;
 color: white;
 padding: 10px;
 }
-
+/*
 table, th, td {
 border-bottom: 1px solid #ddd;
 }
@@ -51,7 +46,7 @@ th {
   background-color: black;
   color: white;
 }
-
+*/
 .linea_menu {
     border-top: 0px solid red;
 }

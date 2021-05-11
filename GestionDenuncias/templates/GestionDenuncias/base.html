@@ -2,8 +2,34 @@
 <html lang="en">
 <head>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.bootstrap4.min.css">
+
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/responsive/2.2.7/js/responsive.bootstrap4.min.js"></script>
+
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+       <script src=" https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+   <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
+
+
     <meta charset="UTF-8">
     {% block title %}  {% endblock %}
 </head>
@@ -16,12 +42,12 @@
      {% for group in user.groups.all %}
             <a href="{% url 'abogado_inicio' %}" class="w3-bar-item w3-button">Inicio</a>
 
-                {% if group.name == 'Administrador' %}
+                {% if group.name == 'Administrador' or group.name == 'Jefe'%}
     <div class="w3-dropdown-hover">
       <button class="w3-button">Ingreso</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
         <a href="{% url 'denuncias_ingreso' %}" class="w3-bar-item w3-button">Individual</a>
-        <a href="#" class="w3-bar-item w3-button">Masivo</a>
+        <a href="{% url 'denuncias_ingreso_mass' %}" class="w3-bar-item w3-button">Masivo</a>
       </div>
       </div>
                         <div class="w3-dropdown-hover">
@@ -45,7 +71,8 @@
                                      <div class="w3-dropdown-hover">
       <button class="w3-button">Bandeja</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="{% url 'abogado_gestiones' %}" class="w3-bar-item w3-button">Gestiones</a>
+          <a href="{% url 'abogado_evaluacion' %}" class="w3-bar-item w3-button">Evaluación</a>
+        <a href="{% url 'abogado_comprobacion' %}" class="w3-bar-item w3-button">Comprobación</a>
            <a href="{% url 'abogado_resultados' %}" class="w3-bar-item w3-button">Resultados</a>
            <a href="{% url 'abogado_enviados' %}" class="w3-bar-item w3-button">Enviados</a>
             </div>
