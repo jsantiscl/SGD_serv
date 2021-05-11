@@ -51,7 +51,7 @@ def denuncias_ingreso_mass(request):
                 for rx in range(1, sheet.nrows):
                     obj = Denuncias(
                         numero=sheet.cell_value(rowx=rx, colx=0),
-                        link_adjuntos=sheet.cell_value(rowx=rx, colx=1),
+                        link_adjuntos=sheet.hyperlink_map.get(rowx=rx, colx=1),
                         fecha_ingreso=sheet.cell_value(rowx=rx, colx=2),
                         via_de_ingreso=sheet.cell_value(rowx=rx, colx=3),
                         nombre_denunciante=sheet.cell_value(rowx=rx, colx=4),
