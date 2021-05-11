@@ -6,7 +6,8 @@ class Abogados(models.Model):
     dv = models.CharField(max_length=1)
     nombre = models.CharField(max_length=200)
     habilitado = models.BooleanField(default=True)
-    username = models.CharField(max_length=50, default='SIN')
+    username = models.CharField(max_length=50, default='SIN'),
+    iniciales = models.CharField(max_length=50, default='NODEFINIDA'),
 
     def __str__(self):
         return self.nombre
