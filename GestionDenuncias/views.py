@@ -57,7 +57,7 @@ def denuncias_ingreso_mass(request):
                         nombre_denunciante=sheet.cell_value(rowx=rx, colx=4),
                         nombre_denunciado=sheet.cell_value(rowx=rx, colx=5),
                         obs_ingreso=sheet.cell_value(rowx=rx, colx=6),
-                        abogado_asistente_id=sheet.cell_value(rowx=rx, colx=7)
+                        abogado_asistente_iniciales=sheet.cell_value(rowx=rx, colx=7)
                     )
                     obj.save()
             finally:
