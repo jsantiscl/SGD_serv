@@ -2,9 +2,6 @@ from django import forms
 from .models import Denuncias,Abogados, Adjuntos
 from django.forms import ClearableFileInput
 
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Checkbox
-
 class DenunciasForm(forms.ModelForm):
     class Meta:
         model = Denuncias
