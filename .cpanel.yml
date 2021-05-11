@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/jasbtvnt/django_sgd/
+    - /bin/cp -R * $DEPLOYPATH
