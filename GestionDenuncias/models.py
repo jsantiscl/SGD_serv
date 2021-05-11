@@ -147,6 +147,12 @@ class Denuncias(models.Model):
         ("Instruir Sancionatorio", "Instruir Sancionatorio"),
         ("Derivar", "Derivar"),
      )
+    Diligencias = (
+        ("req_inf", "Requerimiento de Información"),
+        ("sad", "SAD"),
+        ("citacion", "Citación"),
+        ("visita_inspectiva", "Visita Inspectiva"),
+     )
     MOTIVO_ABG = (
         ("Presunta Infracción", "Presunta Infracción"),
         ("No Competencia", "No Competencia"),
@@ -185,6 +191,10 @@ class Denuncias(models.Model):
                              choices=CANDIDATURA,
                              default="Alcalde")
     link_adjuntos = models.CharField(max_length=500, null=True, blank=True)
+
+    tipo_diligencia = models.CharField(max_length=50,
+                             choices=Diligencias,
+                             default="Pendiente")
 
     territorio_electoral = models.CharField(max_length=200)
     materia = models.CharField(max_length=50,  choices=MATERIA, default="Pendiente")

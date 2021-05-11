@@ -49,42 +49,33 @@ class ActivaDenuncia(forms.ModelForm):
     class Meta:
         model = Denuncias
         fields = [
-            'tipo_de_denunciado',
+
             'elecciones',
             'candidatura',
-            'territorio_electoral',
+
             'infraccion_denunciada',
             'plazo_investigacion',
-            'diligencia_req_inf',
-            'diligencia_sad',
-            'diligencia_citacion',
-            'diligencia_insp_remota',
+            'tipo_diligencia',
             'obs_abogado'
 ]
         widgets = {
-            'tipo_de_denunciado': forms.Select(attrs={'class': 'form-control'}),
+
             'elecciones': forms.Select(attrs={'class': 'form-control'}),
             'candidatura': forms.Select(attrs={'class': 'form-control'}),
-            'territorio_electoral': forms.TextInput(attrs={'class': 'form-control'}),
+
             'infraccion_denunciada': forms.TextInput(attrs={'class': 'form-control'}),
             'plazo_investigacion': forms.Select(attrs={'class': 'form-control'}),
-            'diligencia_req_inf': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'diligencia_sad': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'diligencia_citacion': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'diligencia_insp_remota': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'tipo_diligencia': forms.Select(attrs={'class': 'form-control'}),
             'obs_abogado': forms.Textarea(attrs={'class': 'form-control'}),
         }
         labels = {
-            'tipo_de_denunciado' : 'Tipo de Denunciado',
+
             'elecciones' : 'Elecciones',
             'candidatura' : 'Candidatura',
-            'territorio_electoral' : 'Territorio Electoral',
+
             'infraccion_denunciada': 'Infracción Denunciada',
             'plazo_investigacion': 'Plazo de Investigación',
-            'diligencia_req_inf': 'Requerimiento de Información',
-            'diligencia_sad' : 'SAD',
-            'diligencia_citacion' : 'Citación',
-            'diligencia_insp_remota' : 'Visita Inspectiva',
+            'tipo_diligencia': 'Tipo Diligencia',
             'obs_abogado' : 'Observaciones Abogado'
         }
 
@@ -106,7 +97,7 @@ class DetallesDenuncia(forms.ModelForm):
             'fecha_ingreso': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'disabled': 'True'}),
             'via_de_ingreso': forms.Select(attrs={'class': 'form-control', 'disabled': 'True'}),
             'nombre_denunciante': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
-            'nombre_denunciado': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'nombre_denunciado': forms.TextInput(attrs={'class': 'form-control'}),
             # 'tipo_de_denunciado': forms.Select(attrs={'class': 'form-control'}),
             # 'elecciones': forms.Select(attrs={'class': 'form-control'}),
             # 'candidatura': forms.Select(attrs={'class': 'form-control'}),
@@ -123,7 +114,7 @@ class DesactivaDenuncia(forms.ModelForm):
     class Meta:
         model = Denuncias
         fields = [
-            'tipo_de_denunciado',
+
             'elecciones',
             'candidatura',
             'territorio_electoral',
@@ -131,7 +122,7 @@ class DesactivaDenuncia(forms.ModelForm):
             'obs_abogado'
 ]
         widgets = {
-            'tipo_de_denunciado': forms.Select(attrs={'class': 'form-control'}),
+
             'elecciones': forms.Select(attrs={'class': 'form-control'}),
             'candidatura': forms.Select(attrs={'class': 'form-control'}),
             'territorio_electoral': forms.TextInput(attrs={'class': 'form-control'}),
@@ -139,7 +130,7 @@ class DesactivaDenuncia(forms.ModelForm):
             'obs_abogado': forms.Textarea(attrs={'class': 'form-control'}),
         }
         labels = {
-            'tipo_de_denunciado' : 'Tipo de Denunciado',
+
             'elecciones' : 'Elecciones',
             'candidatura' : 'Candidatura',
             'territorio_electoral' : 'Territorio Electoral',
@@ -153,7 +144,7 @@ class CompruebaDenuncia(forms.ModelForm):
     class Meta:
         model = Denuncias
         fields = [
-            'tipo_de_denunciado',
+
             'elecciones',
             'candidatura',
             'territorio_electoral',
@@ -166,7 +157,7 @@ class CompruebaDenuncia(forms.ModelForm):
             'obs_abogado'
 ]
         widgets = {
-            'tipo_de_denunciado': forms.Select(attrs={'class': 'form-control'}),
+
             'elecciones': forms.Select(attrs={'class': 'form-control'}),
             'candidatura': forms.Select(attrs={'class': 'form-control'}),
             'territorio_electoral': forms.TextInput(attrs={'class': 'form-control'}),
@@ -179,8 +170,8 @@ class CompruebaDenuncia(forms.ModelForm):
             'obs_abogado': forms.Textarea(attrs={'class': 'form-control'}),
         }
         labels = {
-            'tipo_de_denunciado' : 'Tipo de Denunciado',
-            'elecciones' : 'Elecciones',
+
+            'elecciones' : 'Eleccion',
             'candidatura' : 'Candidatura',
             'territorio_electoral' : 'Territorio Electoral',
             'infraccion_denunciada': 'Infracción Denunciada',

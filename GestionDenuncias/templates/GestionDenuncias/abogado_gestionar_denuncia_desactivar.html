@@ -13,10 +13,11 @@
     <form action="{% url 'gestion-denuncia_desac' id_denuncia=denuncia.id %}" method = "POST" enctype="multipart/form-data">{% csrf_token %}
         {% csrf_token %}
         {{ form.as_table }}
-
+        <br>
 
         <input type="submit" name="button_guardar" value="Guardar Datos">
         <input type="submit" name="button_enviar" value="Enviar a Siguiente Paso" onClick="return confirm('¿Seguro que quieres Enviar?');">
+    <br>
     </form>
             </div>
               <div class="w3-half w3-container">
@@ -24,6 +25,7 @@
                  <h3>Detalles Denuncia</h3>
 
                {{ form2.as_table }}
+              <br>
              </div>
         {% else %}
         <h3>No Autorizado</h3>
