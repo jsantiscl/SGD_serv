@@ -109,10 +109,9 @@ class Denuncias(models.Model):
 
     )
     PLAZO = (
-        ("3 días", "3 días"),
-        ("5 días", "5 días"),
-        ("10 días", "10 días"),
-        ("No Aplica", "No Aplica"),
+        ("3", "3 días"),
+        ("5", "5 días"),
+        ("7", "7 días"),
     )
 
     RESULTADO_SAD = (
@@ -174,6 +173,64 @@ class Denuncias(models.Model):
         ("RESULTADO_ABOGADO_DEVUELTO", "Devuelto a Abogado"),
         ("RESULTADO_FINALIZADO", "Finalizado Administrador"),
      )
+
+    INFRACCIONES = (
+        ("P1", "P1"),
+        ("P2", "P2"),
+        ("P3", "P3"),
+        ("P4", "P4"),
+        ("P5", "P5"),
+        ("P5-B", "P5-B"),
+        ("P5-C", "P5-C"),
+        ("P6", "P6"),
+        ("P6-B", "P6-B"),
+        ("P7", "P7"),
+        ("P8", "P8"),
+        ("P9", "P9"),
+        ("P10", "P10"),
+        ("P11", "P11"),
+        ("P12", "P12"),
+        ("P12-B", "P12-B"),
+        ("P13", "P13"),
+        ("P14", "P14"),
+        ("P15", "P15"),
+        ("P16", "P16"),
+        ("P17", "P17"),
+        ("P18", "P18"),
+        ("P19", "P19"),
+        ("P20", "P20"),
+        ("P21", "P21"),
+        ("P22", "P22"),
+        ("P23", "P23"),
+        ("P24", "P24"),
+        ("P25", "P25"),
+        ("P26", "P26"),
+        ("G1", "G1"),
+    )
+
+    DESACTIVACIONES = (
+        ("A1", "A1"),
+        ("A2", "A2"),
+        ("A3", "A3"),
+        ("A4", "A4"),
+        ("A5", "A5"),
+        ("A6", "A6"),
+        ("A7", "A7"),
+        ("A8", "A8"),
+        ("A9", "A9"),
+        ("A10", "A10"),
+        ("A11", "A11"),
+        ("A12", "A12"),
+        ("A13", "A13"),
+        ("A14", "A14"),
+        ("A15", "A15"),
+        ("A16", "A16"),
+        ("A17", "A17"),
+        ("A18", "A18"),
+        ("A19", "A19"),
+        ("A20", "A20"),
+    )
+
     numero = models.CharField(max_length=200)
     fecha_ingreso_registro = models.DateField(auto_now_add=True)
     fecha_ingreso = models.DateField(default=datetime.today)
@@ -199,7 +256,7 @@ class Denuncias(models.Model):
 
     territorio_electoral = models.CharField(max_length=200)
     materia = models.CharField(max_length=50,  choices=MATERIA, default="Pendiente")
-    infraccion_denunciada = models.CharField(max_length=200, default="Pendiente")
+    infraccion_denunciada = models.CharField(max_length=200, choices=INFRACCIONES, default="Pendiente")
     gestion = models.CharField(max_length=50,  choices=GESTION, default="Pendiente")
     asignacion = models.CharField(max_length=100,  choices=ASIGNACION, default="Pendiente")
 
@@ -281,7 +338,7 @@ class Denuncias(models.Model):
     tiene_adjunto_res_req_sub = models.BooleanField(default=False)
     tiene_adjunto_res_ord_ret = models.BooleanField(default=False)
     tiene_adjunto_informe = models.BooleanField(default=False)
-    codigo_desactivacion = models.CharField(max_length=200, null=True, blank=True)
+    codigo_desactivacion = models.CharField(max_length=200, choices=DESACTIVACIONES,null=True, blank=True)
 
     def __str__(self):
         return self.numero

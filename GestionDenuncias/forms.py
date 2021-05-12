@@ -48,7 +48,7 @@ class ActivaDenuncia(forms.ModelForm):
         fields = [
 
             'elecciones',
-            'candidatura',
+            'nombre_denunciado',
 
             'infraccion_denunciada',
             'plazo_investigacion',
@@ -58,9 +58,9 @@ class ActivaDenuncia(forms.ModelForm):
         widgets = {
 
             'elecciones': forms.Select(attrs={'class': 'form-control'}),
-            'candidatura': forms.Select(attrs={'class': 'form-control'}),
+            'nombre_denunciado': forms.TextInput(attrs={'class': 'form-control'}),
 
-            'infraccion_denunciada': forms.TextInput(attrs={'class': 'form-control'}),
+            'infraccion_denunciada': forms.Select(attrs={'class': 'form-control'}),
             'plazo_investigacion': forms.Select(attrs={'class': 'form-control'}),
             'tipo_diligencia': forms.Select(attrs={'class': 'form-control'}),
             'obs_abogado': forms.Textarea(attrs={'class': 'form-control'}),
@@ -68,7 +68,7 @@ class ActivaDenuncia(forms.ModelForm):
         labels = {
 
             'elecciones' : 'Elecciones',
-            'candidatura' : 'Candidatura',
+            'nombre_denunciado' : 'Nombre Denunciado',
 
             'infraccion_denunciada': 'Infracción Denunciada',
             'plazo_investigacion': 'Plazo de Investigación',
@@ -83,24 +83,25 @@ class DetallesDenuncia(forms.ModelForm):
             'numero',
             'link_adjuntos',
             'fecha_ingreso',
-            'via_de_ingreso',
+            #'via_de_ingreso',
             'nombre_denunciante',
             'nombre_denunciado',
             'obs_ingreso',
-            'abogado_asistente']
+            #'abogado_asistente'
+        ]
         widgets = {
             'numero': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
             'link_adjuntos': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
             'fecha_ingreso': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'disabled': 'True'}),
-            'via_de_ingreso': forms.Select(attrs={'class': 'form-control', 'disabled': 'True'}),
+            #'via_de_ingreso': forms.Select(attrs={'class': 'form-control', 'disabled': 'True'}),
             'nombre_denunciante': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
-            'nombre_denunciado': forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre_denunciado': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
             # 'tipo_de_denunciado': forms.Select(attrs={'class': 'form-control'}),
             # 'elecciones': forms.Select(attrs={'class': 'form-control'}),
             # 'candidatura': forms.Select(attrs={'class': 'form-control'}),
             # 'territorio_electoral': forms.TextInput(attrs={'class': 'form-control'}),
             'obs_ingreso': forms.Textarea(attrs={'class': 'form-control', 'disabled': 'True'}),
-            'abogado_asistente': forms.Select(attrs={'class': 'form-control', 'disabled': 'True'}),
+        #    'abogado_asistente': forms.Select(attrs={'class': 'form-control', 'disabled': 'True'}),
         # 'adjunto_denuncia': ClearableFileInput(attrs={'multiple': True}),
 
         }
@@ -113,24 +114,24 @@ class DesactivaDenuncia(forms.ModelForm):
         fields = [
 
             'elecciones',
-            'candidatura',
-            'territorio_electoral',
+            'nombre_denunciado',
+
             'codigo_desactivacion',
             'obs_abogado'
 ]
         widgets = {
 
             'elecciones': forms.Select(attrs={'class': 'form-control'}),
-            'candidatura': forms.Select(attrs={'class': 'form-control'}),
-            'territorio_electoral': forms.TextInput(attrs={'class': 'form-control'}),
-            'codigo_desactivacion': forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre_denunciado': forms.TextInput(attrs={'class': 'form-control'}),
+
+            'codigo_desactivacion': forms.Select(attrs={'class': 'form-control'}),
             'obs_abogado': forms.Textarea(attrs={'class': 'form-control'}),
         }
         labels = {
 
             'elecciones' : 'Elecciones',
-            'candidatura' : 'Candidatura',
-            'territorio_electoral' : 'Territorio Electoral',
+            'nombre_denunciado' : 'Nombre Denunciado',
+
             'codigo_desactivacion': 'Codigo Desactivacion',
             'obs_abogado' : 'Observaciones Abogado'
         }

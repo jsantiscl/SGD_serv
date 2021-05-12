@@ -15,8 +15,9 @@
         {{ form.as_table }}
         <br>
 
-        <input type="submit" name="button_guardar" value="Guardar Datos">
-        <input type="submit" name="button_enviar" value="Enviar a Siguiente Paso" onClick="return confirm('¿Seguro que quieres Enviar?');">
+        <input class="btn btn-primary" type="submit" name="button_guardar" value="Guardar Datos">
+        <input class="btn btn-success" type="submit" name="button_enviar" value="Enviar a Siguiente Paso" onClick="return confirm('¿Seguro que quieres Enviar?');">
+
     <br>
     </form>
             </div>
@@ -26,6 +27,7 @@
 
                {{ form2.as_table }}
               <br>
+              <a class="btn btn-warning" href="{{ denuncia.link_adjuntos }}">Ver Carpeta Adjuntos</a>
              </div>
         {% else %}
         <h3>No Autorizado</h3>

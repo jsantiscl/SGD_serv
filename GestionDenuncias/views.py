@@ -51,13 +51,13 @@ def denuncias_ingreso_mass(request):
                 for rx in range(1, sheet.nrows):
                     obj = Denuncias(
                         numero=sheet.cell_value(rowx=rx, colx=0),
-                        link_adjuntos=sheet.hyperlink_map.get(rowx=rx, colx=1),
+                        link_adjuntos=sheet.cell_value(rowx=rx, colx=1),
                         fecha_ingreso=sheet.cell_value(rowx=rx, colx=2),
                         via_de_ingreso=sheet.cell_value(rowx=rx, colx=3),
                         nombre_denunciante=sheet.cell_value(rowx=rx, colx=4),
                         nombre_denunciado=sheet.cell_value(rowx=rx, colx=5),
                         obs_ingreso=sheet.cell_value(rowx=rx, colx=6),
-                        abogado_asistente_iniciales=sheet.cell_value(rowx=rx, colx=7)
+                        abogado_asistente_id=sheet.cell_value(rowx=rx, colx=7)
                     )
                     obj.save()
             finally:
@@ -67,7 +67,9 @@ def denuncias_ingreso_mass(request):
     else:
         form = UpdateDetailsForm()
 
-    context = {'form': form, 'message': message}
+    lista_abogados = Abogados.objects.filter(habilitado=True)
+
+    context = {'form': form, 'message': message, 'lista_abogados': lista_abogados}
     return render(request,'GestionDenuncias/ingreso_masivo.html', context)
 
     #return render(request, 'GestionDenuncias/ingreso_masivo.html', context)

@@ -26,7 +26,7 @@
 
                {{ form2.as_table }}
                   <br>
-                  <input class="btn btn-warning" type="submit" name="button_modifica" onclick="finalizarOrden({{ denuncia.id }})" value="Modificar Denuncia Ingresada">
+                  <a class="btn btn-warning" href="{{ denuncia.link_adjuntos }}">Ver Carpeta Adjuntos</a>
               <br>
              </div>
         {% else %}
