@@ -60,15 +60,17 @@ $(document).ready(function() {
         <thead>
             <tr>
                 <th>Abogado</th>
-                <th>Denuncias Asignadas</th>
-                <th>Denuncias Asignadas</th>
-                <th>Denuncias Asignadas</th>
+                <th>Denuncias en Evaluacion</th>
+                <th>Denuncias en Activadas</th>
+                <th>Denuncias En Archivadas</th>
+                <th>Denuncias En Comprobacion</th>
             </tr>
         </thead>
      <tbody>
         {% for abogado in lista_abogados %}
             <tr>
         <td>{{ abogado.nombre }} </td>
+        <td>{{abogado.denuncias_set.count }}</td>
         <td>{{abogado.denuncias_set.count }}</td>
         <td>{{abogado.denuncias_set.count }}</td>
         <td>{{abogado.denuncias_set.count }}</td>
