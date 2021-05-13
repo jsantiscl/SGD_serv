@@ -235,6 +235,8 @@ class Denuncias(models.Model):
         ("A18", "A18"),
         ("A19", "A19"),
         ("A20", "A20"),
+        ("A21", "A21"),
+        ("A22", "A22"),
         ("Null", "Null"),
     )
 
