@@ -175,6 +175,11 @@ class Denuncias(models.Model):
      )
 
     INFRACCIONES = (
+        ("A1", "A1"),
+        ("A2", "A2"),
+        ("A3", "A3"),
+        ("A4", "A4"),
+        ("A5", "A5"),
         ("P1", "P1"),
         ("P2", "P2"),
         ("P3", "P3"),
@@ -206,6 +211,7 @@ class Denuncias(models.Model):
         ("P25", "P25"),
         ("P26", "P26"),
         ("G1", "G1"),
+        ("Null", "Null"),
     )
 
     DESACTIVACIONES = (
@@ -229,6 +235,7 @@ class Denuncias(models.Model):
         ("A18", "A18"),
         ("A19", "A19"),
         ("A20", "A20"),
+        ("Null", "Null"),
     )
 
     numero = models.CharField(max_length=200)
