@@ -47,6 +47,7 @@ $(document).ready(function() {
         <tr>
             <th>Numero</th>
             <th>Fecha Ingreso</th>
+            <th>Fecha Evaluacion</th>
             <th>Asignacion</th>
             <th>Nombre Denunciante</th>
             <th>Nombre Denunciado</th>
@@ -66,6 +67,7 @@ $(document).ready(function() {
         <tr>
             <td>{{ denuncia.numero }}</td>
             <td>{{ denuncia.fecha_ingreso|date:'d-m-y' }}</td>
+            <td>{{ denuncia.fecha_evaluacion_abogado|date:'d-m-y' }}</td>
             <td>{{ denuncia.abogado_asistente }}</td>
             <td>{{ denuncia.nombre_denunciante }}</td>
             <td>{{ denuncia.nombre_denunciado }}</td>
