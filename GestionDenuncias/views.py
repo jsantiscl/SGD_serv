@@ -178,7 +178,7 @@ def jefe_evaluacion_desact(request):
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
     denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="DESACTIVADO_ENVIADO_ABOGADO")
     context = {'todasdenuncias': denuncia_obj_3}
-    return render(request, 'GestionDenuncias/jefe_evaluacion_act.html', context)
+    return render(request, 'GestionDenuncias/jefe_evaluacion_desact.html', context)
 
 
 

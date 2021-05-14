@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 from django.contrib.auth.decorators import login_required
-
+#prueba
 from .views import denuncias_ingreso, jefe_inicio, jefe_pendientes, jefe_enviados, jefe_pendientes_instruccion, abogado_inicio
 from .views import abogado_gestiones, abogado_gestion_denuncia, abogado_resultados, abogado_resultado_denuncia, abogado_enviados, jefe_validacion
 from .views import abogado_rechazo_denuncia, denuncias_enviadas_ad, jefe_resultado_denuncia, abogado_evaluacion, denuncias_ingreso_mass, abogado_gestion_denuncia_ac, abogado_gestion_denuncia_desac
