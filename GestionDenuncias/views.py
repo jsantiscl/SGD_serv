@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-
+from datetime import datetime
 
 from .models import Denuncias, Adjuntos, Abogados
 from .forms import DenunciasForm, ResumeUpload, UpdateDetailsForm, ActivaDenuncia, DetallesDenuncia, DesactivaDenuncia, CompruebaDenuncia
@@ -362,7 +362,8 @@ def abogado_gestion_denuncia_ac(request, id_denuncia):
             if form.is_valid():
                 form.save()
             if request.POST.get(str("button_enviar")):
-                Denuncias.objects.filter(id=str(id_denuncia)).update(estado_jefe="GEST_INGRESO_ABOGADO_REALIZADA")
+                Denuncias.objects.filter(id=str(id_denuncia)).update(estado_jefe="EVALUADA_ACTIVADA")
+                Denuncias.objects.filter(id=str(id_denuncia)).update(fecha_evaluacion_abogado=datetime.now())
                 return redirect("abogado_evaluacion")
             if request.POST.get(str("button_guardar")):
                 return redirect("abogado_evaluacion")
@@ -383,7 +384,8 @@ def abogado_gestion_denuncia_desac(request, id_denuncia):
             if form.is_valid():
                 form.save()
             if request.POST.get(str("button_enviar")):
-                Denuncias.objects.filter(id=str(id_denuncia)).update(estado_jefe="DESACTIVADO_ENVIADO_ABOGADO")
+                Denuncias.objects.filter(id=str(id_denuncia)).update(estado_jefe="EVALUADA_DESACTIVADA")
+                Denuncias.objects.filter(id=str(id_denuncia)).update(fecha_evaluacion_abogado=datetime.now())
                 return redirect("abogado_evaluacion")
             if request.POST.get(str("button_guardar")):
                 return redirect("abogado_evaluacion")

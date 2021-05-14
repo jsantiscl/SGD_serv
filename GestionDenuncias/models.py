@@ -242,6 +242,7 @@ class Denuncias(models.Model):
 
     numero = models.CharField(max_length=200)
     fecha_ingreso_registro = models.DateField(auto_now_add=True)
+    fecha_evaluacion_abogado = models.DateField(null=True, blank=True)
     fecha_ingreso = models.DateField(default=datetime.today)
     via_de_ingreso = models.CharField(max_length=50,
                              choices=VIA_INGRESO,

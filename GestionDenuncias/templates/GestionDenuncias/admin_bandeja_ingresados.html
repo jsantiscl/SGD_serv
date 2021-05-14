@@ -46,18 +46,15 @@ $(document).ready(function() {
             <th>Numero</th>
             <th>Fecha Ingreso</th>
             <th>Asignación</th>
-            <th>Via de Ingreso</th>
             <th>Nombre Denunciante</th>
             <th>Nombre Denunciado</th>
-            <th>Tipo de Denunciado</th>
             <th>Elecciones</th>
-            <th>Candidatura</th>
-            <th>Territorio Electoral</th>
             <th>Materia</th>
             <th>Infraccion Denunciada</th>
-            <th>Gestión</th>
+            <th>Fecha Evaluacion</th>
             <th>Plazo</th>
             <th>Estado</th>
+            <th>Tipo Diligencia</th>
         </tr>
     </thead>
     <tbody>
@@ -66,28 +63,27 @@ $(document).ready(function() {
             <td>{{ denuncia.numero }}</td>
             <td>{{ denuncia.fecha_ingreso|date:'d-m-y' }}</td>
             <td>{{ denuncia.abogado_asistente }}</td>
-            <td>{{ denuncia.via_de_ingreso }}</td>
             <td>{{ denuncia.nombre_denunciante }}</td>
             <td>{{ denuncia.nombre_denunciado }}</td>
-            <td>{{ denuncia.tipo_de_denunciado }}</td>
             <td>{{ denuncia.elecciones }}</td>
-            <td>{{ denuncia.candidatura }}</td>
-            <td>{{ denuncia.territorio_electoral }}</td>
             <td>{{ denuncia.materia }}</td>
             <td>{{ denuncia.infraccion_denunciada }}</td>
-            <td>{{ denuncia.gestion }}</td>
+            <td>{{ denuncia.fecha_evaluacion_abogado }}</td>
             <td>{{ denuncia.plazo_investigacion }}</td>
             <td>
-                {% if denuncia.estado_jefe == "RESULTADO_ABOGADO_INGRESADO" %}
-                Pendiente Revisión
-                {% elif denuncia.estado_jefe == "RESULTADO_RECHAZADO" %}
-                Rechazado
+                {% if denuncia.estado_jefe == "INGRESO" %}
+                Pendiente Evaluación
+                {% elif denuncia.estado_jefe == "EVALUADA_DESACTIVADA" %}
+                Desactivada Abogado
+                {% elif denuncia.estado_jefe == "EVALUADA_ACTIVADA" %}
+                Activada Abogado
                 {% elif denuncia.estado_jefe == "RESULTADO_ABOGADO_DEVUELTO" %}
                 Pendiente Nueva Revisión
                 {% else %}
                 Aceptado
                 {% endif %}
             </td>
+            <
         </tr>
         {% endfor %}
     </tbody>
