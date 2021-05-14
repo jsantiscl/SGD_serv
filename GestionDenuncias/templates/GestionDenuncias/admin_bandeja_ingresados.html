@@ -73,14 +73,14 @@ $(document).ready(function() {
             <td>
                 {% if denuncia.estado_jefe == "INGRESO" %}
                 Pendiente Evaluación
-                {% elif denuncia.estado_jefe == "EVALUADA_DESACTIVADA" %}
+                {% elif denuncia.estado_jefe == "GEST_INGRESO_ABOGADO_REALIZADA" %}
                 Desactivada Abogado
                 {% elif denuncia.estado_jefe == "EVALUADA_ACTIVADA" %}
                 Activada Abogado
                 {% elif denuncia.estado_jefe == "RESULTADO_ABOGADO_DEVUELTO" %}
                 Pendiente Nueva Revisión
                 {% else %}
-                Aceptado
+                ESTADO ERRONEO
                 {% endif %}
             </td>
 
