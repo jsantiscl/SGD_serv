@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .views import denuncias_ingreso, jefe_inicio, jefe_pendientes, jefe_enviados, jefe_pendientes_instruccion, abogado_inicio
 from .views import abogado_gestiones, abogado_gestion_denuncia, abogado_resultados, abogado_resultado_denuncia, abogado_enviados, jefe_validacion
 from .views import abogado_rechazo_denuncia, denuncias_enviadas_ad, jefe_resultado_denuncia, abogado_evaluacion, denuncias_ingreso_mass, abogado_gestion_denuncia_ac, abogado_gestion_denuncia_desac
-from .views import abogado_comprobacion, gestion_denuncia_comp
+from .views import abogado_comprobacion, gestion_denuncia_comp, jefe_evaluacion_act, jefe_evaluacion_desact
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('a/ingresom/', login_required(denuncias_ingreso), name='denuncias_ingreso'),
@@ -29,6 +29,8 @@ urlpatterns = [
     path('ab/resultados/<int:id_denuncia>/', login_required(abogado_resultado_denuncia), name='resultado-denuncia'),
     path('ab/enviados/', login_required(abogado_enviados), name='abogado_enviados'),
     path('j/validacion/', login_required(jefe_validacion), name='jefe_validacion'),
+    path('j/evaluacion_act/', login_required(jefe_evaluacion_act), name='jefe_evaluacion_act'),
+    path('j/evaluacion_desact/', login_required(jefe_evaluacion_desact), name='jefe_evaluacion_desact'),
     path('ab/rechazos/<int:id_denuncia>/', login_required(abogado_rechazo_denuncia), name='rechazo-denuncia'),
     path('j/resultados/<int:id_denuncia>/', login_required(jefe_resultado_denuncia), name='jefe_resultado_denuncia'),
 ]

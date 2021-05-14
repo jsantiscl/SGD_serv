@@ -48,24 +48,30 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
         <a href="{% url 'denuncias_ingreso' %}" class="w3-bar-item w3-button">Individual</a>
         <a href="{% url 'denuncias_ingreso_mass' %}" class="w3-bar-item w3-button">Masivo</a>
-      </div>
-      </div>
-                        <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandeja</button>
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="{% url 'denuncias_enviadas_ad' %}" class="w3-bar-item w3-button">Enviados</a>
+          <a href="{% url 'denuncias_enviadas_ad' %}" class="w3-bar-item w3-button">Bandeja Ingresados</a>
 
       </div>
       </div>
-                             <div class="w3-dropdown-hover">
+
+                                                         <div class="w3-dropdown-hover">
+      <button class="w3-button">Bandeja</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+        <a href="{% url 'jefe_evaluacion_act' %}" class="w3-bar-item w3-button">Validacion Activadas</a>
+           <a href="{% url 'jefe_evaluacion_desact' %}" class="w3-bar-item w3-button">Validacion Desactivadas</a>
+      </div>
+      </div>
+                                     <div class="w3-dropdown-hover">
       <button class="w3-button">Reportes</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="#" class="w3-bar-item w3-button">Reporte 1</a>
+        <a href="#" class="w3-bar-item w3-button">Reporte General</a>
            <a href="#" class="w3-bar-item w3-button">Reporte 2</a>
            <a href="#" class="w3-bar-item w3-button">Reporte 3</a>
            <a href="#" class="w3-bar-item w3-button">Reporte 4</a>
       </div>
       </div>
+
+
+
                 {% endif %}
          {% if group.name == 'Abogado' %}
                                      <div class="w3-dropdown-hover">
@@ -77,40 +83,14 @@
            <a href="{% url 'abogado_enviados' %}" class="w3-bar-item w3-button">Enviados</a>
             </div>
       </div>
-                        <div class="w3-dropdown-hover">
-      <button class="w3-button">Reportes</button>
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="#" class="w3-bar-item w3-button">Reporte 1</a>
-           <a href="#" class="w3-bar-item w3-button">Reporte 2</a>
-           <a href="#" class="w3-bar-item w3-button">Reporte 3</a>
-           <a href="#" class="w3-bar-item w3-button">Reporte 4</a>
-      </div>
-      </div>
-         {% endif %}
-
-                  {% if group.name == 'Jefe' %}
-                                     <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandeja</button>
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="{% url 'jefe_pendientes' %}" class="w3-bar-item w3-button">Pendientes Clasificacion</a>
-           <a href="{% url 'jefe_pendientes_i' %}" class="w3-bar-item w3-button">Pendientes Instruccion</a>
-           <a href="{% url 'jefe_enviados' %}" class="w3-bar-item w3-button">Enviados</a>
-           <a href="{% url 'jefe_validacion' %}" class="w3-bar-item w3-button">Validacion</a>
-      </div>
-      </div>
-                                     <div class="w3-dropdown-hover">
-      <button class="w3-button">Reportes</button>
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="#" class="w3-bar-item w3-button">Reporte 1</a>
-           <a href="#" class="w3-bar-item w3-button">Reporte 2</a>
-           <a href="#" class="w3-bar-item w3-button">Reporte 3</a>
-           <a href="#" class="w3-bar-item w3-button">Reporte 4</a>
-      </div>
-      </div>
-
-
 
          {% endif %}
+
+
+
+
+
+
         {% endfor %}
          {% if user.is_staff %}
              <a href="http://127.0.0.1:8000/admin/" class="w3-bar-item w3-button">Admin</a>

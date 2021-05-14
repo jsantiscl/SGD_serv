@@ -168,6 +168,20 @@ def abogado_evaluacion(request):
     context = {'todasdenuncias': denuncia_obj_3, 'todosadjuntos': adjuntos_obj}
     return render(request, 'GestionDenuncias/abogado_evaluacion.html', context)
 
+def jefe_evaluacion_act(request):
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="GEST_INGRESO_ABOGADO_REALIZADA")
+    context = {'todasdenuncias': denuncia_obj_3}
+    return render(request, 'GestionDenuncias/jefe_evaluacion_act.html', context)
+
+def jefe_evaluacion_desact(request):
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="DESACTIVADO_ENVIADO_ABOGADO")
+    context = {'todasdenuncias': denuncia_obj_3}
+    return render(request, 'GestionDenuncias/jefe_evaluacion_act.html', context)
+
+
+
 def abogado_comprobacion(request):
     adjuntos_obj = Adjuntos.objects.filter(tipo__icontains="adjunto_denuncia")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
