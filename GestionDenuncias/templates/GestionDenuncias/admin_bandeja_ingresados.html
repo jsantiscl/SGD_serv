@@ -54,6 +54,8 @@ $(document).ready(function() {
             <th>Fecha Evaluacion</th>
             <th>Plazo</th>
             <th>Estado</th>
+            <th>Codigo Activacion</th>
+            <th>Codigo Desactivacion</th>
 
         </tr>
     </thead>
@@ -83,7 +85,9 @@ $(document).ready(function() {
                 ESTADO ERRONEO
                 {% endif %}
             </td>
-
+            <td>{{ denuncia.infraccion_denunciada }}</td>
+            <td>{{ denuncia.codigo_desactivacion }}</td>
+            <td>{{ denuncia.obs_abogado }}</td>
         </tr>
         {% endfor %}
     </tbody>
