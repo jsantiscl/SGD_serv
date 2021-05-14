@@ -52,7 +52,7 @@ $(document).ready(function() {
             <th>Nombre Denunciado</th>
             <th style="text-align:center">Adjuntos</th>
             <th colspan="2" style="text-align:center">Accion</th>
-            <th>Obs. Ingreso</th>
+            <th>Cod. Activac</th>
             <th>Obs. Abogado</th>
 
 
@@ -72,7 +72,7 @@ $(document).ready(function() {
             <td style="text-align:center" > <a class="btn btn-outline-primary" href="{{ denuncia.link_adjuntos }}">Ver</a></td>
             <td><a class="btn btn-success" href="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}">Aceptar</a></td>
             <td><a class="btn btn-danger" href="{% url 'gestion-denuncia_desac' id_denuncia=denuncia.id %}">Rechazar</a></td>
-            <td>{{ denuncia.obs_ingreso }}</td>
+            <td>{{ denuncia.infraccion_denunciada }}</td>
             <td>{{ denuncia.obs_abogado }}</td>
         </tr>
 
