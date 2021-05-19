@@ -9,6 +9,8 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import os
 import xlrd
+from django.http import JsonResponse
+import json
 from django.shortcuts import get_object_or_404
 
 def denuncias_ingreso(request):
@@ -170,7 +172,7 @@ def abogado_evaluacion(request):
 
 def jefe_evaluacion_act(request):
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="GEST_INGRESO_ABOGADO_REALIZADA")
+    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="GEST_COMPROBACION_ABOGADO_REALIZADA")
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request, 'GestionDenuncias/jefe_evaluacion_act.html', context)
 
@@ -987,3 +989,15 @@ def denuncias_enviadas_ad(request):
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request, 'GestionDenuncias/admin_bandeja_ingresados.html', context)
 
+
+def modifica_denuncia(request):
+    data = json.loads(request.body)
+
+    if data['datos']['tipo'] == 'rechaza':
+         Denuncias.objects.filter(id=str(data['datos']['id_denuncia'])).update(estado_jefe='DEVUELTO_JEFE')
+         Denuncias.objects.filter(id=str(data['datos']['id_denuncia'])).update(obs_jefe=data['datos']['motivo_rechazo'])
+
+    if data['datos']['tipo'] == 'acepta':
+         Denuncias.objects.filter(id=str(data['datos']['id_denuncia'])).update(obs_jefe='ACEPTADO')
+         Denuncias.objects.filter(id=str(data['datos']['id_denuncia'])).update(estado_jefe='DESACTIVADO_DESPACHO')
+    return JsonResponse([str(data['datos']['id_denuncia']), 'DEVUELTO_JEFE'], safe=False)

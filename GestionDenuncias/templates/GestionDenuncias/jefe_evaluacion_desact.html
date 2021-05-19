@@ -72,8 +72,8 @@ $(document).ready(function() {
             <td>{{ denuncia.nombre_denunciante }}</td>
             <td>{{ denuncia.nombre_denunciado }}</td>
             <td style="text-align:center" > <a class="btn btn-outline-primary" href="{{ denuncia.link_adjuntos }}">Ver</a></td>
-            <td><a class="btn btn-success" href="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}">Aceptar</a></td>
-            <td><a class="btn btn-danger" href="{% url 'gestion-denuncia_desac' id_denuncia=denuncia.id %}">Rechazar</a></td>
+            <td><button class="btn btn-success" onclick="aceptar({{ denuncia.id }})">Aceptar</button></td>
+            <td><button class="btn btn-danger" onclick="rechazar({{ denuncia.id }})">Rechazar</button></td>
             <td>{{ denuncia.codigo_desactivacion }}</td>
             <td>{{ denuncia.obs_abogado }}</td>
         <td  style="text-align:center"><a class="btn btn-info" href="{% url 'gestion-denuncia_desac' id_denuncia=denuncia.id %}">Ir</a></td>
@@ -86,4 +86,76 @@ $(document).ready(function() {
 
 </section>
 </div>
+
+    <script type="text/javascript">
+    var order;
+ function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+  function rechazar(denuncia) {
+
+      var motivo = prompt("Favor Ingresar Motivo de Rechazo:", "...");
+      if (motivo == null) {
+          console.log('User cancelled the prompt.');
+      } else {
+          console.log('Denuncia ' + denuncia + 'Rechazada Por ' + motivo);
+          modifica_denuncia(denuncia, motivo, 'rechaza');
+      }
+      ;
+  }
+
+  function aceptar(denuncia) {
+
+  if (confirm('¿Esta Seguro que quiere Aceptar la Denuncia ' + denuncia + ' ?')) {
+  // Save it!
+  console.log('Finalizando orden N°'+ denuncia);
+  modifica_denuncia(denuncia, 'ACEPTADO', 'acepta');
+
+} else {
+  // Do nothing!
+  console.log('No Finalizado Confirmado');
+}
+
+}
+    function modifica_denuncia(denuncia, motivo, tipo) {
+
+
+
+        var datos = {
+				'id_denuncia': denuncia,
+                'motivo_rechazo': motivo,
+                'tipo': tipo,
+			}
+    var url = "/sgd/j/modifica_denuncia/"
+        fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+	    			'X-CSRFToken':csrftoken
+	    		},
+	    		body:JSON.stringify({'datos':datos}),
+
+	    	})
+            .then((response) => response.json())
+            .then(window.location.href = "{% url 'jefe_evaluacion_desact' %}")
+
+      }
+    </script>
+
+
 {% endblock %}
