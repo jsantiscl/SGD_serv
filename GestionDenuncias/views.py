@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from datetime import datetime
-
+from django.db.models import Sum, Count
 from .models import Denuncias, Adjuntos, Abogados
 from .forms import DenunciasForm, ResumeUpload, UpdateDetailsForm, ActivaDenuncia, DetallesDenuncia, DesactivaDenuncia, CompruebaDenuncia
 from django.http import HttpResponse
@@ -182,6 +182,15 @@ def jefe_evaluacion_desact(request):
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request, 'GestionDenuncias/jefe_evaluacion_desact.html', context)
 
+def validacion_masiva(request):
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="DESACTIVADO_ENVIADO_ABOGADO")
+    codigos = Denuncias.objects.values('codigo_desactivacion') \
+  .annotate(cantidad=Count('numero')) \
+        .filter(estado_jefe__icontains='DESACTIVADO_ENVIADO_ABOGADO')
+
+    context = {'todasdenuncias': denuncia_obj_3, 'codigos': codigos}
+    return render(request, 'GestionDenuncias/jefe_validacion_masiva.html', context)
 
 
 def abogado_comprobacion(request):
@@ -999,4 +1008,12 @@ def modifica_denuncia(request):
     if data['datos']['tipo'] == 'acepta':
          Denuncias.objects.filter(id=str(data['datos']['id_denuncia'])).update(obs_jefe='ACEPTADO')
          Denuncias.objects.filter(id=str(data['datos']['id_denuncia'])).update(estado_jefe='DESACTIVADO_DESPACHO')
+
+    if data['datos']['tipo'] == 'acepta_masiva':
+         Denuncias.objects.filter(codigo_desactivacion=str(data['datos']['id_denuncia'])).update(obs_jefe='ACEPTADO')
+         Denuncias.objects.filter(codigo_desactivacion=str(data['datos']['id_denuncia'])).update(estado_jefe='DESACTIVADO_DESPACHO')
+    if data['datos']['tipo'] == 'rechaza_masiva':
+         Denuncias.objects.filter(codigo_desactivacion=str(data['datos']['id_denuncia'])).update(estado_jefe='DEVUELTO_JEFE')
+         Denuncias.objects.filter(codigo_desactivacion=str(data['datos']['id_denuncia'])).update(obs_jefe=data['datos']['motivo_rechazo'])
+
     return JsonResponse([str(data['datos']['id_denuncia']), 'DEVUELTO_JEFE'], safe=False)

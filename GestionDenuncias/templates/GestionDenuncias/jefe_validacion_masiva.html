@@ -1,0 +1,144 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+
+            <script type="text/javascript" class="init">
+
+
+$(document).ready(function() {
+	$('#example2').DataTable({
+        "language": {
+            "lengthMenu": "Ver _MENU_ registros por pagina",
+            "zeroRecords": "Sin Resultados",
+            "info": "Mostrando pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin Resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros)"
+        },
+               dom: 'lfrtBip',
+        buttons: [
+             {
+      extend: 'excel',
+      exportOptions: {
+
+          format: {
+              body: function(data, row, column, node) {
+                  data = $('<p>' + data + '</p>').text();
+                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+              }
+          }
+      }
+  }
+        ]
+
+
+
+    } );
+} );</script>
+
+
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Validación Masiva Desactivaciones</h3>
+
+    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
+    <thead>
+        <tr>
+            <th style="text-align:center">Codigo</th>
+            <th style="text-align:center">Cantidad</th>
+            <th colspan="2" style="text-align:center">Accion</th>
+        </tr>
+            </thead>
+    <tbody>
+
+        {% for codigo in codigos %}
+
+        <tr>
+            <td style="font-weight: bold; text-align:center">{{ codigo.codigo_desactivacion }}</td>
+            <td style="text-align:center">{{ codigo.cantidad }}</td>
+            <td style="text-align:center"><button class="btn btn-success" onclick="aceptar('{{ codigo.codigo_desactivacion }}')">Aceptar Todos</button></td>
+            <td style="text-align:center"><button class="btn btn-danger" onclick="rechazar('{{ codigo.codigo_desactivacion }}')">Rechazar Todos</button></td>
+
+        </tr>
+
+        {% endfor %}
+    </tbody>
+    </table>
+
+
+</section>
+</div>
+
+    <script type="text/javascript">
+    var order;
+ function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+  function rechazar(codigo) {
+
+      var motivo = prompt("Favor Ingresar Motivo de Rechazo:", "...");
+      if (motivo == null) {
+          console.log('User cancelled the prompt.');
+      } else {
+          console.log('Denuncia ' + codigo + 'Rechazada Por ' + motivo);
+          modifica_denuncia(codigo, motivo, 'rechaza_masiva');
+      }
+      ;
+  }
+
+  function aceptar(codigo) {
+
+  if (confirm('¿Esta Seguro que quiere Aceptar todas las Desactivaciones de Tipo ' + codigo + ' ?')) {
+  // Save it!
+  console.log('Finalizando orden');
+  modifica_denuncia(codigo, 'ACEPTADO', 'acepta_masiva');
+
+} else {
+  // Do nothing!
+  console.log('No Finalizado Confirmado');
+}
+
+}
+    function modifica_denuncia(codigo, motivo, tipo) {
+
+
+
+        var datos = {
+				'id_denuncia': codigo,
+                'motivo_rechazo': motivo,
+                'tipo': tipo,
+			}
+    var url = "/sgd/j/modifica_denuncia/"
+        fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+	    			'X-CSRFToken':csrftoken
+	    		},
+	    		body:JSON.stringify({'datos':datos}),
+
+	    	})
+            .then((response) => response.json())
+            .then(window.location.href = "{% url 'validacion_masiva' %}")
+
+      }
+    </script>
+
+
+{% endblock %}

@@ -83,7 +83,7 @@ $(document).ready(function() {
                 {% elif denuncia.estado_jefe == "RESULTADO_ABOGADO_DEVUELTO" %}
                 Pendiente Nueva Revisión
                 {% else %}
-                ESTADO ERRONEO
+                {{ denuncia.estado_jefe }}
                 {% endif %}
             </td>
             <td>{{ denuncia.infraccion_denunciada }}</td>
