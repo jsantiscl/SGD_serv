@@ -48,14 +48,28 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
         <a href="{% url 'denuncias_ingreso' %}" class="w3-bar-item w3-button">Individual</a>
         <a href="{% url 'denuncias_ingreso_mass' %}" class="w3-bar-item w3-button">Masivo</a>
-          <a href="{% url 'denuncias_enviadas_ad' %}" class="w3-bar-item w3-button">Bandeja Ingresados</a>
+
 
       </div>
       </div>
+                    {% endif %}
+         {% if group.name == 'Administrador'%}
 
                                                          <div class="w3-dropdown-hover">
       <button class="w3-button">Bandeja</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
+         <a href="{% url 'denuncias_enviadas_ad' %}" class="w3-bar-item w3-button">Ingresados</a>
+        <a href="#" class="w3-bar-item w3-button">Despacho</a>
+
+      </div>
+      </div>
+
+        {% endif %}
+         {% if group.name == 'Jefe'%}
+                                                         <div class="w3-dropdown-hover">
+      <button class="w3-button">Bandeja</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+           <a href="{% url 'denuncias_enviadas_ad' %}" class="w3-bar-item w3-button">Ingresados</a>
         <a href="{% url 'jefe_evaluacion_act' %}" class="w3-bar-item w3-button">Validacion Activadas</a>
            <a href="{% url 'jefe_evaluacion_desact' %}" class="w3-bar-item w3-button">Validacion Desactivadas</a>
           <a href="{% url 'validacion_masiva' %}" class="w3-bar-item w3-button">Validacion Masiva</a>
