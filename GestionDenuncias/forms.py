@@ -53,7 +53,8 @@ class ActivaDenuncia(forms.ModelForm):
             'infraccion_denunciada',
             'plazo_investigacion',
             'tipo_diligencia',
-            'obs_abogado'
+            'obs_abogado',
+            'guarda',
 ]
         widgets = {
 
@@ -64,6 +65,7 @@ class ActivaDenuncia(forms.ModelForm):
             'plazo_investigacion': forms.Select(attrs={'class': 'form-control'}),
             'tipo_diligencia': forms.Select(attrs={'class': 'form-control'}),
             'obs_abogado': forms.Textarea(attrs={'class': 'form-control'}),
+            'guarda': forms.HiddenInput(),
         }
         labels = {
 
@@ -73,7 +75,8 @@ class ActivaDenuncia(forms.ModelForm):
             'infraccion_denunciada': 'Infracción Denunciada',
             'plazo_investigacion': 'Plazo de Investigación',
             'tipo_diligencia': 'Tipo Diligencia',
-            'obs_abogado' : 'Observaciones Abogado'
+            'obs_abogado' : 'Observaciones Abogado',
+            'guarda' : 'guarda',
         }
 
 class DetallesDenuncia(forms.ModelForm):
@@ -117,7 +120,8 @@ class DesactivaDenuncia(forms.ModelForm):
             'nombre_denunciado',
 
             'codigo_desactivacion',
-            'obs_abogado'
+            'obs_abogado',
+            'guarda',
 ]
         widgets = {
 
@@ -126,6 +130,7 @@ class DesactivaDenuncia(forms.ModelForm):
 
             'codigo_desactivacion': forms.Select(attrs={'class': 'form-control'}),
             'obs_abogado': forms.Textarea(attrs={'class': 'form-control'}),
+            'guarda': forms.HiddenInput(),
         }
         labels = {
 
@@ -133,7 +138,8 @@ class DesactivaDenuncia(forms.ModelForm):
             'nombre_denunciado' : 'Nombre Denunciado',
 
             'codigo_desactivacion': 'Codigo Desactivacion',
-            'obs_abogado' : 'Observaciones Abogado'
+            'obs_abogado' : 'Observaciones Abogado',
+            'guarda': 'guarda',
         }
 
 

@@ -10,13 +10,13 @@
         {% for denuncia in todasdenuncias %}
         {% if denuncia.abogado_asistente.username == user.get_username and denuncia.estado_jefe == 'INGRESO' %}
          <h3>Activar Denuncia {{ denuncia.numero }}</h3>
-    <form action="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}" method = "POST" enctype="multipart/form-data">{% csrf_token %}
+    <form action="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}" method = "POST" enctype="multipart/form-data" id="myForm">{% csrf_token %}
         {% csrf_token %}
         {{ form.as_table }}
 
          <br>
         <input class="btn btn-primary" type="submit" name="button_guardar" value="Guardar Datos">
-        <input class="btn btn-success" type="submit" name="button_enviar" value="Enviar a Siguiente Paso" onClick="return confirm('¿Seguro que quieres Enviar?');">
+        <input class="btn btn-success" id="button_enviar" name="button_enviar" value="Enviar a Siguiente Paso" onclick="enviar_formulario()">
     <br>
     </form>
             </div>
@@ -36,5 +36,36 @@
 
 </div>
 </div>
+
+    <script>
+function enviar_formulario() {
+  var elecciones = document.getElementById("id_elecciones").value;
+  var denunciado = document.getElementById("id_nombre_denunciado").value;
+  var infraccion = document.getElementById("id_infraccion_denunciada").value;
+  var plazo = document.getElementById("id_plazo_investigacion").value;
+  var diligencia = document.getElementById("id_tipo_diligencia").value;
+
+          if (elecciones == '' || denunciado == '' || infraccion == '' || plazo == ''|| diligencia == ''){
+  console.log('VACIO');
+  alert("Debe Completar Todos los Campos");
+  } else {
+        console.log('OKK');
+        if (confirm('¿Esta Seguro que quiere enviar la Denuncia ?')) {
+        // Save it!
+          console.log('Enviado Formulario');
+          document.getElementById("id_guarda").value = "SI";
+          console.log('pasa 1');
+          document.getElementById("myForm").submit();
+          console.log('pasa 2');
+} else {
+          // Do nothing!
+      }
+
+          }
+
+
+
+}
+    </script>
 
 {% endblock %}

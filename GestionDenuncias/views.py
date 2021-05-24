@@ -377,13 +377,12 @@ def abogado_gestion_denuncia_ac(request, id_denuncia):
 
             if form.is_valid():
                 form.save()
-            if request.POST.get(str("button_enviar")):
+            if request.POST.get(str("guarda")) == 'SI':
                 Denuncias.objects.filter(id=str(id_denuncia)).update(estado_jefe="GEST_INGRESO_ABOGADO_REALIZADA")
                 Denuncias.objects.filter(id=str(id_denuncia)).update(fecha_evaluacion_abogado=datetime.now())
                 return redirect("abogado_evaluacion")
-            if request.POST.get(str("button_guardar")):
+            if request.POST.get(str("guarda")) == 'NO':
                 return redirect("abogado_evaluacion")
-
     return render(request, 'GestionDenuncias/abogado_gestionar_denuncia_activar.html', context)
 
 def abogado_gestion_denuncia_desac(request, id_denuncia):
@@ -399,11 +398,11 @@ def abogado_gestion_denuncia_desac(request, id_denuncia):
 
             if form.is_valid():
                 form.save()
-            if request.POST.get(str("button_enviar")):
+            if request.POST.get(str("guarda")) == 'SI':
                 Denuncias.objects.filter(id=str(id_denuncia)).update(estado_jefe="DESACTIVADO_ENVIADO_ABOGADO")
                 Denuncias.objects.filter(id=str(id_denuncia)).update(fecha_evaluacion_abogado=datetime.now())
                 return redirect("abogado_evaluacion")
-            if request.POST.get(str("button_guardar")):
+            if request.POST.get(str("guarda")) == 'NO':
                 return redirect("abogado_evaluacion")
 
     return render(request, 'GestionDenuncias/abogado_gestionar_denuncia_desactivar.html', context)

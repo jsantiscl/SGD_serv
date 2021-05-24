@@ -246,27 +246,27 @@ class Denuncias(models.Model):
     fecha_ingreso = models.DateField(default=datetime.today)
     via_de_ingreso = models.CharField(max_length=50,
                              choices=VIA_INGRESO,
-                             default="Portal de Denuncias")
+                             null=True, blank=True)
     nombre_denunciante = models.CharField(max_length=200)
     nombre_denunciado = models.CharField(max_length=200)
     tipo_de_denunciado = models.CharField(max_length=50,
                              choices=TIPO_DENUNCIADO,
-                             default="Candidato")
+                             null=True, blank=True)
     elecciones = models.CharField(max_length=50,
                              choices=ELECCIONES,
-                             default="Municipales")
+                             null=True, blank=True)
     candidatura = models.CharField(max_length=50,
                              choices=CANDIDATURA,
-                             default="Alcalde")
+                             null=True, blank=True)
     link_adjuntos = models.CharField(max_length=500, null=True, blank=True)
 
     tipo_diligencia = models.CharField(max_length=50,
                              choices=Diligencias,
-                             default="Pendiente")
+                             null=True, blank=True)
 
     territorio_electoral = models.CharField(max_length=200)
-    materia = models.CharField(max_length=50,  choices=MATERIA, default="Pendiente")
-    infraccion_denunciada = models.CharField(max_length=200, choices=INFRACCIONES, default="Pendiente")
+    materia = models.CharField(max_length=50,  choices=MATERIA, null=True, blank=True)
+    infraccion_denunciada = models.CharField(max_length=200, choices=INFRACCIONES, null=True, blank=True)
     gestion = models.CharField(max_length=50,  choices=GESTION, default="Pendiente")
     asignacion = models.CharField(max_length=100,  choices=ASIGNACION, default="Pendiente")
 
@@ -294,8 +294,8 @@ class Denuncias(models.Model):
     fecha_inspeccion_rem = models.DateField(null=True, blank=True)
     unidad_fiscalizada_rem = models.CharField(max_length=200, null=True, blank=True)
     resultado_insp_rem = models.CharField(max_length=50, choices=RESULTADO_INSP, null=True, blank=True)
-
-    diligencia_subsanacion = models.BooleanField(default=False)
+    guarda = models.CharField(max_length=3, default="NO")
+    guarda_evaluacion = models.BooleanField(default=False)
     fecha_inspeccion_sub = models.DateField(null=True, blank=True)
     unidad_fiscalizada_sub = models.CharField(max_length=200, null=True, blank=True)
     resultado_insp_sub = models.CharField(max_length=50, choices=RESULTADO_SUB, null=True, blank=True)
