@@ -44,6 +44,7 @@ class Denuncias(models.Model):
         ("Parlamentarias", "Parlamentarias"),
         ("Presidencial", "Presidencial"),
         ("Convencionales Constituyentes", "Convencionales Constituyentes"),
+        ("No Aplica", "No Aplica"),
 
     )
     CANDIDATURA = (
