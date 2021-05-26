@@ -9,14 +9,15 @@
 
         {% for denuncia in todasdenuncias %}
         {% if denuncia.abogado_asistente.username == user.get_username and denuncia.estado_jefe == 'GEST_INGRESO_ABOGADO_REALIZADA' %}
-         <h3>Activar Denuncia {{ denuncia.numero }}</h3>
-    <form action="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}" method = "POST" enctype="multipart/form-data">{% csrf_token %}
+         <h3>Comprobación Denuncia {{ denuncia.numero }}</h3>
+    <form action="{% url 'gestion_denuncia_comp' id_denuncia=denuncia.id %}" method = "POST" enctype="multipart/form-data" id="myForm">
         {% csrf_token %}
         {{ form.as_table }}
 
-
-        <input type="submit" name="button_guardar" value="Guardar Datos">
-        <input type="submit" name="button_enviar" value="Enviar a Siguiente Paso" onClick="return confirm('¿Seguro que quieres Enviar?');">
+<br>
+        <input class="btn btn-primary" type="submit" name="button_guardar" value="Guardar Datos">
+        <input class="btn btn-success" id="button_enviar" name="button_enviar" value="Enviar a Siguiente Paso" onclick="enviar_formulario()">
+    <br>
     </form>
             </div>
               <div class="w3-half w3-container">
@@ -24,6 +25,10 @@
                  <h3>Detalles Denuncia</h3>
 
                {{ form2.as_table }}
+                   <br> <br> <br>
+                                <br>
+                  <a class="btn btn-warning" href="{{ denuncia.link_adjuntos }}">Ver Carpeta Adjuntos</a>
+              <br>
              </div>
         {% else %}
         <h3>No Autorizado</h3>
@@ -32,5 +37,33 @@
 
 </div>
 </div>
+
+    <script>
+function enviar_formulario() {
+  var resultados = document.getElementById("id_resultado_comprobacion").value;
+
+          if (resultados == ''){
+  console.log('VACIO');
+  alert("Debe Completar el Resultado");
+  } else {
+        console.log('OKK');
+        if (confirm('¿Esta Seguro que quiere enviar la Denuncia ?')) {
+        // Save it!
+          console.log('Enviado Formulario');
+          document.getElementById("id_guardac").value = "SI";
+          console.log('pasa 1');
+          document.getElementById("myForm").submit();
+          console.log('pasa 2');
+} else {
+          // Do nothing!
+      }
+
+          }
+
+
+
+}
+    </script>
+
 
 {% endblock %}

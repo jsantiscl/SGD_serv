@@ -210,13 +210,16 @@ def gestion_denuncia_comp(request, id_denuncia):
 
     if request.method == 'POST':
 
-        if form.is_valid():
-            form.save()
-        if request.POST.get(str("button_enviar")):
-            Denuncias.objects.filter(id=str(id_denuncia)).update(estado_jefe="GEST_INGRESO_ABOGADO_REALIZADA")
-            return redirect("abogado_evaluacion")
-        if request.POST.get(str("button_guardar")):
-            return redirect("abogado_evaluacion")
+            if request.POST.get(str("guardac")) == 'SI':
+                Denuncias.objects.filter(id=str(id_denuncia)).update(estado_jefe="ACTIVADA_COMPROBADA_ABOGADO")
+                Denuncias.objects.filter(id=str(id_denuncia)).update(fecha_comprobacion_abogado=datetime.now())
+                Denuncias.objects.filter(id=str(id_denuncia)).update(resultado_comprobacion=request.POST.get(str("resultado_comprobacion")))
+                Denuncias.objects.filter(id=str(id_denuncia)).update(obs_abogado=request.POST.get(str("obs_abogado")))
+                return redirect("abogado_comprobacion")
+            if request.POST.get(str("guardac")) == 'NO':
+                Denuncias.objects.filter(id=str(id_denuncia)).update(resultado_comprobacion=request.POST.get(str("resultado_comprobacion")))
+                Denuncias.objects.filter(id=str(id_denuncia)).update(obs_abogado=request.POST.get(str("obs_abogado")))
+                return redirect("abogado_comprobacion")
 
     return render(request, 'GestionDenuncias/abogado_gestionar_denuncia_comprob.html', context)
 

@@ -150,39 +150,36 @@ class CompruebaDenuncia(forms.ModelForm):
         fields = [
 
             'elecciones',
-            'candidatura',
-            'territorio_electoral',
+            'nombre_denunciado',
+
             'infraccion_denunciada',
             'plazo_investigacion',
-            'diligencia_req_inf',
-            'diligencia_sad',
-            'diligencia_citacion',
-            'diligencia_insp_remota',
-            'obs_abogado'
-]
+            'tipo_diligencia',
+            'resultado_comprobacion',
+            'obs_abogado',
+            'guardac',
+        ]
         widgets = {
 
-            'elecciones': forms.Select(attrs={'class': 'form-control'}),
-            'candidatura': forms.Select(attrs={'class': 'form-control'}),
-            'territorio_electoral': forms.TextInput(attrs={'class': 'form-control'}),
-            'infraccion_denunciada': forms.TextInput(attrs={'class': 'form-control'}),
-            'plazo_investigacion': forms.Select(attrs={'class': 'form-control'}),
-            'diligencia_req_inf': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'diligencia_sad': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'diligencia_citacion': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'diligencia_insp_remota': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'elecciones': forms.Select(attrs={'class': 'form-control', 'disabled': 'true'}),
+            'nombre_denunciado': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'true'}),
+
+            'infraccion_denunciada': forms.Select(attrs={'class': 'form-control', 'disabled': 'true'}),
+            'plazo_investigacion': forms.Select(attrs={'class': 'form-control', 'disabled': 'true'}),
+            'tipo_diligencia': forms.Select(attrs={'class': 'form-control', 'disabled': 'true'}),
+            'resultado_comprobacion': forms.Select(attrs={'class': 'form-control'}),
             'obs_abogado': forms.Textarea(attrs={'class': 'form-control'}),
+            'guardac': forms.HiddenInput(),
         }
         labels = {
 
-            'elecciones' : 'Eleccion',
-            'candidatura' : 'Candidatura',
-            'territorio_electoral' : 'Territorio Electoral',
+            'elecciones': 'Elecciones',
+            'nombre_denunciado': 'Nombre Denunciado',
+
             'infraccion_denunciada': 'Infracción Denunciada',
             'plazo_investigacion': 'Plazo de Investigación',
-            'diligencia_req_inf': 'Requerimiento de Información',
-            'diligencia_sad' : 'SAD',
-            'diligencia_citacion' : 'Citación',
-            'diligencia_insp_remota' : 'Visita Inspectiva',
-            'obs_abogado' : 'Observaciones Abogado'
+            'tipo_diligencia': 'Tipo Diligencia',
+            'resultado_comprobacion': 'Resultado Comprobación',
+            'obs_abogado': 'Observaciones Abogado',
+            'guardac': 'guardac',
         }

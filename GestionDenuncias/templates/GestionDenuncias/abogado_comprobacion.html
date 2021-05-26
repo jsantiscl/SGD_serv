@@ -70,7 +70,7 @@ $(document).ready(function() {
             <td>{{ denuncia.nombre_denunciado }}</td>
             <td style="text-align:center" > <a class="btn btn-outline-primary" href="{{ denuncia.link_adjuntos }}">Ver</a></td>
             <td><a class="btn btn-success" href="{% url 'gestion_denuncia_comp' id_denuncia=denuncia.id %}">Resultados</a></td>
-            <td>{{ denuncia.obs_ingreso }}</td>
+            <td>{{ denuncia.obs_abogado }}</td>
         </tr>
         {% endif %}
         {% endfor %}
