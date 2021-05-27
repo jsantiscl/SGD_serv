@@ -59,7 +59,7 @@
       <button class="w3-button">Bandeja</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
          <a href="{% url 'denuncias_enviadas_ad' %}" class="w3-bar-item w3-button">Ingresados</a>
-        <a href="#" class="w3-bar-item w3-button">Despacho</a>
+        <a href="{% url 'admin_despacho' %}" class="w3-bar-item w3-button">Despacho</a>
 
       </div>
       </div>
@@ -94,7 +94,7 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'abogado_evaluacion' %}" class="w3-bar-item w3-button">Evaluación</a>
         <a href="{% url 'abogado_comprobacion' %}" class="w3-bar-item w3-button">Comprobación</a>
-           <a href="#" class="w3-bar-item w3-button">Rechazados</a>
+           <a href="{% url 'abogado_rechazos' %}" class="w3-bar-item w3-button">Rechazados</a>
            <a href="{% url 'abogado_enviados' %}" class="w3-bar-item w3-button">Enviados</a>
             </div>
       </div>

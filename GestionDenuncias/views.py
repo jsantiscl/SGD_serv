@@ -164,15 +164,21 @@ def abogado_gestiones(request):
     return render(request, 'GestionDenuncias/abogado_gestiones.html', context)
 
 def abogado_evaluacion(request):
-    adjuntos_obj = Adjuntos.objects.filter(tipo__icontains="adjunto_denuncia")
+
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
     denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="INGRESO")
-    context = {'todasdenuncias': denuncia_obj_3, 'todosadjuntos': adjuntos_obj}
+    context = {'todasdenuncias': denuncia_obj_3}
     return render(request, 'GestionDenuncias/abogado_evaluacion.html', context)
+
+def abogado_rechazos(request):
+    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="DEVUELTO_JEFE")
+    context = {'todasdenuncias': denuncia_obj_3}
+    return render(request, 'GestionDenuncias/abogado_rechazos.html', context)
+
 
 def jefe_evaluacion_act(request):
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="GEST_COMPROBACION_ABOGADO_REALIZADA")
+    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="ACTIVADA_COMPROBADA_ABOGADO")
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request, 'GestionDenuncias/jefe_evaluacion_act.html', context)
 
@@ -403,6 +409,7 @@ def abogado_gestion_denuncia_desac(request, id_denuncia):
     denuncia_obj_4 = Denuncias.objects.filter(id=id_denuncia)
     form = DesactivaDenuncia(request.POST or None, instance=instance)
     form2 = DetallesDenuncia(request.POST or None, instance=instance)
+    Denuncias.objects.filter(id=str(id_denuncia)).update(guarda="NO")
 
     context = {'todasdenuncias': denuncia_obj_4, 'form': form, 'form2': form2}
 
@@ -604,11 +611,10 @@ def abogado_resultado_denuncia(request, id_denuncia):
 
 
 def abogado_enviados(request):
-
-    #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_6 = Denuncias.objects.filter(estado_jefe__icontains="RESULTADO")
-    context = {'todasdenuncias': denuncia_obj_6}
-    return render(request, 'GestionDenuncias/abogado_enviados.html', context)
+        # Aca en icontains pongo el filtro con el metodo icontains que es un like
+        denuncia_obj_3 = Denuncias.objects.exclude(estado_jefe__icontains="INGRESO").exclude(estado_jefe__icontains="GEST_INGRESO_ABOGADO_REALIZADA")
+        context = {'todasdenuncias': denuncia_obj_3}
+        return render(request, 'GestionDenuncias/abogado_enviados.html', context)
 
 ######## ME FALTA HACER QUE PUEDA VER LA RESPUESTA DEL HUGO; Q PASE AL HUGO Y Q PUEDA CORREGIR CUANDO LO DEVUELVA
 
@@ -1000,6 +1006,14 @@ def denuncias_enviadas_ad(request):
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request, 'GestionDenuncias/admin_bandeja_ingresados.html', context)
 
+def admin_despacho(request):
+
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="DESPACHO")
+    context = {'todasdenuncias': denuncia_obj_3}
+    return render(request, 'GestionDenuncias/admin_despacho.html', context)
+
+
 
 def modifica_denuncia(request):
     data = json.loads(request.body)
@@ -1010,7 +1024,10 @@ def modifica_denuncia(request):
 
     if data['datos']['tipo'] == 'acepta':
          Denuncias.objects.filter(id=str(data['datos']['id_denuncia'])).update(obs_jefe='ACEPTADO')
-         Denuncias.objects.filter(id=str(data['datos']['id_denuncia'])).update(estado_jefe='DESACTIVADO_DESPACHO')
+         if data['datos']['categoria'] == 'activa':
+            Denuncias.objects.filter(id=str(data['datos']['id_denuncia'])).update(estado_jefe='ACTIVADO_DESPACHO')
+         if data['datos']['categoria'] == 'desactiva':
+            Denuncias.objects.filter(id=str(data['datos']['id_denuncia'])).update(estado_jefe='DESACTIVADO_DESPACHO')
 
     if data['datos']['tipo'] == 'acepta_masiva':
          Denuncias.objects.filter(codigo_desactivacion=str(data['datos']['id_denuncia'])).update(obs_jefe='ACEPTADO')

@@ -139,6 +139,8 @@ const csrftoken = getCookie('csrftoken');
 				'id_denuncia': denuncia,
                 'motivo_rechazo': motivo,
                 'tipo': tipo,
+                'categoria': 'desactiva',
+
 			}
     var url = "/sgd/j/modifica_denuncia/"
         fetch(url, {
