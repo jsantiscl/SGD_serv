@@ -270,44 +270,13 @@ class Denuncias(models.Model):
     gestion = models.CharField(max_length=50,  choices=GESTION, default="Pendiente")
     asignacion = models.CharField(max_length=100,  choices=ASIGNACION, default="Pendiente")
 
-    #diligencia_sad = models.BooleanField(default=False)
-    #fecha_sol_sad = models.DateField(null=True, blank=True)
-    #fecha_res_sad = models.DateField(null=True, blank=True)
-    #resultado_sad = models.CharField(max_length=50, choices=RESULTADO_SAD, null=True, blank=True)
-
-    #diligencia_req_inf = models.BooleanField(default=False)
-    #fecha_sol_req = models.DateField(null=True, blank=True)
-    #fecha_res_req = models.DateField(null=True, blank=True)
     resultado_comprobacion = models.CharField(max_length=50, choices=RESULTADO_COMPROBACION, null=True, blank=True)
 
-    #diligencia_citacion = models.BooleanField(default=False)
-    #fecha_citacion = models.DateField(null=True, blank=True)
-    #fecha_comparecencia = models.DateField(null=True, blank=True)
-    #resultado_cit = models.CharField(max_length=50, choices=RESULTADO_CIT, null=True, blank=True)
-
-    #diligencia_insp_terreno = models.BooleanField(default=False)
-    #fecha_inspeccion_terr = models.DateField(null=True, blank=True)
-    #unidad_fiscalizada_terr = models.CharField(max_length=200, null=True, blank=True)
-    #resultado_insp_terr = models.CharField(max_length=50, choices=RESULTADO_INSP, null=True, blank=True)
-
-    #diligencia_insp_remota = models.BooleanField(default=False)
     fecha_comprobacion_abogado = models.DateField(null=True, blank=True)
-    #unidad_fiscalizada_rem = models.CharField(max_length=200, null=True, blank=True)
-    #resultado_insp_rem = models.CharField(max_length=50, choices=RESULTADO_INSP, null=True, blank=True)
     guarda = models.CharField(max_length=3, default="NO")
     guardac = models.CharField(max_length=3, default="NO")
     guarda_evaluacion = models.BooleanField(default=False)
-    #fecha_inspeccion_sub = models.DateField(null=True, blank=True)
-    #unidad_fiscalizada_sub = models.CharField(max_length=200, null=True, blank=True)
-    #resultado_insp_sub = models.CharField(max_length=50, choices=RESULTADO_SUB, null=True, blank=True)
-
-    #diligencia_orden_retiro = models.BooleanField(default=False)
     fecha_requer = models.DateField(null=True, blank=True)
-    #municipalidad = models.CharField(max_length=200, null=True, blank=True)
-    #resultado_orden_ret = models.CharField(max_length=50, choices=RESULTADO_O_R, null=True, blank=True)
-
-    #diligencia_otra = models.BooleanField(default=False)
-
     plazo_investigacion = models.CharField(max_length=50,  choices=PLAZO, null=True, blank=True)
     abogado_asistente = models.ForeignKey(Abogados, on_delete=models.SET_NULL, null=True)
 
@@ -317,38 +286,6 @@ class Denuncias(models.Model):
     obs_ingreso = models.TextField(null=True, blank=True)
     obs_jefe = models.TextField(null=True, blank=True)
     obs_abogado = models.TextField(null=True, blank=True)
-    #adjunto_denuncia = models.FileField(upload_to='respaldos_denuncias/', blank=True, null=True)
-    #adjunto_sol_sad = models.FileField(upload_to='SAD/SOLICITUD/', blank=True, null=True)
-    #adjunto_sol_req_inf = models.FileField(upload_to='REQ_INF/SOLICITUD/', blank=True, null=True)
-    #adjunto_sol_cit = models.FileField(upload_to='CITACION/SOLICITUD/', blank=True, null=True)
-    #adjunto_sol_ins_terr = models.FileField(upload_to='INSP_TERRENO/SOLICITUD/', blank=True, null=True)
-    #adjunto_sol_ins_rem = models.FileField(upload_to='INSP_REMOTA/SOLICITUD/', blank=True, null=True)
-    #adjunto_sol_req_sub = models.FileField(upload_to='REQ_SUBSANACION/SOLICITUD/', blank=True, null=True)
-    #adjunto_sol_ord_ret = models.FileField(upload_to='ORD_RETIRO/SOLICITUD/', blank=True, null=True)
-    #adjunto_res_sad = models.FileField(upload_to='SAD/RESPUESTA/', blank=True, null=True)
-    #adjunto_res_req_inf = models.FileField(upload_to='REQ_INF/RESPUESTA/', blank=True, null=True)
-    #adjunto_res_cit = models.FileField(upload_to='CITACION/RESPUESTA/', blank=True, null=True)
-    #adjunto_res_ins_terr = models.FileField(upload_to='INSP_TERRENO/RESPUESTA/', blank=True, null=True)
-    #adjunto_res_ins_rem = models.FileField(upload_to='INSP_REMOTA/RESPUESTA/', blank=True, null=True)
-    #adjunto_res_req_sub = models.FileField(upload_to='REQ_SUBSANACION/RESPUESTA/', blank=True, null=True)
-    #adjunto_res_ord_ret = models.FileField(upload_to='ORD_RETIRO/RESPUESTA/', blank=True, null=True)
-    #adjunto_informe = models.FileField(upload_to='INFORME/', blank=True, null=True)
-    #tiene_adjunto_sol_sad = models.BooleanField(default=False)
-    #tiene_adjunto_sol_req_inf = models.BooleanField(default=False)
-    #tiene_adjunto_sol_cit = models.BooleanField(default=False)
-    #tiene_adjunto_sol_ins_terr = models.BooleanField(default=False)
-    #tiene_adjunto_sol_ins_rem = models.BooleanField(default=False)
-    #tiene_adjunto_sol_req_sub = models.BooleanField(default=False)
-    #tiene_adjunto_sol_ord_ret = models.BooleanField(default=False)
-
-    #tiene_adjunto_res_sad = models.BooleanField(default=False)
-    #tiene_adjunto_res_req_inf = models.BooleanField(default=False)
-    #tiene_adjunto_res_cit = models.BooleanField(default=False)
-    #tiene_adjunto_res_ins_terr = models.BooleanField(default=False)
-    #tiene_adjunto_res_ins_rem = models.BooleanField(default=False)
-    #tiene_adjunto_res_req_sub = models.BooleanField(default=False)
-    #tiene_adjunto_res_ord_ret = models.BooleanField(default=False)
-    #tiene_adjunto_informe = models.BooleanField(default=False)
     codigo_desactivacion = models.CharField(max_length=200, choices=DESACTIVACIONES,null=True, blank=True)
 
     def __str__(self):
@@ -360,3 +297,34 @@ class Adjuntos(models.Model):
     archivos = models.FileField(upload_to='respaldos_denuncias/', blank=True, null=True)
     tipo = models.CharField(max_length=100, default='adjunto_denuncia', blank=True, null=True)
     activo = models.BooleanField(default=True)
+
+class Ire(models.Model):
+    rut = models.IntegerField(primary_key=True)
+    dv = models.CharField(max_length=1)
+    nombre = models.CharField(max_length=200)
+    eleccion = models.CharField(max_length=200)
+    partido = models.CharField(max_length=200)
+    pacto = models.CharField(max_length=200)
+    territorio = models.CharField(max_length=200)
+    celula_asignada = models.CharField(max_length=100, blank=True, null=True)
+
+
+class Aportes(models.Model):
+    folio = models.IntegerField(primary_key=True)
+    rut_aportante = models.CharField(max_length=100,blank=True, null=True)
+    rut_receptor = models.ForeignKey(Ire, on_delete=models.CASCADE, default=1)
+    tipo_aporte = models.CharField(max_length=200)
+    fecha_abono = models.DateField(null=True, blank=True)
+    fecha_recaudacion = models.DateField(null=True, blank=True)
+    eleccion = models.CharField(max_length=100,blank=True, null=True)
+
+
+class Auditores(models.Model):
+    rut = models.IntegerField(primary_key=True)
+    dv = models.CharField(max_length=1)
+    nombre = models.CharField(max_length=200)
+    habilitado = models.BooleanField(default=True)
+    username = models.CharField(max_length=50, default='SIN')
+    iniciales = models.CharField(max_length=50, default='NODEFINIDA')
+
+

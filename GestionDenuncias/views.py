@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from datetime import datetime
 from django.db.models import Sum, Count
-from .models import Denuncias, Adjuntos, Abogados
+from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes
 from .forms import DenunciasForm, ResumeUpload, UpdateDetailsForm, ActivaDenuncia, DetallesDenuncia, DesactivaDenuncia, CompruebaDenuncia
 from django.http import HttpResponse
 from django.conf import settings
@@ -1037,3 +1037,21 @@ def modifica_denuncia(request):
          Denuncias.objects.filter(codigo_desactivacion=str(data['datos']['id_denuncia'])).update(obs_jefe=data['datos']['motivo_rechazo'])
 
     return JsonResponse([str(data['datos']['id_denuncia']), 'DEVUELTO_JEFE'], safe=False)
+
+def auditor_aportes(request, rut):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    aportes = Aportes.objects.filter(rut_receptor_id=rut)
+    context = {'aportes': aportes}
+    return render(request, 'GestionDenuncias/auditor_aportes.html', context)
+
+def auditor_ire(request):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    ire = Ire.objects.all
+    context = {'ire': ire}
+    return render(request, 'GestionDenuncias/auditor_ire.html', context)
+
+def auditor_bandeja_asignados(request):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    ire = Ire.objects.filter(celula_asignada='1')
+    context = {'ire': ire}
+    return render(request, 'GestionDenuncias/auditor_bandeja_asignadas.html', context)
