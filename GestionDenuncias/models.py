@@ -187,6 +187,7 @@ class Denuncias(models.Model):
         ("P5", "P5"),
         ("P5-B", "P5-B"),
         ("P5-C", "P5-C"),
+        ("P5-D", "P5-D"),
         ("P6", "P6"),
         ("P6-B", "P6-B"),
         ("P7", "P7"),
