@@ -37,7 +37,8 @@ class Denuncias(models.Model):
     )
     ELECCIONES = (
         ("Plebiscito", "Plebiscito"),
-        ("Primarias", "Primarias"),
+        ("Primarias Presidencial", "Primarias Presidencial"),
+        ("Primarias Parlamentarias", "Primarias Parlamentarias"),
         ("Municipales", "Municipales"),
         ("Regionales", "Regionales"),
         ("Segunda Votación Gob. Regionales", "Segunda Votación Gob. Regionales"),
