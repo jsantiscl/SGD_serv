@@ -39,8 +39,9 @@
 {% block nav %}
         <div class="w3-bar w3-black ">
     <a href="{% url 'abogado_inicio' %}" class="w3-bar-item w3-button">{% load static %} <img class="logo_home" src="{% static 'img/logo_header.png' %}" alt="Servicio Electoral de Chile" /></a>
-     {% for group in user.groups.all %}
-            <a href="{% url 'abogado_inicio' %}" class="w3-bar-item w3-button">Inicio</a>
+     <a href="{% url 'abogado_inicio' %}" class="w3-bar-item w3-button">Inicio</a>
+            {% for group in user.groups.all %}
+
 
                 {% if group.name == 'Administrador' or group.name == 'Jefe'%}
     <div class="w3-dropdown-hover">
@@ -101,6 +102,56 @@
 
          {% endif %}
 
+  {% if group.name == 'Auditor Revisor' %}
+             <a href="http://pregasto.servel.cl/" class="w3-bar-item w3-button">Sistema de Gasto</a>
+             <a href="#" class="w3-bar-item w3-button">IRE</a>
+                                                  <div class="w3-dropdown-hover">
+      <button class="w3-button">Bandejas</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="{% url 'auditor_bandeja_asignados' %}" class="w3-bar-item w3-button">Candidatos Celula</a>
+            </div>
+      </div>
+         {% endif %}
+
+           {% if group.name == 'Auditor Financiamiento' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Financiamiento</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="#" class="w3-bar-item w3-button">Aportes Partidos Politicos</a>
+        <a href="#" class="w3-bar-item w3-button">Ventanilla</a>
+           <a href="#" class="w3-bar-item w3-button">Transbank</a>
+           <a href="#" class="w3-bar-item w3-button">Abonos</a>
+            </div>
+      </div>
+         {% endif %}
+
+                {% if group.name == 'Auditor Encargado' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Celula</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="{% url 'auditor_avance_general' %}" class="w3-bar-item w3-button">Avance General Cuentas</a>
+        <a href="{% url 'auditor_avance_celula' %}" class="w3-bar-item w3-button">Avance Celula</a>
+            <a href="{% url 'auditor_bandeja_asignados' %}" class="w3-bar-item w3-button">Candidatos Celula</a>
+            </div>
+      </div>
+
+
+         {% endif %}
+
+                                {% if group.name == 'Jefe Gasto' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Reportes</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="{% url 'auditor_avance_general' %}" class="w3-bar-item w3-button">Flujo Cuentas</a>
+        <a href="{% url 'auditor_avance_celula' %}" class="w3-bar-item w3-button">Avance Celulas</a>
+           <a href="#" class="w3-bar-item w3-button">Avance Auditores</a>
+          <a href="#" class="w3-bar-item w3-button">Administrar Perfiles</a>
+           <a href="{% url 'auditor_indicadores' %}" class="w3-bar-item w3-button">Indicadores</a>
+            </div>
+      </div>
+         {% endif %}
+
+
 
 
 
@@ -111,16 +162,6 @@
              <a href="http://127.0.0.1:8000/admin/" class="w3-bar-item w3-button">Admin</a>
          {% endif %}
 
-         {% if user.get_username == 'jsantis' %}
-             <a href="http://pregasto.servel.cl/" class="w3-bar-item w3-button">Sistema de Gasto</a>
-             <a href="#" class="w3-bar-item w3-button">IRE</a>
-                                                  <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandejas</button>
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-          <a href="{% url 'auditor_bandeja_asignados' %}" class="w3-bar-item w3-button">Candidatos Celula</a>
-            </div>
-      </div>
-         {% endif %}
 
         {% if user.is_authenticated %}
            <a href="{% url 'logout' %}" class="w3-bar-item w3-button w3-black w3-right">Cerrar Sesion</a>

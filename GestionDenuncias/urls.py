@@ -8,7 +8,7 @@ from .views import denuncias_ingreso, jefe_inicio, jefe_pendientes, jefe_enviado
 from .views import abogado_gestiones, abogado_gestion_denuncia, abogado_resultados, abogado_resultado_denuncia, abogado_enviados, jefe_validacion
 from .views import abogado_rechazo_denuncia, denuncias_enviadas_ad, jefe_resultado_denuncia, abogado_evaluacion, denuncias_ingreso_mass, abogado_gestion_denuncia_ac, abogado_gestion_denuncia_desac
 from .views import abogado_comprobacion, gestion_denuncia_comp, jefe_evaluacion_act, jefe_evaluacion_desact, modifica_denuncia, validacion_masiva, abogado_rechazos, admin_despacho
-from .views import auditor_aportes, auditor_ire, auditor_bandeja_asignados
+from .views import auditor_aportes, auditor_ire, auditor_bandeja_asignados, auditor_cartola, auditor_avance_general, auditor_avance_celula, auditor_candidato, auditor_indicadores
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('a/ingresom/', login_required(denuncias_ingreso), name='denuncias_ingreso'),
@@ -41,5 +41,10 @@ urlpatterns = [
 
     path('au/asignados/', login_required(auditor_bandeja_asignados), name='auditor_bandeja_asignados'),
     path('au/aportes/<int:rut>/', login_required(auditor_aportes), name='auditor_aportes'),
+    path('au/cartola/<int:rut>/', login_required(auditor_cartola), name='auditor_cartola'),
+    path('au/candidato/<int:rut>/', login_required(auditor_candidato), name='auditor_candidato'),
     path('au/ire/', login_required(auditor_ire), name='auditor_ire'),
+    path('au/avancegeneral/', login_required(auditor_avance_general), name='auditor_avance_general'),
+    path('au/avancecelula/', login_required(auditor_avance_celula), name='auditor_avance_celula'),
+    path('au/indicadores/', login_required(auditor_indicadores), name='auditor_indicadores'),
 ]

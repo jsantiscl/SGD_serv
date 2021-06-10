@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from datetime import datetime
 from django.db.models import Sum, Count
-from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes
+from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola
 from .forms import DenunciasForm, ResumeUpload, UpdateDetailsForm, ActivaDenuncia, DetallesDenuncia, DesactivaDenuncia, CompruebaDenuncia
 from django.http import HttpResponse
 from django.conf import settings
@@ -1055,3 +1055,31 @@ def auditor_bandeja_asignados(request):
     ire = Ire.objects.filter(celula_asignada='1')
     context = {'ire': ire}
     return render(request, 'GestionDenuncias/auditor_bandeja_asignadas.html', context)
+
+
+def auditor_cartola(request, rut):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    cartola = Cartola.objects.filter(rut_id=rut)
+    context = {'cartola': cartola}
+    return render(request, 'GestionDenuncias/auditor_cartola.html', context)
+
+def auditor_avance_general(request):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    context = {}
+    return render(request, 'GestionDenuncias/auditor_avance_general.html', context)
+
+def auditor_avance_celula(request):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    context = {}
+    return render(request, 'GestionDenuncias/auditor_avance_celula.html', context)
+
+def auditor_candidato(request, rut):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    ire = Ire.objects.filter(rut=rut)
+    context = {'ire': ire}
+    return render(request, 'GestionDenuncias/auditor_candidato.html', context)
+
+def auditor_indicadores(request):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    context = {}
+    return render(request, 'GestionDenuncias/auditor_indicadores.html', context)

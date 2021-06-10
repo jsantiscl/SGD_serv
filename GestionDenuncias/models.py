@@ -330,3 +330,19 @@ class Auditores(models.Model):
     iniciales = models.CharField(max_length=50, default='NODEFINIDA')
 
 
+class Cartola(models.Model):
+    rut = models.ForeignKey(Ire, on_delete=models.CASCADE, default=1)
+    dv = models.CharField(max_length=1)
+    tipo = models.CharField(max_length=3)
+    cuenta = models.CharField(max_length=100)
+    fecemi = models.IntegerField()
+    ncart = models.IntegerField()
+    carr = models.IntegerField()
+    numdoc = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=200)
+    ofi = models.IntegerField()
+    salcargos = models.IntegerField(null=True, blank=True)
+    salabonos = models.IntegerField(null=True, blank=True)
+    fmov = models.DateField(null=True, blank=True)
+    saldo = models.IntegerField(null=True, blank=True)
+    tc = models.IntegerField(null=True, blank=True)

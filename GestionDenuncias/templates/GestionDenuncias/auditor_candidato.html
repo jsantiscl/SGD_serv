@@ -1,0 +1,99 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+<div class="w3-responsive">
+<div class = "w3-row">
+     <div class="w3-half w3-container">
+ <br>
+
+        {% for candidato in ire %}
+         <h3>Datos Candidato</h3>
+<input class="form-control" type="text" placeholder="{{ candidato.nombre}}" readonly>
+            <br>
+<input class="form-control" type="text" placeholder="{{ candidato.rut}}- {{ candidato.dv}}" readonly>
+              <br>
+<input class="form-control" type="text" placeholder="{{ candidato.eleccion}}" readonly>
+                          <br>
+<input class="form-control" type="text" placeholder="{{ candidato.partido}}" readonly>
+                          <br>
+<input class="form-control" type="text" placeholder="{{ candidato.pacto}}" readonly>
+                          <br>
+<input class="form-control" type="text" placeholder="{{ candidato.territorio}}" readonly>
+                          <br>
+<input class="form-control" type="text" placeholder="{{ candidato.eleccion}}" readonly>
+        <br>
+            <textarea class="form-control" type="text" placeholder="Comentarios Revisión..."></textarea>
+    <br>
+
+            </div>
+              <div class="w3-half w3-containe r">
+               <br>
+                 <h3>Ingreso en F87 y F88</h3>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Cuadratura</th>
+      <th scope="col">Ingresado</th>
+      <th scope="col">Registro</th>
+      <th scope="col">Diferencia</th>
+      <th scope="col">Accion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Aportes</td>
+      <td>$5000</td>
+      <td>$10.000</td>
+        <td>$5000</td>
+        <td><a class="btn btn-primary" href="#">Ver Aportes</a></td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Propaganda RRSS</td>
+      <td>$56.000.332</td>
+      <td>$76.332.562</td>
+        <td>$20.332.230</td>
+        <td><a class="btn btn-primary" href="#">Ver RRSS</a></td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Gasto Otro Tipo Propaganda</td>
+      <td>$0</td>
+      <td>10 Fiscalizaciones con Hallazgos</td>
+        <td>-</td>
+        <td><a class="btn btn-primary" href="#">Ver Fiscalizaciones</a></td>
+    </tr>
+      <tr>
+      <th scope="row">4</th>
+      <td>Cuadratura 4</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+          <td>@mdo</td>
+          <td>@mdo</td>
+    </tr>
+        <tr>
+      <th scope="row">5</th>
+      <td>Cuadratura 5</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+  <td>@mdo</td>
+  <td>@mdo</td>
+  </tbody>
+
+
+
+</table>
+              <br>
+
+             </div>
+        {% endfor %}
+
+</div>
+
+</div>
+    <td style="text-align:center" > <a class="btn btn-warning" href="{% url 'auditor_bandeja_asignados' %}">Volver</a></td>
+{% endblock %}
