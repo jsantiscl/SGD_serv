@@ -63,6 +63,7 @@ $(document).ready(function() {
     <tbody>
 
         {% for candidatos in ire %}
+        {% ifequal user.groups.all.1.name candidatos.celula_asignada %}
         <tr>
             <td>Revisión Preliminar</td>
             <td>{{ candidatos.eleccion }}</td>
@@ -80,6 +81,7 @@ $(document).ready(function() {
             <th>Esta es Una Observacion </th>
 
         </tr>
+        {% endifequal %}
         {% endfor %}
     </tbody>
     </table>

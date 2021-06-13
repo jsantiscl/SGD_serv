@@ -1052,7 +1052,7 @@ def auditor_ire(request):
 
 def auditor_bandeja_asignados(request):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    ire = Ire.objects.filter(celula_asignada=5)
+    ire = Ire.objects.filter(celula_asignada__isnull=False)
     context = {'ire': ire}
     return render(request, 'GestionDenuncias/auditor_bandeja_asignadas.html', context)
 
