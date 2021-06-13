@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from datetime import datetime
 from django.db.models import Sum, Count
-from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola
+from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formulariosig
 from .forms import DenunciasForm, ResumeUpload, UpdateDetailsForm, ActivaDenuncia, DetallesDenuncia, DesactivaDenuncia, CompruebaDenuncia
 from django.http import HttpResponse
 from django.conf import settings
@@ -1052,7 +1052,7 @@ def auditor_ire(request):
 
 def auditor_bandeja_asignados(request):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    ire = Ire.objects.filter(celula_asignada='1')
+    ire = Ire.objects.filter(celula_asignada=5)
     context = {'ire': ire}
     return render(request, 'GestionDenuncias/auditor_bandeja_asignadas.html', context)
 
@@ -1083,3 +1083,15 @@ def auditor_indicadores(request):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
     context = {}
     return render(request, 'GestionDenuncias/auditor_indicadores.html', context)
+
+def auditor_f87(request, rut):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    f87 = Formulariosig.objects.filter(rut_partido_candidato_id=rut, tpo_rendicion_codigo = 'F87')
+    context = {'f87': f87}
+    return render(request, 'GestionDenuncias/auditor_f87.html', context)
+
+def auditor_f88(request, rut):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    f88 = Formulariosig.objects.filter(rut_partido_candidato_id=rut, tpo_rendicion_codigo = 'F88')
+    context = {'f88': f88}
+    return render(request, 'GestionDenuncias/auditor_f88.html', context)

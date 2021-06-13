@@ -34,7 +34,12 @@ $(document).ready(function() {
 
 
     } );
-} );</script>
+} );
+                        function goBack() {
+  window.history.back();
+}
+
+            </script>
 
 
 <div class="w3-responsive">
@@ -51,11 +56,11 @@ $(document).ready(function() {
             <th>Fecha Abono</th>
             <th>Fecha Recaudacion</th>
             <th>Rut Receptor</th>
-            <th>Eleccion</th>
+            <th>Monto</th>
         </tr>
             </thead>
     <tbody>
-
+        {% load humanize %}
         {% for aporte in aportes %}
 
         <tr>
@@ -65,14 +70,14 @@ $(document).ready(function() {
             <td>{{ aporte.fecha_abono|date:'d-m-Y' }}</td>
             <td>{{ aporte.fecha_recaudacion|date:'d-m-Y' }}</td>
             <td>{{ aporte.rut_receptor_id }}</td>
-            <td>{{ aporte.eleccion }}</td>
+            <td>{{ aporte.monto }}</td>
         </tr>
 
         {% endfor %}
     </tbody>
     </table>
 
-<td style="text-align:center" > <a class="btn btn-warning" href="{% url 'auditor_bandeja_asignados' %}">Volver</a></td>
+<td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
 
 </section>
 </div>

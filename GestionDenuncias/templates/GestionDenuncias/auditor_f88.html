@@ -1,0 +1,99 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+
+            <script type="text/javascript" class="init">
+
+
+$(document).ready(function() {
+	$('#example2').DataTable({
+        "language": {
+            "lengthMenu": "Ver _MENU_ registros por pagina",
+            "zeroRecords": "Sin Resultados",
+            "info": "Mostrando pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin Resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros)"
+        },
+               dom: 'lfrtBip',
+        buttons: [
+             {
+      extend: 'excel',
+      exportOptions: {
+
+          format: {
+              body: function(data, row, column, node) {
+                  data = $('<p>' + data + '</p>').text();
+                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+              }
+          }
+      }
+  }
+        ]
+
+
+
+    } );
+} );
+            function goBack() {
+  window.history.back();
+}
+
+            </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>F88</h3>
+
+    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
+    <thead>
+        <tr>
+
+            <th>Fecha Dcto</th>
+            <th>N° Dcto</th>
+            <th>Rut</th>
+            <th>DV</th>
+            <th>Nombre</th>
+            <th>Glosa</th>
+            <th>Cuenta C.</th>
+            <th>Tipo Doc.</th>
+            <th>Reembolso</th>
+            <th>Monto</th>
+            <th style="text-align: center">Dcto</th>
+            <th style="text-align: center">Validar Documento</th>
+        </tr>
+            </thead>
+    <tbody>
+        {% load humanize %}
+        {% for linea in f88 %}
+
+        <tr>
+            <td>{{ linea.fecha_documento|date:'d-m-Y' }}</td>
+            <td>{{ linea.numero_documento}}</td>
+            <td>{{ linea.rut}}</td>
+            <td>{{ linea.digito_verificador}}</td>
+            <td>{{ linea.nombres}}</td>
+            <td>{{ linea.glosa}}</td>
+            <td>{{ linea.tpo_cta_codigo}}</td>
+            <td>{{ linea.tpo_doc_codigo}}</td>
+            <td>{{ linea.tpo_reembolso_codigo}}</td>
+            <td>{{ linea.monto|intcomma  }}</td>
+            {% if linea.id_dcto_alfresco  == None  %}
+            <td></td>
+            {% else %}
+            <td style="text-align: center"><a type="button" class="btn btn-outline-primary" href="http://192.168.80.33:8080/VisorAlfresco/View?id={{ linea.id_dcto_alfresco }}"><i class="bi bi-eye-fill"></i> {{ linea.nombre_dcto_alfresco }} </a></td>
+            {% endif %}
+            <td style="text-align: center"><a type="button" class="btn btn-outline-danger"><i class="bi bi-upc-scan"></i> Validar</a></td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+    </table>
+
+<td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
+
+</section>
+</div>
+{% endblock %}

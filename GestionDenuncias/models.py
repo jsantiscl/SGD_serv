@@ -314,11 +314,12 @@ class Ire(models.Model):
 class Aportes(models.Model):
     folio = models.IntegerField(primary_key=True)
     rut_aportante = models.CharField(max_length=100,blank=True, null=True)
+    nombre_aportante = models.CharField(max_length=200, null=True, blank=True)
     rut_receptor = models.ForeignKey(Ire, on_delete=models.CASCADE, default=1)
     tipo_aporte = models.CharField(max_length=200)
     fecha_abono = models.DateField(null=True, blank=True)
     fecha_recaudacion = models.DateField(null=True, blank=True)
-    eleccion = models.CharField(max_length=100,blank=True, null=True)
+    monto = models.IntegerField(null=True, blank=True)
 
 
 class Auditores(models.Model):
@@ -346,3 +347,30 @@ class Cartola(models.Model):
     fmov = models.DateField(null=True, blank=True)
     saldo = models.IntegerField(null=True, blank=True)
     tc = models.IntegerField(null=True, blank=True)
+
+
+class Formulariosig(models.Model):
+    fecha_documento = models.DateField(null=True, blank=True)
+    glosa = models.CharField(max_length=500, null=True, blank=True)
+    monto = models.IntegerField(null=True, blank=True)
+    numero_documento = models.CharField(max_length=100,null=True, blank=True)
+    rut = models.IntegerField(null=True, blank=True)
+    digito_verificador = models.CharField(max_length=10,null=True, blank=True)
+    nombres = models.CharField(max_length=300,null=True, blank=True)
+    tpo_cta_codigo = models.IntegerField(null=True, blank=True)
+    tpo_doc_codigo = models.CharField(max_length=300,null=True, blank=True)
+    tpo_reembolso_codigo = models.CharField(max_length=10, null=True, blank=True)
+    linea = models.IntegerField(null=True, blank=True)
+    pagina = models.IntegerField(null=True, blank=True)
+    nombre_tpo_cta_codigo  = models.CharField(max_length=300, null=True, blank=True)
+    nombre_tpo_doc_codigo  = models.CharField(max_length=300, null=True, blank=True)
+    created = models.DateField(null=True, blank=True)
+    edit = models.DateField(null=True, blank=True)
+    rut_partido_candidato = models.ForeignKey(Ire, on_delete=models.CASCADE, default=1)
+    tipo_eleccion = models.IntegerField(null=True, blank=True)
+    digito_verificador_partido_candidato = models.CharField(max_length=10,null=True, blank=True)
+    tpo_rendicion_codigo = models.CharField(max_length=300,null=True, blank=True)
+    id_folio = models.IntegerField(null=True, blank=True)
+    ren_id = models.IntegerField(null=True, blank=True)
+    id_dcto_alfresco = models.CharField(max_length=300, null=True, blank=True)
+    nombre_dcto_alfresco = models.CharField(max_length=300, null=True, blank=True)
