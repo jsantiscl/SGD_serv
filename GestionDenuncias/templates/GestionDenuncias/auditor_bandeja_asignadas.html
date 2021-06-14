@@ -64,6 +64,25 @@ $(document).ready(function() {
 
         {% for candidatos in ire %}
         {% ifequal user.groups.all.0.name candidatos.celula_asignada %}
+               <tr>
+            <td>Revisión Preliminar</td>
+            <td>{{ candidatos.eleccion }}</td>
+            <td>{{ candidatos.rut}}</td>
+            <td>{{ candidatos.dv }}</td>
+            <td>{{ candidatos.nombre }}</td>
+            <td>{{ candidatos.partido }}</td>
+            <td>{{ candidatos.pacto }}</td>
+            <td>{{ candidatos.territorio }}</td>
+
+            <td style="text-align:center" > <a class="btn btn-primary" href="{% url 'auditor_aportes' rut=candidatos.rut %}">Ver Aportes</a></td>
+            <td><a class="btn btn-success" href="{% url 'auditor_cartola' rut=candidatos.rut %}">Ver Cartola</a></td>
+            <td><a class="btn btn-secondary" href="{% url 'auditor_candidato' rut=candidatos.rut %}">Ingresar a Datos</a></td>
+
+            <th> </th>
+
+        </tr>
+        {% endifequal %}
+
         {% ifequal user.groups.all.1.name candidatos.celula_asignada %}
         <tr>
             <td>Revisión Preliminar</td>
@@ -83,7 +102,7 @@ $(document).ready(function() {
 
         </tr>
         {% endifequal %}
-        {% endifequal %}
+
         {% endfor %}
     </tbody>
     </table>
