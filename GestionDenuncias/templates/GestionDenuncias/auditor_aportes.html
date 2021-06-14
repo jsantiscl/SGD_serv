@@ -51,7 +51,7 @@ $(document).ready(function() {
     <thead>
         <tr>
             <th>Folio</th>
-            <th>Rut Aportante</th>
+            <th>Nombre Aportante</th>
             <th>Tipo Aporte</th>
             <th>Fecha Abono</th>
             <th>Fecha Recaudacion</th>
@@ -65,7 +65,7 @@ $(document).ready(function() {
 
         <tr>
             <td>{{ aporte.folio }}</td>
-            <td>{{ aporte.rut_aportante }}</td>
+            <td>{{ aporte.nombre_aportante }}</td>
             <td>{{ aporte.tipo_aporte }}</td>
             <td>{{ aporte.fecha_abono|date:'d-m-Y' }}</td>
             <td>{{ aporte.fecha_recaudacion|date:'d-m-Y' }}</td>
