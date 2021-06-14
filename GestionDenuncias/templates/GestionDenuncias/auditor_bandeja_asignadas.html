@@ -63,7 +63,7 @@ $(document).ready(function() {
     <tbody>
 
         {% for candidatos in ire %}
-        {% ifequal user.groups.all.1.name candidatos.celula_asignada %}
+        {% ifequal user.groups.all.0.name candidatos.celula_asignada %}
         <tr>
             <td>Revisión Preliminar</td>
             <td>{{ candidatos.eleccion }}</td>
