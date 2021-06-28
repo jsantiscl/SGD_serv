@@ -40,39 +40,48 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
-<h3>Bandeja Denuncias Pendientes Evaluación</h3>
-
+<h3>Total Cuentas</h3>
     <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
     <thead>
         <tr>
-            <th>Numero</th>
-            <th>Fecha Ingreso</th>
-            <th>Via de Ingreso</th>
-            <th>Nombre Denunciante</th>
-            <th>Nombre Denunciado</th>
-            <th style="text-align:center">Adjuntos</th>
-            <th>Observaciones</th>
-             <th>Estado</th>
-
+            <th>Estado</th>
+            <th>Eleccion</th>
+            <th>Rut</th>
+            <th>Dv</th>
+            <th>Nombre</th>
+            <th>Partido</th>
+            <th>Pacto</th>
+            <th>Territorio</th>
+            <th>Rut Admin</th>
+            <th>DV Admin</th>
+            <th>Nombre Admin</th>
+            <th>Estado Cuenta</th>
+            <th>Fecha Presentacion</th>
 
         </tr>
 
             </thead>
     <tbody>
 
-        {% for denuncia in todasdenuncias %}
-        {% if denuncia.abogado_asistente.username == user.get_username %}
+        {% for candidatos in ire %}
+
         <tr>
-            <td>{{ denuncia.numero }}</td>
-            <td>{{ denuncia.fecha_ingreso|date:'d-m-y' }}</td>
-            <td>{{ denuncia.via_de_ingreso }}</td>
-            <td>{{ denuncia.nombre_denunciante }}</td>
-            <td>{{ denuncia.nombre_denunciado }}</td>
-            <td style="text-align:center" > <a class="btn btn-outline-primary" href="{{ denuncia.link_adjuntos }}">Ver</a></td>
-            <td>{{ denuncia.obs_ingreso }}</td>
-            <td>{{ denuncia.estado_jefe }}</td>
+            <td>Revisión Preliminar</td>
+            <td>{{ candidatos.eleccion }}</td>
+            <td>{{ candidatos.rut}}</td>
+            <td>{{ candidatos.dv }}</td>
+            <td>{{ candidatos.nombre }}</td>
+            <td>{{ candidatos.partido }}</td>
+            <td>{{ candidatos.pacto }}</td>
+            <td>{{ candidatos.territorio }}</td>
+            <td>{{ candidatos.admin.rut}}</td>
+            <td>{{ candidatos.admin.dv}}</td>
+            <td>{{ candidatos.admin.nombre}}</td>
+            <td>{{ candidatos.estadopresentacion.estado }}</td>
+            <th>{{ candidatos.estadopresentacion.fecha_presentacion }}</th>
+
         </tr>
-        {% endif %}
+
         {% endfor %}
     </tbody>
     </table>

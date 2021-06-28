@@ -34,7 +34,13 @@ $(document).ready(function() {
 
 
     } );
-} );</script>
+} );
+                    function goBack() {
+  window.history.back();
+}
+
+
+            </script>
 
 
 <div class="w3-responsive">
@@ -72,7 +78,7 @@ $(document).ready(function() {
     </tbody>
     </table>
 
-<td style="text-align:center" > <a class="btn btn-warning" href="{% url 'auditor_bandeja_asignados' %}">Volver</a></td>
+<td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
 
 </section>
 </div>

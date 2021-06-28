@@ -310,6 +310,22 @@ class Ire(models.Model):
     pacto = models.CharField(max_length=200)
     territorio = models.CharField(max_length=200)
     celula_asignada = models.CharField(max_length=100, blank=True, null=True)
+    comentarios = models.TextField(null=True, blank=True)
+
+    @property
+    def admin(self):
+        admin = self.adminelectoral_set.all().first()
+        return admin
+    @property
+    def estadopresentacion(self):
+        estado = self.estadocuenta_set.all().first()
+        return estado
+
+    @property
+    def saldos(self):
+        detallesaldos = self.saldoscartola_set.all().first()
+        return detallesaldos
+
 
 
 class Aportes(models.Model):
@@ -331,6 +347,16 @@ class Auditores(models.Model):
     username = models.CharField(max_length=50, default='SIN')
     iniciales = models.CharField(max_length=50, default='NODEFINIDA')
 
+class AdminElectoral(models.Model):
+    rut = models.IntegerField()
+    dv = models.CharField(max_length=1)
+    nombre = models.CharField(max_length=200)
+    rut_candidato = models.ForeignKey(Ire, on_delete=models.CASCADE, default=1)
+
+class EstadoCuenta(models.Model):
+    estado = models.CharField(max_length=200)
+    fecha_presentacion = models.DateField(null=True, blank=True)
+    rut_candidato = models.ForeignKey(Ire, on_delete=models.CASCADE, default=1)
 
 class Cartola(models.Model):
     rut = models.ForeignKey(Ire, on_delete=models.CASCADE, default=1)
@@ -348,6 +374,13 @@ class Cartola(models.Model):
     fmov = models.DateField(null=True, blank=True)
     saldo = models.IntegerField(null=True, blank=True)
     tc = models.IntegerField(null=True, blank=True)
+
+class SaldosCartola(models.Model):
+    rut = models.ForeignKey(Ire, on_delete=models.CASCADE, default=1)
+    abonos = models.IntegerField()
+    cargos = models.IntegerField()
+    saldo = models.IntegerField()
+
 
 
 class Formulariosig(models.Model):

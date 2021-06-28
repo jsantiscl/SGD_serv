@@ -104,7 +104,23 @@
 
   {% if group.name == 'Auditor Revisor' %}
              <a href="http://webgeintegradoqa.gastodev.adexus.io/" class="w3-bar-item w3-button">Sistema de Gasto</a>
-             <a href="#" class="w3-bar-item w3-button">IRE</a>
+
+
+              <div class="w3-dropdown-hover">
+      <button class="w3-button">IRE</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+         <a href="{% url 'auditor_ire' eleccion=1 %}" class="w3-bar-item w3-button">Alcalde</a>
+         <a href="{% url 'auditor_ire' eleccion=2 %}" class="w3-bar-item w3-button">Concejal</a>
+         <a href="{% url 'auditor_ire' eleccion=3 %}" class="w3-bar-item w3-button">Convencional Constituyente</a>
+         <a href="{% url 'auditor_ire' eleccion=4 %}" class="w3-bar-item w3-button">Convencional Constituyente - PO</a>
+         <a href="{% url 'auditor_ire' eleccion=5 %}" class="w3-bar-item w3-button">Gobernador Regional</a>
+         <a href="{% url 'auditor_ire' eleccion=6 %}" class="w3-bar-item w3-button">Partidos</a>
+            </div>
+      </div>
+
+
+
+
                                                   <div class="w3-dropdown-hover">
       <button class="w3-button">Bandejas</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">

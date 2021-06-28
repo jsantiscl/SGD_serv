@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from datetime import datetime
 from django.db.models import Sum, Count
-from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formulariosig
+from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formulariosig, AdminElectoral
 from .forms import DenunciasForm, ResumeUpload, UpdateDetailsForm, ActivaDenuncia, DetallesDenuncia, DesactivaDenuncia, CompruebaDenuncia
 from django.http import HttpResponse
 from django.conf import settings
@@ -1044,9 +1044,21 @@ def auditor_aportes(request, rut):
     context = {'aportes': aportes}
     return render(request, 'GestionDenuncias/auditor_aportes.html', context)
 
-def auditor_ire(request):
+def auditor_ire(request, eleccion):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    ire = Ire.objects.all
+    if eleccion == 1:
+        seleccionado = 'ALCALDES'
+    if eleccion == 2:
+        seleccionado = 'CONCEJALES'
+    if eleccion == 3:
+        seleccionado = 'CONVENCIONALES CONSTITUYENTES'
+    if eleccion == 4:
+        seleccionado = 'CONVENCIONALES CONSTITUYENTES - PUEBLOS INDIGENAS'
+    if eleccion == 5:
+        seleccionado = 'GOBERNADOR REGIONAL'
+    if eleccion == 6:
+        seleccionado = 'PARTIDO'
+    ire = Ire.objects.filter(eleccion=seleccionado)
     context = {'ire': ire}
     return render(request, 'GestionDenuncias/auditor_ire.html', context)
 
@@ -1095,3 +1107,18 @@ def auditor_f88(request, rut):
     f88 = Formulariosig.objects.filter(rut_partido_candidato_id=rut, tpo_rendicion_codigo = 'F88')
     context = {'f88': f88}
     return render(request, 'GestionDenuncias/auditor_f88.html', context)
+
+
+def modifica_candidato(request):
+    data = json.loads(request.body)
+
+    if data['datos']['tipo'] == 'comentario':
+         objeto = Ire.objects.filter(rut=str(data['datos']['id_candidato'])).get()
+         comentario = objeto.comentarios
+         if comentario != None:
+            comentario = comentario + "\n" + str(data['datos']['username']) + ": " + str(data['datos']['comentario_ingresado'])
+         else:
+            comentario = str(data['datos']['username']) + ": " + str(data['datos']['comentario_ingresado'])
+         Ire.objects.filter(rut=str(data['datos']['id_candidato'])).update(comentarios=str(comentario))
+
+    return JsonResponse([str(data['datos']['id_candidato'])], safe=False)

@@ -23,8 +23,14 @@
                           <br>
 <input class="form-control" type="text" placeholder="{{ candidato.eleccion}}" readonly>
         <br>
-            <textarea class="form-control" type="text" placeholder="Comentarios Revisión..."></textarea>
+            <textarea class="form-control" type="text" placeholder="{{ candidato.comentarios}}" readonly></textarea>
     <br>
+            <textarea class="form-control" type="text" id="comentario_ingresado" placeholder="Agregar Nuevo Comentario...."></textarea>
+     <br>
+ <td style="text-align:center " > <a class="btn btn-warning" href="{% url 'auditor_bandeja_asignados' %}">Volver</a></td>
+
+            {% csrf_token %}
+            <td style="text-align:right" > <a class="btn btn-info" onclick="ingresacomentario({{ candidato.rut }}, '{{ user.username }}')">Ingresar Nuevo Comentario</a></td>
 
             </div>
               <div class="w3-half w3-containe r">
@@ -82,6 +88,15 @@
       <td></td>
   <td>@mdo</td>
   <td><a class="btn btn-info" href="{% url 'auditor_f88' rut=candidato.rut %}">Ver F88</a></td>
+
+          <tr>
+      <th scope="row">6</th>
+      <td>Cartola</td>
+      <td>{{ candidato.saldos.abonos }}</td>
+      <td>{{ candidato.saldos.cargos }}</td>
+      <td>{{ candidato.saldos.saldo }}</td>
+  <td><a class="btn btn-success" href="{% url 'auditor_cartola' rut=candidato.rut %}">Ver Movimientos</a></td>
+
   </tbody>
 
 
@@ -92,8 +107,73 @@
              </div>
         {% endfor %}
 
-</div>
 
 </div>
-    <td style="text-align:center" > <a class="btn btn-warning" href="{% url 'auditor_bandeja_asignados' %}">Volver</a></td>
+
+
+</div>
+
+      <script type="text/javascript">
+    var order;
+ function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+  function ingresacomentario(rut, username) {
+
+  if (confirm('¿Esta Seguro que quiere Agregar el comentario ?')) {
+  // Save it!
+  console.log('Ingresando Comentario'+ rut);
+  var comentario_ingresado = document.getElementById("comentario_ingresado").value;
+  modifica_candidato(rut, username, 'comentario', comentario_ingresado);
+
+} else {
+  // Do nothing!
+  console.log('No Finalizado Ingreso Comentario ' + username);
+}
+
+}
+    function modifica_candidato(rut, username, tipo, comentario_ingresado) {
+
+
+
+        var datos = {
+				'id_candidato': rut,
+                'username': username,
+                'tipo': tipo,
+                'comentario_ingresado': comentario_ingresado,
+
+			}
+    var url = "/sgd/j/modifica_candidato/"
+        fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+	    			'X-CSRFToken':csrftoken
+	    		},
+	    		body:JSON.stringify({'datos':datos}),
+
+	    	})
+            .then((response) => response.json())
+
+
+
+      }
+    </script>
+
+
 {% endblock %}
