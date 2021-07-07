@@ -164,7 +164,7 @@ class CompruebaDenuncia(forms.ModelForm):
             'elecciones': forms.Select(attrs={'class': 'form-control', 'disabled': 'true'}),
             'nombre_denunciado': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'true'}),
 
-            'infraccion_denunciada': forms.Select(attrs={'class': 'form-control', 'disabled': 'true'}),
+            'infraccion_denunciada': forms.Select(attrs={'class': 'form-control'}),
             'plazo_investigacion': forms.Select(attrs={'class': 'form-control', 'disabled': 'true'}),
             'tipo_diligencia': forms.Select(attrs={'class': 'form-control', 'disabled': 'true'}),
             'resultado_comprobacion': forms.Select(attrs={'class': 'form-control'}),
