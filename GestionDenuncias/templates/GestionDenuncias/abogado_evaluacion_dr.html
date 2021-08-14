@@ -53,7 +53,8 @@ $(document).ready(function() {
             <th style="text-align:center">Adjuntos</th>
             <th colspan="2" style="text-align:center">Accion</th>
             <th>Observaciones</th>
-
+            <th>Estado DR</th>
+            <th>DR Asignada</th>
 
         </tr>
 
@@ -69,9 +70,24 @@ $(document).ready(function() {
             <td>{{ denuncia.nombre_denunciante }}</td>
             <td>{{ denuncia.nombre_denunciado }}</td>
             <td style="text-align:center" > <a class="btn btn-outline-primary" href="{{ denuncia.link_adjuntos }}">Ver</a></td>
+             {% if denuncia.estado_jefe == 'INGRESO' %}
+            <td><a class="btn btn-success disabled"  href="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}">Activar</a></td>
+            <td><a class="btn btn-secondary disabled" href="{% url 'gestion-denuncia_desac' id_denuncia=denuncia.id %}">Desactivar</a></td>
+                 {% else %}
             <td><a class="btn btn-success" href="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}">Activar</a></td>
             <td><a class="btn btn-secondary" href="{% url 'gestion-denuncia_desac' id_denuncia=denuncia.id %}">Desactivar</a></td>
+                 {% endif %}
             <td>{{ denuncia.obs_ingreso }}</td>
+            <td>
+                {% if denuncia.estado_jefe == 'INGRESO' %}
+                    Pendiente Gestión
+                 {% elif denuncia.estado_jefe == 'FISCALIZADO_DR' %}
+                    <a href="{% url 'abogado_evaluacion_dr_ver' id_denuncia=denuncia.id %}"> Fiscalizado DR</a>
+                 {% else %}
+                    NO Fiscalizado DR
+                 {% endif %}
+                    </td>
+            <td>{{ denuncia.asignacion_dr }}</td>
         </tr>
         {% endif %}
         {% endfor %}

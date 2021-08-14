@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.decorators import login_required
 from GestionDenuncias.views import abogado_inicio
-
+admin.autodiscover()
 urlpatterns = [
     path('', login_required(abogado_inicio), name='abogado_inicio'),
     path('sgd/', include('GestionDenuncias.urls')),

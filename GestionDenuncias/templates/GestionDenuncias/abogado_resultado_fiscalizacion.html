@@ -1,0 +1,62 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+<div class="w3-responsive">
+<div class = "w3-row">
+     <div class="w3-half w3-container">
+ <br>
+
+        {% for denuncia in todasdenuncias %}
+
+
+         <h3>Fiscalizacion Denuncia {{ denuncia.numero }}</h3>
+    <form action="{% url 'abogado_evaluacion_dr_ver' id_denuncia=denuncia.id %}" method = "POST" enctype="multipart/form-data" id="myForm">
+        {% csrf_token %}
+        {{ form.as_table }}
+
+<br>
+        <a class="btn btn-warning" href="{{ denuncia.link_adjuntos }}">Ver Carpeta Adjuntos</a>
+         <a class="btn btn-success" href="{% url 'abogado_evaluacion_dr' %}">Volver</a>
+
+
+    <br>
+    </form>
+            </div>
+
+
+        {% endfor %}
+
+</div>
+</div>
+
+    <script>
+function enviar_formulario() {
+  var ID_FISCALIZACION = document.getElementById("id_dr_id_inspeccion_survey").value;
+  var LINK_CARPETA = document.getElementById("id_dr_link_carpeta_fiscalizacion").value;
+
+          if (ID_FISCALIZACION == '' || LINK_CARPETA == ''){
+  console.log('VACIO');
+  alert("Debe Completar los campos ID de Inspeccion y Link Carpeta Fiscalización");
+  } else {
+        console.log('OKK');
+        if (confirm('¿Esta Seguro que quiere el Resultado de la Fiscalizacion?')) {
+        // Save it!
+          console.log('Enviado Formulario');
+          document.getElementById("id_dr_guardac").value = "SI";
+          console.log('pasa 1');
+          document.getElementById("myForm").submit();
+          console.log('pasa 2');
+} else {
+          // Do nothing!
+      }
+
+          }
+
+
+
+}
+    </script>
+
+
+{% endblock %}

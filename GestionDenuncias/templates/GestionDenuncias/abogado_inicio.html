@@ -7,7 +7,13 @@
 <section class="section1">
 <h3>Bienvenida/o {{user.first_name}} {{user.last_name}}</h3>
     {% for group in user.groups.all %}
+        {% if group.name == 'Encargado Regional'%}
+            {% for encargado in encargados %}
+<h4>{{ group.name }} - {{ encargado.dr_asignada }}</h4>
+            {% endfor %}
+        {% else %}
 <h4>{{ group.name }}</h4>
+        {% endif %}
     {% endfor %}
 </form>
 </section>

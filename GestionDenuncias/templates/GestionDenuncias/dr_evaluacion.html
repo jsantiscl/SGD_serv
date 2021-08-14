@@ -40,23 +40,20 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
-<h3>Bandeja Denuncias Activadas Validación</h3>
+<h3>Bandeja Denuncias Pendientes Evaluación</h3>
 
     <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
     <thead>
         <tr>
             <th>Numero</th>
             <th>Fecha Ingreso</th>
-            <th>Fecha Evaluacion</th>
-            <th>Asignacion</th>
+            <th>Via de Ingreso</th>
             <th>Nombre Denunciante</th>
             <th>Nombre Denunciado</th>
             <th style="text-align:center">Adjuntos</th>
-            <th colspan="2" style="text-align:center">Accion</th>
-            <th>Cod. Act</th>
-            <th>Resultado</th>
-            <th>Obs. Abogado</th>
-            <th>Ver Todo</th>
+            <th colspan="2" style="text-align:center">¿Es Posible Efectuar Fiscalizacion en Terreno?</th>
+            <th>Observaciones</th>
+
 
         </tr>
 
@@ -68,17 +65,13 @@ $(document).ready(function() {
         <tr>
             <td>{{ denuncia.numero }}</td>
             <td>{{ denuncia.fecha_ingreso|date:'d-m-y' }}</td>
-            <td>{{ denuncia.fecha_evaluacion_abogado|date:'d-m-y' }}</td>
-            <td>{{ denuncia.abogado_asistente }}</td>
+            <td>{{ denuncia.via_de_ingreso }}</td>
             <td>{{ denuncia.nombre_denunciante }}</td>
             <td>{{ denuncia.nombre_denunciado }}</td>
             <td style="text-align:center" > <a class="btn btn-outline-primary" href="{{ denuncia.link_adjuntos }}">Ver</a></td>
-            <td><button class="btn btn-success" onclick="aceptar({{ denuncia.id }})">Aceptar</button></td>
-            <td><button class="btn btn-danger" onclick="rechazar({{ denuncia.id }})">Rechazar</button></td>
-            <td>{{ denuncia.infraccion_denunciada }}</td>
-            <td>{{ denuncia.resultado_comprobacion }}</td>
-            <td>{{ denuncia.obs_abogado }}</td>
-        <td  style="text-align:center"><a class="btn btn-info" href="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}">Ir</a></td>
+            <td style="text-align:center"><button class="btn btn-success" onclick="esposible({{ denuncia.id }})">SI</button></td>
+            <td style="text-align:center"><button class="btn btn-danger" onclick="noesposible({{ denuncia.id }})">NO</button></td>
+            <td>{{ denuncia.obs_ingreso }}</td>
         </tr>
 
         {% endfor %}
@@ -88,6 +81,8 @@ $(document).ready(function() {
 
 </section>
 </div>
+
+
 
     <script type="text/javascript">
     var order;
@@ -108,24 +103,24 @@ $(document).ready(function() {
 }
 const csrftoken = getCookie('csrftoken');
 
-  function rechazar(denuncia) {
+  function noesposible(denuncia) {
 
-      var motivo = prompt("Favor Ingresar Motivo de Rechazo:", "...");
+      var motivo = prompt("Favor Ingresar Motivo:", "...");
       if (motivo == null) {
           console.log('User cancelled the prompt.');
       } else {
           console.log('Denuncia ' + denuncia + 'Rechazada Por ' + motivo);
-          modifica_denuncia(denuncia, motivo, 'rechaza');
+          modifica_denuncia(denuncia, motivo, 'noesposible');
       }
       ;
   }
 
-  function aceptar(denuncia) {
+  function esposible(denuncia) {
 
-  if (confirm('¿Esta Seguro que quiere Aceptar la Denuncia ' + denuncia + ' ?')) {
+  if (confirm('¿Esta Seguro que Seleccionar la Opcion Si?')) {
   // Save it!
   console.log('Finalizando orden N°'+ denuncia);
-  modifica_denuncia(denuncia, 'ACEPTADO', 'acepta');
+  modifica_denuncia(denuncia, 'ACEPTADO', 'esposible');
 
 } else {
   // Do nothing!
@@ -135,13 +130,11 @@ const csrftoken = getCookie('csrftoken');
 }
     function modifica_denuncia(denuncia, motivo, tipo) {
 
-
-
         var datos = {
 				'id_denuncia': denuncia,
                 'motivo_rechazo': motivo,
                 'tipo': tipo,
-                'categoria': 'activa',
+                'categoria': 'dr',
 
 			}
     var url = "/sgd/j/modifica_denuncia/"
@@ -156,7 +149,7 @@ const csrftoken = getCookie('csrftoken');
 
 	    	})
             .then((response) => response.json())
-            .then(window.location.href = "{% url 'jefe_evaluacion_act' %}")
+
 
       }
     </script>

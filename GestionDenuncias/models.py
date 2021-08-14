@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from django.contrib.auth.models import User
 
 class Abogados(models.Model):
     rut = models.IntegerField(primary_key=True)
@@ -11,6 +12,21 @@ class Abogados(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class DireccionesRegionales(models.Model):
+    codigo = models.CharField(primary_key=True,max_length=10)
+    nombre_dr = models.CharField(max_length=100,blank=True, null=True)
+
+    def __str__(self):
+        return self.nombre_dr
+
+
+class EncargadosRegionales(models.Model):
+    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, default= None)
+    dr_asignada = models.ForeignKey(DireccionesRegionales, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return self.id_usuario.username
 
 
 class Denuncias(models.Model):
@@ -148,6 +164,11 @@ class Denuncias(models.Model):
         ("Instruir Sancionatorio", "Instruir Sancionatorio"),
         ("Derivar", "Derivar"),
      )
+    dr_requerimento = (
+        ("Subsana", "Subsana"),
+        ("No Subsana", "No Subsana"),
+        ("No Responde", "No Responde"),
+     )
     Diligencias = (
         ("req_inf", "Requerimiento de Información"),
         ("sad", "SAD"),
@@ -174,6 +195,8 @@ class Denuncias(models.Model):
         ("RESULTADO_ADMINISTRADOR", "Enviado a Administrador"),
         ("RESULTADO_ABOGADO_DEVUELTO", "Devuelto a Abogado"),
         ("RESULTADO_FINALIZADO", "Finalizado Administrador"),
+        ("EVALUADO_DR_POSIBLE_FISCALIZAR", "EVALUADO_DR_POSIBLE_FISCALIZAR"),
+        ("EVALUADO_DR_NO_POSIBLE_FISCALIZAR", "EVALUADO_DR_NO_POSIBLE_FISCALIZAR"),
      )
 
     INFRACCIONES = (
@@ -290,6 +313,17 @@ class Denuncias(models.Model):
     obs_jefe = models.TextField(null=True, blank=True)
     obs_abogado = models.TextField(null=True, blank=True)
     codigo_desactivacion = models.CharField(max_length=200, choices=DESACTIVACIONES,null=True, blank=True)
+    asignacion_dr = models.ForeignKey(DireccionesRegionales, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    motivo_dr = models.CharField(max_length=300, null=True, blank=True)
+    dr_id_inspeccion_survey = models.CharField(max_length=300, null=True, blank=True)
+    dr_link_carpeta_fiscalizacion = models.CharField(max_length=500, null=True, blank=True)
+    dr_nro_requerimiento_candidato = models.CharField(max_length=50, null=True, blank=True)
+    dr_fecha_requerimiento_candidato = models.DateField(null=True, blank=True)
+    dr_resultado_requerimiento_candidato = models.CharField(max_length=200, choices=dr_requerimento, null=True, blank=True)
+    dr_retiro_municipio = models.CharField(max_length=50, null=True, blank=True)
+    dr_fecha_retiro_municipio = models.DateField(null=True, blank=True)
+    dr_guardac = models.CharField(max_length=3, default="NO")
+    dr_fecha_fiscalizacion = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.numero
@@ -300,6 +334,8 @@ class Adjuntos(models.Model):
     archivos = models.FileField(upload_to='respaldos_denuncias/', blank=True, null=True)
     tipo = models.CharField(max_length=100, default='adjunto_denuncia', blank=True, null=True)
     activo = models.BooleanField(default=True)
+
+
 
 class Ire(models.Model):
     rut = models.IntegerField(primary_key=True)
@@ -325,7 +361,6 @@ class Ire(models.Model):
     def saldos(self):
         detallesaldos = self.saldoscartola_set.all().first()
         return detallesaldos
-
 
 
 class Aportes(models.Model):
