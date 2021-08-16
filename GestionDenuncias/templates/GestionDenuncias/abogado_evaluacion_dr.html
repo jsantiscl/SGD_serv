@@ -47,7 +47,7 @@ $(document).ready(function() {
         <tr>
             <th>Numero</th>
             <th>Fecha Ingreso</th>
-            <th>Via de Ingreso</th>
+
             <th>Nombre Denunciante</th>
             <th>Nombre Denunciado</th>
             <th style="text-align:center">Adjuntos</th>
@@ -66,7 +66,7 @@ $(document).ready(function() {
         <tr>
             <td>{{ denuncia.numero }}</td>
             <td>{{ denuncia.fecha_ingreso|date:'d-m-y' }}</td>
-            <td>{{ denuncia.via_de_ingreso }}</td>
+
             <td>{{ denuncia.nombre_denunciante }}</td>
             <td>{{ denuncia.nombre_denunciado }}</td>
             <td style="text-align:center" > <a class="btn btn-outline-primary" href="{{ denuncia.link_adjuntos }}">Ver</a></td>

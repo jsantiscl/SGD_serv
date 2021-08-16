@@ -5,6 +5,7 @@ from django.db.models import Count
 from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formulariosig, EncargadosRegionales
 from .forms import *
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 #from django.http import HttpResponse
 #from django.conf import settings
@@ -134,7 +135,7 @@ def abogado_evaluacion_dr_ver(request, id_denuncia):
 def abogado_evaluacion(request):
 
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="INGRESO", asignacion_dr=None)
+    denuncia_obj_3 = Denuncias.objects.filter(Q(estado_jefe__icontains="INGRESO")|Q(estado_jefe__icontains="FISCALIZADO_DR")|Q(estado_jefe__icontains="EVALUADO_DR_NO_POSIBLE_FISCALIZAR"))
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request, 'GestionDenuncias/abogado_evaluacion.html', context)
 

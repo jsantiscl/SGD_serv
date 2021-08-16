@@ -47,12 +47,14 @@ $(document).ready(function() {
         <tr>
             <th>Numero</th>
             <th>Fecha Ingreso</th>
-            <th>Via de Ingreso</th>
+
             <th>Nombre Denunciante</th>
             <th>Nombre Denunciado</th>
             <th style="text-align:center">Adjuntos</th>
             <th colspan="2" style="text-align:center">Accion</th>
             <th>Observaciones</th>
+            <th>Estado DR</th>
+            <th>Asignación DR</th>
 
 
         </tr>
@@ -61,17 +63,38 @@ $(document).ready(function() {
     <tbody>
 
         {% for denuncia in todasdenuncias %}
-        {% if denuncia.abogado_asistente.username == user.get_username and denuncia.estado_jefe == 'INGRESO' %}
+        {% if denuncia.abogado_asistente.username == user.get_username %}
         <tr>
             <td>{{ denuncia.numero }}</td>
             <td>{{ denuncia.fecha_ingreso|date:'d-m-y' }}</td>
-            <td>{{ denuncia.via_de_ingreso }}</td>
+
             <td>{{ denuncia.nombre_denunciante }}</td>
             <td>{{ denuncia.nombre_denunciado }}</td>
             <td style="text-align:center" > <a class="btn btn-outline-primary" href="{{ denuncia.link_adjuntos }}">Ver</a></td>
+             {% if denuncia.estado_jefe == 'INGRESO' and denuncia.asignacion_dr != None %}
+            <td><a class="btn btn-success disabled"  href="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}">Activar</a></td>
+            <td><a class="btn btn-secondary disabled" href="{% url 'gestion-denuncia_desac' id_denuncia=denuncia.id %}">Desactivar</a></td>
+                 {% else %}
             <td><a class="btn btn-success" href="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}">Activar</a></td>
             <td><a class="btn btn-secondary" href="{% url 'gestion-denuncia_desac' id_denuncia=denuncia.id %}">Desactivar</a></td>
+                 {% endif %}
             <td>{{ denuncia.obs_ingreso }}</td>
+            <td>
+                {% if denuncia.estado_jefe == 'INGRESO' and denuncia.asignacion_dr != None %}
+                    Pendiente Gestión DR
+                 {% elif denuncia.estado_jefe == 'FISCALIZADO_DR' %}
+                    <a href="{% url 'abogado_evaluacion_dr_ver' id_denuncia=denuncia.id %}"> Fiscalizado DR</a>
+                 {% elif denuncia.estado_jefe == 'EVALUADO_DR_NO_POSIBLE_FISCALIZAR'%}
+                    NO Fiscalizado DR
+                 {% else %}
+
+                 {% endif %}
+                    </td>
+            <td>{% if denuncia.asignacion_dr != None %}
+                {{ denuncia.asignacion_dr }}
+                {% else %}
+                {% endif %}
+            </td>
         </tr>
         {% endif %}
         {% endfor %}
