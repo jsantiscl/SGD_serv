@@ -135,7 +135,7 @@ def abogado_evaluacion_dr_ver(request, id_denuncia):
 def abogado_evaluacion(request):
 
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Denuncias.objects.filter(Q(estado_jefe__icontains="INGRESO")|Q(estado_jefe__icontains="FISCALIZADO_DR")|Q(estado_jefe__icontains="EVALUADO_DR_NO_POSIBLE_FISCALIZAR"))
+    denuncia_obj_3 = Denuncias.objects.filter(Q(estado_jefe__iexact="INGRESO")|Q(estado_jefe__icontains="FISCALIZADO_DR")|Q(estado_jefe__icontains="EVALUADO_DR_NO_POSIBLE_FISCALIZAR"))
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request, 'GestionDenuncias/abogado_evaluacion.html', context)
 
