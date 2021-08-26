@@ -259,7 +259,7 @@ def dr_resultadofiscalizacion(request, id_denuncia):
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_id_inspeccion_survey=request.POST.get(str("dr_id_inspeccion_survey")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_link_carpeta_fiscalizacion=request.POST.get(str("dr_link_carpeta_fiscalizacion")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_nro_requerimiento_candidato=request.POST.get(str("dr_nro_requerimiento_candidato")))
-                Denuncias.objects.filter(id=str(id_denuncia)).update(dr_obs_fisca=request.POST.get(str("dr_obs_fisca")))
+                Denuncias.objects.filter(id=str(id_denuncia)).update(motivo_dr=request.POST.get(str("motivo_dr")))
                 if request.POST.get(str("dr_fecha_requerimiento_candidato")) != '':
                     Denuncias.objects.filter(id=str(id_denuncia)).update(dr_fecha_requerimiento_candidato=request.POST.get(str("dr_fecha_requerimiento_candidato")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_resultado_requerimiento_candidato=request.POST.get(str("dr_resultado_requerimiento_candidato")))
@@ -272,7 +272,7 @@ def dr_resultadofiscalizacion(request, id_denuncia):
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_id_inspeccion_survey=request.POST.get(str("dr_id_inspeccion_survey")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_link_carpeta_fiscalizacion=request.POST.get(str("dr_link_carpeta_fiscalizacion")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_nro_requerimiento_candidato=request.POST.get(str("dr_nro_requerimiento_candidato")))
-                Denuncias.objects.filter(id=str(id_denuncia)).update(dr_obs_fisca=request.POST.get(str("dr_obs_fisca")))
+                Denuncias.objects.filter(id=str(id_denuncia)).update(motivo_dr=request.POST.get(str("motivo_dr")))
                 if request.POST.get(str("dr_fecha_requerimiento_candidato")) != '':
                     Denuncias.objects.filter(id=str(id_denuncia)).update(dr_fecha_requerimiento_candidato=request.POST.get(str("dr_fecha_requerimiento_candidato")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_resultado_requerimiento_candidato=request.POST.get(str("dr_resultado_requerimiento_candidato")))
