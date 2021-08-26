@@ -37,7 +37,8 @@ urlpatterns = [
     path('dr/evaluacion/', login_required(dr_evaluacion), name='dr_evaluacion'), #Ok
     path('dr/fiscalizacion/', login_required(dr_fiscalizacion), name='dr_fiscalizacion'), #Ok
     path('dr/resultadofiscalizacion/<int:id_denuncia>/', login_required(dr_resultadofiscalizacion), name='dr_resultadofiscalizacion'), #Ok
-
+    path('dr/enviados/', login_required(dr_enviados), name='dr_enviados'), #Ok
+    path('dr/evaluaciondr/<int:id_denuncia>/', login_required(dr_evaluacion_dr_ver),name='dr_evaluacion_dr_ver'),  # Ok
 #Rutas SAR
     path('au/asignados/', login_required(auditor_bandeja_asignados), name='auditor_bandeja_asignados'),
     path('au/aportes/<int:rut>/', login_required(auditor_aportes), name='auditor_aportes'),

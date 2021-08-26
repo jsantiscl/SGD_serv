@@ -149,6 +149,7 @@ const csrftoken = getCookie('csrftoken');
 
 	    	})
             .then((response) => response.json())
+            .then(window.location.href = "{% url 'dr_evaluacion' %}")
 
 
       }

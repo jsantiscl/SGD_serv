@@ -175,6 +175,7 @@ class FiscalizacionDR(forms.ModelForm):
             'dr_resultado_requerimiento_candidato',
             'dr_retiro_municipio',
             'dr_fecha_retiro_municipio',
+            'dr_obs_fisca',
             'dr_guardac',
         ]
         widgets = {
@@ -185,6 +186,7 @@ class FiscalizacionDR(forms.ModelForm):
             'dr_resultado_requerimiento_candidato': forms.Select(attrs={'class': 'form-control'}),
             'dr_retiro_municipio': forms.TextInput(attrs={'class': 'form-control'}),
             'dr_fecha_retiro_municipio': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'dr_obs_fisca': forms.TextInput(attrs={'class': 'form-control'}),
             'dr_guardac': forms.HiddenInput(),
         }
         labels = {
@@ -196,6 +198,7 @@ class FiscalizacionDR(forms.ModelForm):
             'dr_resultado_requerimiento_candidato': 'Resultado Requerimiento Candidato',
             'dr_retiro_municipio': 'N° Retiro Municipio',
             'dr_fecha_retiro_municipio': 'Fecha Retiro Municipio',
+            'dr_obs_fisca': 'Observaciones',
             'dr_guardac': 'dr_guardac',
         }
 
@@ -210,6 +213,7 @@ class VerFiscalizacionDR(forms.ModelForm):
             'dr_resultado_requerimiento_candidato',
             'dr_retiro_municipio',
             'dr_fecha_retiro_municipio',
+            'dr_obs_fisca',
             'dr_guardac',
         ]
         widgets = {
@@ -220,6 +224,7 @@ class VerFiscalizacionDR(forms.ModelForm):
             'dr_resultado_requerimiento_candidato': forms.Select(attrs={'class': 'form-control', 'disabled': 'true'}),
             'dr_retiro_municipio': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'true'}),
             'dr_fecha_retiro_municipio': forms.DateInput(attrs={'class': 'form-control', 'disabled': 'true'}),
+            'dr_obs_fisca': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'true'}),
             'dr_guardac': forms.HiddenInput(),
         }
         labels = {
@@ -231,5 +236,6 @@ class VerFiscalizacionDR(forms.ModelForm):
             'dr_resultado_requerimiento_candidato': 'Resultado Requerimiento Candidato',
             'dr_retiro_municipio': 'N° Retiro Municipio',
             'dr_fecha_retiro_municipio': 'Fecha Retiro Municipio',
+            'dr_obs_fisca': 'Observaciones',
             'dr_guardac': 'dr_guardac',
         }

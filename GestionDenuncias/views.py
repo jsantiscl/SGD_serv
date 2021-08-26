@@ -259,6 +259,7 @@ def dr_resultadofiscalizacion(request, id_denuncia):
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_id_inspeccion_survey=request.POST.get(str("dr_id_inspeccion_survey")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_link_carpeta_fiscalizacion=request.POST.get(str("dr_link_carpeta_fiscalizacion")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_nro_requerimiento_candidato=request.POST.get(str("dr_nro_requerimiento_candidato")))
+                Denuncias.objects.filter(id=str(id_denuncia)).update(dr_obs_fisca=request.POST.get(str("dr_obs_fisca")))
                 if request.POST.get(str("dr_fecha_requerimiento_candidato")) != '':
                     Denuncias.objects.filter(id=str(id_denuncia)).update(dr_fecha_requerimiento_candidato=request.POST.get(str("dr_fecha_requerimiento_candidato")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_resultado_requerimiento_candidato=request.POST.get(str("dr_resultado_requerimiento_candidato")))
@@ -271,6 +272,7 @@ def dr_resultadofiscalizacion(request, id_denuncia):
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_id_inspeccion_survey=request.POST.get(str("dr_id_inspeccion_survey")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_link_carpeta_fiscalizacion=request.POST.get(str("dr_link_carpeta_fiscalizacion")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_nro_requerimiento_candidato=request.POST.get(str("dr_nro_requerimiento_candidato")))
+                Denuncias.objects.filter(id=str(id_denuncia)).update(dr_obs_fisca=request.POST.get(str("dr_obs_fisca")))
                 if request.POST.get(str("dr_fecha_requerimiento_candidato")) != '':
                     Denuncias.objects.filter(id=str(id_denuncia)).update(dr_fecha_requerimiento_candidato=request.POST.get(str("dr_fecha_requerimiento_candidato")))
                 Denuncias.objects.filter(id=str(id_denuncia)).update(dr_resultado_requerimiento_candidato=request.POST.get(str("dr_resultado_requerimiento_candidato")))
@@ -280,6 +282,21 @@ def dr_resultadofiscalizacion(request, id_denuncia):
                 return redirect("dr_fiscalizacion")
 
     return render(request, 'GestionDenuncias/dr_resultado_fiscalizacion.html', context)
+
+def dr_enviados(request):
+    encargados = EncargadosRegionales.objects.filter(id_usuario__username=request.user.username).first()
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Denuncias.objects.filter(Q(estado_jefe__icontains="FISCALIZADO_DR")|Q(estado_jefe__icontains="EVALUADO_DR_NO_POSIBLE_FISCALIZAR"), asignacion_dr=encargados.dr_asignada_id)
+    context = {'todasdenuncias': denuncia_obj_3,'encargados':encargados}
+    return render(request, 'GestionDenuncias/dr_enviados.html', context)
+
+def dr_evaluacion_dr_ver(request, id_denuncia):
+
+    instance = get_object_or_404(Denuncias, id=id_denuncia)
+    denuncia_obj_4 = Denuncias.objects.filter(id=id_denuncia)
+    form = VerFiscalizacionDR(request.POST or None, instance=instance)
+    context = {'todasdenuncias': denuncia_obj_4, 'form': form}
+    return render(request, 'GestionDenuncias/dr_ver_resultado_fiscalizacion.html', context)
 
 
 #Views Jefe

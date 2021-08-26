@@ -324,6 +324,7 @@ class Denuncias(models.Model):
     dr_fecha_retiro_municipio = models.DateField(null=True, blank=True)
     dr_guardac = models.CharField(max_length=3, default="NO")
     dr_fecha_fiscalizacion = models.DateField(null=True, blank=True)
+    dr_obs_fisca = models.CharField(max_length=300, null=True, blank=True)
 
     def __str__(self):
         return self.numero
