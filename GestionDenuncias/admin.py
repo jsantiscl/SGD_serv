@@ -2,6 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import *
+from GestionRecursos.models import *
 
 admin.site.register(Denuncias)
 admin.site.register(Abogados)
@@ -11,3 +12,5 @@ admin.site.register(Ire)
 admin.site.register(Auditores)
 admin.site.register(Aportes)
 admin.site.register(Cartola)
+admin.site.register(Recursos)
+admin.site.register(UsersRecursos)

@@ -1,0 +1,89 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+
+            <script type="text/javascript" class="init">
+
+
+$(document).ready(function() {
+	$('#example2').DataTable({
+        "language": {
+            "lengthMenu": "Ver _MENU_ registros por pagina",
+            "zeroRecords": "Sin Resultados",
+            "info": "Mostrando pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin Resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros)"
+        },
+               dom: 'lfrtBip',
+        buttons: [
+             {
+      extend: 'excel',
+      exportOptions: {
+
+          format: {
+              body: function(data, row, column, node) {
+                  data = $('<p>' + data + '</p>').text();
+                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+              }
+          }
+      }
+  }
+        ]
+
+
+
+    } );
+} );
+            function goBack() {
+  window.history.back();
+}
+
+            </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Recursos Ingresados</h3>
+
+    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
+    <thead>
+        <tr>
+            <th style="text-align: center">Tipo Recurso</th>
+            <th>Elección</th>
+            <th>Rut</th>
+            <th>Dv</th>
+            <th>Nombre</th>
+            <th>Fecha Resolucion</th>
+            <th>Fecha Recurso</th>
+            <th>Estado</th>
+            <th>Cod. Tipo</th>
+            <th>Usuario Actual</th>
+        </tr>
+            </thead>
+    <tbody>
+        {% load humanize %}
+        {% for linea in todasdenuncias %}
+
+        <tr>
+            <td>{{ linea.tipo_recurso}}</td>
+            <td>{{ linea.eleccion}}</td>
+            <td>{{ linea.rut}}</td>
+            <td>{{ linea.dv}}</td>
+            <td>{{ linea.nombre}}</td>
+            <td>{{ linea.fecha_resolucion|date:'d-m-Y' }}</td>
+            <td>{{ linea.fecha_recurso|date:'d-m-Y' }}</td>
+            <td>{{ linea.estado}}</td>
+            <td>{{ linea.codigotipo}}</td>
+            <td>{{ linea.usuario_actual.nombre}}</td>
+
+        {% endfor %}
+    </tbody>
+    </table>
+
+<td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
+
+</section>
+</div>
+{% endblock %}

@@ -24,6 +24,7 @@ admin.autodiscover()
 urlpatterns = [
     path('', login_required(abogado_inicio), name='abogado_inicio'),
     path('sgd/', include('GestionDenuncias.urls')),
+    path('pas/', include('GestionPAS.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -8,7 +8,7 @@
  <br>
 
         {% for denuncia in todasdenuncias %}
-        {% if denuncia.abogado_asistente.username == user.get_username and denuncia.estado_jefe == 'INGRESO' or denuncia.estado_jefe == 'DEVUELTO_JEFE' %}
+        {% if denuncia.abogado_asistente.username == user.get_username and denuncia.estado_jefe == 'INGRESO' or denuncia.estado_jefe == 'DEVUELTO_JEFE' or denuncia.estado_jefe == 'EVALUADO_DR_NO_POSIBLE_FISCALIZAR' or denuncia.estado_jefe == 'FISCALIZADO_DR'%}
          <h3>Activar Denuncia {{ denuncia.numero }}</h3>
     <form action="{% url 'gestion-denuncia_ac' id_denuncia=denuncia.id %}" method = "POST" enctype="multipart/form-data" id="myForm">{% csrf_token %}
         {% csrf_token %}

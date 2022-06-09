@@ -52,6 +52,7 @@ class Denuncias(models.Model):
         ("No se puede determinar", "No se puede determinar"),
     )
     ELECCIONES = (
+        ("Consejero Regional", "Consejero Regional"),
         ("Plebiscito", "Plebiscito"),
         ("Primarias Presidencial", "Primarias Presidencial"),
         ("Primarias Parlamentarias", "Primarias Parlamentarias"),
@@ -183,20 +184,17 @@ class Denuncias(models.Model):
         ("Falta de Seriedad", "Falta de Seriedad"),
      )
     ESTADO = (
-        ("INGRESO", "INGRESO"),
-        ("CLASIFICADO", "CLASIFICADO"),
-        ("ENVIADO_JEFE", "ENVIADO_JEFE"),
-        ("GEST_INGRESO_ABOGADO_REALIZADA", "GEST_INGRESO_ABOGADO_REALIZADA"),
-        ("DESACTIVADO_ENVIADO_ABOGADO", "DESACTIVADO_ENVIADO_ABOGADO"),
-        ("ACTIVADA_COMPROBADA_ABOGADO", "ACTIVADA_COMPROBADA_ABOGADO"),
-        ("RESULTADO_ABOGADO_INGRESADO", "RESULTADO_ABOGADO_INGRESADO"),
-        ("RESULTADO_ACEPTADO", "Aceptado"),
-        ("RESULTADO_RECHAZADO", "Rechazado"),
-        ("RESULTADO_ADMINISTRADOR", "Enviado a Administrador"),
-        ("RESULTADO_ABOGADO_DEVUELTO", "Devuelto a Abogado"),
-        ("RESULTADO_FINALIZADO", "Finalizado Administrador"),
-        ("EVALUADO_DR_POSIBLE_FISCALIZAR", "EVALUADO_DR_POSIBLE_FISCALIZAR"),
-        ("EVALUADO_DR_NO_POSIBLE_FISCALIZAR", "EVALUADO_DR_NO_POSIBLE_FISCALIZAR"),
+        ("EVALUADO_DR_POSIBLE_FISCALIZAR","EVALUADO_DR_POSIBLE_FISCALIZAR"),
+        ("ACTIVADO_DESPACHO","ACTIVADO_DESPACHO"),
+        ("ACTIVADA_COMPROBADA_ABOGADO","ACTIVADA_COMPROBADA_ABOGADO"),
+        ("EVALUADO_DR_NO_POSIBLE_FISCALIZAR","EVALUADO_DR_NO_POSIBLE_FISCALIZAR"),
+        ("INGRESO","INGRESO"),
+        ("FISCALIZADO_DR","FISCALIZADO_DR"),
+        ("GEST_INGRESO_ABOGADO_REALIZADA","GEST_INGRESO_ABOGADO_REALIZADA"),
+        ("DEVUELTO_JEFE","DEVUELTO_JEFE"),
+        ("DESACTIVADO_ENVIADO_ABOGADO","DESACTIVADO_ENVIADO_ABOGADO"),
+        ("DESACTIVADO_DESPACHO","DESACTIVADO_DESPACHO"),
+
      )
 
     INFRACCIONES = (
@@ -237,6 +235,7 @@ class Denuncias(models.Model):
         ("P25", "P25"),
         ("P26", "P26"),
         ("G1", "G1"),
+        ("G2", "G2"),
         ("Null", "Null"),
     )
 
@@ -263,6 +262,8 @@ class Denuncias(models.Model):
         ("A20", "A20"),
         ("A21", "A21"),
         ("A22", "A22"),
+        ("A23", "A23"),
+        ("A24", "A24"),
         ("Null", "Null"),
     )
 

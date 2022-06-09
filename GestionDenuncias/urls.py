@@ -4,6 +4,7 @@ from django.urls import path
 from django.urls import include
 from django.contrib.auth.decorators import login_required
 from .views import *
+from GestionRecursos.views import *
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')), #Ok
 
@@ -51,4 +52,10 @@ urlpatterns = [
     path('au/f87/<int:rut>/', login_required(auditor_f87), name='auditor_f87'),
     path('au/f88/<int:rut>/', login_required(auditor_f88), name='auditor_f88'),
 
+#Rutas SAR
+    path('recursos/admin/total/', login_required(admin_recursos_total), name='admin_recursos_total'),
+    path('recursos/admin/asigna/', login_required(admin_recursos_asigna), name='admin_recursos_asigna'),
+    path('recursos/ld/asigna/', login_required(ld_recursos_asigna), name='ld_recursos_asigna'),
+    path('recursos/admin/asignar_recurso/', login_required(asignar_recurso), name='asignar_recurso'),
+    path('recursos/jc/asignar_recurso_lider/', login_required(asignar_recurso_lider), name='asignar_recurso_lider'),
 ]
