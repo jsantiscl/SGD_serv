@@ -24,6 +24,7 @@ class Recursos(models.Model):
         ("AB_elaboracion_Propuesta", "7 -(Rep) Devuelto para Revisión Abogado"),
         ("JC_Validacion ", "8 -(Rep) En Validacion Jefe Celula"),
         ("LD_en_validacion_lider ", "9 -(Rep) En Validacion Lider"),
+        ("JD_en_validacion_jd ", "9.5 -(Rep) En Validacion Jefe Division"),
         ("GD_Subir_sistema_datasoft", "10 -(Rep) Subir a Sistema Datasoft"),
         ("GD_en_firma_director", "11 -(Rep) En Firma Director"),
         ("GD_subida_sge", "12 -(Rep) Subir a SGE"),
@@ -57,7 +58,7 @@ class Recursos(models.Model):
     id = models.AutoField(primary_key=True)
     tipo_recurso = models.CharField(max_length=100, null=True, blank=True)
     eleccion = models.CharField(max_length=100)
-    codigotipo = models.CharField(max_length=15, default="Sin Definir")
+    codigotipo = models.CharField(max_length=50, default="Sin Definir")
     rut = models.IntegerField()
     dv = models.CharField(max_length=1)
     nombre = models.CharField(max_length=200)
@@ -70,6 +71,9 @@ class Recursos(models.Model):
     alta_complejidad = models.BooleanField(default=False)
     celula = models.CharField(max_length=15, choices=Pago, default="Pendiente")
     link_carpeta = models.URLField(max_length=200, null=True, blank=True)
+    tipo_original = models.CharField(max_length=100, null=True, blank=True)
+    presentacion = models.CharField(max_length=100, null=True, blank=True)
+
     def __str__(self):
         return self.nombre
 
