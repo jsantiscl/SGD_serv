@@ -70,6 +70,7 @@ def denuncias_ingreso_mass(request):
                     obj.save()
             finally:
                 os.remove(path)
+                Denuncias.objects.filter(asignacion_dr_id='SIN').update(asignacion_dr_id=None)
         else:
             message = 'Invalid Entries'
     else:
@@ -78,7 +79,7 @@ def denuncias_ingreso_mass(request):
     lista_abogados = Abogados.objects.filter(habilitado=True)
 
     context = {'form': form, 'message': message, 'lista_abogados': lista_abogados}
-    return render(request,'GestionDenuncias/ingreso_masivo.html', context)
+    return render(request, 'GestionDenuncias/ingreso_masivo.html', context)
 
     #return render(request, 'GestionDenuncias/ingreso_masivo.html', context)
 
