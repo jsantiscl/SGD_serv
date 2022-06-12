@@ -9,13 +9,14 @@ class UsersRecursos(models.Model):
     username = models.CharField(max_length=50, default='SIN')
     iniciales = models.CharField(max_length=50, default='NODEFINIDA')
     celula = models.CharField(max_length=50, default='NoDefinida')
+    tipo = models.CharField(max_length=50, default='Auditor_jr')
     def __str__(self):
         return self.nombre
 
 class Recursos(models.Model):
     Estados = (
-        ("LD_asignacion_Lider", "1 -(Rep) En Asignacion Lider"),
-        ("JC_asignacion_jefe_celula", "2 -(Rep) En Asignacion Jefe Celula"),
+        ("LD_asignacion_Lider", "1 -(Rep) En Asignacion Lider"),  # Listo
+        ("JC_asignacion_jefe_celula", "2 -(Rep) En Asignacion Jefe Celula"), # Listo
         ("AU_realizacion_informe_tecnico", "3 -(Rep) Informe Tecnico"),
         ("JC_analisis_caso_jefe_celula", "4 -(Rep) Analisis de Informe Generado"),
         ("ADMIN_devuelto_para_reclasificacion", " 0 - Devuelto para Reclasificacion"),
@@ -76,4 +77,14 @@ class Recursos(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class Bitacora(models.Model):
+    id = models.AutoField(primary_key=True)
+    username = models.ForeignKey(UsersRecursos, on_delete=models.CASCADE, default=None)
+    fecha_inicio = models.DateTimeField(null=True, blank=True)
+    id_recurso = models.ForeignKey(Recursos, on_delete=models.CASCADE, default=None)
+    etapa = models.CharField(max_length=100, null=True, blank=True)
+    def __str__(self):
+        return self.id
 

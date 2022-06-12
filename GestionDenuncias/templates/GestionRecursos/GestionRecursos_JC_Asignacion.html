@@ -62,7 +62,7 @@ $(document).ready(function() {
             <th>Nombre</th>
             <th>Cod. Tipo</th>
             <th>Observaciones</th>
-            <th>Prioridad</th>
+            <th style="text-align: center">Prioridad</th>
             <th>Carpeta</th>
             <th>Asignacion</th>
             <th>Accion</th>
@@ -81,44 +81,18 @@ $(document).ready(function() {
             <td>{{ linea.nombre}}</td>
             <td>{{ linea.codigotipo}}</td>
             <td></td>
-            <td>
-              <select name="prioridad" id="selectorprioridad{{linea.id}}">
-            {% if linea.prioridad == 'Baja' %}
-               <option value="Baja" selected>Baja</option>
-               <option value="Media">Media</option>
-               <option value="Alta">Alta</option>
-             {%  endif %}
-               {% if linea.prioridad == 'Media' %}
-               <option value="Baja">Baja</option>
-               <option value="Media" selected>Media</option>
-               <option value="Alta">Alta</option>
-             {%  endif %}
-                {% if linea.prioridad == 'Alta' %}
-               <option value="Baja">Baja</option>
-               <option value="Media">Media</option>
-               <option value="Alta" selected>Alta</option>
-             {%  endif %}
-                </select>
-
-            </td>
+            <td style="text-align: center">{{ linea.prioridad }}</td>
             <td style="text-align: center"><a href="{{linea.link_carpeta}}" target="_blank">Ver</a></td>
             <td>
-            {% if group.name == 'GestionRecursos_LiderCelulas' %}
+
             <select name="asignacion" id="selectorasignacion{{linea.id}}">
               <option selected value="Pendiente">Pendiente</option>
-              <option value="19116154">Genesis Lopez</option>
-              <option value="12812146">Julissa Lazo</option>
-              <option value="18383521">Carla Arriagada</option>
-              <option value="18535049">Gabriela Rozas</option>
+                {% for auditor in auditores %}
+              <option value={{ auditor.rut }}>{{ auditor.nombre }}</option>
+                {% endfor %}
+
             </select>
-            {% endif %}
-            {% if group.name == 'GestionRecursos_LiderAC' %}
-            <select name="asignacion" id="selectorasignacion{{linea.id}}">
-              <option selected value="Pendiente">Pendiente</option>
-              <option value="15665508">Miguel Baeza</option>
-              <option value="16870114">Stephano Saez</option>
-            </select>
-            {% endif %}
+
             </td>
             <td><a class="btn btn-success" onclick="asignar({{ linea.id }})">Asigna</a></td>
         {% endfor %}
@@ -152,45 +126,38 @@ $(document).ready(function() {
 const csrftoken = getCookie('csrftoken');
 
   function asignar(recurso) {
-  var selector_prioridad = document.getElementById('selectorprioridad'+ recurso);
-  var prioridad_selected = selector_prioridad.options[selector_prioridad.selectedIndex].text;
-
   var selector_asignacion = document.getElementById('selectorasignacion'+ recurso);
   var asignacion_selected = selector_asignacion.options[selector_asignacion.selectedIndex].value;
 
   if (confirm('¿Esta Seguro que Desea Asignar?' + asignacion_selected)) {
   // Save it!
   console.log('Asignar Recurso N°'+ recurso);
-  asignar_recurso(recurso, prioridad_selected, asignacion_selected);
+  asignar_recurso(recurso, asignacion_selected);
 
-setTimeout(() => { return window.location.replace("{% url 'ld_recursos_asigna' %}"); }, 1000);
 } else {
   // Do nothing!
   console.log('No Finalizado Confirmado');
 }
 
+setTimeout(() => {   return window.location.replace("{% url 'jc_recursos_asigna' %}"); }, 1000);
 }
 
   function asignar_individual_masivo(recurso) {
-  var selector_prioridad = document.getElementById('selectorprioridad'+ recurso);
-  var prioridad_selected = selector_prioridad.options[selector_prioridad.selectedIndex].text;
-
   var selector_asignacion = document.getElementById('selectorasignacion'+ recurso);
   var asignacion_selected = selector_asignacion.options[selector_asignacion.selectedIndex].value;
 
   console.log('Asignar Recurso N°'+ recurso);
-  asignar_recurso(recurso, prioridad_selected, asignacion_selected);
+  asignar_recurso(recurso, asignacion_selected);
 }
 
 
-    function asignar_recurso(recurso, prioridad, asignacion) {
+    function asignar_recurso(recurso, asignacion) {
 
         var datos = {
 				'id': recurso,
-                'prioridad': prioridad,
                 'asignacion': asignacion
 			}
-    var url = "/sgd/recursos/jc/asignar_recurso_lider/"
+    var url = "/sgd/recursos/jc/asignar_recurso_jc/"
         fetch(url, {
 	    		method:'POST',
 	    		headers:{
@@ -223,7 +190,7 @@ setTimeout(() => { return window.location.replace("{% url 'ld_recursos_asigna' %
         {% endif %}
         {% endfor %}
   window.alert('Listo');
-  return window.location.replace("{% url 'ld_recursos_asigna' %}")
+  return window.location.replace("{% url 'jc_recursos_asigna' %}")
 } else {
   // Do nothing!
   console.log('No Finalizado Confirmado');

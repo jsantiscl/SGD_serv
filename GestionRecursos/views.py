@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from datetime import datetime
 from django.db.models import Count
-from .models import Recursos
+from .models import Recursos, UsersRecursos, Bitacora
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import JsonResponse
@@ -31,7 +31,17 @@ def ld_recursos_asigna(request):
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_LD_Asignacion.html', context)
 
+def jc_recursos_asigna(request):
+    username_q = request.user.username
+    celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
+    auditores_celula = UsersRecursos.objects.filter(celula__icontains=celula_actual.celula, tipo__icontains="Auditor_jr")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="JC_asignacion_jefe_celula")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': auditores_celula}
+    return render(request,'GestionRecursos/GestionRecursos_JC_Asignacion.html', context)
 
+
+####################################### ABAJO PROCESOS #######################################################
 
 def asignar_recurso(request):
     data = json.loads(request.body)
@@ -91,5 +101,22 @@ def asignar_recurso_lider(request):
             Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
             Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='JC_asignacion_jefe_celula')
             Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='ccac2')
+        Usuario = UsersRecursos.objects.filter(rut=int(data['datos']['asignacion']))[0]
+        Recurso_dato = Recursos.objects.filter(id=int(data['datos']['id']))[0]
+        Bitacora.objects.create(username=Usuario, fecha_inicio=datetime.now(), id_recurso=Recurso_dato, etapa = 'JC_asignacion_jefe_celula' )
+
+    return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)
+
+
+
+def asignar_recurso_jc(request):
+    data = json.loads(request.body)
+    if data['datos']['asignacion'] != 'Pendiente':
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='AU_realizacion_informe_tecnico')
+
+        Usuario = UsersRecursos.objects.filter(rut=int(data['datos']['asignacion']))[0]
+        Recurso_dato = Recursos.objects.filter(id=int(data['datos']['id']))[0]
+        Bitacora.objects.create(username=Usuario, fecha_inicio=datetime.now(), id_recurso=Recurso_dato, etapa = 'AU_realizacion_informe_tecnico' )
 
     return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)

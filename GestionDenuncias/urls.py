@@ -56,6 +56,8 @@ urlpatterns = [
     path('recursos/admin/total/', login_required(admin_recursos_total), name='admin_recursos_total'),
     path('recursos/admin/asigna/', login_required(admin_recursos_asigna), name='admin_recursos_asigna'),
     path('recursos/ld/asigna/', login_required(ld_recursos_asigna), name='ld_recursos_asigna'),
-    path('recursos/admin/asignar_recurso/', login_required(asignar_recurso), name='asignar_recurso'),
-    path('recursos/jc/asignar_recurso_lider/', login_required(asignar_recurso_lider), name='asignar_recurso_lider'),
+    path('recursos/admin/asignar_recurso/', login_required(asignar_recurso), name='asignar_recurso'), #P
+    path('recursos/jc/asignar_recurso_lider/', login_required(asignar_recurso_lider), name='asignar_recurso_lider'), #P
+    path('recursos/jc/asigna/', login_required(jc_recursos_asigna), name='jc_recursos_asigna'),
+    path('recursos/jc/asignar_recurso_jc/', login_required(asignar_recurso_jc), name='asignar_recurso_jc'), #P
 ]
