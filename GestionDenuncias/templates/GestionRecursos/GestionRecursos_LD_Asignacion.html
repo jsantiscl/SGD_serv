@@ -162,6 +162,7 @@ const csrftoken = getCookie('csrftoken');
   // Save it!
   console.log('Asignar Recurso N°'+ recurso);
   asignar_recurso(recurso, prioridad_selected, asignacion_selected);
+  return window.location.replace("{% url 'ld_recursos_asigna' %}");
 
 } else {
   // Do nothing!
@@ -222,6 +223,7 @@ const csrftoken = getCookie('csrftoken');
         {% endif %}
         {% endfor %}
   window.alert('Listo');
+  return window.location.replace("{% url 'ld_recursos_asigna' %}")
 } else {
   // Do nothing!
   console.log('No Finalizado Confirmado');
