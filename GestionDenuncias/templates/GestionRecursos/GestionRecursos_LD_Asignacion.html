@@ -211,9 +211,17 @@ const csrftoken = getCookie('csrftoken');
 
       {% for linea in todasdenuncias %}
         {% if linea.usuario_actual.username == user.get_username %}
-              asignar_individual_masivo({{ linea.id }});
+              try {
+                  console.log({{ linea.id }});
+                  asignar_individual_masivo({{ linea.id }});
+              }
+              catch (e) {
+
+                console.log(e); // pasa el objeto de la excepción al manejador de errores
+                    }
         {% endif %}
         {% endfor %}
+  window.alert('Listo');
 } else {
   // Do nothing!
   console.log('No Finalizado Confirmado');
