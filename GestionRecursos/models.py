@@ -23,14 +23,14 @@ class Recursos(models.Model):
         ("AB_elaboracion_Propuesta", "5 -(Rep) En Elaboracion Propuesta Resolucion"),
         ("ABVAL_revision_propuesta", "6 -(Rep) En Validacion Propuesta Resolucion"),
         ("AB_elaboracion_Propuesta", "7 -(Rep) Devuelto para Revisión Abogado"),
-        ("JC_Validacion ", "8 -(Rep) En Validacion Jefe Celula"),
-        ("LD_en_validacion_lider ", "9 -(Rep) En Validacion Lider"),
+        ("JC_Validacion ", "8 -(Rep) En Validacion Jefe Celula"),  #cambiar fase anterior
+        ("LD_en_validacion_lider ", "9 -(Rep) En Validacion Lider"),   #Que quede el Final
         ("JD_en_validacion_jd ", "9.5 -(Rep) En Validacion Jefe Division"),
-        ("GD_Subir_sistema_datasoft", "10 -(Rep) Subir a Sistema Datasoft"),
+        ("GD_Subir_sistema_datasoft", "10 -(Rep) Subir a Sistema Datasoft"), #Lo Debe pasar a PDF
         ("GD_en_firma_director", "11 -(Rep) En Firma Director"),
         ("GD_subida_sge", "12 -(Rep) Subir a SGE"),
         ("fin_proceso_finalizado", "99 - Proceso Finalizado"),  #Aca llegan por flujo si son Reposicion // Evento Terminal de todos
-        ("LD_AC_Analisis_rep_subsidio", "13 - Analisis Reposicion con Subsidio Reclamación"),   #Analisis Repo con Subsidio, tiene 2 opciones aprueba pasa a 99 y rechaza sigue el flujo
+        ("LD_AC_Analisis_rep_subsidio", "13 - Analisis Reposicion con Subsidio Reclamación"),   #Analisis Repo con Subsidio, tiene 2 opciones aprueba pasa a 99 y rechaza sigue el flujo #Natalia Nuñez
         ("XV_generacion_y_firma_reso_y_expediente", "1 -(Rec) Generacion y Firma Resolucion y Expediente"), #Si es Reclamacion este es el primer paso
         ("XV_enviar_tricel", "2 -(Rec) Envío a Tricel"),
         ("XV_monitoreo", "3 -(Rec) Monitoreo Sentencia"),
