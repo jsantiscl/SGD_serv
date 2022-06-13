@@ -60,4 +60,6 @@ urlpatterns = [
     path('recursos/jc/asignar_recurso_lider/', login_required(asignar_recurso_lider), name='asignar_recurso_lider'), #P
     path('recursos/jc/asigna/', login_required(jc_recursos_asigna), name='jc_recursos_asigna'),
     path('recursos/jc/asignar_recurso_jc/', login_required(asignar_recurso_jc), name='asignar_recurso_jc'), #P
+    path('recursos/au/informe_tecnico/', login_required(au_informe_tecnico), name='au_informe_tecnico'),
+    path('recursos/au/pasar/', login_required(au_pasar_etapa), name='au_pasar_etapa'),  # P
 ]

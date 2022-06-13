@@ -59,7 +59,7 @@ $(document).ready(function() {
             <th>Observaciones</th>
             <th style="text-align: center">Prioridad</th>
             <th>Carpeta</th>
-            <th>Asignacion</th>
+            <th>Seleccionar</th>
             <th>Accion</th>
         </tr>
             </thead>
@@ -89,7 +89,7 @@ $(document).ready(function() {
             </select>
 
             </td>
-            <td><a class="btn btn-success" onclick="asignar({{ linea.id }})">Asigna</a></td>
+            <td><a class="btn btn-success" onclick="pasar({{ linea.id }})">Finalizar</a></td>
         {% endfor %}
               {% endif %}
         {% endfor %}
@@ -120,11 +120,12 @@ $(document).ready(function() {
 }
 const csrftoken = getCookie('csrftoken');
 
-  function asignar(recurso) {
+  function pasar(recurso) {
   var selector_asignacion = document.getElementById('selectorasignacion'+ recurso);
   var asignacion_selected = selector_asignacion.options[selector_asignacion.selectedIndex].value;
 
-  if (confirm('¿Esta Seguro que Desea Asignar?' + asignacion_selected)) {
+  if (asignacion_selected != 'Pendiente') {
+  if (confirm('¿Esta Seguro que Desea Finalizar y Päsar a la Siguiente Etapa?')) {
   // Save it!
   console.log('Asignar Recurso N°'+ recurso);
   asignar_recurso(recurso, asignacion_selected);
@@ -133,26 +134,21 @@ const csrftoken = getCookie('csrftoken');
   // Do nothing!
   console.log('No Finalizado Confirmado');
 }
+  setTimeout(() => {   return window.location.replace("{% url 'au_informe_tecnico' %}"); }, 1000);
+  } else {
+        window.alert('Seleccione al Siguiente Usuario');
+  }
 
-setTimeout(() => {   return window.location.replace("{% url 'jc_recursos_asigna' %}"); }, 1000);
 }
-
-  function asignar_individual_masivo(recurso) {
-  var selector_asignacion = document.getElementById('selectorasignacion'+ recurso);
-  var asignacion_selected = selector_asignacion.options[selector_asignacion.selectedIndex].value;
-
-  console.log('Asignar Recurso N°'+ recurso);
-  asignar_recurso(recurso, asignacion_selected);
-}
-
 
     function asignar_recurso(recurso, asignacion) {
 
         var datos = {
 				'id': recurso,
-                'asignacion': asignacion
+                'asignacion': asignacion,
+                'etapa': 'JC_analisis_caso_jefe_celula'
 			}
-    var url = "/sgd/recursos/jc/asignar_recurso_jc/"
+    var url = "/sgd/recursos/au/pasar/"
         fetch(url, {
 	    		method:'POST',
 	    		headers:{
@@ -166,36 +162,7 @@ setTimeout(() => {   return window.location.replace("{% url 'jc_recursos_asigna'
             .then((response) => response.json())
       }
 
-      function asignar_todos() {
-
-  if (confirm('¿Esta Seguro que Desea Asignar Todos los Modificados?')) {
-  // Save it!
-  console.log('Asignar Recurso N°');
-
-      {% for linea in todasdenuncias %}
-        {% if linea.usuario_actual.username == user.get_username %}
-              try {
-                  console.log({{ linea.id }});
-                  asignar_individual_masivo({{ linea.id }});
-              }
-              catch (e) {
-
-                console.log(e); // pasa el objeto de la excepción al manejador de errores
-                    }
-        {% endif %}
-        {% endfor %}
-  window.alert('Listo');
-  return window.location.replace("{% url 'jc_recursos_asigna' %}")
-} else {
-  // Do nothing!
-  console.log('No Finalizado Confirmado');
-}}
-
-
-
-
-
-    </script>
+  </script>
 
 
 {% endblock %}

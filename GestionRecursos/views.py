@@ -41,6 +41,16 @@ def jc_recursos_asigna(request):
     return render(request,'GestionRecursos/GestionRecursos_JC_Asignacion.html', context)
 
 
+def au_informe_tecnico(request):
+    username_q = request.user.username
+    celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
+    auditores_celula = UsersRecursos.objects.filter(celula__iexact=celula_actual.celula, tipo__icontains="Jefe Celula")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="AU_realizacion_informe_tecnico")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': auditores_celula}
+    return render(request,'GestionRecursos/GestionRecursos_AU_InformeTecnico.html', context)
+
+
 ####################################### ABAJO PROCESOS #######################################################
 
 def asignar_recurso(request):
@@ -118,5 +128,18 @@ def asignar_recurso_jc(request):
         Usuario = UsersRecursos.objects.filter(rut=int(data['datos']['asignacion']))[0]
         Recurso_dato = Recursos.objects.filter(id=int(data['datos']['id']))[0]
         Bitacora.objects.create(username=Usuario, fecha_inicio=datetime.now(), id_recurso=Recurso_dato, etapa = 'AU_realizacion_informe_tecnico' )
+
+    return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)
+
+
+def au_pasar_etapa(request):
+    data = json.loads(request.body)
+    if data['datos']['asignacion'] != 'Pendiente':
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(estado=str(data['datos']['etapa']))
+
+        Usuario = UsersRecursos.objects.filter(rut=int(data['datos']['asignacion']))[0]
+        Recurso_dato = Recursos.objects.filter(id=int(data['datos']['id']))[0]
+        Bitacora.objects.create(username=Usuario, fecha_inicio=datetime.now(), id_recurso=Recurso_dato, etapa=str(data['datos']['etapa']))
 
     return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)
