@@ -50,6 +50,14 @@ def au_informe_tecnico(request):
     context = {'todasdenuncias': denuncia_obj_3, 'auditores': auditores_celula}
     return render(request,'GestionRecursos/GestionRecursos_AU_InformeTecnico.html', context)
 
+def jc_valida_informe_tecnico(request):
+    username_q = request.user.username
+    celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
+    abogados_celula = UsersRecursos.objects.filter(celula__iexact=celula_actual.celula, tipo__icontains="Abogado_C")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="JC_analisis_caso_jefe_celula")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    return render(request,'GestionRecursos/GestionRecursos_JC_Validacion_Informe_Tecnico.html', context)
 
 ####################################### ABAJO PROCESOS #######################################################
 
