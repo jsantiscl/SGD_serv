@@ -15,23 +15,23 @@ class UsersRecursos(models.Model):
 
 class Recursos(models.Model):
     Estados = (
-        ("LD_asignacion_Lider", "1 -(Rep) En Asignacion Lider"),  # Listo
-        ("JC_asignacion_jefe_celula", "2 -(Rep) En Asignacion Jefe Celula"), # Listo
+        ("LD_asignacion_Lider", "1 -(Rep) En Asignacion Lider"),
+        ("JC_asignacion_jefe_celula", "2 -(Rep) En Asignacion Jefe Celula"),
         ("AU_realizacion_informe_tecnico", "3 -(Rep) Informe Tecnico"),
         ("JC_analisis_caso_jefe_celula", "4 -(Rep) Analisis de Informe Generado"),
         ("ADMIN_devuelto_para_reclasificacion", " 0 - Devuelto para Reclasificacion"),
         ("AB_elaboracion_Propuesta", "5 -(Rep) En Elaboracion Propuesta Resolucion"),
-        ("ABVAL_revision_propuesta", "6 -(Rep) En Validacion Propuesta Resolucion"),
-        ("AB_elaboracion_Propuesta", "7 -(Rep) Devuelto para Revisión Abogado"),
-        ("JC_Validacion ", "8 -(Rep) En Validacion Jefe Celula"),  #cambiar fase anterior
-        ("LD_en_validacion_lider ", "9 -(Rep) En Validacion Lider"),   #Que quede el Final
-        ("JD_en_validacion_jd ", "9.5 -(Rep) En Validacion Jefe Division"),
-        ("GD_Subir_sistema_datasoft", "10 -(Rep) Subir a Sistema Datasoft"), #Lo Debe pasar a PDF
+        ("JC_Validacion ", "6 -(Rep) En Validacion Jefe Celula"),  # cambiar fase anterior
+        ("ABVAL_revision_propuesta", "7 -(Rep) En Validacion Propuesta Resolucion"),
+        ("AB_elaboracion_Propuesta", "8 -(Rep) Devuelto para Revisión Abogado"),
+        ("LD_en_validacion_lider ", "9 -(Rep) En Validacion Lider"),
+        ("JD_en_validacion_jd ", "9.5 -(Rep) En Validacion Jefe Division"), #Agregar etapa subdirector
+        ("GD_Subir_sistema_datasoft", "10 -(Rep) Subir a Sistema Datasoft"),  #Lo Debe pasar a PDF
         ("GD_en_firma_director", "11 -(Rep) En Firma Director"),
         ("GD_subida_sge", "12 -(Rep) Subir a SGE"),
         ("fin_proceso_finalizado", "99 - Proceso Finalizado"),  #Aca llegan por flujo si son Reposicion // Evento Terminal de todos
-        ("LD_AC_Analisis_rep_subsidio", "13 - Analisis Reposicion con Subsidio Reclamación"),   #Analisis Repo con Subsidio, tiene 2 opciones aprueba pasa a 99 y rechaza sigue el flujo #Natalia Nuñez
-        ("XV_generacion_y_firma_reso_y_expediente", "1 -(Rec) Generacion y Firma Resolucion y Expediente"), #Si es Reclamacion este es el primer paso
+        ("LD_AC_Analisis_rep_subsidio", "13 - Analisis Reposicion con Subsidio Reclamación"),  #Analisis Repo con Subsidio, tiene 2 opciones aprueba pasa a 99 y rechaza sigue el flujo #Natalia Nuñez
+        ("XV_generacion_y_firma_reso_y_expediente", "1 -(Rec) Generacion y Firma Resolucion y Expediente"),  #Si es Reclamacion este es el primer paso
         ("XV_enviar_tricel", "2 -(Rec) Envío a Tricel"),
         ("XV_monitoreo", "3 -(Rec) Monitoreo Sentencia"),
         ("ABDV_remitir_abogado", "4 -(Rec) Con Sentencia en Revision Abogado"),
@@ -53,8 +53,8 @@ class Recursos(models.Model):
         ("c2", "c2"),
         ("c3", "c3"),
         ("c4", "c4"),
-        ("ccac1", "ccac1"),
-        ("ccac2", "ccac2"),
+        ("ccac_1", "ccac_1"),
+        ("ccac_2", "ccac_2"),
     )
     id = models.AutoField(primary_key=True)
     tipo_recurso = models.CharField(max_length=100, null=True, blank=True)

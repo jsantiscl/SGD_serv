@@ -60,6 +60,7 @@ $(document).ready(function() {
             <th>Estado</th>
             <th>Cod. Tipo</th>
             <th>Usuario Actual</th>
+            <th>Carpeta</th>
         </tr>
             </thead>
     <tbody>
@@ -77,6 +78,7 @@ $(document).ready(function() {
             <td>{{ linea.estado}}</td>
             <td>{{ linea.codigotipo}}</td>
             <td>{{ linea.usuario_actual.nombre}}</td>
+            <td style="text-align: center"><a href="{{linea.link_carpeta}}" target="_blank">Ver</a></td>
 
         {% endfor %}
     </tbody>

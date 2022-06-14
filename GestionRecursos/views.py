@@ -105,12 +105,12 @@ def asignar_recurso_lider(request):
             Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
             Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
             Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='JC_asignacion_jefe_celula')
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='ccac1')
+            Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='ccac_1')
         if data['datos']['asignacion'] == '16870114':
             Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
             Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
             Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='JC_asignacion_jefe_celula')
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='ccac2')
+            Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='ccac_2')
         Usuario = UsersRecursos.objects.filter(rut=int(data['datos']['asignacion']))[0]
         Recurso_dato = Recursos.objects.filter(id=int(data['datos']['id']))[0]
         Bitacora.objects.create(username=Usuario, fecha_inicio=datetime.now(), id_recurso=Recurso_dato, etapa = 'JC_asignacion_jefe_celula' )
