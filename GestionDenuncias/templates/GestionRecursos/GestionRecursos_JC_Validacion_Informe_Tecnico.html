@@ -56,7 +56,8 @@ $(document).ready(function() {
             <th>Dv</th>
             <th>Nombre</th>
             <th>Cod. Tipo</th>
-            <th>Observaciones</th>
+            <th>Fecha Resolucion</th>
+            <th>Fecha Recurso</th>
             <th style="text-align: center">Prioridad</th>
             <th>Carpeta</th>
             <th>Asignacion</th>
@@ -67,7 +68,7 @@ $(document).ready(function() {
         {% load humanize %}
         {% for linea in todasdenuncias %}
         {% if linea.usuario_actual.username == user.get_username %}
-        {% for group in user.groups.all %}
+
         <tr>
             <td>{{ linea.tipo_recurso}}</td>
             <td>{{ linea.eleccion}}</td>
@@ -75,7 +76,8 @@ $(document).ready(function() {
             <td>{{ linea.dv}}</td>
             <td>{{ linea.nombre}}</td>
             <td>{{ linea.codigotipo}}</td>
-            <td></td>
+            <td>{{ linea.fecha_resolucion|date:'d-m-Y' }}</td>
+            <td>{{ linea.fecha_recurso|date:'d-m-Y'  }}</td>
             <td style="text-align: center">{{ linea.prioridad }}</td>
             <td style="text-align: center"><a href="{{linea.link_carpeta}}" target="_blank">Ver</a></td>
             <td>
@@ -90,7 +92,7 @@ $(document).ready(function() {
 
             </td>
             <td><a class="btn btn-success" onclick="asignar({{ linea.id }})">Finaliza</a></td>
-        {% endfor %}
+
               {% endif %}
         {% endfor %}
     </tbody>

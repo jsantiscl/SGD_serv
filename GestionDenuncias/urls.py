@@ -63,4 +63,7 @@ urlpatterns = [
     path('recursos/au/informe_tecnico/', login_required(au_informe_tecnico), name='au_informe_tecnico'),
     path('recursos/au/pasar/', login_required(au_pasar_etapa), name='au_pasar_etapa'),  # P
     path('recursos/jc/valida_informe_tecnico/', login_required(jc_valida_informe_tecnico), name='jc_valida_informe_tecnico'),
+    path('recursos/ab/ab_elabora_propuesta/', login_required(ab_elabora_propuesta), name='ab_elabora_propuesta'),
+    path('recursos/jc/valida_propuesta/', login_required(jc_valida_propuesta), name='jc_valida_propuesta'),
+    path('recursos/ab/valida_propuesta/', login_required(ab_valida_propuesta), name='ab_valida_propuesta'),
 ]

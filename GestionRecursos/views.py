@@ -59,6 +59,45 @@ def jc_valida_informe_tecnico(request):
     context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
     return render(request,'GestionRecursos/GestionRecursos_JC_Validacion_Informe_Tecnico.html', context)
 
+def ab_elabora_propuesta(request):
+    username_q = request.user.username
+    celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
+    abogados_celula = UsersRecursos.objects.filter(celula__iexact=celula_actual.celula, tipo__icontains="Jefe Celula")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="AB_elaboracion_Propuesta")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    return render(request,'GestionRecursos/GestionRecursos_AB_ElaboracionPropuesta.html', context)
+
+def jc_valida_propuesta(request):
+    username_q = request.user.username
+    celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
+    if celula_actual.celula == 'c1' or celula_actual.celula == 'c2' or celula_actual.celula == 'c3' or celula_actual.celula == 'c4':
+        abogados_celula = UsersRecursos.objects.filter(celula__iexact=celula_actual.celula, tipo__icontains="Jefe Celula")
+        #Aca en icontains pongo el filtro con el metodo icontains que es un like
+        denuncia_obj_3 = Recursos.objects.filter(estado__icontains="JC_Validacion")
+    else:
+        abogados_celula = UsersRecursos.objects.filter(celula__iexact="ab_validaAc", tipo__icontains="ab_validaAc")
+        #Aca en icontains pongo el filtro con el metodo icontains que es un like
+        denuncia_obj_3 = Recursos.objects.filter(estado__icontains="JC_Validacion")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    return render(request,'GestionRecursos/GestionRecursos_JC_ValidaPropuesta.html', context)
+
+def ab_valida_propuesta(request):
+    username_q = request.user.username
+    celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
+
+    if celula_actual.celula == 'c1' or celula_actual.celula == 'c2' or celula_actual.celula == 'c3' or celula_actual.celula == 'c4' or celula_actual.celula == 'ab_valida':
+        abogados_celula = UsersRecursos.objects.filter(celula__iexact='NoDefinida', tipo__icontains="LiderC")
+        #Aca en icontains pongo el filtro con el metodo icontains que es un like
+        denuncia_obj_3 = Recursos.objects.filter(estado__icontains="ABVAL_revision_propuesta")
+    else:
+        abogados_celula = UsersRecursos.objects.filter(celula__iexact='NoDefinida', tipo__icontains="LiderAC")
+        #Aca en icontains pongo el filtro con el metodo icontains que es un like
+        denuncia_obj_3 = Recursos.objects.filter(estado__icontains="ABVAL_revision_propuesta")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    return render(request,'GestionRecursos/GestionRecursos_ABVAL_ValidacionPropuesta.html', context)
+
+
 ####################################### ABAJO PROCESOS #######################################################
 
 def asignar_recurso(request):

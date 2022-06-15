@@ -72,7 +72,7 @@ $(document).ready(function() {
         {% load humanize %}
         {% for linea in todasdenuncias %}
         {% if linea.usuario_actual.username == user.get_username %}
-        {% for group in user.groups.all %}
+
         <tr>
             <td>{{ linea.tipo_recurso}}</td>
             <td>{{ linea.eleccion}}</td>
@@ -103,7 +103,7 @@ $(document).ready(function() {
             </td>
             <td style="text-align: center"><a href="{{linea.link_carpeta}}" target="_blank">Ver</a></td>
             <td>
-            {% if group.name == 'GestionRecursos_LiderCelulas' %}
+            {% if request.user.username == 'jgallardo' %}
             <select name="asignacion" id="selectorasignacion{{linea.id}}">
               <option selected value="Pendiente">Pendiente</option>
               <option value="19116154">Genesis Lopez</option>
@@ -112,7 +112,7 @@ $(document).ready(function() {
               <option value="18535049">Gabriela Rozas</option>
             </select>
             {% endif %}
-            {% if group.name == 'GestionRecursos_LiderAC' %}
+            {% if request.user.username == 'eparedes'  %}
             <select name="asignacion" id="selectorasignacion{{linea.id}}">
               <option selected value="Pendiente">Pendiente</option>
               <option value="15665508">Miguel Baeza</option>
@@ -121,7 +121,7 @@ $(document).ready(function() {
             {% endif %}
             </td>
             <td><a class="btn btn-success" onclick="asignar({{ linea.id }})">Asigna</a></td>
-        {% endfor %}
+
               {% endif %}
         {% endfor %}
     </tbody>
