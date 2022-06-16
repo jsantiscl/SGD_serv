@@ -97,6 +97,12 @@ def ab_valida_propuesta(request):
     context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
     return render(request,'GestionRecursos/GestionRecursos_ABVAL_ValidacionPropuesta.html', context)
 
+def formatosydocumentos(request):
+
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    context = {}
+    return render(request,'GestionRecursos/GestionRecursos_FormatosyDocumentos.html', context)
+
 
 ####################################### ABAJO PROCESOS #######################################################
 
