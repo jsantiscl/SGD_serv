@@ -70,4 +70,10 @@ urlpatterns = [
     path('recursos/ld/valida_propuesta/', login_required(ld_valida_propuesta), name='ld_valida_propuesta'),
     path('recursos/jd/valida_propuesta/', login_required(jd_valida_propuesta), name='jd_valida_propuesta'),
     path('recursos/sd/valida_propuesta/', login_required(sd_valida_propuesta), name='sd_valida_propuesta'),
+    path('recursos/xv/genera_expediente/', login_required(xv_genera_expediente), name='xv_genera_expediente'),
+    path('recursos/xv/envia_tricel/', login_required(xv_envia_tricel), name='xv_envia_tricel'),
+    path('recursos/xv/monitoreo_sentencia/', login_required(xv_monitoreo_sentencia), name='xv_monitoreo_sentencia'),
+    path('recursos/gd/subir_a_firma/', login_required(gd_subir_a_firma), name='gd_subir_a_firma'),
+    path('recursos/gd/en_firma_director/', login_required(gd_en_firma_director), name='gd_en_firma_director'),
+    path('recursos/eb/pagos/', login_required(fin_revision_pagos), name='fin_revision_pagos'),
 ]

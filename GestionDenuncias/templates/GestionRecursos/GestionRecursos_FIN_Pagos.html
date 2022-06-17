@@ -45,7 +45,7 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
-<h3>Generacion y Firma Resolucion y Expediente</h3>
+<h3>Revision Pagos Resoluciones</h3>
 
     <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
     <thead>
@@ -84,9 +84,8 @@ $(document).ready(function() {
 
             <select name="asignacion" id="selectorasignacion{{linea.id}}">
               <option selected value="Pendiente">Pendiente</option>
-                {% for auditor in auditores %}
-              <option value={{ auditor.rut }}>{{ auditor.nombre }}</option>
-                {% endfor %}
+              <option value="Con Pago">Con Pago</option>
+              <option value="Sin Pago">Con Pago</option>
 
             </select>
 
@@ -150,7 +149,7 @@ const csrftoken = getCookie('csrftoken');
         var datos = {
 				'id': recurso,
                 'asignacion': asignacion,
-                'etapa': 'XV_enviar_tricel'
+                'etapa': 'ABDV_remitir_abogado'
 			}
     var url = "/sgd/recursos/au/pasar/"
         fetch(url, {

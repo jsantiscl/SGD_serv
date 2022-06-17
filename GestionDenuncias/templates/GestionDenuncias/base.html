@@ -185,9 +185,9 @@
                                      <div class="w3-dropdown-hover">
       <button class="w3-button">Bandejas Reclamacion</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
-          <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">1 Generacion y Firma Resolucion y Expediente</a>
-        <a href="{% url 'admin_recursos_asigna' %}" class="w3-bar-item w3-button">2 Envío a Tricel</a>
-          <a href="{% url 'auditor_avance_celula' %}" class="w3-bar-item w3-button">3 Monitoreo Sentencias</a>
+          <a href="{% url 'xv_genera_expediente' %}" class="w3-bar-item w3-button">1 Generacion y Firma Resolucion y Expediente</a>
+          <a href="{% url 'xv_envia_tricel' %}" class="w3-bar-item w3-button">2 Envío a Tricel</a>
+          <a href="{% url 'xv_monitoreo_sentencia' %}" class="w3-bar-item w3-button">3 Monitoreo Sentencias</a>
           <a href="{% url 'auditor_avance_general' %}" class="w3-bar-item w3-button">4 Registro Final</a>
             </div>
       </div>
@@ -255,6 +255,29 @@
             </div>
       </div>
          {% endif %}
+
+                       {% if group.name == 'GestionRecursos_GestorDocumentos' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Bandejas Firma</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="{% url 'gd_subir_a_firma' %}" class="w3-bar-item w3-button">1 Subir a Firma</a>
+          <a href="{% url 'gd_en_firma_director' %}" class="w3-bar-item w3-button">2 En Firma Director</a>
+
+            </div>
+      </div>
+         {% endif %}
+
+                                       {% if group.name == 'GestionRecursos_Financiamiento' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Bandejas</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
+          <a href="{% url 'fin_revision_pagos' %}" class="w3-bar-item w3-button">Revision Pagos</a>
+
+            </div>
+      </div>
+         {% endif %}
+
 
         {% endfor %}
          {% if user.is_staff %}

@@ -45,7 +45,7 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
-<h3>Generacion y Firma Resolucion y Expediente</h3>
+<h3>Monitoreo Sentencia</h3>
 
     <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
     <thead>
@@ -150,7 +150,7 @@ const csrftoken = getCookie('csrftoken');
         var datos = {
 				'id': recurso,
                 'asignacion': asignacion,
-                'etapa': 'XV_enviar_tricel'
+                'etapa': 'ABDV_remitir_abogado'
 			}
     var url = "/sgd/recursos/au/pasar/"
         fetch(url, {
