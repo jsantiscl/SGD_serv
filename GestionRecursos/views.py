@@ -103,6 +103,26 @@ def formatosydocumentos(request):
     context = {}
     return render(request,'GestionRecursos/GestionRecursos_FormatosyDocumentos.html', context)
 
+def ld_valida_propuesta(request):
+    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="JefeDivision")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="LD_en_validacion_lider")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    return render(request,'GestionRecursos/GestionRecursos_LD_ValidacionPropuesta.html', context)
+
+def jd_valida_propuesta(request):
+    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Subdirector")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="JD_en_validacion_jd")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    return render(request,'GestionRecursos/GestionRecursos_JD_ValidacionPropuesta.html', context)
+
+def sd_valida_propuesta(request):
+    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="SD_en_validacion_sd")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    return render(request,'GestionRecursos/GestionRecursos_SD_ValidacionPropuesta.html', context)
 
 ####################################### ABAJO PROCESOS #######################################################
 

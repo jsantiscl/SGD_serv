@@ -25,7 +25,8 @@ class Recursos(models.Model):
         ("ABVAL_revision_propuesta", "7 -(Rep) En Validacion Propuesta Resolucion"),
         ("AB_elaboracion_Propuesta", "8 -(Rep) Devuelto para Revisión Abogado"),
         ("LD_en_validacion_lider ", "9 -(Rep) En Validacion Lider"),
-        ("JD_en_validacion_jd ", "9.5 -(Rep) En Validacion Jefe Division"), #Agregar etapa subdirector
+        ("JD_en_validacion_jd ", "9.5 -(Rep) En Validacion Jefe Division"),
+        ("SD_en_validacion_sd ", "9.9 -(Rep) En Validacion Subdirector"),
         ("GD_Subir_sistema_datasoft", "10 -(Rep) Subir a Sistema Datasoft"),  #Lo Debe pasar a PDF
         ("GD_en_firma_director", "11 -(Rep) En Firma Director"),
         ("GD_subida_sge", "12 -(Rep) Subir a SGE"),

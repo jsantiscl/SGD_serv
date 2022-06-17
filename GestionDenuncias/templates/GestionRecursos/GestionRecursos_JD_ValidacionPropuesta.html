@@ -46,7 +46,10 @@ $(document).ready(function() {
 
 <section class="section1">
 <h3>Validacion Propuesta Resolucion</h3>
+<div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
+    <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" onclick="asignar_todos()">Finalizar Seleccionados</button></td>
 
+</div>
     <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
     <thead>
         <tr>
@@ -68,7 +71,7 @@ $(document).ready(function() {
         {% load humanize %}
         {% for linea in todasdenuncias %}
         {% if linea.usuario_actual.username == user.get_username %}
-        
+
         <tr>
             <td>{{ linea.tipo_recurso}}</td>
             <td>{{ linea.eleccion}}</td>
@@ -138,7 +141,7 @@ const csrftoken = getCookie('csrftoken');
   // Do nothing!
   console.log('No Finalizado Confirmado');
 }
-  setTimeout(() => {   return window.location.replace("{% url 'ab_valida_propuesta' %}"); }, 1000);
+  setTimeout(() => {   return window.location.replace("{% url 'jd_valida_propuesta' %}"); }, 1000);
   } else {
         window.alert('Seleccione al Siguiente Usuario');
   }
@@ -150,7 +153,7 @@ const csrftoken = getCookie('csrftoken');
         var datos = {
 				'id': recurso,
                 'asignacion': asignacion,
-                'etapa': 'LD_en_validacion_lider'
+                'etapa': 'SD_en_validacion_sd'
 			}
     var url = "/sgd/recursos/au/pasar/"
         fetch(url, {
@@ -165,6 +168,38 @@ const csrftoken = getCookie('csrftoken');
 	    	})
             .then((response) => response.json())
       }
+
+  function asignar_individual_masivo(recurso) {
+  var selector_asignacion = document.getElementById('selectorasignacion'+ recurso);
+  var asignacion = selector_asignacion.options[selector_asignacion.selectedIndex].value;
+
+  console.log('Asignar Recurso N°'+ recurso);
+  asignar_recurso(recurso, asignacion);
+}
+      function asignar_todos() {
+
+  if (confirm('¿Esta Seguro que Desea Asignar Todos los Modificados?')) {
+  // Save it!
+  console.log('Asignar Recurso N°');
+
+      {% for linea in todasdenuncias %}
+        {% if linea.usuario_actual.username == user.get_username %}
+              try {
+                  console.log({{ linea.id }});
+                  asignar_individual_masivo({{ linea.id }});
+              }
+              catch (e) {
+
+                console.log(e); // pasa el objeto de la excepción al manejador de errores
+                    }
+        {% endif %}
+        {% endfor %}
+  window.alert('Listo');
+  return window.location.replace("{% url 'jd_valida_propuesta' %}")
+} else {
+  // Do nothing!
+  console.log('No Finalizado Confirmado');
+}}
 
   </script>
 

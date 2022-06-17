@@ -67,4 +67,7 @@ urlpatterns = [
     path('recursos/jc/valida_propuesta/', login_required(jc_valida_propuesta), name='jc_valida_propuesta'),
     path('recursos/ab/valida_propuesta/', login_required(ab_valida_propuesta), name='ab_valida_propuesta'),
     path('recursos/ab/documentos/', login_required(formatosydocumentos), name='formatosydocumentos'),
+    path('recursos/ld/valida_propuesta/', login_required(ld_valida_propuesta), name='ld_valida_propuesta'),
+    path('recursos/jd/valida_propuesta/', login_required(jd_valida_propuesta), name='jd_valida_propuesta'),
+    path('recursos/sd/valida_propuesta/', login_required(sd_valida_propuesta), name='sd_valida_propuesta'),
 ]
