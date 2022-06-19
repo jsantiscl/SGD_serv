@@ -132,6 +132,7 @@
           <a href="{% url 'auditor_avance_celula' %}" class="w3-bar-item w3-button">Avance Celulas</a>
           <a href="{% url 'auditor_avance_general' %}" class="w3-bar-item w3-button">Avance General</a>
            <a href="{% url 'auditor_indicadores' %}" class="w3-bar-item w3-button">Reporte</a>
+          <a href="{% url 'reporte_vista' %}" class="w3-bar-item w3-button">Reporte</a>
           <a href="{% url 'formatosydocumentos' %}" class="w3-bar-item w3-button">Formatos y Documentos</a>
             </div>
       </div>
@@ -164,7 +165,7 @@
       <button class="w3-button">Bandejas</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'ld_recursos_asigna' %}" class="w3-bar-item w3-button">Bandeja Asignacion</a>
-          <a href="{% url 'admin_recursos_asigna' %}" class="w3-bar-item w3-button">Validacion Propuesta Resolucion</a>
+          <a href="{% url 'ld_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Resolucion Lider</a>
           <a href="{% url 'auditor_avance_celula' %}" class="w3-bar-item w3-button">Avance Celulas</a>
           <a href="{% url 'auditor_avance_general' %}" class="w3-bar-item w3-button">Avance General</a>
            <a href="{% url 'auditor_indicadores' %}" class="w3-bar-item w3-button">Reporte</a>
@@ -231,7 +232,7 @@
                                      <div class="w3-dropdown-hover">
       <button class="w3-button">Bandejas Validacion</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
-          <a href="{% url 'ab_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta</a>
+          <a href="{% url 'ab_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Abogado Validador</a>
             </div>
       </div>
          {% endif %}
@@ -242,6 +243,7 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
                 <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
                 <a href="{% url 'jd_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Resolucion</a>
+             <a href="{% url 'reporte_vista' %}" class="w3-bar-item w3-button">Reporte</a>
             </div>
       </div>
          {% endif %}
@@ -252,7 +254,8 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
                 <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
                 <a href="{% url 'sd_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Resolucion</a>
-            </div>
+                <a href="{% url 'reporte_vista' %}" class="w3-bar-item w3-button">Reporte</a>
+      </div>
       </div>
          {% endif %}
 
