@@ -23,7 +23,7 @@ class Recursos(models.Model):
         ("AB_elaboracion_Propuesta", "5 -(Rep) En Elaboracion Propuesta Resolucion"),
         ("JC_Validacion ", "6 -(Rep) En Validacion Jefe Celula"),  # cambiar fase anterior
         ("ABVAL_revision_propuesta", "7 -(Rep) En Validacion Propuesta Resolucion"),
-        ("AB_elaboracion_Propuesta", "8 -(Rep) Devuelto para Revisión Abogado"),
+        ("AB_elaboracion_Propuesta_devuelto", "8 -(Rep) Devuelto para Revisión Abogado"),
         ("LD_en_validacion_lider ", "9 -(Rep) En Validacion Lider"),
         ("JD_en_validacion_jd ", "9.5 -(Rep) En Validacion Jefe Division"),
         ("SD_en_validacion_sd ", "9.9 -(Rep) En Validacion Subdirector"),
@@ -89,4 +89,10 @@ class Bitacora(models.Model):
     etapa = models.CharField(max_length=100, null=True, blank=True)
     def __str__(self):
         return self.id
+
+class DescripcionEstado(models.Model):
+    nombre = models.CharField(max_length=200, primary_key=True)
+    descripcion = models.CharField(max_length=100, null=True, blank=True)
+    def __str__(self):
+        return self.nombre
 
