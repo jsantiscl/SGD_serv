@@ -77,4 +77,5 @@ urlpatterns = [
     path('recursos/gd/en_firma_director/', login_required(gd_en_firma_director), name='gd_en_firma_director'),
     path('recursos/eb/pagos/', login_required(fin_revision_pagos), name='fin_revision_pagos'),
     path('recursos/reporte/', login_required(reporte_vista), name='reporte_vista'),
+    path('recursos/envio_correo/', login_required(enviar_correo), name='enviar_correo'),
 ]

@@ -175,6 +175,7 @@ const csrftoken = getCookie('csrftoken');
 
   console.log('Asignar Recurso N°'+ recurso);
   asignar_recurso(recurso, asignacion);
+
 }
       function asignar_todos() {
 
@@ -194,12 +195,34 @@ const csrftoken = getCookie('csrftoken');
                     }
         {% endif %}
         {% endfor %}
+
   window.alert('Listo');
   return window.location.replace("{% url 'sd_valida_propuesta' %}")
 } else {
   // Do nothing!
   console.log('No Finalizado Confirmado');
 }}
+
+          function enviar_correo(asignacion) {
+
+        var datos = {
+				'asignacion': asignacion,
+			}
+    var url = "/recursos/envio_correo/"
+        fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+	    			'X-CSRFToken':csrftoken
+	    		},
+	    		body:JSON.stringify({'datos':datos}),
+
+	    	})
+            .then((response) => response.json())
+      }
+
+
 
   </script>
 

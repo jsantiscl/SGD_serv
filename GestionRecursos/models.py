@@ -75,6 +75,7 @@ class Recursos(models.Model):
     link_carpeta = models.URLField(max_length=200, null=True, blank=True)
     tipo_original = models.CharField(max_length=100, null=True, blank=True)
     presentacion = models.CharField(max_length=100, null=True, blank=True)
+    comentario_admin = models.CharField(max_length=500, null=True, blank=True)
 
     def __str__(self):
         return self.nombre

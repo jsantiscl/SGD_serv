@@ -10,6 +10,11 @@ import json
 from django.shortcuts import get_object_or_404
 # Create your views here.
 
+from django.conf import settings
+from django.core.mail import send_mail
+
+
+
 def admin_recursos_total(request):
 
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
@@ -267,3 +272,24 @@ def au_pasar_etapa(request):
         Bitacora.objects.create(username=Usuario, fecha_inicio=datetime.now(), id_recurso=Recurso_dato, etapa=str(data['datos']['etapa']))
 
     return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)
+
+
+def enviar_correo(request):
+    data = json.loads(request.body)
+    try:
+        Usuario = UsersRecursos.objects.filter(rut=int(data['datos']['asignacion']))[0]
+        User = UsersRecursos.objects.filter(username=Usuario.username)
+
+        send_mail(
+            'Asignacion Para Firma',
+            'Estimado, Se le han asignado Recursos para subir a Firma, Favor ingresar a http://serv.jasb.cl Gracias',
+            settings.EMAIL_HOST_USER,
+            [str(User.email)],
+            fail_silently=False
+        )
+        print("ok")
+    except:
+        print("error_envio")
+
+
+    return JsonResponse([str(data['datos']['asignacion']), 'Asignado'], safe=False)
