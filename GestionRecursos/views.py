@@ -168,16 +168,22 @@ def gd_subir_a_firma(request):
     return render(request,'GestionRecursos/GestionRecursos_GD_SubiraFirma.html', context)
 
 def gd_en_firma_director(request):
-    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
+    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Not")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
     denuncia_obj_3 = Recursos.objects.filter(estado__icontains="GD_en_firma_director")
     context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
     return render(request,'GestionRecursos/GestionRecursos_GD_en_Firma_Director.html', context)
 
+def gd_en_notificacion(request):
+    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="GD_en_Notificacion")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    return render(request,'GestionRecursos/GestionRecursos_GD_Notificacion.html', context)
 def fin_revision_pagos(request):
     abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="GD_en_firma_director")
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="GD_en_Notificacion")
     context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
     return render(request,'GestionRecursos/GestionRecursos_FIN_Pagos.html', context)
 ####################################### ABAJO PROCESOS #######################################################

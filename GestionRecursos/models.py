@@ -29,6 +29,7 @@ class Recursos(models.Model):
         ("SD_en_validacion_sd ", "9.9 -(Rep) En Validacion Subdirector"),
         ("GD_Subir_sistema_datasoft", "10 -(Rep) Subir a Sistema Datasoft"),  #Lo Debe pasar a PDF
         ("GD_en_firma_director", "11 -(Rep) En Firma Director"),
+        ("GD_en_Notificacion", "11.5 -(Rep) En Notificacion"),
         ("GD_subida_sge", "12 -(Rep) Subir a SGE"),
         ("fin_proceso_finalizado", "99 - Proceso Finalizado"),  #Aca llegan por flujo si son Reposicion // Evento Terminal de todos
         ("LD_AC_Analisis_rep_subsidio", "13 - Analisis Reposicion con Subsidio Reclamación"),  #Analisis Repo con Subsidio, tiene 2 opciones aprueba pasa a 99 y rechaza sigue el flujo #Natalia Nuñez
@@ -68,6 +69,7 @@ class Recursos(models.Model):
     fecha_recurso = models.DateField(null=True, blank=True)
     prioridad = models.CharField(max_length=100, choices=Prioridad, default="Baja")
     estado= models.CharField(max_length=100, choices=Estados, default="Pendiente_Inicial_Ingreso_Admin")
+    models.ForeignKey(UsersRecursos, on_delete=models.CASCADE, default=17311254)
     usuario_actual = models.ForeignKey(UsersRecursos, on_delete=models.CASCADE, default=17311254)
     validacion_pago = models.CharField(max_length=15, choices=Pago, default="Pendiente")
     alta_complejidad = models.BooleanField(default=False)
