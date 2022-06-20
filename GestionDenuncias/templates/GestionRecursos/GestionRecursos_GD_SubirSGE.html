@@ -45,7 +45,7 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
-<h3>En Firma Director</h3>
+<h3>Subir a SGE</h3>
 <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
     <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" onclick="asignar_todos()">Finalizar Seleccionados</button></td>
 
@@ -87,10 +87,13 @@ $(document).ready(function() {
 
             <select name="asignacion" id="selectorasignacion{{linea.id}}">
               <option selected value="Pendiente">Pendiente</option>
+               {% if linea.tipo_recurso  != "Reposición" %}
                 {% for auditor in auditores %}
               <option value={{ auditor.rut }}>{{ auditor.nombre }}</option>
                 {% endfor %}
-
+               {% else %}
+                   <option value=17311254>Finalizar</option>
+            {% endif %}
             </select>
 
             </td>
@@ -141,7 +144,7 @@ const csrftoken = getCookie('csrftoken');
   // Do nothing!
   console.log('No Finalizado Confirmado');
 }
-  setTimeout(() => {   return window.location.replace("{% url 'gd_en_firma_director' %}"); }, 1000);
+  setTimeout(() => {   return window.location.replace("{% url 'gd_subir_sge' %}"); }, 1000);
   } else {
         window.alert('Seleccione al Siguiente Usuario');
   }
@@ -153,7 +156,11 @@ const csrftoken = getCookie('csrftoken');
         var datos = {
 				'id': recurso,
                 'asignacion': asignacion,
-                'etapa': 'GD_en_Notificacion'
+        {% if asignacion == 17311254 %}
+                'etapa': 'fin_proceso_finalizado'
+        {% else %}
+                'etapa': 'LD_AC_Analisis_rep_subsidio'
+        {% endif %}
 			}
     var url = "/sgd/recursos/au/pasar/"
         fetch(url, {
@@ -195,7 +202,7 @@ const csrftoken = getCookie('csrftoken');
         {% endif %}
         {% endfor %}
   window.alert('Listo');
-  return window.location.replace("{% url 'gd_en_firma_director' %}")
+  return window.location.replace("{% url 'gd_subir_sge' %}")
 } else {
   // Do nothing!
   console.log('No Finalizado Confirmado');

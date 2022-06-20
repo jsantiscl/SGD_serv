@@ -79,4 +79,5 @@ urlpatterns = [
     path('recursos/reporte/', login_required(reporte_vista), name='reporte_vista'),
     path('recursos/envio_correo/', login_required(enviar_correo), name='enviar_correo'),
     path('recursos/gd/en_notificacion/', login_required(gd_en_notificacion), name='gd_en_notificacion'),
+    path('recursos/gd/subir_sge/', login_required(gd_subir_sge), name='gd_subir_sge'),
 ]

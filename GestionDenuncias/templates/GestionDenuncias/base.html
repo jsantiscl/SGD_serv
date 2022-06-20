@@ -129,9 +129,6 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
         <a href="{% url 'admin_recursos_asigna' %}" class="w3-bar-item w3-button">Asignacion</a>
-          <a href="{% url 'auditor_avance_celula' %}" class="w3-bar-item w3-button">Avance Celulas</a>
-          <a href="{% url 'auditor_avance_general' %}" class="w3-bar-item w3-button">Avance General</a>
-           <a href="{% url 'auditor_indicadores' %}" class="w3-bar-item w3-button">Reporte</a>
           <a href="{% url 'reporte_vista' %}" class="w3-bar-item w3-button">Reporte</a>
           <a href="{% url 'formatosydocumentos' %}" class="w3-bar-item w3-button">Formatos y Documentos</a>
             </div>
@@ -144,18 +141,14 @@
                     <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
           <a href="{% url 'ld_recursos_asigna' %}" class="w3-bar-item w3-button">Bandeja Asignacion</a>
         <a href="{% url 'ld_valida_propuesta' %}" class="w3-bar-item w3-button">Bandeja Validacion Propuesta Resolucion</a>
-          <a href="{% url 'auditor_avance_celula' %}" class="w3-bar-item w3-button">Avance Celulas</a>
-          <a href="{% url 'auditor_avance_general' %}" class="w3-bar-item w3-button">Avance General</a>
-           <a href="{% url 'auditor_indicadores' %}" class="w3-bar-item w3-button">Reporte</a>
+           <a href="{% url 'reporte_vista' %}" class="w3-bar-item w3-button">Reporte</a>
           <a href="{% url 'formatosydocumentos' %}" class="w3-bar-item w3-button">Formatos y Documentos</a>
             </div>
       </div>
              <div class="w3-dropdown-hover">
       <button class="w3-button">Reportes</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
-           <a href="{% url 'auditor_avance_celula' %}" class="w3-bar-item w3-button">Avance Celulas</a>
-          <a href="{% url 'auditor_avance_general' %}" class="w3-bar-item w3-button">Avance General</a>
-           <a href="{% url 'auditor_indicadores' %}" class="w3-bar-item w3-button">Reporte</a>
+           <a href="{% url 'reporte_vista' %}" class="w3-bar-item w3-button">Reporte</a>
             </div>
       </div>
          {% endif %}
@@ -166,18 +159,14 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'ld_recursos_asigna' %}" class="w3-bar-item w3-button">Bandeja Asignacion</a>
           <a href="{% url 'ld_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Resolucion Lider</a>
-          <a href="{% url 'auditor_avance_celula' %}" class="w3-bar-item w3-button">Avance Celulas</a>
-          <a href="{% url 'auditor_avance_general' %}" class="w3-bar-item w3-button">Avance General</a>
-           <a href="{% url 'auditor_indicadores' %}" class="w3-bar-item w3-button">Reporte</a>
+           <a href="{% url 'reporte_vista' %}" class="w3-bar-item w3-button">Reporte</a>
           <a href="{% url 'formatosydocumentos' %}" class="w3-bar-item w3-button">Formatos y Documentos</a>
             </div>
       </div>
              <div class="w3-dropdown-hover">
       <button class="w3-button">Reportes</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
-           <a href="{% url 'auditor_avance_celula' %}" class="w3-bar-item w3-button">Avance Celulas</a>
-          <a href="{% url 'auditor_avance_general' %}" class="w3-bar-item w3-button">Avance General</a>
-           <a href="{% url 'auditor_indicadores' %}" class="w3-bar-item w3-button">Reporte</a>
+           <a href="{% url 'reporte_vista' %}" class="w3-bar-item w3-button">Reporte</a>
             </div>
       </div>
          {% endif %}
@@ -189,7 +178,7 @@
           <a href="{% url 'xv_genera_expediente' %}" class="w3-bar-item w3-button">1 Generacion y Firma Resolucion y Expediente</a>
           <a href="{% url 'xv_envia_tricel' %}" class="w3-bar-item w3-button">2 Envío a Tricel</a>
           <a href="{% url 'xv_monitoreo_sentencia' %}" class="w3-bar-item w3-button">3 Monitoreo Sentencias</a>
-          <a href="{% url 'auditor_avance_general' %}" class="w3-bar-item w3-button">4 Registro Final</a>
+
             </div>
       </div>
          {% endif %}
@@ -265,6 +254,7 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'gd_subir_a_firma' %}" class="w3-bar-item w3-button">1 Subir a Firma</a>
           <a href="{% url 'gd_en_firma_director' %}" class="w3-bar-item w3-button">2 En Firma Director</a>
+          <a href="{% url 'gd_subir_sge' %}" class="w3-bar-item w3-button">3 Subir a SGE</a>
 
             </div>
       </div>

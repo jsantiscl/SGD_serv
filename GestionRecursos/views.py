@@ -180,6 +180,14 @@ def gd_en_notificacion(request):
     denuncia_obj_3 = Recursos.objects.filter(estado__icontains="GD_en_Notificacion")
     context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
     return render(request,'GestionRecursos/GestionRecursos_GD_Notificacion.html', context)
+
+def gd_subir_sge(request):
+    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="LiderAC")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="GD_subida_sge")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    return render(request,'GestionRecursos/GestionRecursos_GD_SubirSGE.html', context)
+
 def fin_revision_pagos(request):
     abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
@@ -269,13 +277,18 @@ def asignar_recurso_jc(request):
 
 def au_pasar_etapa(request):
     data = json.loads(request.body)
-    if data['datos']['asignacion'] != 'Pendiente':
+    if data['datos']['asignacion'] != 'Pendiente' and data['datos']['asignacion'] != '17311254':
         Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
         Recursos.objects.filter(id=str(data['datos']['id'])).update(estado=str(data['datos']['etapa']))
-
         Usuario = UsersRecursos.objects.filter(rut=int(data['datos']['asignacion']))[0]
         Recurso_dato = Recursos.objects.filter(id=int(data['datos']['id']))[0]
         Bitacora.objects.create(username=Usuario, fecha_inicio=datetime.now(), id_recurso=Recurso_dato, etapa=str(data['datos']['etapa']))
+    if data['datos']['asignacion'] == '17311254':
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='fin_proceso_finalizado')
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
+        Usuario = UsersRecursos.objects.filter(rut=int(data['datos']['asignacion']))[0]
+        Recurso_dato = Recursos.objects.filter(id=int(data['datos']['id']))[0]
+        Bitacora.objects.create(username=Usuario, fecha_inicio=datetime.now(), id_recurso=Recurso_dato, etapa='fin_proceso_finalizado')
 
     return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)
 
