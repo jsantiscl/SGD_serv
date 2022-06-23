@@ -49,6 +49,7 @@ class Recursos(models.Model):
         ("Baja", "Baja"),
         ("Media", "Media"),
         ("Alta", "Alta"),
+        ("Urgente - Division", "Urgente - Division"),
     )
     Celulas = (
         ("c1", "c1"),
