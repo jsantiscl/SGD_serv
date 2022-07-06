@@ -133,6 +133,13 @@
           <a href="{% url 'formatosydocumentos' %}" class="w3-bar-item w3-button">Formatos y Documentos</a>
             </div>
       </div>
+                                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Plebiscito</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="{% url 'total_solicitudes' %}" class="w3-bar-item w3-button">Total Solicitudes</a>
+           <a href="{% url 'admin_recursos_asigna' %}" class="w3-bar-item w3-button">Asignacion</a>
+      </div>
+      </div>
          {% endif %}
          {% if group.name == 'GestionRecursos_LiderCelulas' %}
                                      <div class="w3-dropdown-hover">
@@ -270,6 +277,16 @@
             </div>
       </div>
          {% endif %}
+                                       {% if group.name == 'Plebiscito_RevisorInscripciones' %}
+                                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Plebiscito</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="{% url 'total_solicitudes' %}" class="w3-bar-item w3-button">Total Solicitudes</a>
+
+      </div>
+      </div>
+         {% endif %}
+
 
                                                        {% if group.name == 'GestionRecursos_Notificaciones' %}
                                      <div class="w3-dropdown-hover">

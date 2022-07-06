@@ -1,0 +1,93 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
+
+{% block body %}
+
+            <script type="text/javascript" class="init">
+
+
+$(document).ready(function() {
+	$('#example2').DataTable({
+        "language": {
+            "lengthMenu": "Ver _MENU_ registros por pagina",
+            "zeroRecords": "Sin Resultados",
+            "info": "Mostrando pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin Resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros)"
+        },
+               dom: 'lfrtBip',
+        buttons: [
+             {
+      extend: 'excel',
+      exportOptions: {
+
+          format: {
+              body: function(data, row, column, node) {
+                  data = $('<p>' + data + '</p>').text();
+                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+              }
+          }
+      }
+  }
+        ]
+
+
+
+    } );
+} );
+            function goBack() {
+  window.history.back();
+}
+
+            </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Solicitudes Ingresadas</h3>
+
+    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
+    <thead>
+        <tr>
+            <th style="text-align: center">id</th>
+            <th>Tipo</th>
+            <th>Solicitante</th>
+            <th>RutSolicitante</th>
+            <th>NombreOrg</th>
+            <th>RutOrg</th>
+            <th>Representante</th>
+            <th>RutRepresentante</th>
+            <th>Participa</th>
+            <th>organizacion</th>
+            <th>fecha_envio</th>
+            <th>Carpeta</th>
+        </tr>
+            </thead>
+    <tbody>
+        {% load humanize %}
+        {% for linea in todasdenuncias %}
+
+        <tr>
+            <td>{{ linea.id}}</td>
+            <td>{{ linea.tipo}}</td>
+            <td>{{ linea.nombre_sol}} {{ linea.paterno_sol}} {{ linea.materno_sol}} </td>
+            <td>{{ linea.rut_sol}} - {{ linea.dv_sol}}</td>
+            <td>{{ linea.nombre_org}}</td>
+            <td>{{ linea.rut_orga }} - {{ linea.dv_orga}}</td>
+            <td>{{ linea.nombre_repr }} {{ linea.paterno_repr }} {{ linea.materno_repr }}</td>
+            <td>{{ linea.rut_repr }} - {{ linea.dv_repr}}</td>
+            <td>{{ linea.participara_forma}}</td>
+            <td>{{ linea.organizacion}}</td>
+            <td>{{ linea.fecha_envio|date:'d-m-Y' }}</td>
+            <td style="text-align: center"><a href="{{linea.link_carpeta}}" target="_blank">Ver</a></td>
+
+        {% endfor %}
+    </tbody>
+    </table>
+
+<td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
+
+</section>
+</div>
+{% endblock %}

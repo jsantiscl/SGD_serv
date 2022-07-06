@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from datetime import datetime
 from django.db.models import Count
-from .models import Recursos, UsersRecursos, Bitacora
+from .models import Recursos, UsersRecursos, Bitacora,InscripcionesPlebiscito
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import JsonResponse
@@ -312,3 +312,13 @@ def enviar_correo(request):
 
 
     return JsonResponse([str(data['datos']['asignacion']), 'Asignado'], safe=False)
+
+
+### Plebiscito
+
+def total_solicitudes(request):
+
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = InscripcionesPlebiscito.objects.filter(estado='ENVIADO')
+    context = {'todasdenuncias': denuncia_obj_3}
+    return render(request,'GestionRecursos/Plebiscito_Total_Inscritos.html', context)
