@@ -13,6 +13,18 @@ class UsersRecursos(models.Model):
     def __str__(self):
         return self.nombre
 
+class UsersPlebiscito(models.Model):
+    rut = models.IntegerField(primary_key=True)
+    dv = models.CharField(max_length=1)
+    nombre = models.CharField(max_length=200)
+    habilitado = models.BooleanField(default=True)
+    username = models.CharField(max_length=50, default='SIN')
+    iniciales = models.CharField(max_length=50, default='NODEFINIDA')
+    celula = models.CharField(max_length=50, default='NoDefinida')
+    tipo = models.CharField(max_length=50, default='Auditor_jr')
+    def __str__(self):
+        return self.nombre
+
 class Recursos(models.Model):
     Estados = (
         ("LD_asignacion_Lider", "1 -(Rep) En Asignacion Lider"),
@@ -98,4 +110,70 @@ class DescripcionEstado(models.Model):
     descripcion = models.CharField(max_length=100, null=True, blank=True)
     def __str__(self):
         return self.nombre
+
+class InscripcionesPlebiscito(models.Model):
+
+    estados_revis = (
+        ("ASIGNACION", "ASIGNACION"),
+        ("REVISION_AUDITOR", "REVISION_AUDITOR"),
+        ("VALIDACION_ADMIN", "VALIDACION_ADMIN"),
+        ("ACEPTADO", "ACEPTADO"),
+        ("RECHAZADO", "RECHAZADO"),
+    )
+    selec_propuestas = (
+        ("PENDIENTE", "PENDIENTE"),
+        ("ACEPTA", "ACEPTA"),
+        ("RECHAZA", "RECHAZA"),
+    )
+    nombre_sol = models.CharField(max_length=200, null=True, blank=True)
+    paterno_sol = models.CharField(max_length=200, null=True, blank=True)
+    materno_sol = models.CharField(max_length=200, null=True, blank=True)
+    rut_sol = models.IntegerField()
+    dv_sol = models.CharField(max_length=1)
+    domicilio_sol = models.CharField(max_length=500, null=True, blank=True)
+    comuna_sol = models.CharField(max_length=200, null=True, blank=True)
+    telefono_fijo_sol = models.IntegerField()
+    telefono_celular_sol = models.IntegerField()
+    email_sol = models.CharField(max_length=200, null=True, blank=True)
+    nombre_org = models.CharField(max_length=500, null=True, blank=True)
+    rut_orga = models.IntegerField(null=True, blank=True)
+    dv_orga = models.CharField(max_length=1, null=True, blank=True)
+    domicilio_orga = models.CharField(max_length=500, null=True, blank=True)
+    telefono_fijo_orga = models.IntegerField()
+    telefono_celular_orga = models.IntegerField()
+    email_orga = models.CharField(max_length=200, null=True, blank=True)
+    id_tipo_organizacion_orga = models.IntegerField(null=True, blank=True)
+    declara_fines_lucro = models.CharField(max_length=1, null=True, blank=True)
+    nombre_repr = models.CharField(max_length=200, null=True, blank=True)
+    paterno_repr = models.CharField(max_length=200, null=True, blank=True)
+    materno_repr = models.CharField(max_length=200, null=True, blank=True)
+    rut_repr = models.IntegerField()
+    dv_repr = models.CharField(max_length=1)
+    domicilio_repr = models.CharField(max_length=500, null=True, blank=True)
+    comuna_repr = models.CharField(max_length=200, null=True, blank=True)
+    telefono_fijo_repr = models.IntegerField()
+    telefono_celular_repr = models.IntegerField()
+    email_repr = models.CharField(max_length=500, null=True, blank=True)
+    cargo_repr = models.CharField(max_length=200, null=True, blank=True)
+    participara_forma = models.CharField(max_length=200, null=True, blank=True)
+    id = models.IntegerField(primary_key=True)
+    estado = models.CharField(max_length=200, null=True, blank=True)
+    fecha_envio = models.DateTimeField(null=True, blank=True)
+    tipo_menu = models.CharField(max_length=200, null=True, blank=True)
+    id_opcion = models.CharField(max_length=200, null=True, blank=True)
+    nombre_comando = models.CharField(max_length=200, null=True, blank=True)
+    perjuridica = models.IntegerField(null=True, blank=True)
+    organizacion = models.CharField(max_length=500, null=True, blank=True)
+    tipo = models.CharField(max_length=200, null=True, blank=True)
+    link_carpeta = models.URLField(max_length=200, null=True, blank=True)
+    #usuario_actual_1 = models.ForeignKey(UsersRecursos, on_delete=models.CASCADE, default=17311254)
+    #usuario_actual_2 = models.ForeignKey(UsersRecursos, on_delete=models.CASCADE, default=17311254)
+    #usuario_actual_3 = models.ForeignKey(UsersRecursos, on_delete=models.CASCADE, default=17311254)
+    etapa_revision = models.CharField(max_length=200,  choices=estados_revis, default='ASIGNACION')
+    propuesta1 = models.CharField(max_length=200, choices=selec_propuestas, default='PENDIENTE')
+    propuesta2 = models.CharField(max_length=200, choices=selec_propuestas, default='PENDIENTE')
+    comentario_admin = models.CharField(max_length=500, null=True, blank=True)
+
+    def __str__(self):
+        return self.id
 
