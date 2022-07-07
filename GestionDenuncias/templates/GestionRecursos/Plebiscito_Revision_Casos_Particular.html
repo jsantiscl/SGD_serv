@@ -1,0 +1,188 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema Plebiscito</title> {% endblock %}
+
+{% block body %}
+<div class="w3-responsive">
+<div class = "w3-row">
+     <div class="w3-half w3-container">
+ <br>
+
+        {% load humanize %}
+        {% for linea in todasdenuncias %}
+
+         <h3>Revisar Caso {{ linea.id }}</h3>
+
+        {% csrf_token %}
+  <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
+
+        <tr>
+            <th>id</th>
+            <td id ="id_solicitud">{{ linea.id}}</td>
+        </tr>
+        <tr>
+            <th>Tipo</th>
+            <td>{{ linea.tipo}}</td>
+        </tr>
+        <tr>
+            <th>Solicitante</th>
+            <td>{{ linea.nombre_sol}} {{ linea.paterno_sol}} {{ linea.materno_sol}} </td>
+        </tr>
+        <tr>
+            <th>RutSolicitante</th>
+            <td>{{ linea.rut_sol}} - {{ linea.dv_sol}}</td>
+                    </tr>
+        <tr>
+            <th>NombreOrg</th>
+            <td>{{ linea.nombre_org}}</td>
+                    </tr>
+        <tr>
+            <th>RutOrg</th>
+            <td>{{ linea.rut_orga }} - {{ linea.dv_orga}}</td>
+                    </tr>
+        <tr>
+            <th>Representante</th>
+             <td>{{ linea.nombre_repr }} {{ linea.paterno_repr }} {{ linea.materno_repr }}</td>
+                    </tr>
+        <tr>
+            <th>RutRepresentante</th>
+             <td>{{ linea.rut_repr }} - {{ linea.dv_repr}}</td>
+                    </tr>
+        <tr>
+            <th>Participa</th>
+            <td>{{ linea.participara_forma}}</td>
+                    </tr>
+        <tr>
+            <th>organizacion</th>
+            <td>{{ linea.organizacion}}</td>
+                    </tr>
+        <tr>
+            <th>fecha_envio</th>
+             <td>{{ linea.fecha_envio|date:'d-m-Y' }}</td>
+                    </tr>
+        <tr>
+            <th>Carpeta</th>
+             <td style="text-align: center"><a href="{{linea.link_carpeta}}" target="_blank">Ver</a></td>
+        </tr>
+            <tr>
+
+                {% for archivo in adjuntos_pleb %}
+            <th>{{archivo.tipo_doc}}</th>
+             <td style="text-align: center"><a href="{{archivo.link}}" target="_blank">{{ archivo.nombre_adjunto }}</a></td>
+                {% endfor %}
+
+        </tr>
+        <tr>
+
+                {% for rl in rl_pleb %}
+            <th>(SII) Representante Legal</th>
+             <td style="text-align: center">{{ rl.rut_rl }}</td>
+                {% endfor %}
+
+        </tr>
+
+
+
+         {% endfor %}
+
+    </table>
+
+         <br>
+       <td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
+        <input class="btn btn-success" id="button_enviar" name="button_enviar" value="Finalizar Revision" onclick="enviar_formulario()">
+    <br>
+    </form>
+            </div>
+              <div class="w3-half w3-container">
+               <br>
+                 <h3>Revisiones</h3>
+
+               {{ form2.as_table }}
+                  <br>
+
+              <br>
+             </div>
+
+
+</div>
+</div>
+<input type="hidden" id="myVar" name="variable" value="{{ request.user.username }}">
+    <script type="text/javascript">
+
+var order;
+ function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+function enviar_formulario() {
+  var id = document.getElementById("id_solicitud").innerText;
+  var valida_adjunto = document.getElementById("id_valida_adjunto").value;
+  var valida_sin_fines_de_lucro = document.getElementById("id_valida_sin_fines_de_lucro").value;
+  var propuesta = document.getElementById("id_propuesta").value;
+  var comentarios_revisor = document.getElementById("id_comentarios_revisor").value;
+  var revisor = document.getElementById("myVar").value;
+
+          if (valida_adjunto == '' || valida_sin_fines_de_lucro == '' || propuesta == ''){
+  console.log('VACIO');
+  alert("Debe Completar Todos los Campos");
+
+            console.log(revisor);
+  } else {
+        console.log('OKK');
+        if (confirm('¿Esta Seguro que quiere enviar la Propuesta ?')) {
+
+asignar_recurso(id, valida_adjunto,valida_sin_fines_de_lucro, propuesta,comentarios_revisor,revisor )
+
+} else {
+
+          // Do nothing!
+      }
+
+          }
+
+
+
+}
+    function asignar_recurso(id, valida_adjunto,valida_sin_fines_de_lucro, propuesta,comentarios_revisor,revisor ) {
+
+        var datos = {
+				'id': id,
+                'valida_adjunto': valida_adjunto,
+                'valida_sin_fines_de_lucro': valida_sin_fines_de_lucro,
+                'propuesta': propuesta,
+                'comentarios_revisor': comentarios_revisor,
+                'revisor':revisor,
+                'etapa': 'EnviadoRevision'
+			}
+    var url = "/sgd/plebiscito/revision_inscripciones/pasar/"
+        fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+	    			'X-CSRFToken':csrftoken
+	    		},
+	    		body:JSON.stringify({'datos':datos}),
+
+	    	})
+            .then((response) => response.json());
+          setTimeout(() => {   return window.location.replace("{% url 'revision_inscripciones' %}"); }, 1000);
+      }
+                  function goBack() {
+  window.history.back();
+}
+
+    </script>
+
+{% endblock %}

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from datetime import datetime
 from django.db.models import Count
-from .models import Recursos, UsersRecursos, Bitacora,InscripcionesPlebiscito
+from GestionRecursos.models import *
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import JsonResponse
@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404
 
 from django.conf import settings
 from django.core.mail import send_mail
+from GestionDenuncias.forms import *
 
 
 
@@ -322,3 +323,35 @@ def total_solicitudes(request):
     denuncia_obj_3 = InscripcionesPlebiscito.objects.filter(estado='ENVIADO')
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/Plebiscito_Total_Inscritos.html', context)
+
+def asigna_admin_inscripciones(request):
+    auditores = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="GD_en_Notificacion")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': auditores}
+
+    return render(request,'GestionRecursos/Plebiscito_Total_Inscritos.html', context)
+
+def revision_inscripciones(request):
+    username_q = request.user.username
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = InscripcionesPlebiscito.objects.filter(etapa_revision='REVISION_AUDITOR', estado='ENVIADO', usuario_actual__username=username_q)
+    context = {'todasdenuncias': denuncia_obj_3}
+    return render(request,'GestionRecursos/Plebiscito_Revision_Casos.html', context)
+
+def revisa_particular_pleb(request, id_pleb):
+    instance = get_object_or_404(InscripcionesPlebiscito, id=id_pleb)
+    denuncia_obj_4 = InscripcionesPlebiscito.objects.filter(id=id_pleb)
+    adjuntos_pleb = AdjuntosInscripciones.objects.filter(id_registro=id_pleb)
+    rl_pleb = RepresentanteLegal.objects.filter(id_org=id_pleb)
+    form = DetallesInscripcion(request.POST or None, instance=instance)
+    form2 = RevisaCasos(request.POST or None)
+    context = {'todasdenuncias': denuncia_obj_4, 'form': form, 'form2': form2, 'adjuntos_pleb': adjuntos_pleb, 'rl_pleb': rl_pleb}
+    return render(request,'GestionRecursos/Plebiscito_Revision_Casos_Particular.html', context)
+
+
+def pleb_pasar_etapa(request):
+    data = json.loads(request.body)
+    InscripcionesPlebiscito.objects.filter(id=str(data['datos']['id'])).update(etapa_revision='VALIDACION_ADMIN')
+    RevisionesInscripciones.objects.create(id=int(data['datos']['id']), revisor=str(data['datos']['revisor']), valida_adjunto=str(data['datos']['valida_adjunto']), valida_sin_fines_de_lucro=str(data['datos']['valida_sin_fines_de_lucro']),propuesta=str(data['datos']['propuesta']), comentarios_revisor =str(data['datos']['comentarios_revisor']))
+    return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)

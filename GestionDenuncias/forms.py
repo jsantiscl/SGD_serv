@@ -1,7 +1,8 @@
 from django import forms
 from .models import Denuncias, Abogados
+from GestionRecursos.models import *
 from django.forms import ClearableFileInput
-
+from django.db.models.functions import Concat
 class DenunciasForm(forms.ModelForm):
     class Meta:
         model = Denuncias
@@ -238,4 +239,69 @@ class VerFiscalizacionDR(forms.ModelForm):
             'dr_fecha_retiro_municipio': 'Fecha Retiro Municipio',
             'motivo_dr': 'Observaciones',
             'dr_guardac': 'dr_guardac',
+        }
+
+class DetallesInscripcion(forms.ModelForm):
+    class Meta:
+        model = InscripcionesPlebiscito
+
+        fields = [
+            'tipo',
+            'nombre_sol',
+            'paterno_sol',
+            'materno_sol',
+            'rut_sol',
+            'dv_sol',
+            'nombre_org',
+            'rut_orga',
+            'dv_orga',
+            'nombre_repr',
+            'paterno_repr',
+            'materno_repr',
+            'rut_repr',
+            'dv_repr',
+            'participara_forma',
+            'organizacion',
+            'fecha_envio',
+
+        ]
+        widgets = {
+            'tipo': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'nombre_sol': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'paterno_sol': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'materno_sol': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'rut_sol': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'dv_sol': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'nombre_org': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'rut_orga': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'dv_orga': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'nombre_repr': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'paterno_repr': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'materno_repr': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'rut_repr': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'dv_repr': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'participara_forma': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'organizacion': forms.TextInput(attrs={'class': 'form-control', 'disabled': 'True'}),
+            'fecha_envio': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'disabled': 'True'}),
+
+        }
+
+class RevisaCasos(forms.ModelForm):
+    class Meta:
+        model = RevisionesInscripciones
+
+        fields = [
+
+
+        'valida_adjunto',
+        'valida_sin_fines_de_lucro',
+        'propuesta',
+        'comentarios_revisor',
+
+        ]
+        widgets = {
+            'valida_adjunto': forms.Select(attrs={'class': 'form-control'}),
+            'valida_sin_fines_de_lucro': forms.Select(attrs={'class': 'form-control'}),
+            'propuesta': forms.Select(attrs={'class': 'form-control'}),
+            'comentarios_revisor': forms.Textarea(attrs={'class': 'form-control'}),
         }

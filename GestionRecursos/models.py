@@ -175,3 +175,57 @@ class InscripcionesPlebiscito(models.Model):
     def __str__(self):
         return self.id
 
+class RevisionesInscripciones(models.Model):
+    selec_prop = (
+        ("OK", "OK"),
+        ("CON OBSERVACIONES", "CON OBSERVACIONES"),
+        ("NO CUMPLE", "NO CUMPLE"),
+    )
+    validaciones_op = (
+        ("Propone Aceptar", "Propone Aceptar"),
+        ("Propone Rechazar", "Propone Rechazar"),
+    )
+    id = models.IntegerField(primary_key=True)
+    revisor = models.CharField(max_length=100,null=True, blank=True)
+    fecha = models.DateTimeField(auto_now_add=True)
+    valida_adjunto = models.CharField(max_length=100, choices=selec_prop, null=True, blank=True)
+    valida_sin_fines_de_lucro = models.CharField(max_length=100, choices=selec_prop, null=True, blank=True)
+    propuesta = models.CharField(max_length=100, choices=validaciones_op, null=True, blank=True)
+    comentarios_revisor = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.id
+
+
+class AdjuntosInscripciones(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    nombre_org = models.CharField(max_length=1000,null=True, blank=True)
+    id_registro = models.IntegerField()
+    tipo_doc = models.CharField(max_length=100,null=True, blank=True)
+    nombre_adjunto = models.CharField(max_length=1000,null=True, blank=True)
+    id_alfresco = models.CharField(max_length=500,null=True, blank=True)
+    link = models.URLField(max_length=1000,null=True, blank=True)
+
+    def __str__(self):
+        return self.nombre_adjunto
+
+class RepresentanteLegal(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    rut_org = models.CharField(max_length=100,null=True, blank=True)
+    id_org= models.IntegerField()
+    rut_rl = models.CharField(max_length=100,null=True, blank=True)
+
+    def __str__(self):
+        return self.rut_org
+
+class SociosInscritos(models.Model):
+
+    id = models.IntegerField(primary_key=True)
+    rut_org = models.CharField(max_length=100,null=True, blank=True)
+    id_org= models.IntegerField()
+    rut_socio = models.CharField(max_length=100,null=True, blank=True)
+
+    def __str__(self):
+        return self.rut_org

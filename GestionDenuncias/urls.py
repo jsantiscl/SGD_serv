@@ -83,4 +83,8 @@ urlpatterns = [
 
     #Plebiscito
     path('plebiscito/total_solicitudes/', login_required(total_solicitudes), name='total_solicitudes'),
+    path('plebiscito/asignacion_inscripciones/', login_required(asigna_admin_inscripciones), name='admin_recursos_asigna'),
+    path('plebiscito/revision_inscripciones/', login_required(revision_inscripciones), name='revision_inscripciones'),
+    path('plebiscito/par/<int:id_pleb>/', login_required(revisa_particular_pleb), name='revisa_particular_pleb'),
+    path('plebiscito/revision_inscripciones/pasar/', login_required(pleb_pasar_etapa), name='pleb_pasar_etapa'),  # P
 ]
