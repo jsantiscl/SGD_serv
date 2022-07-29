@@ -31,6 +31,11 @@ class EncargadosRegionales(models.Model):
 
 class Denuncias(models.Model):
     VIA_INGRESO = (
+        ("Cruce aportes declarados", "Cruce aportes declarados"),
+        ("Reporte admisible DR", "Reporte admisible DR"),
+        ("Levantamiento Meta", "Levantamiento Meta"),
+        ("Otro-indicar en descripción", "Otro-indicar en descripción"),
+        ("Cruce declaración medios", "Cruce declaración medios"),
         ("Portal de Denuncias", "Portal de Denuncias"),
         ("División de Fiscalización", "División de Fiscalización"),
         ("Dirección Regional", "Dirección Regional"),
@@ -52,6 +57,8 @@ class Denuncias(models.Model):
         ("No se puede determinar", "No se puede determinar"),
     )
     ELECCIONES = (
+        ("Plebiscito-Apruebo", "Plebiscito-Apruebo"),
+        ("Plebiscito-Rechazo", "Plebiscito-Rechazo"),
         ("Consejero Regional", "Consejero Regional"),
         ("Plebiscito", "Plebiscito"),
         ("Primarias Presidencial", "Primarias Presidencial"),
