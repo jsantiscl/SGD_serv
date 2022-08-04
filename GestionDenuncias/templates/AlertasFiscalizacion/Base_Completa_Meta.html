@@ -1,0 +1,102 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Base Completa Meta</title> {% endblock %}
+
+{% block body %}
+
+            <script type="text/javascript" class="init">
+
+
+$(document).ready(function() {
+	$('#example2').DataTable({
+        "language": {
+            "lengthMenu": "Ver _MENU_ registros por pagina",
+            "zeroRecords": "Sin Resultados",
+            "info": "Mostrando pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin Resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros)"
+        },
+               dom: 'lfrtBip',
+        buttons: [
+             {
+      extend: 'excel',
+      exportOptions: {
+
+          format: {
+              body: function(data, row, column, node) {
+                  data = $('<p>' + data + '</p>').text();
+                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+              }
+          }
+      }
+  }
+        ]
+
+
+
+    } );
+} );
+            function goBack() {
+  window.history.back();
+}
+
+            </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Base Completa Meta</h3>
+
+    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
+    <thead>
+        <tr>
+            <th>nombre_homologado</th>
+            <th>inscrito</th>
+            <th>tipo</th>
+            <th>opcion</th>
+            <th>ad_creation_time</th>
+            <th>semana</th>
+            <th>texto</th>
+            <th>ad_snapshot_url</th>
+            <th>gasto_max_clp</th>
+            <th>ad_creative_link_caption</th>
+            <th>ad_creative_link_description</th>
+            <th>ad_creative_link_title</th>
+            <th>funding_entity</th>
+            <th>id</th>
+            <th>page_id</th>
+            <th>page_name</th>
+            <th>plataforma</th>
+        </tr>
+            </thead>
+    <tbody>
+        {% load humanize %}
+        {% for linea in todasdenuncias %}
+
+        <tr>
+            <td>{{ linea.nombre_homologado}}</td>
+            <td>{{ linea.inscrito}}</td>
+            <td>{{ linea.tipo}}</td>
+            <td>{{ linea.opcion}}</td>
+            <td>{{ linea.ad_creation_time|date:'d-m-y'}}</td>
+            <td>{{ linea.semana}}</td>
+            <td>{{ linea.texto}} </td>
+            <td><a href="{{ linea.ad_snapshot_url }}"target="_blank"> Ver</a></td>
+            <td>{{ linea.gasto_max_clp|intcomma}}</td>
+            <td>{{ linea.ad_creative_link_caption}}</td>
+            <td>{{ linea.ad_creative_link_description}}</td>
+            <td>{{ linea.ad_creative_link_title}}</td>
+            <td>{{ linea.funding_entity}}</td>
+            <td>{{ linea.id}}</td>
+            <td>{{ linea.page_id}}</td>
+            <td>{{ linea.page_name}}</td>
+            <td>{{ linea.plataforma}}</td>
+            {% endfor %}
+    </tbody>
+    </table>
+
+<td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
+
+</section>
+</div>
+{% endblock %}

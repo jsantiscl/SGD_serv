@@ -91,5 +91,7 @@ urlpatterns = [
 
     # Fiscalizacion
     path('fiscalizacion/Alertas/', login_required(alertas), name='alertas'),
-
+    path('fiscalizacion/BaseCompleta/', login_required(base_completa), name='base_completa'),
+    path('fiscalizacion/detalle/<str:nombre>', login_required(detalle_base), name='detalle_base'),
+    path('fiscalizacion/Alertas/pasar/', login_required(alarma_pasar_etapa), name='alarma_pasar_etapa'),  # P
 ]
