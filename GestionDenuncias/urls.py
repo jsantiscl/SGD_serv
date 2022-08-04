@@ -5,6 +5,7 @@ from django.urls import include
 from django.contrib.auth.decorators import login_required
 from .views import *
 from GestionRecursos.views import *
+from AlertasFiscalizacion.views import *
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')), #Ok
 
@@ -87,4 +88,8 @@ urlpatterns = [
     path('plebiscito/revision_inscripciones/', login_required(revision_inscripciones), name='revision_inscripciones'),
     path('plebiscito/par/<int:id_pleb>/', login_required(revisa_particular_pleb), name='revisa_particular_pleb'),
     path('plebiscito/revision_inscripciones/pasar/', login_required(pleb_pasar_etapa), name='pleb_pasar_etapa'),  # P
+
+    # Fiscalizacion
+    path('fiscalizacion/Alertas/', login_required(alertas), name='alertas'),
+
 ]

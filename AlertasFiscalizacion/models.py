@@ -43,6 +43,14 @@ class AnunciosMeta(models.Model):
         return self.id
 
 class AlertasMeta(models.Model):
+    Estados = (
+        ("1_Pendiente_Asignacion", "1_Pendiente_Asignacion"),
+        ("2_Asignado_Abogado", "2_Asignado_Abogado"),
+        ("3_Derivado_Upas", "3_Derivado_Upas"),
+        ("4_Ya_Gestionado", "4_Ya_Gestionado"),
+        ("5_Archivar", "5_Archivar"),
+
+    )
     semana = models.IntegerField(null=True, blank=True)
     nombre_homologado = models.CharField(max_length=500, null=True, blank=True)
     tipo = models.CharField(max_length=100, null=True, blank=True)
@@ -52,6 +60,17 @@ class AlertasMeta(models.Model):
     monto_aportes = models.IntegerField(null=True, blank=True)
     monto_servicios = models.IntegerField(null=True, blank=True)
     tipo_alerta = models.CharField(max_length=100, null=True, blank=True)
+    estado = models.CharField(max_length=100,choices=Estados, default='1_Pendiente_Asignacion')
+
 
     def __str__(self):
         return self.nombre_homologado
+
+class UsersFiscalizacion(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=200)
+    habilitado = models.BooleanField(default=True)
+    username = models.CharField(max_length=50, default='SIN')
+    tipo = models.CharField(max_length=50, default='Abogado')
+    def __str__(self):
+        return self.nombre
