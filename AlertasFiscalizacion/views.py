@@ -39,4 +39,9 @@ def alarma_pasar_etapa(request):
     data = json.loads(request.body)
     AlertasMeta.objects.filter(id=str(data['datos']['id'])).update(estado=str(data['datos']['etapa']))
     AlertasMeta.objects.filter(id=str(data['datos']['id'])).update(usuario_actual=str(data['datos']['asignacion']))
+    Denuncias.objects.create(id=int(data['datos']['id']), revisor=str(data['datos']['revisor']),
+                                           valida_adjunto=str(data['datos']['valida_adjunto']),
+                                           valida_sin_fines_de_lucro=str(data['datos']['valida_sin_fines_de_lucro']),
+                                           propuesta=str(data['datos']['propuesta']),
+                                           comentarios_revisor=str(data['datos']['comentarios_revisor']))
     return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)

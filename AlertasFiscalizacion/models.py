@@ -71,6 +71,10 @@ class AlertasMeta(models.Model):
     tipo_alerta = models.CharField(max_length=100, null=True, blank=True)
     estado = models.CharField(max_length=100,choices=Estados, default='1_Pendiente_Asignacion')
     usuario_actual = models.ForeignKey(UsersFiscalizacion, on_delete=models.CASCADE, default=1)
+    folio = models.CharField(max_length=100, null=True, blank=True)
+    obs_jefe = models.TextField(null=True, blank=True)
+    link_adjuntos = models.CharField(max_length=500, null=True, blank=True)
+
 
     def __str__(self):
         return self.nombre_homologado

@@ -56,7 +56,7 @@ $(document).ready(function() {
     <thead>
         <tr>
             <th style="text-align: center">id</th>
-            <th>Semana</th>
+            <th>Sem</th>
             <th>Nombre</th>
             <th>Tipo</th>
             <th>Opcion</th>
@@ -68,6 +68,9 @@ $(document).ready(function() {
             <th>Detalle</th>
             <th>Asignacion</th>
             <th>Accion</th>
+            <th>Folio</th>
+            <th>Texto</th>
+            <th>Carpeta</th>
         </tr>
             </thead>
     <tbody>
@@ -81,19 +84,24 @@ $(document).ready(function() {
             <td>{{ linea.tipo}}</td>
             <td>{{ linea.opcion}}</td>
             <td>{{ linea.cantidad_anuncios}}</td>
-            <td>{{ linea.gasto_maximo|intcomma }}</td>
-            <td>{{ linea.monto_aportes|intcomma}}</td>
-            <td>{{ linea.monto_servicios|intcomma}}</td>
+            <td>{{ linea.gasto_maximo }}</td>
+            <td>{{ linea.monto_aportes}}</td>
+            <td>{{ linea.monto_servicios}}</td>
             <td>{{ linea.tipo_alerta}}</td>
             <td><a href="{% url 'detalle_base' nombre=linea.nombre_homologado %}">Ver</a></td>
+
             <td><select name="asignacion" id="selectorasignacion{{linea.id}}">
               <option selected value="Pendiente">Pendiente</option>
               <option value="2">Melanie Aburto</option>
+              <option value="6">Fernanda Garcia</option>
               <option value="4">UPAS</option>
               <option value="3">Ya Gestionado</option>
               <option value="5">Archivar</option>
             </select></td>
             <td><a class="btn btn-success" onclick="pasar({{ linea.id }})">Asigna</a></td>
+            <td></td>
+            <td></td>
+            <td></td>
         {% endfor %}
     </tbody>
     </table>
