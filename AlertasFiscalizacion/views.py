@@ -23,6 +23,13 @@ def alertas(request):
     context = {'todasdenuncias': alertas}
     return render(request,'AlertasFiscalizacion/Alertas.html', context)
 
+def alertas_asignadas(request):
+    username_q = request.user.username
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    alertas = AlertasMeta.objects.filter(estado__icontains="2_Asignado_Abogado", usuario_actual__username=username_q)
+    context = {'todasdenuncias': alertas}
+    return render(request,'AlertasFiscalizacion/Alertas_asignadas.html', context)
+
 def base_completa(request):
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
     base = AnunciosMeta.objects.all()
@@ -37,11 +44,23 @@ def detalle_base(request, nombre):
 
 def alarma_pasar_etapa(request):
     data = json.loads(request.body)
+
+
+
     AlertasMeta.objects.filter(id=str(data['datos']['id'])).update(estado=str(data['datos']['etapa']))
     AlertasMeta.objects.filter(id=str(data['datos']['id'])).update(usuario_actual=str(data['datos']['asignacion']))
-    Denuncias.objects.create(id=int(data['datos']['id']), revisor=str(data['datos']['revisor']),
-                                           valida_adjunto=str(data['datos']['valida_adjunto']),
-                                           valida_sin_fines_de_lucro=str(data['datos']['valida_sin_fines_de_lucro']),
-                                           propuesta=str(data['datos']['propuesta']),
-                                           comentarios_revisor=str(data['datos']['comentarios_revisor']))
+    AlertasMeta.objects.filter(id=str(data['datos']['id'])).update(folio=str(data['datos']['folio']))
+    AlertasMeta.objects.filter(id=str(data['datos']['id'])).update(link_adjuntos=str(data['datos']['carpeta']))
+    AlertasMeta.objects.filter(id=str(data['datos']['id'])).update(obs_jefe=str(data['datos']['texto']))
+    if (str(data['datos']['folio']) !=""):
+        if str(data['datos']['asignacion']) == '2':
+            abogado_id = 16749632
+        else:
+            abogado_id = 16386974
+        alerta = AlertasMeta.objects.filter(id=str(data['datos']['id']))
+        Denuncias.objects.create(numero=str(data['datos']['folio']), fecha_ingreso_registro=datetime.now(),fecha_ingreso=datetime.now(),
+                                 via_de_ingreso='LEVANTAMIENTO META',nombre_denunciante=alerta[0].tipo_alerta,nombre_denunciado=alerta[0].nombre_homologado,
+                                 link_adjuntos = str(data['datos']['carpeta']), gestion = 'Pendiente', asignacion = 'Pendiente',
+                                 estado_jefe='INGRESO', obs_ingreso=str(data['datos']['texto']),abogado_asistente_id=abogado_id)
+
     return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)
