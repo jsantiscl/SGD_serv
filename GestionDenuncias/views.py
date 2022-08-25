@@ -287,7 +287,7 @@ def dr_resultadofiscalizacion(request, id_denuncia):
 def dr_enviados(request):
     encargados = EncargadosRegionales.objects.filter(id_usuario__username=request.user.username).first()
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Denuncias.objects.filter(Q(estado_jefe__icontains="FISCALIZADO_DR")|Q(estado_jefe__icontains="EVALUADO_DR_NO_POSIBLE_FISCALIZAR"), asignacion_dr=encargados.dr_asignada_id)
+    denuncia_obj_3 = Denuncias.objects.filter(asignacion_dr=encargados.dr_asignada_id).exclude(estado_jefe__iexact="INGRESO")
     context = {'todasdenuncias': denuncia_obj_3,'encargados':encargados}
     return render(request, 'GestionDenuncias/dr_enviados.html', context)
 
