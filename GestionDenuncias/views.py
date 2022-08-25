@@ -231,7 +231,7 @@ def abogado_enviados(request):
 def dr_evaluacion(request):
     encargados = EncargadosRegionales.objects.filter(id_usuario__username=request.user.username).first()
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__icontains="INGRESO", asignacion_dr=encargados.dr_asignada_id)
+    denuncia_obj_3 = Denuncias.objects.filter(estado_jefe__iexact="INGRESO", asignacion_dr=encargados.dr_asignada_id)
     context = {'todasdenuncias': denuncia_obj_3,'encargados':encargados}
     return render(request, 'GestionDenuncias/dr_evaluacion.html', context)
 
