@@ -90,6 +90,7 @@ $(document).ready(function() {
               <option selected value="Pendiente">Pendiente</option>
               <option value="2">Melanie Aburto</option>
               <option value="6">Fernanda Garcia</option>
+              <option value="7">Maria Jesus Ramirez</option>
               <option value="4">UPAS</option>
               <option value="3">Ya Gestionado</option>
               <option value="5">Archivar</option>
@@ -143,7 +144,7 @@ const csrftoken = getCookie('csrftoken');
   if (confirm('¿Esta Seguro que Desea Finalizar y Päsar a la Siguiente Etapa?')) {
   // Save it!
   console.log('Asignar Recurso N° '+ recurso);
-  if (asignacion_selected == '2' || asignacion_selected == '6'){
+  if (asignacion_selected == '2' || asignacion_selected == '6' || asignacion_selected == '7'){
      var folio = prompt("Ingrese Folio")
      var carpeta =  prompt("Ingrese Link de Carpeta")
      var texto =  prompt("Ingrese Texto")
@@ -206,7 +207,7 @@ const csrftoken = getCookie('csrftoken');
   if (asignacion_selected != 'Pendiente') {
   // Save it!
   console.log('Asignar Recurso N° '+ recurso);
-  if (asignacion_selected == '2'){
+  if (asignacion_selected == '2'|| asignacion_selected == '6' || asignacion_selected == '7'){
       etapa = '2_Asignado_Abogado'
   }
   if (asignacion_selected == '3'){
