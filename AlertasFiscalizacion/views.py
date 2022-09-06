@@ -55,7 +55,11 @@ def alarma_pasar_etapa(request):
     if (str(data['datos']['folio']) !=""):
         if str(data['datos']['asignacion']) == '2':
             abogado_id = 16749632
-        else:
+        if str(data['datos']['asignacion']) == '7':
+            abogado_id = 16835392
+        if str(data['datos']['asignacion']) == '8':
+            abogado_id = 17995568
+        if str(data['datos']['asignacion']) == '6':
             abogado_id = 16386974
         alerta = AlertasMeta.objects.filter(id=str(data['datos']['id']))
         Denuncias.objects.create(numero=str(data['datos']['folio']), fecha_ingreso_registro=datetime.now(),fecha_ingreso=datetime.now(),
