@@ -286,6 +286,15 @@
       </div>
          {% endif %}
 
+                                       {% if group.name == 'GestionRecursos_Visualizacion' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Bandejas Firma</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
+            </div>
+      </div>
+         {% endif %}
+
                                        {% if group.name == 'GestionRecursos_Financiamiento' %}
                                      <div class="w3-dropdown-hover">
       <button class="w3-button">Bandejas</button>
