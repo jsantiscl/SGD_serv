@@ -88,6 +88,7 @@ class Recursos(models.Model):
     alta_complejidad = models.BooleanField(default=False)
     celula = models.CharField(max_length=15, choices=Pago, default="Pendiente")
     link_carpeta = models.URLField(max_length=200, null=True, blank=True)
+    link_carpeta_edicion = models.URLField(max_length=200, null=True, blank=True)
     tipo_original = models.CharField(max_length=100, null=True, blank=True)
     presentacion = models.CharField(max_length=100, null=True, blank=True)
     comentario_admin = models.CharField(max_length=500, null=True, blank=True)
