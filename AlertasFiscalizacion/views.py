@@ -46,7 +46,6 @@ def alarma_pasar_etapa(request):
     data = json.loads(request.body)
 
 
-
     AlertasMeta.objects.filter(id=str(data['datos']['id'])).update(estado=str(data['datos']['etapa']))
     AlertasMeta.objects.filter(id=str(data['datos']['id'])).update(usuario_actual=str(data['datos']['asignacion']))
     AlertasMeta.objects.filter(id=str(data['datos']['id'])).update(folio=str(data['datos']['folio']))
