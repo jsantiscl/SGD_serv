@@ -1,8 +1,7 @@
 {% extends 'GestionDenuncias/base.html' %}
 {% block title %} <title>Sistema de Gestion de Denuncias</title> {% endblock %}
 {% block body %}
-<script src='https://www.google.com/recaptcha/api.js'></script>
-
+<script src='https://www.google.com/recaptcha/api.js?render=6LejSvUkAAAAAOo8Rk3XWUPDpoDhSsbpFyl9Yqjg'></script>
 
 <br>
 {% if form.errors %}
@@ -21,10 +20,7 @@
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 
-    <script>
-         function enableBtn(){
-   document.getElementById("button1").disabled = false; }
-    </script>
+<input type="hidden" name="recaptcha_response" id="recaptchaResponse">
 
 <table>
 <tr>
@@ -38,8 +34,6 @@
 </table>
 <br>
 
-    <div class="g-recaptcha" data-sitekey="6LcyTgUaAAAAANYb-T1XDpo3-AzNhWhcX3m82Fcw" data-callback="enableBtn"></div>
-
 <input type="submit" value="Ingresar"  id="button1" disabled="disabled" >
 <input type="hidden" name="next" value="{{ next }}" >
 </form>
@@ -47,6 +41,13 @@
 {# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'password_reset' %}">¿Olvidaste tu Contraseña?</a></p>
 
-
+<script>
+grecaptcha.ready(function() {
+    grecaptcha.execute('6LejSvUkAAAAAOo8Rk3XWUPDpoDhSsbpFyl9Yqjg', {action: 'submit'}).then(function(token) {
+        document.getElementById("recaptchaResponse").value = token;
+        document.getElementById("button1").disabled = false;
+    });
+});
+</script>
 
 {% endblock %}
