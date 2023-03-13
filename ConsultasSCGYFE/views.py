@@ -71,3 +71,12 @@ def consultas_envio_respuestas(request):
     denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="3_Resuelta")
     context = {'todasdenuncias': denuncia_obj_3, 'user': request.user}
     return render(request,'Consultas/Consultas_Envio_Respuesta.html', context)
+
+
+def consultas_respondidas(request):
+
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+
+    denuncia_obj_3 = ConsultasFormulario.objects.filter(Q(Etapa__icontains="2_Respuesta") | Q(Etapa__icontains="3_Resuelta")| Q(Etapa__icontains="4_Enviada"))
+    context = {'todasdenuncias': denuncia_obj_3, 'user': request.user}
+    return render(request,'Consultas/Consultas_Respondidas.html', context)
