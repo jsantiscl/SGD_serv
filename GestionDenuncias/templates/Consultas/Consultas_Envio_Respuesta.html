@@ -224,7 +224,8 @@ function obtenerEmail(ObjectID) {
 				'ObjectID': ObjectID,
                 'etapa': etapa,
                 'respuesta': respuesta,
-                'email': email
+                'email': email,
+                'respondido': 'True'
 			}
     var url = "/consultas/responder/"
         fetch(url, {

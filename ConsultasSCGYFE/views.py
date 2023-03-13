@@ -56,7 +56,7 @@ def consultas_respuesta(request):
 
 def consultas_responder(request):
     data = json.loads(request.body)
-    ConsultasFormulario.objects.filter(ObjectID=int(data['datos']['ObjectID'])).update(Etapa=str(data['datos']['etapa']), Respuesta=str(data['datos']['respuesta']), Email=str(data['datos']['email']), Fecha_Respuesta=datetime.now())
+    ConsultasFormulario.objects.filter(ObjectID=int(data['datos']['ObjectID'])).update(Etapa=str(data['datos']['etapa']), Respuesta=str(data['datos']['respuesta']), Email=str(data['datos']['email']), Fecha_Respuesta=datetime.now(), Respondido=str(data['datos']['respondido']))
     objeto = ConsultasFormulario.objects.filter(ObjectID=int(data['datos']['ObjectID']))
     WorkflowConsultas.objects.create(ObjectID=objeto[0].ObjectID, GlobalID=objeto[0].GlobalID, Usuario = request.user.username, NuevaEtapa = str(data['datos']['etapa']), FechaCambio = datetime.now())
     return JsonResponse([str(data['datos']['ObjectID']), 'Pasa'], safe=False)

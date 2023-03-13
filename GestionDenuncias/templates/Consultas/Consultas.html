@@ -54,6 +54,7 @@ $(document).ready(function() {
         <tr>
             <th style="text-align: center">GlobalID</th>
             <th style="text-align: center">Fecha Ingreso</th>
+            <th style="text-align: center">Fecha Respuesta</th>
             <th>Nombre</th>
             <th>Rut</th>
             <th>Tema</th>
@@ -70,6 +71,7 @@ $(document).ready(function() {
         <tr>
             <td>{{ linea.ObjectID}}</td>
             <td>{{ linea.FechaIngreso|date:'d-m-y H:i' }}</td>
+            <td>{{ linea.Fecha_Respuesta|date:'d-m-y H:i' }}</td>
             <td>{{ linea.NombreCompleto}}</td>
             <td>{{ linea.Rut}}</td>
             <td>{{ linea.TemaAsociado}}</td>
