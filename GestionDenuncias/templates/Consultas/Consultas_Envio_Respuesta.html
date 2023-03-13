@@ -101,7 +101,7 @@ $(document).ready(function() {
     <tbody>
 
         {% for linea in todasdenuncias %}
-        {% if user.username == linea.RespondidoPor %}
+
         <tr>
             <td>{{ linea.ObjectID}}</td>
             <td>{{ linea.FechaIngreso|date:'d-m-y H:i' }}</td>
@@ -130,7 +130,7 @@ $(document).ready(function() {
             </div>
 
 
-        {% endif %}
+
 </tr>
         {% endfor %}
     </tbody>
