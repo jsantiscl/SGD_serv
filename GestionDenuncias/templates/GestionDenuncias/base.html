@@ -346,10 +346,30 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
                 <a href="{% url 'consultas_nuevas' %}" class="w3-bar-item w3-button">Nuevas</a>
           <a href="{% url 'consultas_respuesta' %}" class="w3-bar-item w3-button">Respondiendo</a>
+          {% if group.name == 'Consultas_Financiamiento' %}
+              <a href="{% url 'consultas_envio_respuestas' %}" class="w3-bar-item w3-button">Envío</a>
+              {% endif %}
           <a href="{% url 'gd_en_notificacion' %}" class="w3-bar-item w3-button">Resueltas</a>
           <a href="{% url 'total_consultas' %}" class="w3-bar-item w3-button">Total</a>
 
             </div>
+
+
+
+      </div>
+         {% endif %}
+
+                  {% if group.name == 'Consultas_Financiamiento' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Envio Respuestas</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'consultas_envio_respuestas' %}" class="w3-bar-item w3-button">Envío</a>
+
+            </div>
+
+
+
       </div>
          {% endif %}
 

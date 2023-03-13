@@ -53,3 +53,18 @@ def consultas_respuesta(request):
     denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="2_Respuesta")
     context = {'todasdenuncias': denuncia_obj_3, 'user': request.user}
     return render(request,'Consultas/Consultas_Respuesta.html', context)
+
+def consultas_responder(request):
+    data = json.loads(request.body)
+    ConsultasFormulario.objects.filter(ObjectID=int(data['datos']['ObjectID'])).update(Etapa=str(data['datos']['etapa']), Respuesta=str(data['datos']['respuesta']), Email=str(data['datos']['email']), Fecha_Respuesta=datetime.now())
+    objeto = ConsultasFormulario.objects.filter(ObjectID=int(data['datos']['ObjectID']))
+    WorkflowConsultas.objects.create(ObjectID=objeto[0].ObjectID, GlobalID=objeto[0].GlobalID, Usuario = request.user.username, NuevaEtapa = str(data['datos']['etapa']), FechaCambio = datetime.now())
+    return JsonResponse([str(data['datos']['ObjectID']), 'Pasa'], safe=False)
+
+def consultas_envio_respuestas(request):
+
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+
+    denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="3_Resuelta")
+    context = {'todasdenuncias': denuncia_obj_3, 'user': request.user}
+    return render(request,'Consultas/Consultas_Envio_Respuesta.html', context)

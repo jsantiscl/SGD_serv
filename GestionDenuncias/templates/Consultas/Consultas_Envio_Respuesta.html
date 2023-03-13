@@ -1,5 +1,5 @@
 {% extends 'GestionDenuncias/base.html' %}
-{% block title %} <title>Consultas Respuestas</title> {% endblock %}
+{% block title %} <title>Consultas Envio Respuesta</title> {% endblock %}
 
 {% block body %}
 
@@ -80,7 +80,7 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
-<h3>Consultas Respuestas</h3>
+<h3>Consultas Envio Respuesta</h3>
 
 
 
@@ -101,7 +101,7 @@ $(document).ready(function() {
     <tbody>
 
         {% for linea in todasdenuncias %}
-
+        {% if user.username == linea.RespondidoPor %}
         <tr>
             <td>{{ linea.ObjectID}}</td>
             <td>{{ linea.FechaIngreso|date:'d-m-y H:i' }}</td>
@@ -110,17 +110,19 @@ $(document).ready(function() {
             <td>{{ linea.TemaAsociado}}</td>
             <td>{{ linea.Email}}</td>
             <td>{{ linea.Pregunta}}</td>
-            <td><a type="submit" class="btn btn-success" onclick="mostrarFormulario()">Responder</a></td>
+            <td><a type="submit" class="btn btn-success" onclick="mostrarFormulario()">Finalizar</a></td>
 
             <div id="formularioEmergente" style="display: none;">
 
                 <h4>Responder Consulta {{ linea.ObjectID }}</h4>
                 <hr>
-                <label for="respuesta">Escribe tu respuesta:</label><br>
-                <textarea id="respuesta{{ linea.ObjectID }}" name="respuesta" onkeyup="contarCaracteres({{ linea.ObjectID }})"></textarea><br>
+                <label for="respuesta">Validar la respuesta:</label><br>
+                <textarea id="respuesta{{ linea.ObjectID }}" name="respuesta" onkeyup="contarCaracteres({{ linea.ObjectID }})">{{ linea.Respuesta }}</textarea><br>
                 <div id="contadorCaracteres{{ linea.ObjectID }}" class="contador"></div><br>
                 <label for="correo">Se enviará respuesta a:</label><br>
                 <input type="email{{ linea.ObjectID }}" id="correo{{ linea.ObjectID }}" name="correo" value="{{ linea.Email }}"><br>
+                <hr>
+                <label for="correo">Respondido por : {{ linea.RespondidoPor }}</label><br>
                 <hr>
                 <button type="submit" onclick="pasar({{ linea.ObjectID }})">Enviar</button>
                 <button type="button" class="cerrar" onclick="ocultarFormulario()">Cerrar</button>
@@ -128,7 +130,7 @@ $(document).ready(function() {
             </div>
 
 
-
+        {% endif %}
 </tr>
         {% endfor %}
     </tbody>
@@ -201,8 +203,8 @@ function obtenerEmail(ObjectID) {
   function pasar(ObjectID) {
   var respuesta = obtenerRespuesta(ObjectID);
   var email = obtenerEmail(ObjectID);
-  var etapa = '3_Resuelta';
-  if (confirm('¿Esta Seguro que Desea Enviar la Respuesta?')) {
+  var etapa = '4_Enviada';
+  if (confirm('¿Esta Respuesta Fue Enviada?')) {
   // Save it!
   console.log('Asignar Recurso N° '+ ObjectID);
 
