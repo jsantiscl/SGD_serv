@@ -28,13 +28,16 @@ def consultas_nuevas(request):
 
     if request.user.groups.filter(name='Consultas_Financiamiento').exists():
         denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="1_Nueva",
-                                                            TemaAsociado__icontains="Financiamiento")
+                                                            TemaAsociado__icontains="financiamiento")
     elif request.user.groups.filter(name='Consultas_Propaganda').exists():
-        denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="1_Nueva")
+        denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="1_Nueva",
+                                                            TemaAsociado__icontains="propaganda")
     elif request.user.groups.filter(name='Consultas_AdministracionE').exists():
-        denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="1_Nueva")
+        denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="1_Nueva",
+                                                            TemaAsociado__icontains="administracion")
     elif request.user.groups.filter(name='Consultas_Contabilidad').exists():
-        denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="1_Nueva")
+        denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="1_Nueva",
+                                                            TemaAsociado__icontains="contabilidad")
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'Consultas/Consultas_Nuevas.html', context)
 
