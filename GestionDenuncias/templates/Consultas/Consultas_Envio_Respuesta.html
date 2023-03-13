@@ -4,7 +4,7 @@
 {% block body %}
 
     	<style>
-		#formularioEmergente {
+		.formularioEmergente {
 			position: fixed;
 			top: 50%;
 			left: 50%;
@@ -110,9 +110,9 @@ $(document).ready(function() {
             <td>{{ linea.TemaAsociado}}</td>
             <td>{{ linea.Email}}</td>
             <td>{{ linea.Pregunta}}</td>
-            <td><a type="submit" class="btn btn-success" onclick="mostrarFormulario()">Finalizar</a></td>
+            <td><a type="submit" class="btn btn-success" onclick="mostrarFormulario({{ linea.ObjectID }})">Finalizar</a></td>
 
-            <div id="formularioEmergente" style="display: none;">
+            <div class="formularioEmergente" id="formularioEmergente{{ linea.ObjectID }}" style="display: none;">
 
                 <h4>Responder Consulta {{ linea.ObjectID }}</h4>
                 <hr>
@@ -125,7 +125,7 @@ $(document).ready(function() {
                 <label for="correo">Respondido por : {{ linea.RespondidoPor }}</label><br>
                 <hr>
                 <button type="submit" onclick="pasar({{ linea.ObjectID }})">Enviar</button>
-                <button type="button" class="cerrar" onclick="ocultarFormulario()">Cerrar</button>
+                <button type="button" class="cerrar" onclick="ocultarFormulario({{ linea.ObjectID }})">Cerrar</button>
 
             </div>
 
@@ -176,13 +176,13 @@ const csrftoken = getCookie('csrftoken');
   }
 }
 
-       function mostrarFormulario() {
-  var formulario = document.getElementById("formularioEmergente");
+       function mostrarFormulario(ObjectID) {
+  var formulario = document.getElementById("formularioEmergente"+ ObjectID);
   formulario.style.display = "block";
 }
 
-function ocultarFormulario() {
-  var formulario = document.getElementById("formularioEmergente");
+function ocultarFormulario(ObjectID) {
+  var formulario = document.getElementById("formularioEmergente"+ ObjectID);
   formulario.style.display = "none";
 }
 
