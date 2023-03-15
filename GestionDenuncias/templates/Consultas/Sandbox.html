@@ -1,0 +1,138 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sandbox</title> {% endblock %}
+
+{% block body %}
+
+    <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        canvas {
+            display: block;
+            margin: auto;
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+<br><br>
+    <canvas id="snake" width="600" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('snake');
+        const ctx = canvas.getContext('2d');
+        const tileSize = 30; // Aumenta el tamaño de las celdas
+        const numRows = canvas.height / tileSize;
+        const numCols = canvas.width / tileSize;
+
+        let snake = [{ x: numCols / 2, y: numRows / 2 }];
+        let direction = { x: 0, y: -1 };
+        let food = generateFood();
+        let gameOver = false;
+
+        // Cargar la imagen del logo
+        const foodImage = new Image();
+        foodImage.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjcm7Ea1WMI_FAyrjENOG1BIvtJcrq9jViCHGXHqp9uVZcPBTSHi6g0yRTymk5YI2_ZL8&usqp=CAU'; // Reemplaza esto con la URL del logo del Servicio Electoral de Chile
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawSnake();
+            drawFood();
+
+            if (gameOver) {
+                ctx.fillStyle = 'white';
+                ctx.font = '24px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2);
+            }
+        }
+
+        function update() {
+            if (gameOver) return;
+            moveSnake();
+            checkFoodCollision();
+            checkSelfCollision();
+            checkWallCollision();
+        }
+
+        function moveSnake() {
+            let head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+            snake.unshift(head);
+            snake.pop();
+        }
+
+        function checkFoodCollision() {
+            if (snake[0].x === food.x && snake[0].y === food.y) {
+                snake.push({});
+                food = generateFood();
+            }
+        }
+
+        function checkSelfCollision() {
+            for (let i = 1; i < snake.length; i++) {
+                if (snake[0].x === snake[i].x && snake[0].y === snake[i].y) {
+                    gameOver = true;
+                    break;
+                }
+            }
+        }
+
+        function checkWallCollision() {
+            if (snake[0].x < 0 || snake[0].x >= numCols || snake[0].y < 0 || snake[0].y >= numRows) {
+                gameOver = true;
+            }
+        }
+
+        function drawSnake() {
+            ctx.fillStyle = 'lime';
+            for (let tile of snake) {
+                ctx.fillRect(tile.x * tileSize, tile.y * tileSize, tileSize, tileSize);
+            }
+        }
+
+        // Dibujar el logo como comida
+function drawFood() {
+    const foodWidth = tileSize; // Cambia esto al ancho deseado para la imagen de la comida
+    const foodHeight = tileSize; // Cambia esto al alto deseado para la imagen de la comida
+    ctx.drawImage(foodImage, food.x * tileSize, food.y * tileSize, foodWidth, foodHeight);
+}
+        function generateFood() {
+            let food = {};
+            do {
+                food.x = Math.floor(Math.random() * numCols);
+                 food.y = Math.floor(Math.random() * numRows);
+        } while (snake.some(tile => tile.x === food.x && tile.y === food.y));
+        return food;
+    }
+
+    document.addEventListener('keydown', event => {
+        if (gameOver) return;
+        switch (event.key) {
+            case 'ArrowUp':
+                if (direction.y === 0) direction = { x: 0, y: -1 };
+                break;
+            case 'ArrowDown':
+                if (direction.y === 0) direction = { x: 0, y: 1 };
+                break;
+            case 'ArrowLeft':
+                if (direction.x === 0) direction = { x: -1, y: 0 };
+                break;
+            case 'ArrowRight':
+                if (direction.x === 0) direction = { x: 1, y: 0 };
+                break;
+        }
+    });
+
+    function gameLoop() {
+        update();
+        draw();
+        setTimeout(gameLoop, 100);
+    }
+
+    gameLoop();
+</script>
+
+<br><br>
+{% endblock %}

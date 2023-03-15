@@ -11,4 +11,5 @@ urlpatterns = [
     path('envio/', login_required(consultas_envio_respuestas), name='consultas_envio_respuestas'),
     path('pasar/', login_required(consultas_pasar_etapa), name='consultas_pasar_etapa'),
     path('responder/', login_required(consultas_responder), name='consultas_responder'),
+    path('sandbox/', login_required(sandbox), name='sandbox'),
 ]

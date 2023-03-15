@@ -80,3 +80,9 @@ def consultas_respondidas(request):
     denuncia_obj_3 = ConsultasFormulario.objects.filter(Q(Etapa__icontains="2_Respuesta") | Q(Etapa__icontains="3_Resuelta")| Q(Etapa__icontains="4_Enviada"))
     context = {'todasdenuncias': denuncia_obj_3, 'user': request.user}
     return render(request,'Consultas/Consultas_Respondidas.html', context)
+
+
+def sandbox(request):
+
+    context = {}
+    return render(request,'Consultas/Sandbox.html', context)
