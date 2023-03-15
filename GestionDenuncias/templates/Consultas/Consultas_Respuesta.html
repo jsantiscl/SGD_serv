@@ -77,6 +77,12 @@ $(document).ready(function() {
             </script>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<!-- Quill JS -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<!-- Resto del código de estilos y scripts -->
+
 <div class="w3-responsive">
 
 <section class="section1">
@@ -112,20 +118,20 @@ $(document).ready(function() {
             <td>{{ linea.Pregunta}}</td>
             <td><a type="submit" class="btn btn-success" onclick="mostrarFormulario({{ linea.ObjectID }})">Responder</a></td>
 
-            <div class="formularioEmergente" id="formularioEmergente{{ linea.ObjectID }}" style="display: none;">
+  <div class="formularioEmergente" id="formularioEmergente{{ linea.ObjectID }}" style="display: none;">
 
                 <h4>Responder Consulta {{ linea.ObjectID }}</h4>
                 <hr>
                 <label for="respuesta">Escribe tu respuesta:</label><br>
-                <textarea id="respuesta{{ linea.ObjectID }}" name="respuesta" onkeyup="contarCaracteres({{ linea.ObjectID }})"></textarea><br>
-                <div id="contadorCaracteres{{ linea.ObjectID }}" class="contador"></div><br>
+                <div id="respuesta{{ linea.ObjectID }}" class="quill-editor" style="height: 300px;"></div><br>
                 <label for="correo">Se enviará respuesta a:</label><br>
-                <input type="email{{ linea.ObjectID }}" id="correo{{ linea.ObjectID }}" name="correo" value="{{ linea.Email }}"><br>
+                <input type="email" id="correo{{ linea.ObjectID }}" name="correo" value="{{ linea.Email }}" size="50"><br>
                 <hr>
                 <button type="submit" onclick="pasar({{ linea.ObjectID }})">Enviar</button>
                 <button type="button" class="cerrar" onclick="ocultarFormulario({{ linea.ObjectID }})">Cerrar</button>
 
             </div>
+
 
 
             {% endif %}
@@ -174,25 +180,38 @@ const csrftoken = getCookie('csrftoken');
   }
 }
 
-       function mostrarFormulario(ObjectID) {
-  var formulario = document.getElementById("formularioEmergente" + ObjectID);
-  formulario.style.display = "block";
-}
+       var quillInstances = {};
 
-function ocultarFormulario(ObjectID) {
-  var formulario = document.getElementById("formularioEmergente" + ObjectID);
-  formulario.style.display = "none";
-}
+    function initQuillEditor(ObjectID) {
+        var quill = new Quill('#respuesta' + ObjectID, {
+            theme: 'snow'
+        });
+        return quill;
+    }
 
-function obtenerRespuesta(ObjectID) {
-  var respuesta = document.getElementById("respuesta" + ObjectID).value;
-  return respuesta;
-}
-function obtenerEmail(ObjectID) {
-  var email = document.getElementById("correo" + ObjectID).value;
-  return email;
-}
+    function mostrarFormulario(ObjectID) {
+        var formulario = document.getElementById("formularioEmergente" + ObjectID);
+        formulario.style.display = "block";
 
+        if (!quillInstances[ObjectID]) {
+            quillInstances[ObjectID] = initQuillEditor(ObjectID);
+        }
+    }
+
+    function ocultarFormulario(ObjectID) {
+        var formulario = document.getElementById("formularioEmergente" + ObjectID);
+        formulario.style.display = "none";
+    }
+
+    function obtenerRespuesta(ObjectID) {
+        var respuesta = quillInstances[ObjectID].root.innerHTML;
+        return respuesta;
+    }
+
+    function obtenerEmail(ObjectID) {
+        var email = document.getElementById("correo" + ObjectID).value;
+        return email;
+    }
 
 
 

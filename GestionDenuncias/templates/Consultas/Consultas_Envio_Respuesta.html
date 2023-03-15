@@ -3,6 +3,10 @@
 
 {% block body %}
 
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
     	<style>
 		.formularioEmergente {
 			position: fixed;
@@ -110,17 +114,17 @@ $(document).ready(function() {
             <td>{{ linea.TemaAsociado}}</td>
             <td>{{ linea.Email}}</td>
             <td>{{ linea.Pregunta}}</td>
-            <td><a type="submit" class="btn btn-success" onclick="mostrarFormulario({{ linea.ObjectID }})">Finalizar</a></td>
+            <td><a type="submit" class="btn btn-success" onclick="mostrarFormulario({{ linea.ObjectID }}, '{{ linea.Respuesta|escapejs }}')">Finalizar</a></td>
+
 
             <div class="formularioEmergente" id="formularioEmergente{{ linea.ObjectID }}" style="display: none;">
 
                 <h4>Responder Consulta {{ linea.ObjectID }}</h4>
                 <hr>
                 <label for="respuesta">Validar la respuesta:</label><br>
-                <textarea id="respuesta{{ linea.ObjectID }}" name="respuesta" onkeyup="contarCaracteres({{ linea.ObjectID }})">{{ linea.Respuesta }}</textarea><br>
-                <div id="contadorCaracteres{{ linea.ObjectID }}" class="contador"></div><br>
+                <div id="respuesta{{ linea.ObjectID }}" class="quill-editor" style="height: 300px;"></div><br>
                 <label for="correo">Se enviará respuesta a:</label><br>
-                <input type="email{{ linea.ObjectID }}" id="correo{{ linea.ObjectID }}" name="correo" value="{{ linea.Email }}"><br>
+                <input type="email" id="correo{{ linea.ObjectID }}" name="correo" value="{{ linea.Email }}" size="50"><br>
                 <hr>
                 <label for="correo">Respondido por : {{ linea.RespondidoPor }}</label><br>
                 <hr>
@@ -176,25 +180,39 @@ const csrftoken = getCookie('csrftoken');
   }
 }
 
-       function mostrarFormulario(ObjectID) {
-  var formulario = document.getElementById("formularioEmergente"+ ObjectID);
-  formulario.style.display = "block";
-}
+ var quillInstances = {};
 
-function ocultarFormulario(ObjectID) {
-  var formulario = document.getElementById("formularioEmergente"+ ObjectID);
-  formulario.style.display = "none";
-}
+    function initQuillEditor(ObjectID) {
+        var quill = new Quill('#respuesta' + ObjectID, {
+            theme: 'snow'
+        });
+        return quill;
+    }
 
-function obtenerRespuesta(ObjectID) {
-  var respuesta = document.getElementById("respuesta" + ObjectID).value;
-  return respuesta;
-}
-function obtenerEmail(ObjectID) {
-  var email = document.getElementById("correo" + ObjectID).value;
-  return email;
-}
+    function mostrarFormulario(ObjectID, respuesta) {
+        var formulario = document.getElementById("formularioEmergente" + ObjectID);
+        formulario.style.display = "block";
 
+        if (!quillInstances[ObjectID]) {
+            quillInstances[ObjectID] = initQuillEditor(ObjectID);
+        }
+        quillInstances[ObjectID].root.innerHTML = respuesta;
+    }
+
+    function ocultarFormulario(ObjectID) {
+        var formulario = document.getElementById("formularioEmergente" + ObjectID);
+        formulario.style.display = "none";
+    }
+
+    function obtenerRespuesta(ObjectID) {
+        var respuesta = quillInstances[ObjectID].root.innerHTML;
+        return respuesta;
+    }
+
+    function obtenerEmail(ObjectID) {
+        var email = document.getElementById("correo" + ObjectID).value;
+        return email;
+    }
 
 
 
