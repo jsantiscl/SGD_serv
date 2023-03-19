@@ -16,6 +16,7 @@ class Candidatos(models.Model):
     partido = models.CharField(max_length=100, null=True, blank=True)
     rut_admin = models.ForeignKey('AdministradoresElectorales', on_delete=models.SET_NULL, null=True, blank=True, related_name='candidatos')
     partido_asociado = models.CharField(max_length=100, null=True, blank=True)
+    estado = models.CharField(max_length=100, default='1_Ingreso')
     class Meta:
         unique_together = ('eleccion', 'rut')
     def __str__(self):
@@ -38,7 +39,7 @@ class Partidos(models.Model):
     par_nombre = models.CharField(max_length=200)
     par_rut_admin = models.ForeignKey('AdministradoresGenerales', on_delete=models.SET_NULL, null=True, blank=True, related_name='partidos')
     par_mail = models.CharField(max_length=200, null=True, blank=True)
-
+    estado = models.CharField(max_length=100, default='1_Ingreso')
     class Meta:
         unique_together = ('eleccion', 'par_rut')
 
