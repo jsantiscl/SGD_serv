@@ -153,7 +153,7 @@
          {% endif %}
          {% if group.name == 'GestionRecursos_LiderCelulas' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandejas</button>
+      <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
                     <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
           <a href="{% url 'ld_recursos_asigna' %}" class="w3-bar-item w3-button">Bandeja Asignacion</a>
@@ -179,7 +179,7 @@
 
         {% if group.name == 'GestionRecursos_LiderAC' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandejas</button>
+      <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'ld_recursos_asigna' %}" class="w3-bar-item w3-button">Bandeja Asignacion</a>
           <a href="{% url 'ld_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Resolucion Lider</a>
@@ -210,7 +210,7 @@
 
                         {% if group.name == 'GestionRecursos_JefeCelula' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandejas</button>
+      <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'jc_recursos_asigna' %}" class="w3-bar-item w3-button">Asignacion</a>
           <a href="{% url 'jc_valida_informe_tecnico' %}" class="w3-bar-item w3-button">Validacion Informe Tecnico</a>
@@ -223,7 +223,7 @@
 
       {% if group.name == 'GestionRecursos_Auditor' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandejas</button>
+      <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'au_informe_tecnico' %}" class="w3-bar-item w3-button">Informe Tecnico</a>
           <a href="{% url 'au_informe_tecnico' %}" class="w3-bar-item w3-button">Informes Enviados</a>
@@ -234,7 +234,7 @@
 
       {% if group.name == 'GestionRecursos_AbogadoC' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandejas</button>
+      <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'ab_elabora_propuesta' %}" class="w3-bar-item w3-button">Elaboracion Propuesta</a>
           <a href="{% url 'au_informe_tecnico' %}" class="w3-bar-item w3-button">Devuelto para Revisión</a>
@@ -254,7 +254,7 @@
 
                  {% if group.name == 'GestionRecursos_JefeDivision' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandejas</button>
+      <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
                 <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
                 <a href="{% url 'jd_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Resolucion</a>
@@ -265,7 +265,7 @@
 
                  {% if group.name == 'GestionRecursos_Subdirector' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandejas</button>
+      <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
                 <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
                 <a href="{% url 'sd_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Resolucion</a>
@@ -297,7 +297,7 @@
 
                                        {% if group.name == 'GestionRecursos_Financiamiento' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandejas</button>
+      <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
                 <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
           <a href="{% url 'fin_revision_pagos' %}" class="w3-bar-item w3-button">Revision Pagos</a>
@@ -319,7 +319,7 @@
 
                                                        {% if group.name == 'GestionRecursos_Notificaciones' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandejas</button>
+      <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
                 <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
           <a href="{% url 'gd_en_notificacion' %}" class="w3-bar-item w3-button">Notificaciones</a>
@@ -365,6 +365,23 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
 
               <a href="{% url 'consultas_envio_respuestas' %}" class="w3-bar-item w3-button">Envío</a>
+
+            </div>
+
+
+
+      </div>
+         {% endif %}
+
+
+                   {% if group.name == 'EncargadoControlPreventivo' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">SCP</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'admin_asignacion_candidato' %}" class="w3-bar-item w3-button">Asignacion Candidatos</a>
+              <a href="{% url 'admin_asignacion_candidato' %}" class="w3-bar-item w3-button">Asignacion Partidos</a>
+              <a href="{% url 'admin_asignacion_candidato' %}" class="w3-bar-item w3-button">Reporte Total</a>
 
             </div>
 

@@ -1,0 +1,188 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Control Preventivo</title> {% endblock %}
+
+{% block body %}
+
+            <script type="text/javascript" class="init">
+
+
+$(document).ready(function() {
+	$('#example2').DataTable({
+        "language": {
+            "lengthMenu": "Ver _MENU_ registros por pagina",
+            "zeroRecords": "Sin Resultados",
+            "info": "Mostrando pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin Resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros)"
+        },
+               dom: 'lfrtBip',
+        buttons: [
+             {
+      extend: 'excel',
+      exportOptions: {
+
+          format: {
+              body: function(data, row, column, node) {
+                  data = $('<p>' + data + '</p>').text();
+                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+              }
+          }
+      }
+  }
+        ]
+
+
+
+    } );
+} );
+            function goBack() {
+  window.history.back();
+}
+
+            </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Candidatos Asignación</h3>
+
+<div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
+    <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" onclick="asignar_todos()">Asignar Seleccionados</button></td>
+
+</div>
+
+    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
+    <thead>
+        <tr>
+            <th style="text-align: center">Tipo</th>
+            <th>Region</th>
+            <th>Rut</th>
+            <th>Nombre</th>
+            <th>Pacto</th>
+            <th>Partido</th>
+            <th>Asignacion</th>
+            <th>Accion</th>
+        </tr>
+            </thead>
+    <tbody>
+        {% load humanize %}
+        {% for linea in candidatos %}
+
+        <tr>
+            <td>Candidato</td>
+            <td>{{ linea.region}}</td>
+            <td>{{ linea.rut}}</td>
+            <td>{{ linea.nombre}} {{ linea.apellido_p}} {{ linea.apellido_m}}</td>
+            <td>{{ linea.pacto}}</td>
+            <td>{{ linea.partido}}</td>
+            <td>
+            <select name="asignacion" id="selectorasignacion{{linea.id}}">
+              <option value="Pendiente" selected>Pendiente</option>
+                    {% for auditor in auditores %}
+                        <option value="{{ auditor.username }}">{{ auditor.first_name}} {{ auditor.last_name}}</option>
+                    {% endfor %}
+            </select>
+
+            </td>
+            <td><a class="btn btn-success" onclick="asignar({{ linea.id }})">Asigna</a></td>
+
+        {% endfor %}
+    </tbody>
+    </table>
+<td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
+
+</section>
+</div>
+
+       <script type="text/javascript">
+    var order;
+ function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+  function asignar(recurso) {
+  var selector_prioridad = document.getElementById('selectorprioridad'+ recurso);
+  var prioridad_selected = selector_prioridad.options[selector_prioridad.selectedIndex].text;
+
+  var selector_asignacion = document.getElementById('selectorasignacion'+ recurso);
+  var asignacion_selected = selector_asignacion.options[selector_asignacion.selectedIndex].value;
+
+  if (confirm('¿Esta Seguro que Desea Asignar?' + asignacion_selected)) {
+  // Save it!
+  console.log('Asignar Recurso N°'+ recurso);
+  asignar_recurso(recurso, prioridad_selected, asignacion_selected);
+
+} else {
+  // Do nothing!
+  console.log('No Finalizado Confirmado');
+}
+
+}
+    function asignar_recurso(recurso, prioridad, asignacion) {
+
+        var datos = {
+				'id': recurso,
+                'prioridad': prioridad,
+                'asignacion': asignacion
+			}
+    var url = "/sgd/recursos/admin/asignar_recurso/"
+        fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+	    			'X-CSRFToken':csrftoken
+	    		},
+	    		body:JSON.stringify({'datos':datos}),
+
+	    	})
+            .then((response) => response.json())
+      }
+
+      function asignar_individual_masivo(recurso) {
+  var selector_prioridad = document.getElementById('selectorprioridad'+ recurso);
+  var prioridad_selected = selector_prioridad.options[selector_prioridad.selectedIndex].text;
+
+  var selector_asignacion = document.getElementById('selectorasignacion'+ recurso);
+  var asignacion_selected = selector_asignacion.options[selector_asignacion.selectedIndex].value;
+
+  console.log('Asignar Recurso N°'+ recurso);
+  asignar_recurso(recurso, prioridad_selected, asignacion_selected);
+}
+
+function asignar_todos() {
+
+  if (confirm('¿Esta Seguro que Desea Asignar Todos los  Modificados?')) {
+  // Save it!
+  console.log('Asignar Recurso N°');
+
+      {% for linea in todasdenuncias %}
+        {% if linea.usuario_actual.username == user.get_username %}
+              console.log('Asignar Recurso N°' + {{ linea.id }});
+              asignar_individual_masivo({{ linea.id }});
+        {% endif %}
+        {% endfor %}
+  window.alert("Asignadas");
+} else {
+  // Do nothing!
+  console.log('No Finalizado Confirmado');
+}}
+
+
+    </script>
+
+{% endblock %}
