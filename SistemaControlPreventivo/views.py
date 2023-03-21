@@ -30,3 +30,19 @@ def asignar_candidatos_scp(request):
                                                 nueva_etapa='2_AsignadoAuditor',
                                                 fecha_cambio=datetime.now())
     return JsonResponse([str(data['datos']['rut']), 'Asignado'], safe=False)
+
+
+def admin_asignacion_partido(request):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="AuditorControlPreventivoPP")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+
+    # Filtrar los candidatos como lo hacías antes
+    candidatos = Partidos.objects.filter(estado='1_Ingreso')
+
+    # Agregar los auditores al contexto
+    context = {'candidatos': candidatos, 'auditores': auditores}
+
+    return render(request, 'SistemaControlPreventivo/SCP_Admin_Asignacion_Partidos.html', context)
