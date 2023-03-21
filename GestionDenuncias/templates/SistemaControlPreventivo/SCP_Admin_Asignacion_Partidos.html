@@ -117,7 +117,7 @@ const csrftoken = getCookie('csrftoken');
   // Save it!
 
   asignar_recurso(rut, asignacion_selected);
-    setTimeout(() => {   return window.location.replace("{% url 'admin_asignacion_candidato' %}"); }, 1000);
+    setTimeout(() => {   return window.location.replace("{% url 'admin_asignacion_partido' %}"); }, 1000);
 } else {
   // Do nothing!
   console.log('No Finalizado Confirmado');
