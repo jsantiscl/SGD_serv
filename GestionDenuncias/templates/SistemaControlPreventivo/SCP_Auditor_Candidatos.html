@@ -45,10 +45,10 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
-<h3>Partidos Asignación</h3>
+<h3>Candidatos Asignación</h3>
 
 <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
-    <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" onclick="asignar_todos()">Asignar Seleccionados</button></td>
+  {#   <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" onclick="asignar_todos()">Asignar Seleccionados</button></td> #}
 
 </div>
 
@@ -56,31 +56,29 @@ $(document).ready(function() {
     <thead>
         <tr>
             <th style="text-align: center">Tipo</th>
+            <th>Region</th>
             <th>Rut</th>
             <th>Nombre</th>
-            <th>Asignacion</th>
+            <th>Pacto</th>
+            <th>Partido</th>
+            <th>Carpeta</th>
             <th>Accion</th>
         </tr>
             </thead>
     <tbody>
         {% load humanize %}
         {% for linea in candidatos %}
-
+         {% if linea.asignado_a == user.get_username %}
         <tr>
-            <td>Partido</td>
-            <td>{{ linea.par_rut}}</td>
-            <td>{{ linea.par_nombre}}</td>
-            <td>
-            <select name="asignacion" id="selectorasignacion{{linea.par_rut}}">
-              <option value="Pendiente" selected>Pendiente</option>
-                    {% for auditor in auditores %}
-                        <option value="{{ auditor.username }}">{{ auditor.first_name}} {{ auditor.last_name}}</option>
-                    {% endfor %}
-            </select>
-
-            </td>
-            <td><a class="btn btn-success" onclick="asignar('{{ linea.par_rut|stringformat:"s" }}')">Asigna</a></td>
-
+            <td>Candidato</td>
+            <td>{{ linea.region}}</td>
+            <td>{{ linea.rut}}</td>
+            <td>{{ linea.nombre}} {{ linea.apellido_p}} {{ linea.apellido_m}}</td>
+            <td>{{ linea.pacto}}</td>
+            <td>{{ linea.partido}}</td>
+            <td><a>Link</a> </td>
+            <td><a class="btn btn-success" onclick="pasar('{{ linea.rut|stringformat:"s" }}')">Pasar Etapa</a></td>
+            {% endif %}
         {% endfor %}
     </tbody>
     </table>
@@ -108,29 +106,27 @@ $(document).ready(function() {
 }
 const csrftoken = getCookie('csrftoken');
 
-  function asignar(rut) {
+  function pasar(rut) {
 
-  var selector_asignacion = document.getElementById('selectorasignacion'+ rut.toString());
-  var asignacion_selected = selector_asignacion.options[selector_asignacion.selectedIndex].value;
-
-  if (confirm('¿Esta Seguro que Desea Asignar?' + asignacion_selected)) {
+  if (confirm('¿Esta Seguro que Desea Pasar la Etapa?')) {
   // Save it!
 
-  asignar_recurso(rut, asignacion_selected);
-    setTimeout(() => {   return window.location.replace("{% url 'admin_asignacion_partido' %}"); }, 1000);
+  pasar_etapa(rut);
+    setTimeout(() => {   return window.location.replace("{% url 'auditor_candidatos' %}"); }, 1000);
 } else {
   // Do nothing!
   console.log('No Finalizado Confirmado');
 }
 
 }
-    function asignar_recurso(rut, asignacion) {
+    function pasar_etapa(rut) {
 
         var datos = {
 				'rut': rut.toString(),
-                'asignacion': asignacion
+                'etapa': '3_EnRevisor',
+                'tipo' : 'Candidato'
 			}
-    var url = "/scp/asignapartidos/"
+    var url = "/scp/pasaretapa/"
         fetch(url, {
 	    		method:'POST',
 	    		headers:{
@@ -144,45 +140,6 @@ const csrftoken = getCookie('csrftoken');
             .then((response) => response.json())
       }
 
-function asignar_individual_masivo(rut) {
-  var selector_asignacion = document.getElementById('selectorasignacion' + rut.toString());
-
-  // Verificar si selector_asignacion es nulo
-  if (selector_asignacion === null) {
-    // Si es nulo, no hacer nada y salir de la función
-    return;
-  }
-
-  var asignacion_selected = selector_asignacion.options[selector_asignacion.selectedIndex].value;
-
-  // Verificar si asignacion_selected es igual a 'Pendiente'
-  if (asignacion_selected === 'Pendiente') {
-    // Si es igual a 'Pendiente', no hacer nada y salir de la función
-    return;
-  }
-
-
-  asignar_recurso(rut, asignacion_selected);
-}
-
-function asignar_todos() {
-
-  if (confirm('¿Esta Seguro que Desea Asignar Todos los  Modificados?')) {
-  // Save it!
-  console.log('Asignar Recurso N°');
-
-      {% for linea in candidatos %}
-        {% if linea.estado == '1_Ingreso' %}
-              ingresorut = '{{ linea.par_rut|stringformat:"s" }}'
-              asignar_individual_masivo(ingresorut.toString());
-        {% endif %}
-        {% endfor %}
-  window.alert("Asignadas");
-    setTimeout(() => {   return window.location.replace("{% url 'admin_asignacion_partido' %}"); }, 1000);
-} else {
-  // Do nothing!
-  console.log('No Finalizado Confirmado');
-}}
 
 
     </script>

@@ -382,13 +382,51 @@
               <a href="{% url 'admin_asignacion_candidato' %}" class="w3-bar-item w3-button">Asignacion Candidatos</a>
               <a href="{% url 'admin_asignacion_partido' %}" class="w3-bar-item w3-button">Asignacion Partidos</a>
               <a href="{% url 'admin_asignacion_candidato' %}" class="w3-bar-item w3-button">Reporte Total</a>
+          {% if group.name == 'RevisorControlPreventivo_C1' %}
+              <a href="{% url 'admin_asignacion_candidato' %}" class="w3-bar-item w3-button">Revision Candidatos</a>
+              {% endif %}
+          {% if group.name == 'RevisorControlPreventivo_PP' %}
+              <a href="{% url 'auditor_partidos' %}" class="w3-bar-item w3-button">Revision Partidos</a>
+              {% endif %}
 
             </div>
 
-
-
       </div>
          {% endif %}
+
+                                   {% if group.name == 'AuditorControlPreventivo' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">SCP</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'auditor_candidatos' %}" class="w3-bar-item w3-button">Bandeja Candidatos</a>
+
+            </div>
+      </div>
+         {% endif %}
+
+                                                   {% if group.name == 'AuditorControlPreventivoPP' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">SCP</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'auditor_partidos' %}" class="w3-bar-item w3-button">Bandeja Partidos</a>
+
+            </div>
+      </div>
+         {% endif %}
+
+                                   {% if group.name == 'RevisorControlPreventivo_C2' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">SCP</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'auditor_candidatos' %}" class="w3-bar-item w3-button">Bandeja Candidatos</a>
+
+            </div>
+      </div>
+         {% endif %}
+
 
 
         {% endfor %}
