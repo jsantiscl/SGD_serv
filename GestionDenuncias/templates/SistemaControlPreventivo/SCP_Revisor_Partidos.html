@@ -59,6 +59,8 @@ $(document).ready(function() {
             <th>Rut</th>
             <th>Nombre</th>
             <th>Carpeta</th>
+            <th>Auditor</th>
+            <th>¿Tiene Hallazgos?</th>
             <th>Accion</th>
         </tr>
             </thead>
@@ -66,13 +68,35 @@ $(document).ready(function() {
         {% load humanize %}
         {% for linea in partidos %}
 
-        <tr>
-            <td>Partido</td>
-            <td>{{ linea.par_rut}}</td>
-            <td>{{ linea.par_nombre}}</td>
-             <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">Carpeta</a></td>
-            <td><a class="btn btn-success" onclick="pasar('{{ linea.par_rut|stringformat:"s" }}')">Pasar Etapa</a></td>
-
+       <tr>
+  <td>Partido</td>
+  <td>{{ linea.par_rut }}</td>
+  <td>{{ linea.par_nombre }}</td>
+  <td style="text-align:center">
+    <a href="{{linea.link_edicion}}" target="_blank">Carpeta</a>
+  </td>
+  <td>{{ linea.asignado_a }}</td>
+  <td>
+    <select
+      name="status"
+      id="selectorstatus{{linea.par_rut}}"
+      onchange="selectorStatusOnChange('{{ linea.par_rut|stringformat:'s' }}', this)"
+    >
+      <option value="Pendiente" selected>Pendiente</option>
+      <option value="Si">Si</option>
+      <option value="No">No</option>
+    </select>
+  </td>
+  <td>
+    <a
+      class="btn btn-success"
+      id="pasar{{ linea.par_rut|stringformat:'s' }}"
+      disabled
+    >
+      Pasar Etapa
+    </a>
+  </td>
+</tr>
         {% endfor %}
     </tbody>
     </table>
@@ -100,24 +124,24 @@ $(document).ready(function() {
 }
 const csrftoken = getCookie('csrftoken');
 
-  function pasar(rut) {
+  function pasar(rut,tipo) {
 
   if (confirm('¿Esta Seguro que Desea Pasar la Etapa?')) {
   // Save it!
 
-  pasar_etapa(rut);
-    setTimeout(() => {   return window.location.replace("{% url 'auditor_partidos' %}"); }, 1000);
+  pasar_etapa(rut, tipo);
+    setTimeout(() => {   return window.location.replace("{% url 'revisor_partidos_scp' %}"); }, 1000);
 } else {
   // Do nothing!
   console.log('No Finalizado Confirmado');
 }
 
 }
-    function pasar_etapa(rut) {
+    function pasar_etapa(rut,tipo) {
 
         var datos = {
 				'rut': rut.toString(),
-                'etapa': '3_EnRevisor',
+                'etapa': tipo,
                 'tipo' : 'Partido'
 			}
     var url = "/scp/pasaretapa/"
@@ -133,6 +157,38 @@ const csrftoken = getCookie('csrftoken');
 	    	})
             .then((response) => response.json())
       }
+
+
+        function pasar1(rut) {
+    // Código de la función pasar1
+            console.log("Pasar1");
+            pasar(rut,'4_ConHallazgosAbogado');
+  }
+
+  function pasar2(rut) {
+    // Código de la función pasar2
+      console.log("Pasar2");
+      pasar(rut,'2_AsignadoAuditor')
+  }
+
+  function selectorStatusOnChange(rut, selector) {
+    const value = selector.value;
+    const button = document.getElementById(`pasar${rut}`);
+
+    if (value === "Si") {
+      button.onclick = () => pasar1(rut);
+      button.disabled = false;
+    } else if (value === "No") {
+      button.onclick = () => pasar2(rut);
+      button.disabled = false;
+    } else {
+      button.onclick = null;
+      button.disabled = true;
+    }
+  }
+
+
+</script>
 
 
 

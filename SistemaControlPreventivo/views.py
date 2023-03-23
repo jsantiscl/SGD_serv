@@ -102,3 +102,34 @@ def asignar_partidos_scp(request):
                                                 fecha_cambio=datetime.now())
     return JsonResponse([str(data['datos']['rut']), 'Asignado'], safe=False)
 
+
+def revisor_partidos_scp(request):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="AuditorControlPreventivo")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+    usuario_actual=request.user.username
+    # Filtrar los candidatos como lo hacías antes
+    partidos = Partidos.objects.filter(estado='3_EnRevisor')
+
+    # Agregar los auditores al contexto
+    context = {'partidos': partidos, 'auditores': auditores}
+
+    return render(request, 'SistemaControlPreventivo/SCP_Revisor_Partidos.html', context)
+
+def abogado_partidos_scp(request):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="AuditorControlPreventivo")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+    usuario_actual=request.user.username
+    # Filtrar los candidatos como lo hacías antes
+    partidos = Partidos.objects.filter(estado='4_ConHallazgosAbogado')
+
+    # Agregar los auditores al contexto
+    context = {'partidos': partidos, 'auditores': auditores}
+
+    return render(request, 'SistemaControlPreventivo/SCP_Abogado_Partidos.html', context)
+

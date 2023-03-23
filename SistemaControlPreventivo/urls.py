@@ -12,4 +12,8 @@ urlpatterns = [
     path('candidatos/', login_required(auditor_candidatos), name='auditor_candidatos'),
     path('partidos/', login_required(auditor_partidos), name='auditor_partidos'),
     path('pasaretapa/', login_required(pasaretapa), name='pasaretapa'),
+    #Revisor
+    path('revisarpartidos/', login_required(revisor_partidos_scp), name='revisor_partidos_scp'),
+    # Abogado
+    path('abogadopartido/', login_required(abogado_partidos_scp), name='abogado_partidos_scp'),
 ]

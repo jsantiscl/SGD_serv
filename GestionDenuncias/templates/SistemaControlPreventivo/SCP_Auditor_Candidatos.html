@@ -76,7 +76,7 @@ $(document).ready(function() {
             <td>{{ linea.nombre}} {{ linea.apellido_p}} {{ linea.apellido_m}}</td>
             <td>{{ linea.pacto}}</td>
             <td>{{ linea.partido}}</td>
-            <td><a>Link</a> </td>
+            <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">Carpeta</a></td>
             <td><a class="btn btn-success" onclick="pasar('{{ linea.rut|stringformat:"s" }}')">Pasar Etapa</a></td>
             {% endif %}
         {% endfor %}
