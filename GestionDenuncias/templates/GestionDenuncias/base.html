@@ -376,23 +376,24 @@
 
                    {% if group.name == 'EncargadoControlPreventivo' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">SCP</button>
+      <button class="w3-button">SCP Asignacion y Reporte</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
 
               <a href="{% url 'admin_asignacion_candidato' %}" class="w3-bar-item w3-button">Asignacion Candidatos</a>
               <a href="{% url 'admin_asignacion_partido' %}" class="w3-bar-item w3-button">Asignacion Partidos</a>
-              <a href="{% url 'admin_asignacion_candidato' %}" class="w3-bar-item w3-button">Reporte Total</a>
-          {% if group.name == 'RevisorControlPreventivo_C1' %}
-              <a href="{% url 'admin_asignacion_candidato' %}" class="w3-bar-item w3-button">Revision Candidatos</a>
-              {% endif %}
-          {% if group.name == 'RevisorControlPreventivo_PP' %}
-              <a href="{% url 'revisor_partidos_scp' %}" class="w3-bar-item w3-button">Revision Partidos</a>
-              {% endif %}
-
+              <a href="{% url 'admin_reporte_candidato' %}" class="w3-bar-item w3-button">Reporte Candidatos</a>
+              <a href="{% url 'admin_reporte_partido' %}" class="w3-bar-item w3-button">Reporte Partidos</a>
             </div>
 
       </div>
          {% endif %}
+
+                          {% if group.name == 'RevisorControlPreventivo_C1' %}
+              <a href="{% url 'revisor_candidatos1_scp' %}" class="w3-bar-item w3-button">SCP-Revision Candidatos</a>
+              {% endif %}
+          {% if group.name == 'RevisorControlPreventivo_PP' %}
+              <a href="{% url 'revisor_partidos_scp' %}" class="w3-bar-item w3-button">SCP-Revision Partidos</a>
+              {% endif %}
 
                                    {% if group.name == 'AuditorControlPreventivo' %}
                                      <div class="w3-dropdown-hover">
@@ -416,16 +417,9 @@
       </div>
          {% endif %}
 
-                                   {% if group.name == 'RevisorControlPreventivo_C2' %}
-                                     <div class="w3-dropdown-hover">
-      <button class="w3-button">SCP</button>
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-
-              <a href="{% url 'auditor_candidatos' %}" class="w3-bar-item w3-button">Bandeja Candidatos</a>
-
-            </div>
-      </div>
-         {% endif %}
+                          {% if group.name == 'RevisorControlPreventivo_C2' %}
+              <a href="{% url 'revisor_candidatos2_scp' %}" class="w3-bar-item w3-button">SCP-Revision Candidatos</a>
+              {% endif %}
                                    {% if group.name == 'AbogadoControlPreventivoPP' %}
                                      <div class="w3-dropdown-hover">
       <button class="w3-button">SCP</button>
@@ -436,6 +430,30 @@
             </div>
       </div>
          {% endif %}
+
+                {% if group.name == 'AbogadoControlPreventivo' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">SCP</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'abogado_candidatos_scp' %}" class="w3-bar-item w3-button">Bandeja Candidatos</a>
+
+            </div>
+      </div>
+         {% endif %}
+
+{% if group.name == 'SCP_JefeUnidad' %}
+              <a href="{% url 'jefeunidad_candidatos' %}" class="w3-bar-item w3-button">SCP-Validación Candidatos</a>
+              <a href="{% url 'jefeunidad_partidos' %}" class="w3-bar-item w3-button">SCP-Validación Partidos</a>
+              {% endif %}
+{% if group.name == 'SCP_JefeDivision' %}
+              <a href="{% url 'jefedivision_candidatos' %}" class="w3-bar-item w3-button">SCP-Validación Candidatos</a>
+                <a href="{% url 'jefedivision_partidos' %}" class="w3-bar-item w3-button">SCP-Validación Partidos</a>
+              {% endif %}
+{% if group.name == 'SCP_OficinaAdministracion' %}
+              <a href="{% url 'notificacion_candidatos' %}" class="w3-bar-item w3-button">SCP-Notificación Candidatos</a>
+    <a href="{% url 'notificacion_partidos' %}" class="w3-bar-item w3-button">SCP-Notificación Partidos</a>
+              {% endif %}
 
 
         {% endfor %}

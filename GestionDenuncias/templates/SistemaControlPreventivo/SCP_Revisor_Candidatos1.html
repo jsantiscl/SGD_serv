@@ -1,0 +1,203 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Sistema de Control Preventivo</title> {% endblock %}
+
+{% block body %}
+
+            <script type="text/javascript" class="init">
+
+
+$(document).ready(function() {
+	$('#example2').DataTable({
+        "language": {
+            "lengthMenu": "Ver _MENU_ registros por pagina",
+            "zeroRecords": "Sin Resultados",
+            "info": "Mostrando pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin Resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros)"
+        },
+               dom: 'lfrtBip',
+        buttons: [
+             {
+      extend: 'excel',
+      exportOptions: {
+
+          format: {
+              body: function(data, row, column, node) {
+                  data = $('<p>' + data + '</p>').text();
+                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+              }
+          }
+      }
+  }
+        ]
+
+
+
+    } );
+} );
+            function goBack() {
+  window.history.back();
+}
+
+            </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Candidatos Revision Grupo 1</h3>
+
+<div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
+
+
+</div>
+
+    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
+    <thead>
+        <tr>
+            <th>Region</th>
+            <th>Rut</th>
+            <th>Nombre</th>
+            <th>Pacto</th>
+            <th>Partido</th>
+            <th>Carpeta</th>
+            <th>Auditor</th>
+            <th>¿Tiene Hallazgos?</th>
+            <th>Accion</th>
+        </tr>
+            </thead>
+    <tbody>
+        {% load humanize %}
+        {% for linea in candidatos %}
+
+       <tr>
+
+            <td>{{ linea.region}}</td>
+            <td>{{ linea.rut}}</td>
+            <td>{{ linea.nombre}} {{ linea.apellido_p}} {{ linea.apellido_m}}</td>
+            <td>{{ linea.pacto}}</td>
+            <td>{{ linea.partido}}</td>
+  <td style="text-align:center">
+    <a href="{{linea.link_edicion}}" target="_blank">Carpeta</a>
+  </td>
+  <td>{{ linea.asignado_a }}</td>
+  <td>
+    <select
+      name="status"
+      id="selectorstatus{{linea.rut}}"
+      onchange="selectorStatusOnChange('{{ linea.rut|stringformat:'s' }}', this)"
+    >
+      <option value="Pendiente" selected>Pendiente</option>
+      <option value="Si">Si</option>
+      <option value="No">No</option>
+    </select>
+  </td>
+  <td>
+    <a
+      class="btn btn-success"
+      id="pasar{{ linea.rut|stringformat:'s' }}"
+      disabled
+    >
+      Pasar Etapa
+    </a>
+  </td>
+</tr>
+
+        {% endfor %}
+    </tbody>
+    </table>
+<td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
+
+</section>
+</div>
+
+        <script type="text/javascript">
+    var order;
+ function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+  function pasar(rut,tipo) {
+
+  if (confirm('¿Esta Seguro que Desea Pasar la Etapa?')) {
+  // Save it!
+
+  pasar_etapa(rut, tipo);
+    setTimeout(() => {   return window.location.replace("{% url 'revisor_candidatos1_scp' %}"); }, 1000);
+} else {
+  // Do nothing!
+  console.log('No Finalizado Confirmado');
+}
+
+}
+    function pasar_etapa(rut,tipo) {
+
+        var datos = {
+				'rut': rut.toString(),
+                'etapa': tipo,
+                'tipo' : 'Candidato'
+			}
+    var url = "/scp/pasaretapa/"
+        fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+	    			'X-CSRFToken':csrftoken
+	    		},
+	    		body:JSON.stringify({'datos':datos}),
+
+	    	})
+            .then((response) => response.json())
+      }
+
+
+        function pasar1(rut) {
+    // Código de la función pasar1
+            console.log("Pasar1");
+            pasar(rut,'4_ConHallazgosAbogado');
+  }
+
+  function pasar2(rut) {
+    // Código de la función pasar2
+      console.log("Pasar2");
+      pasar(rut,'2_AsignadoAuditor')
+  }
+
+  function selectorStatusOnChange(rut, selector) {
+    const value = selector.value;
+    const button = document.getElementById(`pasar${rut}`);
+
+    if (value === "Si") {
+      button.onclick = () => pasar1(rut);
+      button.disabled = false;
+    } else if (value === "No") {
+      button.onclick = () => pasar2(rut);
+      button.disabled = false;
+    } else {
+      button.onclick = null;
+      button.disabled = true;
+    }
+  }
+
+
+</script>
+
+
+
+    </script>
+
+{% endblock %}
