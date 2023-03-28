@@ -394,7 +394,6 @@
           {% if group.name == 'RevisorControlPreventivo_PP' %}
               <a href="{% url 'revisor_partidos_scp' %}" class="w3-bar-item w3-button">SCP-Revision Partidos</a>
               {% endif %}
-
                                    {% if group.name == 'AuditorControlPreventivo' %}
                                      <div class="w3-dropdown-hover">
       <button class="w3-button">SCP</button>
@@ -431,7 +430,7 @@
       </div>
          {% endif %}
 
-                {% if group.name == 'AbogadoControlPreventivo' %}
+                {% if group.name == 'AbogadoControlPreventivo1' %}
                                      <div class="w3-dropdown-hover">
       <button class="w3-button">SCP</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
@@ -441,6 +440,19 @@
             </div>
       </div>
          {% endif %}
+
+                                {% if group.name == 'AbogadoControlPreventivo2' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">SCP</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'abogado_candidatos_scp2' %}" class="w3-bar-item w3-button">Bandeja Candidatos</a>
+
+            </div>
+      </div>
+         {% endif %}
+
+
 
 {% if group.name == 'SCP_JefeUnidad' %}
               <a href="{% url 'jefeunidad_candidatos' %}" class="w3-bar-item w3-button">SCP-Validación Candidatos</a>

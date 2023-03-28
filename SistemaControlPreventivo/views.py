@@ -203,13 +203,34 @@ def revisor_candidatos2_scp(request):
 
 def abogado_candidatos(request):
     # Consulta el grupo por su nombre
-    group = Group.objects.get(name="AuditorControlPreventivo")
+    group = Group.objects.get(name="1")
 
     # Obtiene todos los usuarios que pertenecen al grupo
     auditores = group.user_set.all()
-    usuario_actual=request.user.username
+
+    # Obtener una lista de nombres de usuario de auditores
+    nombres_auditores = [auditor.username for auditor in auditores]
+
     # Filtrar los candidatos como lo hacías antes
-    candidatos = Candidatos.objects.filter(estado='4_ConHallazgosAbogado')
+    candidatos = Candidatos.objects.filter(estado='4_ConHallazgosAbogado', asignado_a__in=nombres_auditores)
+
+    # Agregar los auditores al contexto
+    context = {'candidatos': candidatos, 'auditores': auditores}
+
+    return render(request, 'SistemaControlPreventivo/SCP_Abogado_Candidatos.html', context)
+
+def abogado_candidatos2(request):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="2")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+
+    # Obtener una lista de nombres de usuario de auditores
+    nombres_auditores = [auditor.username for auditor in auditores]
+
+    # Filtrar los candidatos como lo hacías antes
+    candidatos = Candidatos.objects.filter(estado='4_ConHallazgosAbogado', asignado_a__in=nombres_auditores)
 
     # Agregar los auditores al contexto
     context = {'candidatos': candidatos, 'auditores': auditores}

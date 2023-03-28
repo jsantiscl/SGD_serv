@@ -21,6 +21,7 @@ urlpatterns = [
     # Abogado
     path('abogadopartido/', login_required(abogado_partidos_scp), name='abogado_partidos_scp'),
     path('abogadocandidatos/', login_required(abogado_candidatos), name='abogado_candidatos_scp'),
+    path('abogadocandidatos2/', login_required(abogado_candidatos2), name='abogado_candidatos_scp2'),
     # Jefe Unidad
     path('jucandidatos/', login_required(jefeunidad_candidatos), name='jefeunidad_candidatos'),
     path('jupartidos/', login_required(jefeunidad_partidos), name='jefeunidad_partidos'),
