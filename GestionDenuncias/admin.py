@@ -16,6 +16,7 @@ admin.site.register(UsersRecursos)
 admin.site.register(Bitacora)
 admin.site.register(UsersPlebiscito)
 admin.site.register(InscripcionesPlebiscito)
+admin.site.register(SociosInscritos)
 
 admin.site.register(UsersFiscalizacion)
 admin.site.register(AlertasMeta)
