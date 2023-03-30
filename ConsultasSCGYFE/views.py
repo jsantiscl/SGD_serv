@@ -95,12 +95,24 @@ def sandbox(request):
 def carga_datos_consulta(request):
     if request.method == 'POST':
         # Extrae los datos de la solicitud POST
-        rut_org = request.POST.get('rut_org')
-        id_org = request.POST.get('id_org')
-        rut_socio = request.POST.get('rut_socio')
+        ObjectID = request.POST.get('ObjectID')
+        GlobalID = request.POST.get('GlobalID')
+        NombreCompleto = request.POST.get('NombreCompleto')
+        Rut = request.POST.get('Rut')
+        TemaAsociado = request.POST.get('TemaAsociado')
+        Pregunta = request.POST.get('Pregunta')
+        Email = request.POST.get('Email')
 
         # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
-        data = SociosInscritos(id =rut_org, rut_org=rut_org, id_org=id_org, rut_socio=rut_socio)
+        data = ConsultasFormulario(ObjectID=ObjectID,
+                                   GlobalID=GlobalID,
+                                   NombreCompleto=NombreCompleto,
+                                   Rut=Rut,
+                                   TemaAsociado=TemaAsociado,
+                                   Pregunta=Pregunta,
+                                   Email=Email,
+                                   FechaIngreso=datetime.now(),
+                                   Etapa='1_Nueva')
 
         # Guarda la instancia en la base de datos
         data.save()
