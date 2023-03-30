@@ -14,6 +14,9 @@ from django.conf import settings
 from django.core.mail import send_mail
 from ConsultasSCGYFE.models import *
 
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+
 
 def admin_consultas_total(request):
 
@@ -86,3 +89,24 @@ def sandbox(request):
 
     context = {}
     return render(request,'Consultas/Sandbox.html', context)
+
+
+@csrf_exempt
+def carga_datos_consulta(request):
+    if request.method == 'POST':
+        # Extrae los datos de la solicitud POST
+        rut_org = request.POST.get('rut_org')
+        id_org = request.POST.get('id_org')
+        rut_socio = request.POST.get('rut_socio')
+
+        # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
+        data = SociosInscritos(id =rut_org, rut_org=rut_org, id_org=id_org, rut_socio=rut_socio)
+
+        # Guarda la instancia en la base de datos
+        data.save()
+
+        # Retorna una respuesta HTTP 200 si
+        return HttpResponse('Datos guardados correctamente')
+    else:
+        # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
+        return HttpResponse(status=405)
