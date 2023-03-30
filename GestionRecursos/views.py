@@ -14,6 +14,9 @@ from django.conf import settings
 from django.core.mail import send_mail
 from GestionDenuncias.forms import *
 
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+
 
 
 def admin_recursos_total(request):
@@ -355,3 +358,24 @@ def pleb_pasar_etapa(request):
     InscripcionesPlebiscito.objects.filter(id=str(data['datos']['id'])).update(etapa_revision='VALIDACION_ADMIN')
     RevisionesInscripciones.objects.create(id=int(data['datos']['id']), revisor=str(data['datos']['revisor']), valida_adjunto=str(data['datos']['valida_adjunto']), valida_sin_fines_de_lucro=str(data['datos']['valida_sin_fines_de_lucro']),propuesta=str(data['datos']['propuesta']), comentarios_revisor =str(data['datos']['comentarios_revisor']))
     return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)
+
+
+@csrf_exempt
+def carga_datos(request):
+    if request.method == 'POST':
+        # Extrae los datos de la solicitud POST
+        rut_org = request.POST.get('rut_org')
+        id_org = request.POST.get('id_org')
+        rut_socio = request.POST.get('rut_socio')
+
+        # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
+        data = SociosInscritos(id =rut_org, rut_org=rut_org, id_org=id_org, rut_socio=rut_socio)
+
+        # Guarda la instancia en la base de datos
+        data.save()
+
+        # Retorna una respuesta HTTP 200 si
+        return HttpResponse('Datos guardados correctamente')
+    else:
+        # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
+        return HttpResponse(status=405)

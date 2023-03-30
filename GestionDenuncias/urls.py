@@ -95,4 +95,7 @@ urlpatterns = [
     path('fiscalizacion/BaseCompleta/', login_required(base_completa), name='base_completa'),
     path('fiscalizacion/detalle/<str:nombre>', login_required(detalle_base), name='detalle_base'),
     path('fiscalizacion/Alertas/pasar/', login_required(alarma_pasar_etapa), name='alarma_pasar_etapa'),  # P
+    # PruebaaPi
+    path('recursos/api/prueba/', login_required(carga_datos), name='carga_datos'),  # P
+
 ]
