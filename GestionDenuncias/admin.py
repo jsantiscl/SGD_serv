@@ -5,6 +5,7 @@ from .models import *
 from GestionRecursos.models import *
 from GestionPAS.models import *
 from AlertasFiscalizacion.models import *
+from ConsultasSCGYFE.models import *
 
 admin.site.register(Denuncias)
 admin.site.register(Abogados)
@@ -21,3 +22,5 @@ admin.site.register(SociosInscritos)
 admin.site.register(UsersFiscalizacion)
 admin.site.register(AlertasMeta)
 admin.site.register(AnunciosMeta)
+
+admin.site.register(ConsultasFormulario)
