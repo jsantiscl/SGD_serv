@@ -71,3 +71,25 @@ class WorkflowSCP(models.Model):
     fecha_cambio = models.DateTimeField(null=True, blank=True)
     def __str__(self):
         return f"{self.rut_candidato_partido} - {self.usuario} - {self.nueva_etapa}"
+
+class AportesSRA(models.Model):
+    folio = models.IntegerField()
+    fecha_aporte = models.DateTimeField()
+    tipo_aporte = models.CharField(max_length=100)
+    rut_aportante = models.CharField(max_length=20,null=True, blank=True)
+    nombre_aportante = models.CharField(max_length=200,null=True, blank=True)
+    tipo_aportante = models.CharField(max_length=100)
+    monto = models.BigIntegerField()
+    rut_candidato_o_partido = models.CharField(max_length=20)
+    nombre_candidato_o_partido = models.CharField(max_length=200)
+    tipo_donatario = models.CharField(max_length=100)
+    estado_aporte = models.CharField(max_length=100)
+    fecha_aprobacion = models.DateTimeField(null=True, blank=True)
+    fecha_abono = models.DateTimeField(null=True, blank=True)
+    tipo_pago = models.CharField(max_length=100)
+    estado_servel = models.CharField(max_length=100)
+    fecha_hora_actualizado = models.DateTimeField()
+    semana = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.folio} - {self.rut_aportante} - {self.nombre_aportante}"
