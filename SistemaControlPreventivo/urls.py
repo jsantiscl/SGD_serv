@@ -20,8 +20,11 @@ urlpatterns = [
     path('revisarcandidatos2/', login_required(revisor_candidatos2_scp), name='revisor_candidatos2_scp'),
     # Abogado
     path('abogadopartido/', login_required(abogado_partidos_scp), name='abogado_partidos_scp'),
+    path('abogadopartido2/', login_required(abogado_partidos_scp2), name='abogado_partidos_scp2'),
     path('abogadocandidatos/', login_required(abogado_candidatos), name='abogado_candidatos_scp'),
     path('abogadocandidatos2/', login_required(abogado_candidatos2), name='abogado_candidatos_scp2'),
+    path('abogadocandidatos3/', login_required(abogado_candidatos3), name='abogado_candidatos_scp3'),
+    path('abogadocandidatos4/', login_required(abogado_candidatos4), name='abogado_candidatos_scp4'),
     # Jefe Unidad
     path('jucandidatos/', login_required(jefeunidad_candidatos), name='jefeunidad_candidatos'),
     path('jupartidos/', login_required(jefeunidad_partidos), name='jefeunidad_partidos'),

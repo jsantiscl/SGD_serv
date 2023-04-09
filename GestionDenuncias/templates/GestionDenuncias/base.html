@@ -430,6 +430,17 @@
       </div>
          {% endif %}
 
+                                                   {% if group.name == 'AbogadoControlPreventivoPP2' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">SCP</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'abogado_partidos_scp2' %}" class="w3-bar-item w3-button">Bandeja Partidos</a>
+
+            </div>
+      </div>
+         {% endif %}
+
                 {% if group.name == 'AbogadoControlPreventivo1' %}
                                      <div class="w3-dropdown-hover">
       <button class="w3-button">SCP</button>
@@ -451,7 +462,27 @@
             </div>
       </div>
          {% endif %}
+    {% if group.name == 'AbogadoControlPreventivo3' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">SCP</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
 
+              <a href="{% url 'abogado_candidatos_scp3' %}" class="w3-bar-item w3-button">Bandeja Candidatos</a>
+
+            </div>
+      </div>
+         {% endif %}
+
+                    {% if group.name == 'AbogadoControlPreventivo4' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">SCP</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'abogado_candidatos_scp4' %}" class="w3-bar-item w3-button">Bandeja Candidatos</a>
+
+            </div>
+      </div>
+         {% endif %}
 
 
 {% if group.name == 'SCP_JefeUnidad' %}
