@@ -4,6 +4,7 @@ from SistemaControlPreventivo.models import *
 import json
 from django.http import JsonResponse
 from datetime import datetime
+
 # Create your views here.
 def admin_asignacion_candidato(request):
     # Consulta el grupo por su nombre
@@ -54,15 +55,25 @@ def auditor_candidatos(request):
 
     # Obtiene todos los usuarios que pertenecen al grupo
     auditores = group.user_set.all()
-    usuario_actual=request.user.username
+    usuario_actual = request.user.username
+
     # Filtrar los candidatos como lo hacías antes
     candidatos = Candidatos.objects.filter(estado='2_AsignadoAuditor', asignado_a=usuario_actual)
 
+    # Agregar el campo 'cod' a los candidatos
+    candidatos_cod = []
+    for candidato in candidatos:
+        cod_rel_candidato = rel_candidato.objects.filter(rut=candidato.rut).first()
+        if cod_rel_candidato:
+            candidato.cod = cod_rel_candidato.cod
+        else:
+            candidato.cod = None
+        candidatos_cod.append(candidato)
+
     # Agregar los auditores al contexto
-    context = {'candidatos': candidatos, 'auditores': auditores}
+    context = {'candidatos': candidatos_cod, 'auditores': auditores}
 
     return render(request, 'SistemaControlPreventivo/SCP_Auditor_Candidatos.html', context)
-
 def auditor_partidos(request):
     # Consulta el grupo por su nombre
     group = Group.objects.get(name="AuditorControlPreventivo")
@@ -72,7 +83,15 @@ def auditor_partidos(request):
     usuario_actual=request.user.username
     # Filtrar los candidatos como lo hacías antes
     partidos = Partidos.objects.filter(estado='2_AsignadoAuditor', asignado_a=usuario_actual)
-    print(usuario_actual)
+    # Agregar el campo 'cod' a los candidatos
+    candidatos_cod = []
+    for partido in partidos:
+        cod_rel_candidato = rel_partido.objects.filter(rut=partido.par_rut).first()
+        if cod_rel_candidato:
+            partido.cod = cod_rel_candidato.cod
+        else:
+            partido.cod = None
+        candidatos_cod.append(partido)
     # Agregar los auditores al contexto
     context = {'partidos': partidos, 'auditores': auditores}
 
@@ -386,3 +405,36 @@ def notificacion_partidos(request):
     context = {'candidatos': candidatos, 'auditores': auditores}
 
     return render(request, 'SistemaControlPreventivo/SCP_Notificacion_Partidos.html', context)
+
+
+def sra_candidatos(request,cod):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="AuditorControlPreventivo")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+    usuario_actual=request.user.username
+    candidato = rel_candidato.objects.filter(cod__exact=cod).first()
+    # Filtrar los candidatos como lo hacías antes
+    aportes = AportesSRA.objects.filter(rut_candidato_o_partido__icontains=candidato.rut).exclude(estado_servel='APORTE NO EFECTUADO')
+
+    # Agregar los auditores al contexto
+    context = {'aportes': aportes, 'auditores': auditores, 'candidato':candidato.rut}
+
+    return render(request, 'SistemaControlPreventivo/SCP_SRA.html', context)
+
+def sra_partidos(request,cod):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="AuditorControlPreventivo")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+    usuario_actual=request.user.username
+    partido = rel_partido.objects.filter(cod__exact=cod).first()
+    # Filtrar los candidatos como lo hacías antes
+    aportes = AportesSRA.objects.filter(rut_candidato_o_partido__icontains=partido.rut).exclude(estado_servel='APORTE NO EFECTUADO')
+
+    # Agregar los auditores al contexto
+    context = {'aportes': aportes, 'auditores': auditores, 'candidato':partido.rut}
+
+    return render(request, 'SistemaControlPreventivo/SCP_SRA.html', context)

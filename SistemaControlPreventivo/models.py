@@ -93,3 +93,19 @@ class AportesSRA(models.Model):
 
     def __str__(self):
         return f"{self.folio} - {self.rut_aportante} - {self.nombre_aportante}"
+
+class rel_candidato(models.Model):
+    AutoID = models.AutoField(primary_key=True)
+    rut = models.CharField(max_length=30, default='SIN')
+    cod = models.CharField(max_length=10, default='SIN')
+    def __str__(self):
+        return f"{self.rut_candidato_partido} - {self.usuario} - {self.nueva_etapa}"
+
+
+class rel_partido(models.Model):
+    AutoID = models.AutoField(primary_key=True)
+    rut = models.CharField(max_length=30, default='SIN')
+    cod = models.CharField(max_length=10, default='SIN')
+
+    def __str__(self):
+        return f"{self.rut_candidato_partido} - {self.usuario} - {self.nueva_etapa}"

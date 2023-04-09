@@ -12,6 +12,8 @@ urlpatterns = [
     path('reportepartido/', login_required(admin_reporte_partido), name='admin_reporte_partido'),
     # Auditor
     path('candidatos/', login_required(auditor_candidatos), name='auditor_candidatos'),
+    path('candidatos/sra/<str:cod>', login_required(sra_candidatos), name='sra_candidatos'),
+    path('partidos/sra/<str:cod>', login_required(sra_partidos), name='sra_partidos'),
     path('partidos/', login_required(auditor_partidos), name='auditor_partidos'),
     path('pasaretapa/', login_required(pasaretapa), name='pasaretapa'),
     #Revisor
