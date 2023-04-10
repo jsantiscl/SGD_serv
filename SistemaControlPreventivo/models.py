@@ -109,3 +109,23 @@ class rel_partido(models.Model):
 
     def __str__(self):
         return f"{self.rut_candidato_partido} - {self.usuario} - {self.nueva_etapa}"
+
+class Cartolas(models.Model):
+    rut = models.CharField(max_length=12)
+    tipo = models.CharField(max_length=10)
+    cuenta = models.CharField(max_length=15)
+    fec_emi = models.DateField()
+    n_cart = models.IntegerField()
+    corr = models.IntegerField()
+    num_doc = models.CharField(max_length=50,null=True, blank=True)
+    descripcion = models.CharField(max_length=50)
+    ofi = models.IntegerField()
+    sal_cargos = models.BigIntegerField(null=True, blank=True)
+    sal_abonos = models.BigIntegerField(null=True, blank=True)
+    f_mov = models.DateField()
+    saldo = models.BigIntegerField(null=True, blank=True)
+    m = models.CharField(max_length=2)
+    tc = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.rut} - {self.cuenta} - {self.descripcion}"
