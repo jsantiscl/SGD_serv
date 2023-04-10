@@ -438,3 +438,35 @@ def sra_partidos(request,cod):
     context = {'aportes': aportes, 'auditores': auditores, 'candidato':partido.rut}
 
     return render(request, 'SistemaControlPreventivo/SCP_SRA.html', context)
+
+def cartola_candidatos(request,cod):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="AuditorControlPreventivo")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+    usuario_actual=request.user.username
+    candidato = rel_candidato.objects.filter(cod__exact=cod).first()
+    # Filtrar los candidatos como lo hacías antes
+    cartolas = Cartolas.objects.filter(rut=candidato.rut)
+
+    # Agregar los auditores al contexto
+    context = {'cartolas': cartolas, 'auditores': auditores, 'candidato':candidato.rut}
+
+    return render(request, 'SistemaControlPreventivo/SCP_Cartolas.html', context)
+
+def cartola_partidos(request,cod):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="AuditorControlPreventivo")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+    usuario_actual=request.user.username
+    partido = rel_partido.objects.filter(cod__exact=cod).first()
+    # Filtrar los candidatos como lo hacías antes
+    cartolas = Cartolas.objects.filter(rut=partido.rut)
+
+    # Agregar los auditores al contexto
+    context = {'cartolas': cartolas, 'auditores': auditores, 'candidato':partido.rut}
+
+    return render(request, 'SistemaControlPreventivo/SCP_Cartolas.html', context)

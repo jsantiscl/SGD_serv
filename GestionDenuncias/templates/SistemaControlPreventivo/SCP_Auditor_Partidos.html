@@ -59,6 +59,7 @@ $(document).ready(function() {
             <th>Rut</th>
             <th>Nombre</th>
             <th>SRA</th>
+            <th>Cartola</th>
             <th>Carpeta</th>
             <th>Accion</th>
         </tr>
@@ -72,6 +73,7 @@ $(document).ready(function() {
             <td>{{ linea.par_rut}}</td>
             <td>{{ linea.par_nombre}}</td>
             <td style="text-align: center"><a href="{% url 'sra_partidos' cod=linea.cod %}" target="_blank">Ver</a>
+            <td style="text-align: center"><a href="{% url 'cartolas_partidos' cod=linea.cod %}" target="_blank">Ver</a>
              <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">Carpeta</a></td>
             <td><a class="btn btn-success" onclick="pasar('{{ linea.par_rut|stringformat:"s" }}')">Pasar Etapa</a></td>
 

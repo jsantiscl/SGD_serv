@@ -62,6 +62,7 @@ $(document).ready(function() {
             <th>Pacto</th>
             <th>Partido</th>
             <th>SRA</th>
+            <th>Cartolas</th>
             <th>Carpeta</th>
             <th>Accion</th>
         </tr>
@@ -78,6 +79,7 @@ $(document).ready(function() {
             <td>{{ linea.pacto}}</td>
             <td>{{ linea.partido}}</td>
             <td style="text-align: center"><a href="{% url 'sra_candidatos' cod=linea.cod %}" target="_blank">Ver</a>
+            <td style="text-align: center"><a href="{% url 'cartolas_candidatos' cod=linea.cod %}" target="_blank">Ver</a>
             <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">Carpeta</a></td>
             <td><a class="btn btn-success" onclick="pasar('{{ linea.rut|stringformat:"s" }}')">Pasar Etapa</a></td>
             {% endif %}
