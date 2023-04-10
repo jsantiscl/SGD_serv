@@ -73,9 +73,18 @@ $(document).ready(function() {
 
         <tr>
             {% if linea.n_cart >= 1 and linea.n_cart <= 9 %}
-            <td>0{{ linea.n_cart }} - {{ linea.corr}}</td>
+                {% if linea.corr >= 1 and linea.corr <= 9 %}
+            <td>0{{ linea.n_cart }} - 0{{ linea.corr}}</td>
+                {% else %}
+           <td>0{{ linea.n_cart }} - {{ linea.corr}}</td>
+           {% endif %}
             {% else %}
-            <td>{{ linea.n_cart }} - {{ linea.corr}}</td>
+
+            {% if linea.corr >= 1 and linea.corr <= 9 %}
+            <td>{{ linea.n_cart }} - 0{{ linea.corr}}</td>
+                {% else %}
+           <td>{{ linea.n_cart }} - {{ linea.corr}}</td>
+           {% endif %}
             {% endif %}
             <td>{{ linea.tipo}}</td>
             <td>{{ linea.cuenta}}</td>
