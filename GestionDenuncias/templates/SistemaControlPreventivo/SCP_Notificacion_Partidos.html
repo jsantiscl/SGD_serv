@@ -57,8 +57,8 @@ $(document).ready(function() {
         <tr>
             <th>Rut</th>
             <th>Nombre</th>
-            <th>Carpeta</th>
-            <th>Accion</th>
+            <th style="text-align: center">Carpeta</th>
+            <th style="text-align: center">Accion</th>
         </tr>
             </thead>
     <tbody>
@@ -69,8 +69,13 @@ $(document).ready(function() {
 
             <td>{{ linea.par_rut}}</td>
             <td>{{ linea.par_nombre}}</td>
-            <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">Carpeta</a></td>
-            <td><a class="btn btn-success" onclick="pasar('{{ linea.par_rut|stringformat:"s" }}')">Pasar Etapa</a></td>
+              <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">
+    <button class="btn btn-primary">
+        <i class="bi bi-file-earmark-minus-fill"></i>
+    </button>
+</a>
+</td>
+            <td style="text-align: center"><a class="btn btn-success" onclick="pasar('{{ linea.par_rut|stringformat:"s" }}')">Pasar Etapa</a></td>
 
         {% endfor %}
     </tbody>
@@ -115,6 +120,7 @@ const csrftoken = getCookie('csrftoken');
     function pasar_etapa(rut) {
 
         var datos = {
+                'respuesta':'',
 				'rut': rut.toString(),
                 'etapa': '8_EsperadeRespuesta',
                 'tipo' : 'Partido'

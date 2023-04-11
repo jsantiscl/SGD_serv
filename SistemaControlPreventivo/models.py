@@ -20,6 +20,7 @@ class Candidatos(models.Model):
     link_edicion = models.URLField(max_length=500, default='https://serv.jasb.cl')
     link_visualizacion = models.URLField(max_length=500, default='https://serv.jasb.cl')
     asignado_a= models.CharField(max_length=100, default='Pendiente')
+    observacion_rechazo = models.CharField(max_length=5000, null=True, blank=True)
     class Meta:
         unique_together = ('eleccion', 'rut')
     def __str__(self):
@@ -46,6 +47,7 @@ class Partidos(models.Model):
     link_edicion = models.URLField(max_length=500, default='https://serv.jasb.cl')
     link_visualizacion = models.URLField(max_length=500, default='https://serv.jasb.cl')
     asignado_a = models.CharField(max_length=100, default='Pendiente')
+    observacion_rechazo = models.CharField(max_length=5000, null=True, blank=True)
     class Meta:
         unique_together = ('eleccion', 'par_rut')
 

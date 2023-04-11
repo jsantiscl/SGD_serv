@@ -99,13 +99,17 @@ def auditor_partidos(request):
 
 def pasaretapa(request):
     data = json.loads(request.body)
+    if data['datos']['respuesta'] == None:
+        respuesta = ''
+    if data['datos']['respuesta'] != None:
+        respuesta = data['datos']['respuesta']
     if data['datos']['tipo'] == 'Candidato':
-         Candidatos.objects.filter(rut=str(data['datos']['rut'])).update(estado=str(data['datos']['etapa']))
+         Candidatos.objects.filter(rut=str(data['datos']['rut'])).update(estado=str(data['datos']['etapa']), observacion_rechazo=respuesta)
          WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
                                                 nueva_etapa=str(data['datos']['etapa']),
                                                 fecha_cambio=datetime.now())
     if data['datos']['tipo'] == 'Partido':
-         Partidos.objects.filter(par_rut=str(data['datos']['rut'])).update(estado=str(data['datos']['etapa']))
+         Partidos.objects.filter(par_rut=str(data['datos']['rut'])).update(estado=str(data['datos']['etapa']), observacion_rechazo=respuesta)
          WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
                                                 nueva_etapa=str(data['datos']['etapa']),
                                                 fecha_cambio=datetime.now())

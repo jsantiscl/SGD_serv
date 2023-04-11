@@ -41,7 +41,7 @@ $(document).ready(function() {
 
             </script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
 <div class="w3-responsive">
 
 <section class="section1">
@@ -61,10 +61,10 @@ $(document).ready(function() {
             <th>Nombre</th>
             <th>Pacto</th>
             <th>Partido</th>
-            <th>SRA</th>
-            <th>Cartolas</th>
-            <th>Carpeta</th>
-            <th>Accion</th>
+            <th style="text-align: center">SRA</th>
+            <th style="text-align: center">Cartolas</th>
+            <th style="text-align: center">Carpeta</th>
+            <th style="text-align: center">Accion</th>
         </tr>
             </thead>
     <tbody>
@@ -78,10 +78,27 @@ $(document).ready(function() {
             <td>{{ linea.nombre}} {{ linea.apellido_p}} {{ linea.apellido_m}}</td>
             <td>{{ linea.pacto}}</td>
             <td>{{ linea.partido}}</td>
-            <td style="text-align: center"><a href="{% url 'sra_candidatos' cod=linea.cod %}" target="_blank">Ver</a>
-            <td style="text-align: center"><a href="{% url 'cartolas_candidatos' cod=linea.cod %}" target="_blank">Ver</a>
-            <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">Carpeta</a></td>
-            <td><a class="btn btn-success" onclick="pasar('{{ linea.rut|stringformat:"s" }}')">Pasar Etapa</a></td>
+            <td style="text-align: center"><a href="{% url 'sra_candidatos' cod=linea.cod %}" target="_blank">
+    <button class="btn btn-outline-secondary">
+        <i class="bi bi-cash"></i>
+    </button>
+</a>
+</td>
+
+ <td style="text-align: center"><a href="{% url 'cartolas_candidatos' cod=linea.cod %}" target="_blank">
+    <button class="btn btn-outline-info">
+        <i class="bi bi-bank"></i>
+    </button>
+</a>
+</td>
+              <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">
+    <button class="btn btn-primary">
+        <i class="bi bi-file-earmark-minus-fill"></i>
+    </button>
+</a>
+</td>
+
+            <td style="text-align: center"><a class="btn btn-success" onclick="pasar('{{ linea.rut|stringformat:"s" }}')">Pasar Etapa</a></td>
             {% endif %}
         {% endfor %}
     </tbody>
@@ -126,6 +143,7 @@ const csrftoken = getCookie('csrftoken');
     function pasar_etapa(rut) {
 
         var datos = {
+                'respuesta':'',
 				'rut': rut.toString(),
                 'etapa': '3_EnRevisor',
                 'tipo' : 'Candidato'

@@ -3,6 +3,7 @@
 
 {% block body %}
 
+
             <script type="text/javascript" class="init">
 
 
@@ -41,8 +42,9 @@ $(document).ready(function() {
 
             </script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-<div class="w3-responsive">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+
+    <div class="w3-responsive">
 
 <section class="section1">
 <h3>Partidos Revision</h3>
@@ -58,10 +60,11 @@ $(document).ready(function() {
             <th style="text-align: center">Tipo</th>
             <th>Rut</th>
             <th>Nombre</th>
-            <th>SRA</th>
-            <th>Cartola</th>
-            <th>Carpeta</th>
-            <th>Accion</th>
+            <th style="text-align: center">SRA</th>
+            <th style="text-align: center">Cartola</th>
+            <th style="text-align: center">Carpeta</th>
+            <th style="text-align: center">Accion</th>
+            <th>Obs.</th>
         </tr>
             </thead>
     <tbody>
@@ -72,10 +75,35 @@ $(document).ready(function() {
             <td>Partido</td>
             <td>{{ linea.par_rut}}</td>
             <td>{{ linea.par_nombre}}</td>
-            <td style="text-align: center"><a href="{% url 'sra_partidos' cod=linea.cod %}" target="_blank">Ver</a>
-            <td style="text-align: center"><a href="{% url 'cartolas_partidos' cod=linea.cod %}" target="_blank">Ver</a>
-             <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">Carpeta</a></td>
-            <td><a class="btn btn-success" onclick="pasar('{{ linea.par_rut|stringformat:"s" }}')">Pasar Etapa</a></td>
+            <td style="text-align: center"><a href="{% url 'sra_partidos' cod=linea.cod %}" target="_blank">
+    <button class="btn btn-outline-secondary">
+        <i class="bi bi-cash"></i>
+    </button>
+</a>
+</td>
+
+ <td style="text-align: center"><a href="{% url 'cartolas_partidos' cod=linea.cod %}" target="_blank">
+    <button class="btn btn-outline-info">
+        <i class="bi bi-bank"></i>
+    </button>
+</a>
+</td>
+              <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">
+    <button class="btn btn-primary">
+        <i class="bi bi-file-earmark-minus-fill"></i>
+    </button>
+</a>
+</td>
+
+<td style="text-align: center">
+    <a class="btn btn-success" onclick="pasar('{{ linea.par_rut|stringformat:"s" }}')">Pasar Etapa</a>
+</td>
+            <td>    {% if linea.observacion_rechazo %}
+        <i class="bi bi-exclamation-triangle-fill text-warning bi-lg"></i>
+
+            {{ linea.observacion_rechazo|safe }}
+            {% endif %}
+            </td>
 
         {% endfor %}
     </tbody>
@@ -120,6 +148,7 @@ const csrftoken = getCookie('csrftoken');
     function pasar_etapa(rut) {
 
         var datos = {
+                'respuesta':'',
 				'rut': rut.toString(),
                 'etapa': '3_EnRevisor',
                 'tipo' : 'Partido'

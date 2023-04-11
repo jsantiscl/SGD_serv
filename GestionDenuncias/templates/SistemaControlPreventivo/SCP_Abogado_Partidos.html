@@ -58,8 +58,9 @@ $(document).ready(function() {
             <th style="text-align: center">Tipo</th>
             <th>Rut</th>
             <th>Nombre</th>
-            <th>Carpeta</th>
-            <th>Accion</th>
+            <th style="text-align: center">Carpeta</th>
+            <th style="text-align: center">Accion</th>
+            <th>Obs.Rechazo</th>
         </tr>
             </thead>
     <tbody>
@@ -70,9 +71,22 @@ $(document).ready(function() {
             <td>Partido</td>
             <td>{{ linea.par_rut}}</td>
             <td>{{ linea.par_nombre}}</td>
-             <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">Carpeta</a></td>
-            <td><a class="btn btn-success" onclick="pasar('{{ linea.par_rut|stringformat:"s" }}')">Pasar Etapa</a></td>
+               <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">
+    <button class="btn btn-primary">
+        <i class="bi bi-file-earmark-minus-fill"></i>
+    </button>
+</a>
+</td>
+            <td style="text-align: center"><a class="btn btn-success" onclick="pasar('{{ linea.par_rut|stringformat:"s" }}')">Pasar Etapa</a>
+            {% if linea.observacion_rechazo %}
+            <i class="bi bi-exclamation-triangle-fill text-warning bi-lg" title="Devuelta - Ver Observación"></i>
+            {% endif %}
+            </td>
+            <td>    {% if linea.observacion_rechazo %}
 
+            {{ linea.observacion_rechazo|safe }}
+            {% endif %}
+            </td>
         {% endfor %}
     </tbody>
     </table>
@@ -116,6 +130,7 @@ const csrftoken = getCookie('csrftoken');
     function pasar_etapa(rut) {
 
         var datos = {
+                'respuesta':'',
 				'rut': rut.toString(),
                 'etapa': '5_EnJefeUnidad',
                 'tipo' : 'Partido'
