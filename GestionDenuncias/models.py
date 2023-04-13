@@ -69,6 +69,8 @@ class Denuncias(models.Model):
         ("Parlamentarias", "Parlamentarias"),
         ("Presidencial", "Presidencial"),
         ("Convencionales Constituyentes", "Convencionales Constituyentes"),
+        ("Consejo Constitucional 2023", "Consejo Constitucional 2023"),
+        ("Plebiscito 2023", "Plebiscito 2023"),
         ("No Aplica", "No Aplica"),
 
     )
@@ -87,7 +89,8 @@ class Denuncias(models.Model):
         ("Rechazo", "Rechazo"),
         ("Convención Constitucional", "Convención Constitucional"),
         ("Convención Mixta", "Convención Mixta"),
-
+        ("Plebiscito 2023", "Plebiscito 2023"),
+        ("No Aplica", "No Aplica"),
     )
 
     MATERIA = (
