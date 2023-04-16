@@ -474,3 +474,19 @@ def cartola_partidos(request,cod):
     context = {'cartolas': cartolas, 'auditores': auditores, 'candidato':partido.rut}
 
     return render(request, 'SistemaControlPreventivo/SCP_Cartolas.html', context)
+
+
+def respuestas_CP(request):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="AuditorControlPreventivo")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+    usuario_actual=request.user.username
+    # Filtrar los candidatos como lo hacías antes
+    respuestas = RespuestasCP.objects.filter(Etapa='1_Nueva')
+
+    # Agregar los auditores al contexto
+    context = {'respuestas': respuestas, 'auditores': auditores}
+
+    return render(request, 'SistemaControlPreventivo/SCP_Respuestas_Revisor.html', context)

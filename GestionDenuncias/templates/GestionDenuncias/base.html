@@ -391,9 +391,11 @@
 
                           {% if group.name == 'RevisorControlPreventivo_C1' %}
               <a href="{% url 'revisor_candidatos1_scp' %}" class="w3-bar-item w3-button">SCP-Revision Candidatos</a>
+              <a href="{% url 'respuestas_CP' %}" class="w3-bar-item w3-button">SCP-Respuestas</a>
               {% endif %}
           {% if group.name == 'RevisorControlPreventivo_PP' %}
               <a href="{% url 'revisor_partidos_scp' %}" class="w3-bar-item w3-button">SCP-Revision Partidos</a>
+               <a href="{% url 'respuestas_CP' %}" class="w3-bar-item w3-button">SCP-Respuestas</a>
               {% endif %}
                                    {% if group.name == 'AuditorControlPreventivo' %}
                                      <div class="w3-dropdown-hover">
@@ -419,6 +421,7 @@
 
                           {% if group.name == 'RevisorControlPreventivo_C2' %}
               <a href="{% url 'revisor_candidatos2_scp' %}" class="w3-bar-item w3-button">SCP-Revision Candidatos</a>
+              <a href="{% url 'respuestas_CP' %}" class="w3-bar-item w3-button">SCP-Respuestas</a>
               {% endif %}
                                    {% if group.name == 'AbogadoControlPreventivoPP' %}
                                      <div class="w3-dropdown-hover">

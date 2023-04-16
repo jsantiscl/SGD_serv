@@ -131,3 +131,21 @@ class Cartolas(models.Model):
 
     def __str__(self):
         return f"{self.rut} - {self.cuenta} - {self.descripcion}"
+
+
+class RespuestasCP(models.Model):
+
+    ObjectID = models.IntegerField(primary_key=True)
+    GlobalID = models.CharField(max_length=500, default='SIN')
+    NombreCompleto = models.CharField(max_length=200, null=True, blank=True)
+    Rut = models.CharField(max_length=50, null=True, blank=True)
+    TemaAsociado = models.CharField(max_length=50, null=True, blank=True)
+    Pregunta = models.CharField(max_length=1000, null=True, blank=True)
+    Email = models.CharField(max_length=50, default='SIN')
+    FechaIngreso = models.DateTimeField(null=True, blank=True)
+    AsignadoA = models.BooleanField(max_length=50, null=True, blank=True)
+    TipoAsignacion = models.CharField(max_length=50, null=True, blank=True)
+    Etapa = models.CharField(max_length=50, default='1_Nueva')
+    Adjunto= models.CharField(max_length=1000, null=True, blank=True)
+    def __str__(self):
+        return self.ObjectID
