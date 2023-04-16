@@ -39,4 +39,7 @@ urlpatterns = [
     # Notificacion
     path('notificacioncandidatos/', login_required(notificacion_candidatos), name='notificacion_candidatos'),
     path('notificacionpartidos/', login_required(notificacion_partidos), name='notificacion_partidos'),
+
+    #API
+    path('api/nueva_respuesta/', carga_datos_respuestas, name='carga_datos_respuestas'),  # P
 ]

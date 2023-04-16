@@ -4,6 +4,9 @@ from SistemaControlPreventivo.models import *
 import json
 from django.http import JsonResponse
 from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+
 
 # Create your views here.
 def admin_asignacion_candidato(request):
@@ -490,3 +493,38 @@ def respuestas_CP(request):
     context = {'respuestas': respuestas, 'auditores': auditores}
 
     return render(request, 'SistemaControlPreventivo/SCP_Respuestas_Revisor.html', context)
+
+
+
+@csrf_exempt
+def carga_datos_respuestas(request):
+    if request.method == 'POST':
+        # Extrae los datos de la solicitud POST
+        ObjectID = request.POST.get('ObjectID')
+        GlobalID = request.POST.get('GlobalID')
+        NombreCompleto = request.POST.get('NombreCompleto')
+        Rut = request.POST.get('Rut')
+        TemaAsociado = request.POST.get('TemaAsociado')
+        Pregunta = request.POST.get('Pregunta')
+        Email = request.POST.get('Email')
+        Adjunto = request.POST.get('Adjunto')
+        # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
+        data = RespuestasCP(ObjectID=ObjectID,
+                                   GlobalID=GlobalID,
+                                   NombreCompleto=NombreCompleto,
+                                   Rut=Rut,
+                                   TemaAsociado=TemaAsociado,
+                                   Pregunta=Pregunta,
+                                   Email=Email,
+                                   FechaIngreso=datetime.now(),
+                                   Etapa='1_Nueva',
+                                   Adjunto = Adjunto)
+
+        # Guarda la instancia en la base de datos
+        data.save()
+
+        # Retorna una respuesta HTTP 200 si
+        return HttpResponse('Datos guardados correctamente')
+    else:
+        # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
+        return HttpResponse(status=405)
