@@ -13,7 +13,7 @@ class ConsultasFormulario(models.Model):
     Respondido = models.BooleanField(default=False)
     RespondidoPor = models.CharField(max_length=50, null=True, blank=True)
     Fecha_Respuesta = models.DateTimeField(null=True, blank=True)
-    Respuesta = models.CharField(max_length=2000, null=True, blank=True)
+    Respuesta = models.CharField(max_length=5000, null=True, blank=True)
     Etapa = models.CharField(max_length=50, default='1_Nueva')
     def __str__(self):
         return self.ObjectID
