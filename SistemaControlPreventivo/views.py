@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 def admin_asignacion_candidato(request):
@@ -489,11 +489,16 @@ def respuestas_CP(request):
     # Filtrar los candidatos como lo hacías antes
     respuestas = RespuestasCP.objects.filter(Etapa='1_Nueva')
 
-    # Agregar los auditores al contexto
-    context = {'respuestas': respuestas, 'auditores': auditores}
+    # Obtener el token con el mayor ID
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    # Agregar los auditores y el token al contexto
+    context = {'respuestas': respuestas, 'auditores': auditores, 'latest_token': latest_token}
 
     return render(request, 'SistemaControlPreventivo/SCP_Respuestas_Revisor.html', context)
-
 
 
 @csrf_exempt

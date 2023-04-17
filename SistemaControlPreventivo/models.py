@@ -149,3 +149,8 @@ class RespuestasCP(models.Model):
     Adjunto= models.CharField(max_length=1000, null=True, blank=True)
     def __str__(self):
         return self.ObjectID
+
+class Tokens(models.Model):
+
+    Token = models.CharField(max_length=1000, default='SIN')
+    Fecha = models.DateTimeField(null=True, blank=True)

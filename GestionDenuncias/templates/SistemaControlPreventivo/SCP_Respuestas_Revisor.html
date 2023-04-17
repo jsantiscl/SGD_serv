@@ -78,7 +78,7 @@ $(document).ready(function() {
             <td>{{ linea.Pregunta}}</td>
             <td>{{ linea.Email}}</td>
             <td>{% if linea.Adjunto %}
-                <a href="{{ linea.Adjunto }}">Ver Adjunto</a>
+                <a href="{{ linea.Adjunto }}?token={{ latest_token.Token }}" >Ver Adjunto</a>
                 {% else %}
                 Sin Adjunto
                 {% endif %}
