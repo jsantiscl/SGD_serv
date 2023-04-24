@@ -65,6 +65,7 @@ $(document).ready(function() {
             <th style="text-align: center">Carpeta</th>
             <th style="text-align: center">Accion</th>
             <th>Obs.</th>
+            <th>Respuesta</th>
         </tr>
             </thead>
     <tbody>
@@ -104,7 +105,14 @@ $(document).ready(function() {
             {{ linea.observacion_rechazo|safe }}
             {% endif %}
             </td>
+            <td>
+            {% if linea.respuesta == 'SI' %}
+             <a href="{% url 'respuestas_auditor' rut=linea.par_rut %}" target="_blank">Si (Ver)</a>
 
+            {% else %}
+             No
+             {% endif %}
+            </td>
         {% endfor %}
     </tbody>
     </table>

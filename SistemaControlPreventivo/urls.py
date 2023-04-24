@@ -16,6 +16,9 @@ urlpatterns = [
     path('partidos/sra/<str:cod>', login_required(sra_partidos), name='sra_partidos'),
     path('candidatos/cartolas/<str:cod>', login_required(cartola_candidatos), name='cartolas_candidatos'),
     path('partidos/cartolas/<str:cod>', login_required(cartola_partidos), name='cartolas_partidos'),
+    path('candidatos/sro/<str:cod>', login_required(f87f88_candidatos), name='f87f88_candidatos'),
+    path('partidos/sro/<str:cod>', login_required(f87f88_partidos), name='f87f88_partidos'),
+
     path('partidos/', login_required(auditor_partidos), name='auditor_partidos'),
     path('pasaretapa/', login_required(pasaretapa), name='pasaretapa'),
     #Revisor
@@ -23,6 +26,7 @@ urlpatterns = [
     path('revisarcandidatos1/', login_required(revisor_candidatos1_scp), name='revisor_candidatos1_scp'),
     path('revisarcandidatos2/', login_required(revisor_candidatos2_scp), name='revisor_candidatos2_scp'),
     path('respuestascp/', login_required(respuestas_CP), name='respuestas_CP'),
+    path('respuesta/<str:rut>', login_required(respuestas_auditor), name='respuestas_auditor'),
     # Abogado
     path('abogadopartido/', login_required(abogado_partidos_scp), name='abogado_partidos_scp'),
     path('abogadopartido2/', login_required(abogado_partidos_scp2), name='abogado_partidos_scp2'),
@@ -42,4 +46,8 @@ urlpatterns = [
 
     #API
     path('api/nueva_respuesta/', carga_datos_respuestas, name='carga_datos_respuestas'),  # P
+
+    #Respuestas
+    path('cambia_respuesta/', login_required(cambia_respuesta), name='cambia_respuesta'),
+
 ]

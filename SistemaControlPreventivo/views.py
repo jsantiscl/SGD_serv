@@ -8,6 +8,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 
+from django.db.models import IntegerField, Value
+from django.db.models.functions import Cast, Substr, Length
+from django.db.models import F, ExpressionWrapper, IntegerField
+
+def extract_numerical_rut(rut):
+    return int(rut.split('-')[0])
 # Create your views here.
 def admin_asignacion_candidato(request):
     # Consulta el grupo por su nombre
@@ -485,7 +491,8 @@ def respuestas_CP(request):
 
     # Obtiene todos los usuarios que pertenecen al grupo
     auditores = group.user_set.all()
-    usuario_actual=request.user.username
+    usuario_actual = request.user.username
+
     # Filtrar los candidatos como lo hacías antes
     respuestas = RespuestasCP.objects.filter(Etapa='1_Nueva')
 
@@ -495,8 +502,22 @@ def respuestas_CP(request):
     except ObjectDoesNotExist:
         latest_token = None
 
-    # Agregar los auditores y el token al contexto
-    context = {'respuestas': respuestas, 'auditores': auditores, 'latest_token': latest_token}
+    # Obtener todos los candidatos y partidos
+    candidatos = Candidatos.objects.annotate(
+        rut_numerico=Cast(
+            Substr('rut', 1, Length('rut')-2), IntegerField()
+        )
+    ).order_by('rut_numerico')
+    partidos = Partidos.objects.all().order_by('par_nombre')
+
+    # Agregar los auditores, el token, candidatos y partidos al contexto
+    context = {
+        'respuestas': respuestas,
+        'auditores': auditores,
+        'latest_token': latest_token,
+        'candidatos': candidatos,
+        'partidos': partidos
+    }
 
     return render(request, 'SistemaControlPreventivo/SCP_Respuestas_Revisor.html', context)
 
@@ -533,3 +554,80 @@ def carga_datos_respuestas(request):
     else:
         # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
         return HttpResponse(status=405)
+
+
+def cambia_respuesta(request):
+    data = json.loads(request.body)
+
+    RespuestasCP.objects.filter(ObjectID=data['datos']['objectid']).update(Etapa=str(data['datos']['etapa']), Candidato_o_Partido = data['datos']['rut_correspondiente'] )
+
+    rut_correspondiente = data['datos']['rut_correspondiente']
+    rut_numerico = int(rut_correspondiente[:-2])
+
+
+    if rut_numerico < 50000000:
+         Candidatos.objects.filter(rut=str( data['datos']['rut_correspondiente'] )).update(estado='2_AsignadoAuditor', respuesta='SI')
+         WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
+                                                nueva_etapa='2_AsignadoAuditor',
+                                                fecha_cambio=datetime.now())
+    if rut_numerico > 50000000:
+         Partidos.objects.filter(par_rut=str( data['datos']['rut_correspondiente'] )).update(estado='2_AsignadoAuditor', respuesta='SI')
+         WorkflowSCP.objects.create(rut_candidato_partido=str( data['datos']['rut_correspondiente'] ), usuario=str(request.user),
+                                                nueva_etapa='2_AsignadoAuditor',
+                                                fecha_cambio=datetime.now())
+
+    return JsonResponse([str(data['datos']['objectid']), 'Asignado'], safe=False)
+
+
+def respuestas_auditor(request,rut):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="AuditorControlPreventivo")
+
+
+    usuario_actual=request.user.username
+    respuestas = RespuestasCP.objects.filter(Candidato_o_Partido=rut)
+    # Filtrar los candidatos como lo hacías antes
+    # Obtener el token con el mayor ID
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    # Agregar los auditores al contexto
+    context = {'respuestas': respuestas, 'latest_token': latest_token}
+
+    return render(request, 'SistemaControlPreventivo/SCP_Respuesta.html', context)
+
+
+def f87f88_candidatos(request,cod):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="AuditorControlPreventivo")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+    usuario_actual=request.user.username
+    candidato = rel_candidato.objects.filter(cod__exact=cod).first()
+    # Filtrar los candidatos como lo hacías antes
+    cartolas = F87_F88.objects.filter(rut=candidato.rut)
+
+    # Agregar los auditores al contexto
+    context = {'cartolas': cartolas, 'auditores': auditores, 'candidato':candidato.rut}
+
+    return render(request, 'SistemaControlPreventivo/SCP_f87_f88.html', context)
+
+def f87f88_partidos(request,cod):
+    # Consulta el grupo por su nombre
+    group = Group.objects.get(name="AuditorControlPreventivo")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+    usuario_actual=request.user.username
+    partido = rel_partido.objects.filter(cod__exact=cod).first()
+    # Filtrar los candidatos como lo hacías antes
+    cartolas = F87_F88.objects.filter(rut=partido.rut)
+
+    # Agregar los auditores al contexto
+    context = {'cartolas': cartolas, 'auditores': auditores, 'candidato':partido.rut}
+
+    return render(request, 'SistemaControlPreventivo/SCP_f87_f88.html', context)
+

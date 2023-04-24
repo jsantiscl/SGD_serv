@@ -21,6 +21,7 @@ class Candidatos(models.Model):
     link_visualizacion = models.URLField(max_length=500, default='https://serv.jasb.cl')
     asignado_a= models.CharField(max_length=100, default='Pendiente')
     observacion_rechazo = models.CharField(max_length=5000, null=True, blank=True)
+    respuesta = models.CharField(max_length=100, default='NO')
     class Meta:
         unique_together = ('eleccion', 'rut')
     def __str__(self):
@@ -48,6 +49,7 @@ class Partidos(models.Model):
     link_visualizacion = models.URLField(max_length=500, default='https://serv.jasb.cl')
     asignado_a = models.CharField(max_length=100, default='Pendiente')
     observacion_rechazo = models.CharField(max_length=5000, null=True, blank=True)
+    respuesta = models.CharField(max_length=100, default='NO')
     class Meta:
         unique_together = ('eleccion', 'par_rut')
 
@@ -147,6 +149,7 @@ class RespuestasCP(models.Model):
     TipoAsignacion = models.CharField(max_length=50, null=True, blank=True)
     Etapa = models.CharField(max_length=50, default='1_Nueva')
     Adjunto= models.CharField(max_length=1000, null=True, blank=True)
+    Candidato_o_Partido = models.CharField(max_length=100, null=True, blank=True)
     def __str__(self):
         return self.ObjectID
 
@@ -154,3 +157,23 @@ class Tokens(models.Model):
 
     Token = models.CharField(max_length=1000, default='SIN')
     Fecha = models.DateTimeField(null=True, blank=True)
+
+class F87_F88(models.Model):
+    tpo = models.CharField(max_length=50, null=True, blank=True)
+    rut = models.CharField(max_length=200, null=True, blank=True)
+    rut_cp = models.CharField(max_length=200, null=True, blank=True)
+    dv_cp = models.CharField(max_length=200, null=True, blank=True)
+    fecha_d = models.DateField(null=True, blank=True)
+    tpo_i = models.CharField(max_length=200, null=True, blank=True)
+    rut_ap = models.CharField(max_length=200, null=True, blank=True)
+    dv_ap = models.CharField(max_length=200, null=True, blank=True)
+    nom_ap = models.CharField(max_length=200, null=True, blank=True)
+    num_doc = models.CharField(max_length=200, null=True, blank=True)
+    cod_tc = models.CharField(max_length=200, null=True, blank=True)
+    cod_td = models.CharField(max_length=200, null=True, blank=True)
+    glosa = models.CharField(max_length=500, null=True, blank=True)
+    monto = models.BigIntegerField( null=True, blank=True)
+    tpo_r = models.CharField(max_length=20, null=True, blank=True)
+    hoja = models.CharField(max_length=20, null=True, blank=True)
+    linea = models.CharField(max_length=20, null=True, blank=True)
+

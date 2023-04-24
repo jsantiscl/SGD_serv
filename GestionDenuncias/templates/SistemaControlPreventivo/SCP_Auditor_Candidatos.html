@@ -63,8 +63,10 @@ $(document).ready(function() {
             <th>Partido</th>
             <th style="text-align: center">SRA</th>
             <th style="text-align: center">Cartolas</th>
+            <th style="text-align: center">SRO</th>
             <th style="text-align: center">Carpeta</th>
             <th style="text-align: center">Accion</th>
+            <th>Respuesta</th>
         </tr>
             </thead>
     <tbody>
@@ -91,6 +93,13 @@ $(document).ready(function() {
     </button>
 </a>
 </td>
+              <td style="text-align: center"><a href="{% url 'f87f88_candidatos' cod=linea.cod %}" target="_blank">
+    <button class="btn btn-outline-info">
+        <i class="bi bi-bank"></i>
+    </button>
+</a>
+</td>
+
               <td style="text-align: center"><a href="{{linea.link_edicion}}" target="_blank">
     <button class="btn btn-primary">
         <i class="bi bi-file-earmark-minus-fill"></i>
@@ -99,6 +108,16 @@ $(document).ready(function() {
 </td>
 
             <td style="text-align: center"><a class="btn btn-success" onclick="pasar('{{ linea.rut|stringformat:"s" }}')">Pasar Etapa</a></td>
+
+             <td>
+            {% if linea.respuesta == 'SI' %}
+             <a href="{% url 'respuestas_auditor' rut=linea.rut %}" target="_blank">Si (Ver)</a>
+
+            {% else %}
+             No
+             {% endif %}
+            </td>
+
             {% endif %}
         {% endfor %}
     </tbody>
