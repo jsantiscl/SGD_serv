@@ -217,6 +217,9 @@ const csrftoken = getCookie('csrftoken');
     }
 
     function obtenerRespuesta(ObjectID) {
+        if (!quillInstances[ObjectID]) {
+    quillInstances[ObjectID] = initQuillEditor(ObjectID);
+}
         var respuesta = quillInstances[ObjectID].root.innerHTML;
         return respuesta;
     }
