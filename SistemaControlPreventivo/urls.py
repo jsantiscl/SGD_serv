@@ -27,6 +27,7 @@ urlpatterns = [
     path('revisarcandidatos2/', login_required(revisor_candidatos2_scp), name='revisor_candidatos2_scp'),
     path('respuestascp/', login_required(respuestas_CP), name='respuestas_CP'),
     path('respuesta/<str:rut>', login_required(respuestas_auditor), name='respuestas_auditor'),
+    path('pasadiasrespuesta/', login_required(pasadiasrespuesta), name='pasadiasrespuesta'),
     # Abogado
     path('abogadopartido/', login_required(abogado_partidos_scp), name='abogado_partidos_scp'),
     path('abogadopartido2/', login_required(abogado_partidos_scp2), name='abogado_partidos_scp2'),

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from SistemaControlPreventivo.models import *
 import json
 from django.http import JsonResponse
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -631,3 +631,31 @@ def f87f88_partidos(request,cod):
 
     return render(request, 'SistemaControlPreventivo/SCP_f87_f88.html', context)
 
+
+def pasadiasrespuesta(request):
+    data = json.loads(request.body)
+
+    # Calcula la fecha que está 5 días hábiles en el pasado
+    hoy = datetime.now()
+    dias_habiles = 5
+    for i in range(dias_habiles):
+        hoy -= timedelta(days=1)
+        while hoy.weekday() > 4:  # Mon-Fri are 0-4
+            hoy -= timedelta(days=1)
+
+    # Filtrar los candidatos como lo hacías antes, y también por fecha
+    candidatos = Candidatos.objects.filter(
+        estado='8_EsperadeRespuesta',
+        respuesta = 'NO',
+        fecha_notificacion_acta__lt=hoy
+    )
+    partidos = Partidos.objects.filter(
+        estado='8_EsperadeRespuesta',
+        respuesta='NO',
+        fecha_notificacion_acta__lt=hoy
+    )
+
+    #Cambia Candidatos y Partidos
+    candidatos.update(estado='2_AsignadoAuditor')
+    partidos.update(estado='2_AsignadoAuditor')
+    return JsonResponse('Cambiado', 'Asignado')
