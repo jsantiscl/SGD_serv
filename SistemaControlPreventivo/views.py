@@ -117,11 +117,16 @@ def pasaretapa(request):
          WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
                                                 nueva_etapa=str(data['datos']['etapa']),
                                                 fecha_cambio=datetime.now())
+         if data['datos']['etapa'] == '8_EsperadeRespuesta':
+             Candidatos.objects.filter(rut=str(data['datos']['rut'])).update(fecha_notificacion_acta = datetime.now())
     if data['datos']['tipo'] == 'Partido':
          Partidos.objects.filter(par_rut=str(data['datos']['rut'])).update(estado=str(data['datos']['etapa']), observacion_rechazo=respuesta)
          WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
                                                 nueva_etapa=str(data['datos']['etapa']),
                                                 fecha_cambio=datetime.now())
+         if data['datos']['etapa'] == '8_EsperadeRespuesta':
+             Partidos.objects.filter(par_rut=str(data['datos']['rut'])).update(fecha_notificacion_acta = datetime.now())
+
     return JsonResponse([str(data['datos']['rut']), 'Asignado'], safe=False)
 
 def asignar_partidos_scp(request):
@@ -655,7 +660,21 @@ def pasadiasrespuesta(request):
         fecha_notificacion_acta__lt=hoy
     )
 
+    for candidato in candidatos:
+        WorkflowSCP.objects.create(rut_candidato_partido=candidato.rut,
+                                   usuario=str(request.user),
+                                   nueva_etapa='2_AsignadoAuditor',
+                                   fecha_cambio=datetime.now())
+    for partido in partidos:
+        WorkflowSCP.objects.create(rut_candidato_partido=partido.par_rut,
+                                   usuario=str(request.user),
+                                   nueva_etapa='2_AsignadoAuditor',
+                                   fecha_cambio=datetime.now())
+
     #Cambia Candidatos y Partidos
     candidatos.update(estado='2_AsignadoAuditor')
     partidos.update(estado='2_AsignadoAuditor')
+
+
+
     return JsonResponse('Cambiado', 'Asignado')
