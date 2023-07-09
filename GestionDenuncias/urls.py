@@ -97,5 +97,7 @@ urlpatterns = [
     path('fiscalizacion/Alertas/pasar/', login_required(alarma_pasar_etapa), name='alarma_pasar_etapa'),  # P
     # PruebaaPi
     path('recursos/api/prueba/', carga_datos, name='carga_datos'),  # P
+    path('api/carga_datos_actas_terreno/', carga_datos_actas_terreno, name='carga_datos_actas_terreno'),  # P
+    path('api/carga_datos_actas_remotas/', carga_datos_actas_remotas, name='carga_datos_actas_remotas'),  # P
 
 ]

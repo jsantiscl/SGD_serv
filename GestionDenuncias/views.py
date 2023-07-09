@@ -6,7 +6,10 @@ from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formul
 from .forms import *
 from django.contrib.auth.models import User
 from django.db.models import Q
-
+from .models import ActasTerreno, ActasRemotas
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from SistemaControlPreventivo.models import Tokens
 #from django.http import HttpResponse
 #from django.conf import settings
 #from django.core.files.storage import FileSystemStorage
@@ -442,3 +445,213 @@ def modifica_candidato(request):
          Ire.objects.filter(rut=str(data['datos']['id_candidato'])).update(comentarios=str(comentario))
 
     return JsonResponse([str(data['datos']['id_candidato'])], safe=False)
+
+
+@csrf_exempt
+def carga_datos_actas_terreno(request):
+    if request.method == 'POST':
+        # Extrae los datos de la solicitud POST
+        object_id = request.POST.get('object_id')
+        global_id = request.POST.get('global_id')
+        fecha = request.POST.get('fecha')
+        region = request.POST.get('region')
+        ubicacion = request.POST.get('ubicacion')
+        comuna = request.POST.get('comuna')
+        seleccion_motivo_inspeccion = request.POST.get('seleccion_motivo_inspeccion')
+        seleccion_motivo_inspeccion_no_programada = request.POST.get('seleccion_motivo_inspeccion_no_programada')
+        indique_folio_denuncia = request.POST.get('indique_folio_denuncia')
+        indique_motivo = request.POST.get('indique_motivo')
+        seleccion_candidato_fiscalizado = request.POST.get('seleccion_candidato_fiscalizado')
+        aparece_mas_personas_cartel = request.POST.get('aparece_mas_personas_cartel')
+        ingrese_nombre_personas = request.POST.get('ingrese_nombre_personas')
+        seleccione = request.POST.get('seleccione')
+        espacio_publico = request.POST.get('espacio_publico')
+        corresponde_espacio_publico_autorizado = request.POST.get('corresponde_espacio_publico_autorizado')
+        seleccione_lugar_autorizado = request.POST.get('seleccione_lugar_autorizado')
+        propaganda_excede_dimensiones_publico = request.POST.get('propaganda_excede_dimensiones_publico')
+        cantidad_elementos_propaganda_publico = request.POST.get('cantidad_elementos_propaganda_publico')
+        espacio_privado = request.POST.get('espacio_privado')
+        seleccione_tipo_espacio = request.POST.get('seleccione_tipo_espacio')
+        indique_tipo_servicio_publico = request.POST.get('indique_tipo_servicio_publico')
+        indique_tipo_propiedad_privada_acceso_publico = request.POST.get('indique_tipo_propiedad_privada_acceso_publico')
+        seleccione_tipo = request.POST.get('seleccione_tipo')
+        cual = request.POST.get('cual')
+        indique_fecha_formulario_104 = request.POST.get('indique_fecha_formulario_104')
+        cantidad_elementos_propaganda_privado = request.POST.get('cantidad_elementos_propaganda_privado')
+        propaganda_excede_dimensiones_privado = request.POST.get('propaganda_excede_dimensiones_privado')
+        contacto_propietario_poseedor = request.POST.get('contacto_propietario_poseedor')
+        indique_nombre_datos_contacto_informacion_proporcionada = request.POST.get('indique_nombre_datos_contacto_informacion_proporcionada')
+        brigadistas_voluntarios = request.POST.get('brigadistas_voluntarios')
+        seleccione_tipo_actividad = request.POST.get('seleccione_tipo_actividad')
+        indique_cantidad_brigadistas_lugar = request.POST.get('indique_cantidad_brigadistas_lugar')
+        contacto_responsable = request.POST.get('contacto_responsable')
+        indique_nombre_datos_contacto_informacion_proporcionada_respons = request.POST.get('indique_nombre_datos_contacto_informacion_proporcionada_respons')
+        observaciones = request.POST.get('observaciones')
+        asistente = request.POST.get('asistente')
+        id_workforce = request.POST.get('id_workforce')
+        id_inspeccion = request.POST.get('id_inspeccion')
+        creation_date = request.POST.get('creation_date')
+        creator = request.POST.get('creator')
+        edit_date = request.POST.get('edit_date')
+        editor = request.POST.get('editor')
+        x_coord = request.POST.get('x_coord')
+        y_coord = request.POST.get('y_coord')
+        tok = request.POST.get('token')
+        # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
+        acta_terreno = ActasTerreno(
+            object_id=object_id,
+            global_id=global_id,
+            fecha=fecha,
+            region=region,
+            ubicacion=ubicacion,
+            comuna=comuna,
+            seleccion_motivo_inspeccion=seleccion_motivo_inspeccion,
+            seleccion_motivo_inspeccion_no_programada=seleccion_motivo_inspeccion_no_programada,
+            indique_folio_denuncia=indique_folio_denuncia,
+            indique_motivo=indique_motivo,
+            seleccion_candidato_fiscalizado=seleccion_candidato_fiscalizado,
+            aparece_mas_personas_cartel=aparece_mas_personas_cartel,
+            ingrese_nombre_personas=ingrese_nombre_personas,
+            seleccione=seleccione,
+            espacio_publico=espacio_publico,
+            corresponde_espacio_publico_autorizado=corresponde_espacio_publico_autorizado,
+            seleccione_lugar_autorizado=seleccione_lugar_autorizado,
+            propaganda_excede_dimensiones_publico=propaganda_excede_dimensiones_publico,
+            cantidad_elementos_propaganda_publico=cantidad_elementos_propaganda_publico,
+            espacio_privado=espacio_privado,
+            seleccione_tipo_espacio=seleccione_tipo_espacio,
+            indique_tipo_servicio_publico=indique_tipo_servicio_publico,
+            indique_tipo_propiedad_privada_acceso_publico=indique_tipo_propiedad_privada_acceso_publico,
+            seleccione_tipo=seleccione_tipo,
+            cual=cual,
+            indique_fecha_formulario_104=indique_fecha_formulario_104,
+            cantidad_elementos_propaganda_privado=cantidad_elementos_propaganda_privado,
+            propaganda_excede_dimensiones_privado=propaganda_excede_dimensiones_privado,
+            contacto_propietario_poseedor=contacto_propietario_poseedor,
+            indique_nombre_datos_contacto_informacion_proporcionada=indique_nombre_datos_contacto_informacion_proporcionada,
+            brigadistas_voluntarios=brigadistas_voluntarios,
+            seleccione_tipo_actividad=seleccione_tipo_actividad,
+            indique_cantidad_brigadistas_lugar=indique_cantidad_brigadistas_lugar,
+            contacto_responsable=contacto_responsable,
+            indique_nombre_datos_contacto_informacion_proporcionada_respons=indique_nombre_datos_contacto_informacion_proporcionada_respons,
+            observaciones=observaciones,
+            asistente=asistente,
+            id_workforce=id_workforce,
+            id_inspeccion=id_inspeccion,
+            creation_date=creation_date,
+            creator=creator,
+            edit_date=edit_date,
+            editor=editor,
+            x_coord=x_coord,
+            y_coord=y_coord
+        )
+
+        try:
+            objeto_token = Tokens(Token=tok,
+                           Fecha = datetime.now())
+            objeto_token.save()
+        except:
+            print("Error Token")
+
+        # Guarda la instancia en la base de datos
+        acta_terreno.save()
+
+        # Retorna una respuesta HTTP 200
+        return HttpResponse('Datos guardados correctamente')
+    else:
+        # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
+        return HttpResponse(status=405)
+
+
+@csrf_exempt
+def carga_datos_actas_remotas(request):
+    if request.method == 'POST':
+        # Extrae los datos de la solicitud POST
+        object_id = request.POST.get('object_id')
+        global_id = request.POST.get('global_id')
+        fecha = request.POST.get('fecha')
+        region = request.POST.get('region')
+        motivo_inspeccion = request.POST.get('motivo_inspeccion')
+        motivo_inspeccion_no_programada = request.POST.get('motivo_inspeccion_no_programada')
+        indicar_motivo = request.POST.get('indicar_motivo')
+        folio_denuncia = request.POST.get('folio_denuncia')
+        candidato = request.POST.get('candidato')
+        multiple_persona_cartel = request.POST.get('multiple_persona_cartel')
+        nombre_personas = request.POST.get('nombre_personas')
+        medio_utilizado = request.POST.get('medio_utilizado')
+        rrss_utilizada = request.POST.get('rrss_utilizada')
+        rrss_cual = request.POST.get('rrss_cual')
+        rrss_link = request.POST.get('rrss_link')
+        hallazgo_tipo = request.POST.get('hallazgo_tipo')
+        contenido_organico = request.POST.get('contenido_organico')
+        radio_prensa_nombre = request.POST.get('radio_prensa_nombre')
+        radio_prensa_link = request.POST.get('radio_prensa_link')
+        medio_tarifario = request.POST.get('medio_tarifario')
+        hallazgo_indicado = request.POST.get('hallazgo_indicado')
+        hallazgo_cual = request.POST.get('hallazgo_cual')
+        hallazgo_link = request.POST.get('hallazgo_link')
+        hallazgo_tipo_otro = request.POST.get('hallazgo_tipo_otro')
+        hallazgo_cual_otro = request.POST.get('hallazgo_cual_otro')
+        observaciones = request.POST.get('observaciones')
+        id_inspeccion = request.POST.get('id_inspeccion')
+        creation_date = request.POST.get('creation_date')
+        creator = request.POST.get('creator')
+        edit_date = request.POST.get('edit_date')
+        editor = request.POST.get('editor')
+        id_wf = request.POST.get('id_wf')
+        x_coord = request.POST.get('x_coord')
+        y_coord = request.POST.get('y_coord')
+        tok = request.POST.get('token')
+        # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
+        acta_remota = ActasRemotas(
+            object_id=object_id,
+            global_id=global_id,
+            fecha=fecha,
+            region=region,
+            motivo_inspeccion=motivo_inspeccion,
+            motivo_inspeccion_no_programada=motivo_inspeccion_no_programada,
+            indicar_motivo=indicar_motivo,
+            folio_denuncia=folio_denuncia,
+            candidato=candidato,
+            multiple_persona_cartel=multiple_persona_cartel,
+            nombre_personas=nombre_personas,
+            medio_utilizado=medio_utilizado,
+            rrss_utilizada=rrss_utilizada,
+            rrss_cual=rrss_cual,
+            rrss_link=rrss_link,
+            hallazgo_tipo=hallazgo_tipo,
+            contenido_organico=contenido_organico,
+            radio_prensa_nombre=radio_prensa_nombre,
+            radio_prensa_link=radio_prensa_link,
+            medio_tarifario=medio_tarifario,
+            hallazgo_indicado=hallazgo_indicado,
+            hallazgo_cual=hallazgo_cual,
+            hallazgo_link=hallazgo_link,
+            hallazgo_tipo_otro=hallazgo_tipo_otro,
+            hallazgo_cual_otro=hallazgo_cual_otro,
+            observaciones=observaciones,
+            id_inspeccion=id_inspeccion,
+            creation_date=creation_date,
+            creator=creator,
+            edit_date=edit_date,
+            editor=editor,
+            id_wf=id_wf,
+            x_coord=x_coord,
+            y_coord=y_coord
+        )
+
+        try:
+            objeto_token = Tokens(Token=tok,
+                           Fecha = datetime.now())
+            objeto_token.save()
+        except:
+            print("Error Token")
+        # Guarda la instancia en la base de datos
+        acta_remota.save()
+
+        # Retorna una respuesta HTTP 200
+        return HttpResponse('Datos guardados correctamente')
+    else:
+        # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
+        return HttpResponse(status=405)
+
