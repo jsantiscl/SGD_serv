@@ -214,7 +214,7 @@
       <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'jc_recursos_asigna' %}" class="w3-bar-item w3-button">Asignacion</a>
-          <a href="{% url 'jc_valida_informe_tecnico' %}" class="w3-bar-item w3-button">Validacion Informe Tecnico</a>
+          <a href="{% url 'jc_valida_informe_tecnico' %}" class="w3-bar-item w3-button">Revision Informe Tecnico e Informe de Auditoria</a>
           <a href="{% url 'jc_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Resolucion</a>
           <a href="{% url 'formatosydocumentos' %}" class="w3-bar-item w3-button">Formatos y Documentos</a>
           <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
@@ -503,6 +503,18 @@
               {% endif %}
 
 
+                    {% if group.name == 'SGD_Revisor' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Actas Ingresadas</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'pendiente_clasificacion' %}" class="w3-bar-item w3-button">Pendientes Clasificacion</a>
+
+            </div>
+      </div>
+         {% endif %}
+
+
         {% endfor %}
          {% if user.is_staff %}
             {% if 'serv.jasb.cl' in request.build_absolute_uri %}
@@ -526,6 +538,10 @@
             <!--<a href="" class="w3-bar-item w3-button w3-black w3-right"> {{ user.username }}</a>-->
         {% endif %}
   </div>
+
+
+
+
 
 
 {% endblock %}
