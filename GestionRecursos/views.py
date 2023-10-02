@@ -90,14 +90,9 @@ def reporte_vista(request):
 def jc_valida_propuesta(request):
     username_q = request.user.username
     celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
-    if celula_actual.celula == 'c1' or celula_actual.celula == 'c2' or celula_actual.celula == 'c3' or celula_actual.celula == 'c4':
-        abogados_celula = UsersRecursos.objects.filter(celula__iexact="ab_valida", tipo__icontains="ab_valida")
-        #Aca en icontains pongo el filtro con el metodo icontains que es un like
-        denuncia_obj_3 = Recursos.objects.filter(estado__icontains="JC_Validacion")
-    else:
-        abogados_celula = UsersRecursos.objects.filter(celula__iexact="ab_validaAc", tipo__icontains="ab_validaAc")
-        #Aca en icontains pongo el filtro con el metodo icontains que es un like
-        denuncia_obj_3 = Recursos.objects.filter(estado__icontains="JC_Validacion")
+    abogados_celula = UsersRecursos.objects.filter(tipo__icontains="ab_valida")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="JC_Validacion")
     context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
     return render(request,'GestionRecursos/GestionRecursos_JC_ValidaPropuesta.html', context)
 
