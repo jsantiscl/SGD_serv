@@ -251,6 +251,16 @@
           <a href="{% url 'ab_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Abogado Validador</a>
             </div>
       </div>
+
+                                          <div class="w3-dropdown-hover">
+      <button class="w3-button">Reportes</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
+        <a href="{% url 'admin_recursos_asigna' %}" class="w3-bar-item w3-button">Asignacion</a>
+          <a href="{% url 'reporte_vista' %}" class="w3-bar-item w3-button">Reporte</a>
+          <a href="{% url 'formatosydocumentos' %}" class="w3-bar-item w3-button">Formatos y Documentos</a>
+            </div>
+      </div>
          {% endif %}
 
                  {% if group.name == 'GestionRecursos_JefeDivision' %}
