@@ -99,15 +99,9 @@ def jc_valida_propuesta(request):
 def ab_valida_propuesta(request):
     username_q = request.user.username
     celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
-
-    if celula_actual.celula == 'c1' or celula_actual.celula == 'c2' or celula_actual.celula == 'c3' or celula_actual.celula == 'c4' or celula_actual.celula == 'ab_valida':
-        abogados_celula = UsersRecursos.objects.filter(celula__iexact='NoDefinida', tipo__icontains="LiderC")
-        #Aca en icontains pongo el filtro con el metodo icontains que es un like
-        denuncia_obj_3 = Recursos.objects.filter(estado__icontains="ABVAL_revision_propuesta")
-    else:
-        abogados_celula = UsersRecursos.objects.filter(celula__iexact='NoDefinida', tipo__icontains="LiderAC")
-        #Aca en icontains pongo el filtro con el metodo icontains que es un like
-        denuncia_obj_3 = Recursos.objects.filter(estado__icontains="ABVAL_revision_propuesta")
+    abogados_celula = UsersRecursos.objects.filter(celula__iexact='NoDefinida', tipo__icontains="LiderAC")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="ABVAL_revision_propuesta")
     context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
     return render(request,'GestionRecursos/GestionRecursos_ABVAL_ValidacionPropuesta.html', context)
 
