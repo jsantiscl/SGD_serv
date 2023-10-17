@@ -513,7 +513,40 @@
               {% endif %}
 
 
-                    {% if group.name == 'SGD_Revisor' %}
+                {% if group.name == 'Fiscalizacion_Revisor' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Clasificación Actas</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'terreno_pendiente_clasificacion' %}" class="w3-bar-item w3-button">A. Terreno - Pendientes Clasificacion</a>
+              <a href="{% url 'remota_pendiente_clasificacion' %}" class="w3-bar-item w3-button">A. Remotas - Pendientes Clasificacion</a>
+
+            </div>
+
+      </div>
+
+                                                         <div class="w3-dropdown-hover">
+      <button class="w3-button">Actas con Infraccion</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'terreno_con_infraccion' %}" class="w3-bar-item w3-button">A. Terreno - Menu Infraccion</a>
+              <a href="{% url 'terreno_pendiente_clasificacion' %}" class="w3-bar-item w3-button">A. Remotas - Menu Infraccion</a>
+
+            </div>
+                     </div>
+                                                               <div class="w3-dropdown-hover">
+      <button class="w3-button">Rechazos EFR</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'terreno_con_infraccion' %}" class="w3-bar-item w3-button">A. Terreno - Rechazo</a>
+              <a href="{% url 'terreno_pendiente_clasificacion' %}" class="w3-bar-item w3-button">A. Remotas - Rechazo</a>
+
+            </div>
+                     </div>
+
+         {% endif %}
+
+                                {% if group.name == 'Fiscalizacion_EFR' %}
                                      <div class="w3-dropdown-hover">
       <button class="w3-button">Actas Ingresadas</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">

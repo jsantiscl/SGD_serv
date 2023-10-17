@@ -1,0 +1,323 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Actas de Fiscalizacion</title> {% endblock %}
+
+{% block body %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+            <script type="text/javascript" class="init">
+
+
+$(document).ready(function() {
+	$('#example2').DataTable({
+        "language": {
+            "lengthMenu": "Ver _MENU_ registros por pagina",
+            "zeroRecords": "Sin Resultados",
+            "info": "Mostrando pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin Resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros)"
+        },
+               dom: 'lfrtBip',
+        buttons: [
+             {
+      extend: 'excel',
+      exportOptions: {
+
+          format: {
+              body: function(data, row, column, node) {
+                  data = $('<p>' + data + '</p>').text();
+                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+              }
+          }
+      }
+  }
+        ]
+
+
+
+    } );
+} );
+            function goBack() {
+  window.history.back();
+}
+
+            </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Actas en Terreno - Pendientes de Clasificación</h3>
+<div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
+    <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" onclick="asignar_todos()">Asignar Seleccionados</button></td>
+
+</div>
+<div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
+
+
+</div>
+
+    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
+    <thead>
+        <tr>
+            <th>ID Inspeccion</th>
+            <th>Fecha Inspeccion</th>
+            <th>Nombre del Fiscalizador</th>
+            <th>Sujeto Fiscalizado</th>
+            <th>Tipo de Acta</th>
+            <th>Detalle</th>
+            <th style="text-align: center">Clasificación</th>
+            <th style="text-align: center">Código</th>
+            <th style="text-align: center">Acción</th>
+        </tr>
+            </thead>
+    <tbody>
+        {% load humanize %}
+        {% for acta in actas_terreno %}
+
+       <tr>
+
+            <td>{{ acta.id_inspeccion}}</td>
+            <td>{{ acta.fecha|date:'Ymd'}}</td>
+            <td>{{ acta.asistente}}</td>
+            <td>{{ acta.seleccion_candidato_fiscalizado}}</td>
+            <td>{{ acta.seleccione}}</td>
+           <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
+
+<td>
+    <select
+      name="status_clasificacion"
+      id="selectorClasificacion{{ acta.global_id|stringformat:'s' }}"
+      onchange="updateButtonStatus('{{ acta.global_id|stringformat:'s' }}')"
+    >
+      <option value="Pendiente" selected>Pendiente</option>
+      <option value="con_infraccion">Con Infracción</option>
+      <option value="archivo">Archivo</option>
+    </select>
+</td>
+<td>
+    <select
+      name="status_codigo"
+      id="selectorCodigo{{ acta.global_id|stringformat:'s' }}"
+      onchange="updateButtonStatus('{{ acta.global_id|stringformat:'s' }}')"
+    >
+      <option value="Pendiente" selected>Pendiente</option>
+      <option value="p5">P5</option>
+      <option value="p17">P17</option>
+      <option value="p19">P19</option>
+    </select>
+</td>
+  <td style="text-align: center">
+    <a
+        class="btn btn-success"
+        id="pasar{{ acta.global_id|stringformat:'s' }}"
+        onclick="pasar('{{ acta.global_id|stringformat:'s' }}')"
+        disabled
+    >
+        Siguiente
+    </a>
+
+  </td>
+</tr>
+
+            <!-- Modal -->
+<div class="modal fade" id="detailsModal{{ acta.global_id }}" tabindex="-1" aria-labelledby="detailsModalLabel{{ acta.global_id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel{{ acta.global_id }}">Detalles del Acta {{ acta.object_id }}</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>ID Inspección:</strong> {{ acta.id_inspeccion }}</p>
+                <p><strong>Fecha Inspección:</strong> {{ acta.fecha|date:'d-m-Y' }}</p>
+                <p><strong>Nombre del Fiscalizador:</strong> {{ acta.asistente }}</p>
+                <p><strong>Región:</strong> {{ acta.region }}</p>
+                <p><strong>Comuna:</strong> {{ acta.comuna }}</p>
+                <p><strong>Motivo Inspeccion:</strong> {{ acta.programada }}</p>
+                <p><strong>Sujeto Fiscalizado:</strong> {{ acta.seleccion_candidato_fiscalizado }}</p>
+                <p><strong>Aparecen mas personas:</strong>  {{ acta.aparece_mas_personas_cartel }}</p>
+                <p><strong>Nombre:</strong>  {{ acta.ingrese_nombre_personas }}</p>
+                <p><strong>Tipo de Acta:</strong> {{ acta.seleccione }}</p>
+                <p><strong>Tipo Actividad:</strong> {{ acta.seleccione_tipo_actividad }}</p>
+                <p><strong>Adjunto:</strong>
+    <!-- Thumbnail del adjunto -->
+    <a href="#" data-toggle="modal" data-target="#imageModal{{ acta.global_id }}">
+        <img src="https://services7.arcgis.com/NfMCco52hDki1c8M/arcgis/rest/services/service_677ef362f30b4961b9f393cdeba403c3/FeatureServer/0/2/attachments/3?token=Eqmr-CJdLDSBnGBYburtg6m_WGyt4h_WQpfNtVd_Yul44hEj1TOuugAwSVbPH5z8cATf8_IGmy4LkFht10wiT8YisJbd1yFd4oJBIAZ0r-x7zYBwwjQPYLErj9Q8wNEPZsPBgUdHk6ZvTEjLK08bdZgSTvjwKYSAMD1tamOke8gLKjtfpJ0cIcH6EYqINA4QxOK-bBQnyldkS3Pt8YwUBHgk51mJR-a6W0BfuTIZb4Q." style="width: 100px; height: auto; cursor: pointer;" alt="Imagen adjunta"/>
+    </a>
+</p>
+
+
+                <!-- Agrega más campos según necesites -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <!-- Modal para ver imagen grande -->
+<div class="modal fade" id="imageModal{{ acta.global_id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ acta.global_id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel{{ acta.global_id }}">Adjunto del Acta {{ acta.global_id }}</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="https://services7.arcgis.com/NfMCco52hDki1c8M/arcgis/rest/services/service_677ef362f30b4961b9f393cdeba403c3/FeatureServer/0/2/attachments/3?token=Eqmr-CJdLDSBnGBYburtg6m_WGyt4h_WQpfNtVd_Yul44hEj1TOuugAwSVbPH5z8cATf8_IGmy4LkFht10wiT8YisJbd1yFd4oJBIAZ0r-x7zYBwwjQPYLErj9Q8wNEPZsPBgUdHk6ZvTEjLK08bdZgSTvjwKYSAMD1tamOke8gLKjtfpJ0cIcH6EYqINA4QxOK-bBQnyldkS3Pt8YwUBHgk51mJR-a6W0BfuTIZb4Q." style="width: 100%; height: auto;" alt="Imagen adjunta"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        {% endfor %}
+    </tbody>
+    </table>
+<td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
+
+</section>
+</div>
+
+        <script type="text/javascript">
+    var order;
+ function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+  function pasar(global_id) {
+
+
+
+
+    const selectorClasificacion = document.getElementById(`selectorClasificacion${global_id}`);
+    const selectorCodigo = document.getElementById(`selectorCodigo${global_id}`);
+    const clasificacionValue = selectorClasificacion.value;
+    const codigoValue = selectorCodigo.value;
+
+    // Habilitar el botón según las condiciones dadas
+    if (clasificacionValue === "archivo") {
+        console.log("Entramos a archivo");
+        if (confirm('¿Esta Seguro que Archivar?')) {
+          // Save it!
+
+            pasar_etapa(global_id, 'archivo_terreno', 'archivo');
+            setTimeout(() => {   return window.location.replace("{% url 'terreno_pendiente_clasificacion' %}"); }, 1000);
+        } else {
+          // Do nothing!
+          console.log('No Finalizado Confirmado');
+}
+    } else if (clasificacionValue === "con_infraccion" && codigoValue !== "Pendiente") {
+        if (confirm('¿Esta Seguro que Desea Pasar la Etapa Con Infracción?')) {
+          // Save it!
+
+          pasar_etapa(global_id, 'con_infraccion_revisor_terreno', codigoValue);
+            setTimeout(() => {   return window.location.replace("{% url 'terreno_pendiente_clasificacion' %}"); }, 1000);
+        } else {
+          // Do nothing!
+          console.log('No Finalizado Confirmado');
+        }
+        console.log("Entramos a coninfraccion")
+    } else {
+        console.log("deshabilita")
+        window.alert("Datos Faltantes");
+    }
+
+
+}
+
+ function pasar_individual_masivo(global_id) {
+
+
+    const selectorClasificacion = document.getElementById(`selectorClasificacion${global_id}`);
+    const selectorCodigo = document.getElementById(`selectorCodigo${global_id}`);
+    const clasificacionValue = selectorClasificacion.value;
+    const codigoValue = selectorCodigo.value;
+
+    // Habilitar el botón según las condiciones dadas
+    if (clasificacionValue === "archivo") {
+        console.log("Entramos a archivo");
+
+          // Save it!
+
+            pasar_etapa(global_id, 'archivo_terreno', 'archivo');
+    } else if (clasificacionValue === "con_infraccion" && codigoValue !== "Pendiente") {
+        pasar_etapa(global_id, 'con_infraccion_revisor_terreno', codigoValue);
+         console.log("Entramos a coninfraccion")
+    }
+
+}
+
+
+    function pasar_etapa(global_id,etapa,codigo) {
+
+        var datos = {
+                'respuesta':'',
+				'global_id': global_id.toString(),
+                'etapa': etapa.toString(),
+                'codigo' : codigo.toString()
+			}
+    var url = "/sgd/pasar_acta/"
+        fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+	    			'X-CSRFToken':csrftoken
+	    		},
+	    		body:JSON.stringify({'datos':datos}),
+
+	    	})
+            .then((response) => response.json())
+            }
+
+    function asignar_todos() {
+
+  if (confirm('¿Esta Seguro que Desea Clasificar Todos los Modificados?')) {
+  // Save it!
+  console.log('Asignar Recurso N°');
+
+       {% for acta in actas_terreno %}
+        {% if acta.sis_clasificacion == 'Pendiente'%}
+              try {
+                  pasar_individual_masivo('{{ acta.global_id }}');
+              }
+              catch (e) {
+
+                console.log(e); // pasa el objeto de la excepción al manejador de errores
+                    }
+        {% endif %}
+        {% endfor %}
+  window.alert('Listo');
+  return window.location.replace("{% url 'terreno_pendiente_clasificacion' %}")
+} else {
+  // Do nothing!
+  console.log('No Finalizado Confirmado');
+}}
+
+
+
+</script>
+
+
+
+{% endblock %}

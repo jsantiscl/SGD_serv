@@ -95,9 +95,16 @@ urlpatterns = [
     path('fiscalizacion/BaseCompleta/', login_required(base_completa), name='base_completa'),
     path('fiscalizacion/detalle/<str:nombre>', login_required(detalle_base), name='detalle_base'),
     path('fiscalizacion/Alertas/pasar/', login_required(alarma_pasar_etapa), name='alarma_pasar_etapa'),  # P
-    # PruebaaPi
+    # APis
     path('recursos/api/prueba/', carga_datos, name='carga_datos'),  # P
     path('api/carga_datos_actas_terreno/', carga_datos_actas_terreno, name='carga_datos_actas_terreno'),  # P
     path('api/carga_datos_actas_remotas/', carga_datos_actas_remotas, name='carga_datos_actas_remotas'),  # P
+    #Revisor
+    path('revisor/terreno_pendiente_clasificacion/', login_required(terreno_pendiente_clasificacion), name='terreno_pendiente_clasificacion'),
+    path('revisor/remota_pendiente_clasificacion/', login_required(remota_pendiente_clasificacion), name='remota_pendiente_clasificacion'),
+    path('revisor/terreno_con_infraccion/', login_required(terreno_con_infraccion),
+         name='terreno_con_infraccion'),
+    path('get-token/', GetTokenView.as_view(), name='get-token'),
+    path('pasar_acta/', pasar_acta, name='pasar_acta'),  # P
 
 ]

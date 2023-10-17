@@ -6,15 +6,18 @@ from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formul
 from .forms import *
 from django.contrib.auth.models import User
 from django.db.models import Q
-from .models import ActasTerreno, ActasRemotas
+from .models import ActasTerreno, ActasRemotas, Tokens
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-from SistemaControlPreventivo.models import Tokens
+
 #from django.http import HttpResponse
 #from django.conf import settings
 #from django.core.files.storage import FileSystemStorage
 #import os
 #import xlrd
+import requests
+from django.conf import settings
+from django.views import View
 
 from django.http import JsonResponse
 import json
@@ -451,6 +454,7 @@ def modifica_candidato(request):
 def carga_datos_actas_terreno(request):
     if request.method == 'POST':
         # Extrae los datos de la solicitud POST
+        token = request.POST.get('token')
         object_id = request.POST.get('object_id')
         global_id = request.POST.get('global_id')
         fecha = request.POST.get('fecha')
@@ -458,45 +462,28 @@ def carga_datos_actas_terreno(request):
         ubicacion = request.POST.get('ubicacion')
         comuna = request.POST.get('comuna')
         seleccion_motivo_inspeccion = request.POST.get('seleccion_motivo_inspeccion')
-        seleccion_motivo_inspeccion_no_programada = request.POST.get('seleccion_motivo_inspeccion_no_programada')
-        indique_folio_denuncia = request.POST.get('indique_folio_denuncia')
-        indique_motivo = request.POST.get('indique_motivo')
-        seleccion_candidato_fiscalizado = request.POST.get('seleccion_candidato_fiscalizado')
-        aparece_mas_personas_cartel = request.POST.get('aparece_mas_personas_cartel')
-        ingrese_nombre_personas = request.POST.get('ingrese_nombre_personas')
-        seleccione = request.POST.get('seleccione')
-        espacio_publico = request.POST.get('espacio_publico')
+        indique_otro = request.POST.get('indique_otro')
+        Sujeto_fiscalizado = request.POST.get('Sujeto_fiscalizado')
+        partido_politico_habilitado = request.POST.get('partido_politico_habilitado')
+        opcion_plebiscitaria = request.POST.get('opcion_plebiscitaria')
+        materia_fiscalizada = request.POST.get('materia_fiscalizada')
         corresponde_espacio_publico_autorizado = request.POST.get('corresponde_espacio_publico_autorizado')
-        seleccione_lugar_autorizado = request.POST.get('seleccione_lugar_autorizado')
-        propaganda_excede_dimensiones_publico = request.POST.get('propaganda_excede_dimensiones_publico')
+        seleccione_espacio = request.POST.get('seleccione_espacio')
+        adosada_bien_nacional = request.POST.get('adosada_bien_nacional')
+        nombre_bienes = request.POST.get('nombre_bienes')
         cantidad_elementos_propaganda_publico = request.POST.get('cantidad_elementos_propaganda_publico')
-        espacio_privado = request.POST.get('espacio_privado')
-        seleccione_tipo_espacio = request.POST.get('seleccione_tipo_espacio')
-        indique_tipo_servicio_publico = request.POST.get('indique_tipo_servicio_publico')
-        indique_tipo_propiedad_privada_acceso_publico = request.POST.get('indique_tipo_propiedad_privada_acceso_publico')
-        seleccione_tipo = request.POST.get('seleccione_tipo')
-        cual = request.POST.get('cual')
-        indique_fecha_formulario_104 = request.POST.get('indique_fecha_formulario_104')
-        cantidad_elementos_propaganda_privado = request.POST.get('cantidad_elementos_propaganda_privado')
-        propaganda_excede_dimensiones_privado = request.POST.get('propaganda_excede_dimensiones_privado')
-        contacto_propietario_poseedor = request.POST.get('contacto_propietario_poseedor')
-        indique_nombre_datos_contacto_informacion_proporcionada = request.POST.get('indique_nombre_datos_contacto_informacion_proporcionada')
-        brigadistas_voluntarios = request.POST.get('brigadistas_voluntarios')
-        seleccione_tipo_actividad = request.POST.get('seleccione_tipo_actividad')
-        indique_cantidad_brigadistas_lugar = request.POST.get('indique_cantidad_brigadistas_lugar')
-        contacto_responsable = request.POST.get('contacto_responsable')
-        indique_nombre_datos_contacto_informacion_proporcionada_respons = request.POST.get('indique_nombre_datos_contacto_informacion_proporcionada_respons')
-        observaciones = request.POST.get('observaciones')
-        asistente = request.POST.get('asistente')
-        id_workforce = request.POST.get('id_workforce')
-        id_inspeccion = request.POST.get('id_inspeccion')
+        propaganda_excede_dimensiones = request.POST.get('propaganda_excede_dimensiones')
+        seleccione_lugar = request.POST.get('seleccione_lugar')
+        otro_antecente = request.POST.get('otro_antecente')
         creation_date = request.POST.get('creation_date')
         creator = request.POST.get('creator')
         edit_date = request.POST.get('edit_date')
         editor = request.POST.get('editor')
         x_coord = request.POST.get('x_coord')
         y_coord = request.POST.get('y_coord')
-        tok = request.POST.get('token')
+        evidencia_fotografica = request.POST.get('evidencia_fotografica')
+        link_firma_cargo_timbre = request.POST.get('link_firma_cargo_timbre')
+
         # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
         acta_terreno = ActasTerreno(
             object_id=object_id,
@@ -506,52 +493,34 @@ def carga_datos_actas_terreno(request):
             ubicacion=ubicacion,
             comuna=comuna,
             seleccion_motivo_inspeccion=seleccion_motivo_inspeccion,
-            seleccion_motivo_inspeccion_no_programada=seleccion_motivo_inspeccion_no_programada,
-            indique_folio_denuncia=indique_folio_denuncia,
-            indique_motivo=indique_motivo,
-            seleccion_candidato_fiscalizado=seleccion_candidato_fiscalizado,
-            aparece_mas_personas_cartel=aparece_mas_personas_cartel,
-            ingrese_nombre_personas=ingrese_nombre_personas,
-            seleccione=seleccione,
-            espacio_publico=espacio_publico,
+            indique_otro=indique_otro,
+            Sujeto_fiscalizado=Sujeto_fiscalizado,
+            partido_politico_habilitado=partido_politico_habilitado,
+            opcion_plebiscitaria=opcion_plebiscitaria,
+            materia_fiscalizada=materia_fiscalizada,
             corresponde_espacio_publico_autorizado=corresponde_espacio_publico_autorizado,
-            seleccione_lugar_autorizado=seleccione_lugar_autorizado,
-            propaganda_excede_dimensiones_publico=propaganda_excede_dimensiones_publico,
+            seleccione_espacio=seleccione_espacio,
+            adosada_bien_nacional=adosada_bien_nacional,
+            nombre_bienes=nombre_bienes,
             cantidad_elementos_propaganda_publico=cantidad_elementos_propaganda_publico,
-            espacio_privado=espacio_privado,
-            seleccione_tipo_espacio=seleccione_tipo_espacio,
-            indique_tipo_servicio_publico=indique_tipo_servicio_publico,
-            indique_tipo_propiedad_privada_acceso_publico=indique_tipo_propiedad_privada_acceso_publico,
-            seleccione_tipo=seleccione_tipo,
-            cual=cual,
-            indique_fecha_formulario_104=indique_fecha_formulario_104,
-            cantidad_elementos_propaganda_privado=cantidad_elementos_propaganda_privado,
-            propaganda_excede_dimensiones_privado=propaganda_excede_dimensiones_privado,
-            contacto_propietario_poseedor=contacto_propietario_poseedor,
-            indique_nombre_datos_contacto_informacion_proporcionada=indique_nombre_datos_contacto_informacion_proporcionada,
-            brigadistas_voluntarios=brigadistas_voluntarios,
-            seleccione_tipo_actividad=seleccione_tipo_actividad,
-            indique_cantidad_brigadistas_lugar=indique_cantidad_brigadistas_lugar,
-            contacto_responsable=contacto_responsable,
-            indique_nombre_datos_contacto_informacion_proporcionada_respons=indique_nombre_datos_contacto_informacion_proporcionada_respons,
-            observaciones=observaciones,
-            asistente=asistente,
-            id_workforce=id_workforce,
-            id_inspeccion=id_inspeccion,
+            propaganda_excede_dimensiones=propaganda_excede_dimensiones,
+            seleccione_lugar=seleccione_lugar,
+            otro_antecente=otro_antecente,
             creation_date=creation_date,
             creator=creator,
             edit_date=edit_date,
             editor=editor,
             x_coord=x_coord,
-            y_coord=y_coord
+            y_coord=y_coord,
+            evidencia_fotografica=evidencia_fotografica,
+            link_firma_cargo_timbre=link_firma_cargo_timbre
         )
 
         try:
-            objeto_token = Tokens(Token=tok,
-                           Fecha = datetime.now())
+            objeto_token = Tokens(Token=token, Fecha=datetime.now())
             objeto_token.save()
-        except:
-            print("Error Token")
+        except Exception as e:
+            print("Error Token:", e)
 
         # Guarda la instancia en la base de datos
         acta_terreno.save()
@@ -654,4 +623,80 @@ def carga_datos_actas_remotas(request):
     else:
         # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
         return HttpResponse(status=405)
+
+
+class GetTokenView(View):
+
+    @staticmethod
+    def obtain_token():
+        url = 'https://ufisca.maps.arcgis.com/sharing/rest/oauth2/token/'
+        params = {
+            'client_id': settings.CLIENT_ID,
+            'client_secret': settings.CLIENT_SECRET,
+            'grant_type': 'client_credentials'
+        }
+        response = requests.post(url, params=params)
+        data = response.json()
+        return data.get('access_token')
+
+    def get(self, request, *args, **kwargs):
+        token = self.obtain_token()
+        return JsonResponse({'access_token': token})
+
+
+def terreno_pendiente_clasificacion(request):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    token = GetTokenView.obtain_token()
+    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", asistente='Fiscalizador_Maule_03')
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'token': token, 'actas_terreno': actas_terreno}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Pendiente_Clasificacion.html', context)
+
+
+def pasar_acta(request):
+    data = json.loads(request.body)
+    if data['datos']['etapa'] == 'archivo_terreno':
+         ActasTerreno.objects.filter(global_id=str(data['datos']['global_id'])).update(sis_clasificacion=str(data['datos']['etapa']))
+         #WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
+         #                                       nueva_etapa=str(data['datos']['etapa']),
+         #                                       fecha_cambio=datetime.now())
+    if data['datos']['etapa'] == 'con_infraccion_revisor_terreno':
+        if data['datos']['codigo'] != 'Pendiente':
+            ActasTerreno.objects.filter(global_id=str(data['datos']['global_id'])).update(
+                sis_clasificacion=str(data['datos']['etapa']), sis_codigo = str(data['datos']['codigo']))
+        # WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
+        #                                       nueva_etapa=str(data['datos']['etapa']),
+        #                                       fecha_cambio=datetime.now())
+
+    if data['datos']['etapa'] == 'archivo_remota':
+         ActasRemotas.objects.filter(global_id=str(data['datos']['global_id'])).update(sis_clasificacion=str(data['datos']['etapa']))
+         #WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
+         #                                       nueva_etapa=str(data['datos']['etapa']),
+         #                                       fecha_cambio=datetime.now())
+    if data['datos']['etapa'] == 'con_infraccion_revisor_remota':
+        if data['datos']['codigo'] != 'Pendiente':
+            ActasRemotas.objects.filter(global_id=str(data['datos']['global_id'])).update(
+                sis_clasificacion=str(data['datos']['etapa']), sis_codigo = str(data['datos']['codigo']))
+        # WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
+        #                                       nueva_etapa=str(data['datos']['etapa']),
+        #                                       fecha_cambio=datetime.now())
+
+    return JsonResponse([str(data['datos']['global_id']), 'Asignado'], safe=False)
+
+def remota_pendiente_clasificacion(request):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    token = GetTokenView.obtain_token()
+    #actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", asistente='Fiscalizador_Maule_03')
+    actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente", creator='Fiscalizador_Coquimbo_04')
+    context = {'token': token, 'actas_remotas': actas_remotas}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Pendiente_Clasificacion.html', context)
+
+
+def terreno_con_infraccion(request):
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    token = GetTokenView.obtain_token()
+    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="con_infraccion_revisor_terreno", asistente='Fiscalizador_Maule_03')
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'token': token, 'actas_terreno': actas_terreno}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Con_Infraccion.html', context)
 

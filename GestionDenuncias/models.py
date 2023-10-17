@@ -463,85 +463,133 @@ class Formulariosig(models.Model):
     id_dcto_alfresco = models.CharField(max_length=300, null=True, blank=True)
     nombre_dcto_alfresco = models.CharField(max_length=300, null=True, blank=True)
 
+
+###1.Antecedentes
+
 class ActasTerreno(models.Model):
-    object_id = models.IntegerField(null=True)
-    global_id = models.CharField(max_length=255, null=True)
-    fecha = models.DateField(null=True, blank=True)
-    region = models.CharField(max_length=255, null=True)
-    ubicacion = models.CharField(max_length=255, null=True)
-    comuna = models.CharField(max_length=255, null=True)
-    seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True)
-    seleccion_motivo_inspeccion_no_programada = models.CharField(max_length=255, null=True)
-    indique_folio_denuncia = models.CharField(max_length=255, null=True)
-    indique_motivo = models.CharField(max_length=255, null=True)
-    seleccion_candidato_fiscalizado = models.CharField(max_length=255, null=True)
-    aparece_mas_personas_cartel = models.CharField(max_length=255, null=True)
-    ingrese_nombre_personas = models.CharField(max_length=255, null=True)
-    seleccione = models.CharField(max_length=255, null=True)
-    espacio_publico = models.CharField(max_length=255, null=True)
+    object_id = models.IntegerField(null=True)  #
+    global_id = models.CharField(max_length=255, null=True)  #
+    fecha = models.DateTimeField(null=True, blank=True)  # RE
+    region = models.CharField(max_length=255, null=True)  #
+    ubicacion = models.CharField(max_length=255, null=True)  #
+    comuna = models.CharField(max_length=255, null=True)  #
+
+    ### 2. Motivo de inspección
+
+    seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True)  #
+    indique_folio_denuncia = models.CharField(max_length=255, null=True)  #
+    indique_folio_revision_fiscalizada_previamente = models.CharField(max_length=255, null=True)  #
+    indique_folio_revision_acta_remota = models.CharField(max_length=255, null=True)  #
+    existe_despliegue_propaganda = models.CharField(max_length=255, null=True)  #
+    indique_folio_f104 = models.CharField(max_length=255, null=True)  #
+    indique_otro = models.CharField(max_length=255, null=True)  #
+
+    ### 3.sujeto fiscalizado
+
+    Sujeto_fiscalizado = models.CharField(max_length=255, null=True)  #
+    partido_politico_habilitado = models.CharField(max_length=255, null=True)  #
+    otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True)  #
+
+    ### 4.opción plebiscitaria
+
+    opcion_plebiscitaria = models.CharField(max_length=30, null=True)
+
+    ###5.Materia fiscalizada
+
+    materia_fiscalizada = models.CharField(max_length=255, null=True)
     corresponde_espacio_publico_autorizado = models.CharField(max_length=255, null=True)
-    seleccione_lugar_autorizado = models.CharField(max_length=255, null=True)
-    propaganda_excede_dimensiones_publico = models.CharField(max_length=255, null=True)
+    seleccione_espacio = models.CharField(max_length=255, null=True)
+    adosada_bien_nacional = models.CharField(max_length=255, null=True)
+    nombre_bienes = models.CharField(max_length=255, null=True)
     cantidad_elementos_propaganda_publico = models.CharField(max_length=255, null=True)
-    espacio_privado = models.CharField(max_length=255, null=True)
     seleccione_tipo_espacio = models.CharField(max_length=255, null=True)
-    indique_tipo_servicio_publico = models.CharField(max_length=255, null=True)
-    indique_tipo_propiedad_privada_acceso_publico = models.CharField(max_length=255, null=True)
-    seleccione_tipo = models.CharField(max_length=255, null=True)
-    cual = models.CharField(max_length=255, null=True)
-    indique_fecha_formulario_104 = models.CharField(max_length=255, null=True)
-    cantidad_elementos_propaganda_privado = models.CharField(max_length=255, null=True)
-    propaganda_excede_dimensiones_privado = models.CharField(max_length=255, null=True)
-    contacto_propietario_poseedor = models.CharField(max_length=255, null=True)
-    indique_nombre_datos_contacto_informacion_proporcionada = models.CharField(max_length=255, null=True)
-    brigadistas_voluntarios = models.CharField(max_length=255, null=True)
-    seleccione_tipo_actividad = models.CharField(max_length=255, null=True)
+    seleccione_lugar= models.CharField(max_length=255, null=True)
+    propaganda_excede_dimensiones = models.CharField(max_length=255, null=True)
+    indique_tipo_espacio_fiscalizado = models.CharField(max_length=255, null=True)
+    actividad_fiscalizada = models.CharField(max_length=255, null=True)
     indique_cantidad_brigadistas_lugar = models.CharField(max_length=255, null=True)
-    contacto_responsable = models.CharField(max_length=255, null=True)
-    indique_nombre_datos_contacto_informacion_proporcionada_respons = models.CharField(max_length=255, null=True)
-    observaciones = models.CharField(max_length=255, null=True)
-    asistente = models.CharField(max_length=255, null=True)
-    id_workforce = models.CharField(max_length=255, null=True)
-    id_inspeccion = models.CharField(max_length=255, null=True)
-    creation_date = models.CharField(max_length=255, null=True)
+    otro_antecente = models.CharField(max_length=5000, null=True)
+    creation_date = models.DateTimeField(null=True, blank=True)  # RE
     creator = models.CharField(max_length=255, null=True)
-    edit_date = models.CharField(max_length=255, null=True)
+    edit_date = models.DateTimeField(null=True, blank=True)  # RE
     editor = models.CharField(max_length=255, null=True)
     x_coord = models.CharField(max_length=255, null=True)
     y_coord = models.CharField(max_length=255, null=True)
+    evidencia_fotografica = models.CharField(max_length=2000, null=True, blank=True)
+    link_firma_cargo_timbre = models.CharField(max_length=2000, null=True, blank=True)
 
+    sis_clasificacion = models.CharField(max_length=300, default="Pendiente", null=True, blank=True)
+    sis_codigo = models.CharField(max_length=300, null=True, blank=True)
+    sis_link = models.CharField(max_length=1000, null=True, blank=True)
+    sis_subsanacion = models.CharField(max_length=5000, null=True, blank=True)
+    sis_fecha_sub = models.DateField(null=True, blank=True)
+    sis_respuesta = models.CharField(max_length=5000, null=True, blank=True)
+    sis_oficio_retiro = models.CharField(max_length=1000, null=True, blank=True)
+    sis_certificado = models.CharField(max_length=5000, null=True, blank=True)
+    sis_propuesta = models.CharField(max_length=300, default="Pendiente", null=True, blank=True)
+
+    def __str__(self):
+        return str(self.object_id)
+
+class Tokens(models.Model):
+    Token = models.CharField(max_length=1000, null=True, blank=True)
+    Fecha = models.DateTimeField(null=True, blank=True)
+
+### Actas remotas:
 class ActasRemotas(models.Model):
+
+    ### 1. Antecedentes
     object_id = models.IntegerField(null=True)
     global_id = models.CharField(max_length=255, null=True)
     fecha = models.DateField(null=True, blank=True)
     region = models.CharField(max_length=255, null=True)
-    motivo_inspeccion = models.CharField(max_length=255, null=True)
-    motivo_inspeccion_no_programada = models.CharField(max_length=255, null=True)
-    indicar_motivo = models.CharField(max_length=255, null=True)
-    folio_denuncia = models.CharField(max_length=255, null=True)
-    candidato = models.CharField(max_length=255, null=True)
-    multiple_persona_cartel = models.CharField(max_length=255, null=True)
-    nombre_personas = models.CharField(max_length=255, null=True)
-    medio_utilizado = models.CharField(max_length=255, null=True)
-    rrss_utilizada = models.CharField(max_length=255, null=True)
-    rrss_cual = models.CharField(max_length=255, null=True)
-    rrss_link = models.CharField(max_length=255, null=True)
-    hallazgo_tipo = models.CharField(max_length=255, null=True)
-    contenido_organico = models.CharField(max_length=255, null=True)
-    radio_prensa_nombre = models.CharField(max_length=255, null=True)
-    radio_prensa_link = models.CharField(max_length=255, null=True)
-    medio_tarifario = models.CharField(max_length=255, null=True)
-    hallazgo_indicado = models.CharField(max_length=255, null=True)
-    hallazgo_cual = models.CharField(max_length=255, null=True)
-    hallazgo_link = models.CharField(max_length=255, null=True)
-    hallazgo_tipo_otro = models.CharField(max_length=255, null=True)
-    hallazgo_cual_otro = models.CharField(max_length=255, null=True)
-    observaciones = models.CharField(max_length=255, null=True)
+    seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True)  #
+    indique_folio = models.CharField(max_length=255, null=True)  #
+    indique_otro = models.CharField(max_length=255, null=True)  #
+
+    ### 2.sujeto fiscalizado
+
+    partido_politico_habilitado = models.CharField(max_length=255, null=True)  #
+    otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True)  #
+    opcion_plebiscitaria = models.CharField(max_length=30, null=True)
+
+    ### 3.Materia fiscalizada
+
+    es_medio_pagado = models.CharField(max_length=255, null=True)
+    medio_fiscalizado = models.CharField(max_length=255, null=True)
+    nombre_medio = models.CharField(max_length=255, null=True)
+    soporte_material_link = models.CharField(max_length=500, null=True)
+    medio_tiene_tarifario = models.CharField(max_length=500, null=True)
+
+    radiofrecuencia_medio = models.CharField(max_length=500, null=True)
+    rrss_fiscalizada = models.CharField(max_length=255, null=True)
+
+    usuario_perfil_rrss = models.CharField(max_length=500, null=True)
+
+    corresponde_medio_prensa = models.CharField(max_length=255, null=True)
+    otro_antecente = models.CharField(max_length=5000, null=True)
+    medios_respaldo_adjunto = models.CharField(max_length=2000, null=True, blank=True)
+    ingrese_audios = models.CharField(max_length=2000, null=True, blank=True)
+    link_firma_cargo_timbre = models.CharField(max_length=2000, null=True, blank=True)
+
     id_inspeccion = models.CharField(max_length=255, null=True)
-    creation_date = models.CharField(max_length=255, null=True)
+    id_workforce = models.CharField(max_length=255, null=True)
+    creation_date = models.DateTimeField(null=True, blank=True)  # RE
     creator = models.CharField(max_length=255, null=True)
-    edit_date = models.CharField(max_length=255, null=True)
+    edit_date = models.DateTimeField(null=True, blank=True)  # RE
     editor = models.CharField(max_length=255, null=True)
     id_wf = models.CharField(max_length=255, null=True)
     x_coord = models.CharField(max_length=255, null=True)
     y_coord = models.CharField(max_length=255, null=True)
+    sis_clasificacion = models.CharField(max_length=300, default="Pendiente")
+    sis_codigo = models.CharField(max_length=300, null=True, blank=True)
+    sis_link = models.CharField(max_length=1000, null=True, blank=True)
+    sis_subsanacion = models.CharField(max_length=5000, null=True, blank=True)
+    sis_fecha_sub = models.DateField(null=True, blank=True)
+    sis_respuesta = models.CharField(max_length=5000, null=True, blank=True)
+    sis_oficio_retiro = models.CharField(max_length=1000, null=True, blank=True)
+    sis_certificado = models.CharField(max_length=5000, null=True, blank=True)
+    sis_propuesta = models.CharField(max_length=300, default="Pendiente")
+    def __str__(self):
+        return str(self.object_id)
+
