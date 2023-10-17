@@ -549,6 +549,7 @@ class ActasRemotas(models.Model):
 
     ### 2.sujeto fiscalizado
 
+    sujeto_fiscalizado = models.CharField(max_length=255, null=True)
     partido_politico_habilitado = models.CharField(max_length=255, null=True)  #
     otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True)  #
     opcion_plebiscitaria = models.CharField(max_length=30, null=True)
@@ -578,9 +579,7 @@ class ActasRemotas(models.Model):
     creator = models.CharField(max_length=255, null=True)
     edit_date = models.CharField(max_length=255, null=True)  #RE # RE
     editor = models.CharField(max_length=255, null=True)
-    id_wf = models.CharField(max_length=255, null=True)
-    x_coord = models.CharField(max_length=255, null=True)
-    y_coord = models.CharField(max_length=255, null=True)
+
     sis_clasificacion = models.CharField(max_length=300, default="Pendiente")
     sis_codigo = models.CharField(max_length=300, null=True, blank=True)
     sis_link = models.CharField(max_length=1000, null=True, blank=True)

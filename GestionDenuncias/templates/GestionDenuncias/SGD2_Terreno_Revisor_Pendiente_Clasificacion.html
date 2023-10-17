@@ -3,6 +3,7 @@
 
 {% block body %}
 
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -53,7 +54,7 @@ $(document).ready(function() {
 <section class="section1">
 <h3>Actas en Terreno - Pendientes de Clasificación</h3>
 <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
-    <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" onclick="asignar_todos()">Asignar Seleccionados</button></td>
+    <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" onclick="asignar_todos()">Pasar Seleccionados</button></td>
 
 </div>
 <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
@@ -68,7 +69,8 @@ $(document).ready(function() {
             <th>Fecha Inspeccion</th>
             <th>Nombre del Fiscalizador</th>
             <th>Sujeto Fiscalizado</th>
-            <th>Tipo de Acta</th>
+            <th>Motivo Inspeccion</th>
+            <th>Opcion</th>
             <th>Detalle</th>
             <th style="text-align: center">Clasificación</th>
             <th style="text-align: center">Código</th>
@@ -83,9 +85,10 @@ $(document).ready(function() {
 
             <td>{{ acta.id_inspeccion}}</td>
             <td>{{ acta.fecha|date:'Ymd'}}</td>
-            <td>{{ acta.asistente}}</td>
-            <td>{{ acta.seleccion_candidato_fiscalizado}}</td>
-            <td>{{ acta.seleccione}}</td>
+            <td>{{ acta.creator}}</td>
+            <td>{{ acta.Sujeto_fiscalizado}}</td>
+            <td>{{ acta.seleccion_motivo_inspeccion}}</td>
+            <td>{{ acta.opcion_plebiscitaria}}</td>
            <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
 
 <td>
@@ -106,9 +109,39 @@ $(document).ready(function() {
       onchange="updateButtonStatus('{{ acta.global_id|stringformat:'s' }}')"
     >
       <option value="Pendiente" selected>Pendiente</option>
-      <option value="p5">P5</option>
-      <option value="p17">P17</option>
-      <option value="p19">P19</option>
+<option value="p1">P1</option>
+<option value="p2">P2</option>
+<option value="p3">P3</option>
+<option value="p3-b">P3-B</option>
+<option value="p4">P4</option>
+<option value="p5">P5</option>
+<option value="p5-b">P5-B</option>
+<option value="p5-c">P5-C</option>
+<option value="p6">P6</option>
+<option value="p6-b">P6-B</option>
+<option value="p7">P7</option>
+<option value="p9">P9</option>
+<option value="p10">P10</option>
+<option value="p11">P11</option>
+<option value="p12">P12</option>
+<option value="p13">P13</option>
+<option value="p14">P14</option>
+<option value="p15">P15</option>
+<option value="p16">P16</option>
+<option value="p17">P17</option>
+<option value="p19">P19</option>
+<option value="p20">P20</option>
+<option value="p21">P21</option>
+<option value="p22">P22</option>
+<option value="p25">P25</option>
+<option value="p26">P26</option>
+<option value="p27">P27</option>
+<option value="p28">P28</option>
+<option value="p29">P29</option>
+<option value="p29-b">P29-B</option>
+<option value="p30">P30</option>
+<option value="p100">P100</option>
+
     </select>
 </td>
   <td style="text-align: center">
@@ -126,40 +159,88 @@ $(document).ready(function() {
 
             <!-- Modal -->
 <div class="modal fade" id="detailsModal{{ acta.global_id }}" tabindex="-1" aria-labelledby="detailsModalLabel{{ acta.global_id }}" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="detailsModalLabel{{ acta.global_id }}">Detalles del Acta {{ acta.object_id }}</h5>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>ID Inspección:</strong> {{ acta.id_inspeccion }}</p>
-                <p><strong>Fecha Inspección:</strong> {{ acta.fecha|date:'d-m-Y' }}</p>
-                <p><strong>Nombre del Fiscalizador:</strong> {{ acta.asistente }}</p>
-                <p><strong>Región:</strong> {{ acta.region }}</p>
-                <p><strong>Comuna:</strong> {{ acta.comuna }}</p>
-                <p><strong>Motivo Inspeccion:</strong> {{ acta.programada }}</p>
-                <p><strong>Sujeto Fiscalizado:</strong> {{ acta.seleccion_candidato_fiscalizado }}</p>
-                <p><strong>Aparecen mas personas:</strong>  {{ acta.aparece_mas_personas_cartel }}</p>
-                <p><strong>Nombre:</strong>  {{ acta.ingrese_nombre_personas }}</p>
-                <p><strong>Tipo de Acta:</strong> {{ acta.seleccione }}</p>
-                <p><strong>Tipo Actividad:</strong> {{ acta.seleccione_tipo_actividad }}</p>
-                <p><strong>Adjunto:</strong>
-    <!-- Thumbnail del adjunto -->
-    <a href="#" data-toggle="modal" data-target="#imageModal{{ acta.global_id }}">
-        <img src="https://services7.arcgis.com/NfMCco52hDki1c8M/arcgis/rest/services/service_677ef362f30b4961b9f393cdeba403c3/FeatureServer/0/2/attachments/3?token=Eqmr-CJdLDSBnGBYburtg6m_WGyt4h_WQpfNtVd_Yul44hEj1TOuugAwSVbPH5z8cATf8_IGmy4LkFht10wiT8YisJbd1yFd4oJBIAZ0r-x7zYBwwjQPYLErj9Q8wNEPZsPBgUdHk6ZvTEjLK08bdZgSTvjwKYSAMD1tamOke8gLKjtfpJ0cIcH6EYqINA4QxOK-bBQnyldkS3Pt8YwUBHgk51mJR-a6W0BfuTIZb4Q." style="width: 100px; height: auto; cursor: pointer;" alt="Imagen adjunta"/>
-    </a>
-</p>
 
+                <!-- 1. Datos generales -->
+                {% if acta.object_id %}<p><strong>ID Inspección:</strong> {{ acta.object_id }}</p>{% endif %}
+                {% if acta.fecha %}<p><strong>Fecha:</strong> {{ acta.fecha }}</p>{% endif %}
+                {% if acta.region %}<p><strong>Región:</strong> {{ acta.region }}</p>{% endif %}
+                {% if acta.ubicacion %}<p><strong>Ubicación:</strong> {{ acta.ubicacion }}</p>{% endif %}
+                {% if acta.comuna %}<p><strong>Comuna:</strong> {{ acta.comuna }}</p>{% endif %}
 
-                <!-- Agrega más campos según necesites -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <!-- 2. Motivo de inspección -->
+                {% if acta.seleccion_motivo_inspeccion %}<p><strong>Selección Motivo Inspección:</strong> {{ acta.seleccion_motivo_inspeccion }}</p>{% endif %}
+                {% if acta.indique_folio_denuncia %}<p><strong>Folio Denuncia:</strong> {{ acta.indique_folio_denuncia }}</p>{% endif %}
+                {% if acta.indique_folio_revision_fiscalizada_previamente %}<p><strong>Folio Revisión Fiscalizada Previamente:</strong> {{ acta.indique_folio_revision_fiscalizada_previamente }}</p>{% endif %}
+                {% if acta.indique_folio_revision_acta_remota %}<p><strong>Folio Revisión Acta Remota:</strong> {{ acta.indique_folio_revision_acta_remota }}</p>{% endif %}
+                {% if acta.existe_despliegue_propaganda %}<p><strong>Existe Despliegue Propaganda:</strong> {{ acta.existe_despliegue_propaganda }}</p>{% endif %}
+                {% if acta.indique_folio_f104 %}<p><strong>Folio F104:</strong> {{ acta.indique_folio_f104 }}</p>{% endif %}
+                {% if acta.indique_otro %}<p><strong>Indique Otro:</strong> {{ acta.indique_otro }}</p>{% endif %}
+
+                <!-- 3. Sujeto fiscalizado -->
+                {% if acta.Sujeto_fiscalizado %}<p><strong>Sujeto Fiscalizado:</strong> {{ acta.Sujeto_fiscalizado }}</p>{% endif %}
+                {% if acta.partido_politico_habilitado %}<p><strong>Partido Político Habilitado:</strong> {{ acta.partido_politico_habilitado }}</p>{% endif %}
+                {% if acta.otro_sujeto_fiscalizado %}<p><strong>Otro Sujeto Fiscalizado:</strong> {{ acta.otro_sujeto_fiscalizado }}</p>{% endif %}
+
+                <!-- 4. Opción plebiscitaria -->
+                {% if acta.opcion_plebiscitaria %}<p><strong>Opción Plebiscitaria:</strong> {{ acta.opcion_plebiscitaria }}</p>{% endif %}
+
+                <!-- 5. Materia fiscalizada -->
+                {% if acta.materia_fiscalizada %}<p><strong>Materia Fiscalizada:</strong> {{ acta.materia_fiscalizada }}</p>{% endif %}
+                {% if acta.corresponde_espacio_publico_autorizado %}<p><strong>Corresponde Espacio Público Autorizado:</strong> {{ acta.corresponde_espacio_publico_autorizado }}</p>{% endif %}
+                {% if acta.seleccione_espacio %}<p><strong>Seleccione Espacio:</strong> {{ acta.seleccione_espacio }}</p>{% endif %}
+                {% if acta.adosada_bien_nacional %}<p><strong>Adosada a Bien Nacional:</strong> {{ acta.adosada_bien_nacional }}</p>{% endif %}
+                {% if acta.nombre_bienes %}<p><strong>Nombre de Bienes:</strong> {{ acta.nombre_bienes }}</p>{% endif %}
+                {% if acta.cantidad_elementos_propaganda_publico %}<p><strong>Cantidad de Elementos Propaganda Público:</strong> {{ acta.cantidad_elementos_propaganda_publico }}</p>{% endif %}
+                {% if acta.seleccione_tipo_espacio %}<p><strong>Seleccione Tipo Espacio:</strong> {{ acta.seleccione_tipo_espacio }}</p>{% endif %}
+                {% if acta.seleccione_lugar %}<p><strong>Seleccione Lugar:</strong> {{ acta.seleccione_lugar }}</p>{% endif %}
+                {% if acta.propaganda_excede_dimensiones %}<p><strong>Propaganda Excede Dimensiones:</strong> {{ acta.propaganda_excede_dimensiones }}</p>{% endif %}
+                {% if acta.indique_tipo_espacio_fiscalizado %}<p><strong>Indique Tipo Espacio Fiscalizado:</strong> {{ acta.indique_tipo_espacio_fiscalizado }}</p>{% endif %}
+                {% if acta.actividad_fiscalizada %}<p><strong>Actividad Fiscalizada:</strong> {{ acta.actividad_fiscalizada }}</p>{% endif %}
+                {% if acta.indique_cantidad_brigadistas_lugar %}<p><strong>Indique Cantidad Brigadistas en Lugar:</strong> {{ acta.indique_cantidad_brigadistas_lugar }}</p>{% endif %}
+                {% if acta.otro_antecente %}<p><strong>Otro Antecedente:</strong> {{ acta.otro_antecente }}</p>{% endif %}
+
+                {% if acta.evidencia_fotografica %}
+                <p><strong>Adjuntos:</strong>
+                    <a href="{{ acta.evidencia_fotografica }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.evidencia_fotografica }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt="Evidencia Fotográfica"/>
+                    </a>
+                                  <a href="{{ acta.adjunto2 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto2 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt="Evidencia Fotográfica"/>
+                    </a>
+                    </a>
+                                  <a href="{{ acta.adjunto3 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto3 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt="Evidencia Fotográfica"/>
+                    </a>
+
+                    </a>
+                                  <a href="{{ acta.adjunto4 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto4 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                                    </a>
+                                  <a href="{{ acta.adjunto5 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto5 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                                    </a>
+                                  <a href="{{ acta.adjunto6 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto6 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                </p>
+                {% endif %}
+
+                {% if acta.link_firma_cargo_timbre %}<p><strong>Link Firma y Cargo con Timbre:</strong> <a href="{{ acta.link_firma_cargo_timbre }}?token={{ latest_token.Token }}" target="_blank">Ver Firma</a></p>{% endif %}
             </div>
         </div>
     </div>
 </div>
+
+
 
             <!-- Modal para ver imagen grande -->
 <div class="modal fade" id="imageModal{{ acta.global_id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ acta.global_id }}" aria-hidden="true">
@@ -170,7 +251,7 @@ $(document).ready(function() {
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img src="https://services7.arcgis.com/NfMCco52hDki1c8M/arcgis/rest/services/service_677ef362f30b4961b9f393cdeba403c3/FeatureServer/0/2/attachments/3?token=Eqmr-CJdLDSBnGBYburtg6m_WGyt4h_WQpfNtVd_Yul44hEj1TOuugAwSVbPH5z8cATf8_IGmy4LkFht10wiT8YisJbd1yFd4oJBIAZ0r-x7zYBwwjQPYLErj9Q8wNEPZsPBgUdHk6ZvTEjLK08bdZgSTvjwKYSAMD1tamOke8gLKjtfpJ0cIcH6EYqINA4QxOK-bBQnyldkS3Pt8YwUBHgk51mJR-a6W0BfuTIZb4Q." style="width: 100%; height: auto;" alt="Imagen adjunta"/>
+                <img src="{{ acta.evidencia_fotografica }}?token={{ latest_token.Token }}" style="width: 100%; height: auto;" alt="Imagen adjunta"/>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.db.models import Count
 from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formulariosig, EncargadosRegionales
 from .forms import *
@@ -9,13 +9,13 @@ from django.db.models import Q
 from .models import ActasTerreno, ActasRemotas, Tokens
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-
+from django.core.exceptions import ObjectDoesNotExist
 #from django.http import HttpResponse
 #from django.conf import settings
 #from django.core.files.storage import FileSystemStorage
 #import os
 #import xlrd
-
+import re
 from django.conf import settings
 from django.views import View
 
@@ -487,7 +487,7 @@ def carga_datos_actas_terreno(request):
         # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
         acta_terreno = ActasTerreno(
             object_id=object_id,
-            global_id=global_id,
+            global_id=global_id.replace('{','').replace('}',''),
             fecha=fecha,
             region=region,
             ubicacion=ubicacion,
@@ -629,9 +629,41 @@ def carga_datos_actas_remotas(request):
 def terreno_pendiente_clasificacion(request):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
     actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", creator='Unidad_Fiscalizacion')
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+
+
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
-    context = {'actas_terreno': actas_terreno}
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno}
     return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Pendiente_Clasificacion.html', context)
+
+
+
+
+
+def increment_url_numbers(url):
+    # Esta función toma un match object, incrementa el número y devuelve una cadena
+    def replacer(m):
+        return str(int(m.group(1)) + 1)
+
+    # Usa una expresión regular para identificar y modificar los números al final de la URL
+    new_url = re.sub(r'(\d+)$', replacer, url)
+
+    return new_url
 
 
 def pasar_acta(request):
@@ -674,10 +706,26 @@ def remota_pendiente_clasificacion(request):
 
 
 def terreno_con_infraccion(request):
-    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="con_infraccion_revisor_terreno", creator='Unidad_Fiscalizacion')
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
 
-    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="con_infraccion_revisor_terreno", asistente='Fiscalizador_Maule_03')
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+
+
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
-    context = { 'actas_terreno': actas_terreno}
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno}
     return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Con_Infraccion.html', context)
 
