@@ -104,7 +104,6 @@ urlpatterns = [
     path('revisor/remota_pendiente_clasificacion/', login_required(remota_pendiente_clasificacion), name='remota_pendiente_clasificacion'),
     path('revisor/terreno_con_infraccion/', login_required(terreno_con_infraccion),
          name='terreno_con_infraccion'),
-    path('get-token/', GetTokenView.as_view(), name='get-token'),
     path('pasar_acta/', pasar_acta, name='pasar_acta'),  # P
 
 ]
