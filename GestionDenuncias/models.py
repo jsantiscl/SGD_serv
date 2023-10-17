@@ -477,11 +477,8 @@ class ActasTerreno(models.Model):
     ### 2. Motivo de inspección
 
     seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True)  #
-    indique_folio_denuncia = models.CharField(max_length=255, null=True)  #
-    indique_folio_revision_fiscalizada_previamente = models.CharField(max_length=255, null=True)  #
-    indique_folio_revision_acta_remota = models.CharField(max_length=255, null=True)  #
+    indique_folio = models.CharField(max_length=255, null=True)  #
     existe_despliegue_propaganda = models.CharField(max_length=255, null=True)  #
-    indique_folio_f104 = models.CharField(max_length=255, null=True)  #
     indique_otro = models.CharField(max_length=255, null=True)  #
 
     ### 3.sujeto fiscalizado

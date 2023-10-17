@@ -462,6 +462,7 @@ def carga_datos_actas_terreno(request):
         ubicacion = request.POST.get('ubicacion')
         comuna = request.POST.get('comuna')
         seleccion_motivo_inspeccion = request.POST.get('seleccion_motivo_inspeccion')
+        indique_folio = request.POST.get('indique_folio')
         indique_otro = request.POST.get('indique_otro')
         Sujeto_fiscalizado = request.POST.get('Sujeto_fiscalizado')
         partido_politico_habilitado = request.POST.get('partido_politico_habilitado')
@@ -493,6 +494,7 @@ def carga_datos_actas_terreno(request):
             ubicacion=ubicacion,
             comuna=comuna,
             seleccion_motivo_inspeccion=seleccion_motivo_inspeccion,
+            indique_folio=indique_folio,
             indique_otro=indique_otro,
             Sujeto_fiscalizado=Sujeto_fiscalizado,
             partido_politico_habilitado=partido_politico_habilitado,
@@ -543,7 +545,7 @@ def carga_datos_actas_remotas(request):
         motivo_inspeccion = request.POST.get('motivo_inspeccion')
         motivo_inspeccion_no_programada = request.POST.get('motivo_inspeccion_no_programada')
         indicar_motivo = request.POST.get('indicar_motivo')
-        folio_denuncia = request.POST.get('folio_denuncia')
+        indique_folio = request.POST.get('indique_folio')
         candidato = request.POST.get('candidato')
         multiple_persona_cartel = request.POST.get('multiple_persona_cartel')
         nombre_personas = request.POST.get('nombre_personas')
@@ -567,7 +569,6 @@ def carga_datos_actas_remotas(request):
         creator = request.POST.get('creator')
         edit_date = request.POST.get('edit_date')
         editor = request.POST.get('editor')
-        id_wf = request.POST.get('id_wf')
         x_coord = request.POST.get('x_coord')
         y_coord = request.POST.get('y_coord')
         tok = request.POST.get('token')
@@ -580,7 +581,7 @@ def carga_datos_actas_remotas(request):
             motivo_inspeccion=motivo_inspeccion,
             motivo_inspeccion_no_programada=motivo_inspeccion_no_programada,
             indicar_motivo=indicar_motivo,
-            folio_denuncia=folio_denuncia,
+            indique_folio=indique_folio,
             candidato=candidato,
             multiple_persona_cartel=multiple_persona_cartel,
             nombre_personas=nombre_personas,
@@ -604,7 +605,6 @@ def carga_datos_actas_remotas(request):
             creator=creator,
             edit_date=edit_date,
             editor=editor,
-            id_wf=id_wf,
             x_coord=x_coord,
             y_coord=y_coord
         )
