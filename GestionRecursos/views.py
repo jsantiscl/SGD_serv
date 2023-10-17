@@ -111,6 +111,13 @@ def formatosydocumentos(request):
     context = {}
     return render(request,'GestionRecursos/GestionRecursos_FormatosyDocumentos.html', context)
 
+def ld_valida_propuesta_ac(request):
+    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="LiderC")
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="LD_en_validacion_lider")
+    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    return render(request,'GestionRecursos/GestionRecursos_LD_ValidacionPropuesta_ac.html', context)
+
 def ld_valida_propuesta(request):
     abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="JefeDivision")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like

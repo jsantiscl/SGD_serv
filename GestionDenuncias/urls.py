@@ -69,6 +69,7 @@ urlpatterns = [
     path('recursos/ab/valida_propuesta/', login_required(ab_valida_propuesta), name='ab_valida_propuesta'),
     path('recursos/ab/documentos/', login_required(formatosydocumentos), name='formatosydocumentos'),
     path('recursos/ld/valida_propuesta/', login_required(ld_valida_propuesta), name='ld_valida_propuesta'),
+    path('recursos/ld/valida_propuesta_ac/', login_required(ld_valida_propuesta_ac), name='ld_valida_propuesta_ac'),
     path('recursos/jd/valida_propuesta/', login_required(jd_valida_propuesta), name='jd_valida_propuesta'),
     path('recursos/sd/valida_propuesta/', login_required(sd_valida_propuesta), name='sd_valida_propuesta'),
     path('recursos/xv/genera_expediente/', login_required(xv_genera_expediente), name='xv_genera_expediente'),
