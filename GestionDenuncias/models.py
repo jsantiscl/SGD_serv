@@ -469,7 +469,7 @@ class Formulariosig(models.Model):
 class ActasTerreno(models.Model):
     object_id = models.IntegerField(null=True)  #
     global_id = models.CharField(max_length=255, null=True)  #
-    fecha = models.DateTimeField(null=True, blank=True)  # RE
+    fecha = models.CharField(max_length=255, null=True)  #RE
     region = models.CharField(max_length=255, null=True)  #
     ubicacion = models.CharField(max_length=255, null=True)  #
     comuna = models.CharField(max_length=255, null=True)  #
@@ -509,9 +509,9 @@ class ActasTerreno(models.Model):
     actividad_fiscalizada = models.CharField(max_length=255, null=True)
     indique_cantidad_brigadistas_lugar = models.CharField(max_length=255, null=True)
     otro_antecente = models.CharField(max_length=5000, null=True)
-    creation_date = models.DateTimeField(null=True, blank=True)  # RE
+    creation_date = models.CharField(max_length=255, null=True)  #RE  # RE
     creator = models.CharField(max_length=255, null=True)
-    edit_date = models.DateTimeField(null=True, blank=True)  # RE
+    edit_date = models.CharField(max_length=255, null=True)   # RE
     editor = models.CharField(max_length=255, null=True)
     x_coord = models.CharField(max_length=255, null=True)
     y_coord = models.CharField(max_length=255, null=True)
@@ -541,7 +541,7 @@ class ActasRemotas(models.Model):
     ### 1. Antecedentes
     object_id = models.IntegerField(null=True)
     global_id = models.CharField(max_length=255, null=True)
-    fecha = models.DateField(null=True, blank=True)
+    fecha = models.CharField(max_length=255, null=True)  #RE
     region = models.CharField(max_length=255, null=True)
     seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True)  #
     indique_folio = models.CharField(max_length=255, null=True)  #
@@ -574,9 +574,9 @@ class ActasRemotas(models.Model):
 
     id_inspeccion = models.CharField(max_length=255, null=True)
     id_workforce = models.CharField(max_length=255, null=True)
-    creation_date = models.DateTimeField(null=True, blank=True)  # RE
+    creation_date = models.CharField(max_length=255, null=True)  #RE # RE
     creator = models.CharField(max_length=255, null=True)
-    edit_date = models.DateTimeField(null=True, blank=True)  # RE
+    edit_date = models.CharField(max_length=255, null=True)  #RE # RE
     editor = models.CharField(max_length=255, null=True)
     id_wf = models.CharField(max_length=255, null=True)
     x_coord = models.CharField(max_length=255, null=True)
