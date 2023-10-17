@@ -15,7 +15,7 @@ from django.http import HttpResponse
 #from django.core.files.storage import FileSystemStorage
 #import os
 #import xlrd
-import requests
+
 from django.conf import settings
 from django.views import View
 
@@ -625,31 +625,12 @@ def carga_datos_actas_remotas(request):
         return HttpResponse(status=405)
 
 
-class GetTokenView(View):
-
-    @staticmethod
-    def obtain_token():
-        url = 'https://ufisca.maps.arcgis.com/sharing/rest/oauth2/token/'
-        params = {
-            'client_id': settings.CLIENT_ID,
-            'client_secret': settings.CLIENT_SECRET,
-            'grant_type': 'client_credentials'
-        }
-        response = requests.post(url, params=params)
-        data = response.json()
-        return data.get('access_token')
-
-    def get(self, request, *args, **kwargs):
-        token = self.obtain_token()
-        return JsonResponse({'access_token': token})
-
 
 def terreno_pendiente_clasificacion(request):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    token = GetTokenView.obtain_token()
     actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", asistente='Fiscalizador_Maule_03')
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
-    context = {'token': token, 'actas_terreno': actas_terreno}
+    context = {'actas_terreno': actas_terreno}
     return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Pendiente_Clasificacion.html', context)
 
 
@@ -685,18 +666,18 @@ def pasar_acta(request):
 
 def remota_pendiente_clasificacion(request):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    token = GetTokenView.obtain_token()
+
     #actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", asistente='Fiscalizador_Maule_03')
     actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente", creator='Fiscalizador_Coquimbo_04')
-    context = {'token': token, 'actas_remotas': actas_remotas}
+    context = {'actas_remotas': actas_remotas}
     return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Pendiente_Clasificacion.html', context)
 
 
 def terreno_con_infraccion(request):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    token = GetTokenView.obtain_token()
+
     actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="con_infraccion_revisor_terreno", asistente='Fiscalizador_Maule_03')
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
-    context = {'token': token, 'actas_terreno': actas_terreno}
+    context = { 'actas_terreno': actas_terreno}
     return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Con_Infraccion.html', context)
 
