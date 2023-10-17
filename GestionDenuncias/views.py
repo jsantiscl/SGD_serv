@@ -628,7 +628,7 @@ def carga_datos_actas_remotas(request):
 
 def terreno_pendiente_clasificacion(request):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", asistente='Fiscalizador_Maule_03')
+    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", creator='Unidad_Fiscalizacion')
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
     context = {'actas_terreno': actas_terreno}
     return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Pendiente_Clasificacion.html', context)
@@ -668,7 +668,7 @@ def remota_pendiente_clasificacion(request):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
 
     #actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", asistente='Fiscalizador_Maule_03')
-    actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente", creator='Fiscalizador_Coquimbo_04')
+    actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente", creator='Unidad_Fiscalizacion')
     context = {'actas_remotas': actas_remotas}
     return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Pendiente_Clasificacion.html', context)
 

@@ -517,7 +517,7 @@ class ActasTerreno(models.Model):
     y_coord = models.CharField(max_length=255, null=True)
     evidencia_fotografica = models.CharField(max_length=2000, null=True, blank=True)
     link_firma_cargo_timbre = models.CharField(max_length=2000, null=True, blank=True)
-
+    id_inspeccion = models.CharField(max_length=255, null=True)
     sis_clasificacion = models.CharField(max_length=300, default="Pendiente", null=True, blank=True)
     sis_codigo = models.CharField(max_length=300, null=True, blank=True)
     sis_link = models.CharField(max_length=1000, null=True, blank=True)
