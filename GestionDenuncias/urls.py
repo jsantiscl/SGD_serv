@@ -106,5 +106,9 @@ urlpatterns = [
     path('revisor/terreno_con_infraccion/', login_required(terreno_con_infraccion),
          name='terreno_con_infraccion'),
     path('pasar_acta/', pasar_acta, name='pasar_acta'),  # P
+    path('revisor/terreno_archivo/', login_required(terreno_archivo),
+         name='terreno_archivo'),
+    path('revisor/remota_archivo/', login_required(remota_archivo),
+         name='remota_archivo'),
 
 ]
