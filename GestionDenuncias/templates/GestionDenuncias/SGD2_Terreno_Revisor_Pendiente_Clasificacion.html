@@ -86,7 +86,7 @@ $(document).ready(function() {
             <td>{{ acta.id_inspeccion}}</td>
             <td>{{ acta.fecha|date:'Ymd'}}</td>
             <td>{{ acta.creator}}</td>
-            <td>{% if acta.Sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}} {% else %} {{ acta.partido_politico_habilitado }}{% endif %}</td>
+            <td>{% if acta.Sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}} {% elif acta.Sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }} {% else %} Sin Despliegue{% endif %}</td>
             <td>{{ acta.seleccion_motivo_inspeccion}}</td>
             <td>{{ acta.opcion_plebiscitaria}}</td>
            <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
