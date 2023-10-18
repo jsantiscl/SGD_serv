@@ -584,12 +584,12 @@ def carga_datos_actas_remotas(request):
         # Crea una instancia de tu modelo de datos y asigna los valores
         acta_remota = ActasRemotas(**acta_remota_data)
 
-        try:
-            tok = request.POST.get('token')
-            objeto_token = Tokens(Token=tok, Fecha=datetime.now())
-            objeto_token.save()
-        except:
-            print("Error Token")
+        #try:
+        #    tok = request.POST.get('token')
+        #    objeto_token = Tokens(Token=tok, Fecha=datetime.now())
+        #    objeto_token.save()
+        #except:
+        #    print("Error Token")
 
         # Guarda la instancia en la base de datos
         acta_remota.save()
@@ -673,10 +673,27 @@ def pasar_acta(request):
 
 def remota_pendiente_clasificacion(request):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
+    actas_remota = ActasRemotas.objects.filter(sis_clasificacion="Pendiente", creator='Unidad_Fiscalizacion')
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
 
-    #actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", asistente='Fiscalizador_Maule_03')
-    actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente", creator='Unidad_Fiscalizacion')
-    context = {'actas_remotas': actas_remotas}
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota}
     return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Pendiente_Clasificacion.html', context)
 
 
