@@ -548,83 +548,49 @@ def carga_datos_actas_terreno(request):
 def carga_datos_actas_remotas(request):
     if request.method == 'POST':
         # Extrae los datos de la solicitud POST
-        object_id = request.POST.get('object_id')
-        global_id = request.POST.get('global_id')
-        fecha = request.POST.get('fecha')
-        region = request.POST.get('region')
-        motivo_inspeccion = request.POST.get('motivo_inspeccion')
-        motivo_inspeccion_no_programada = request.POST.get('motivo_inspeccion_no_programada')
-        indicar_motivo = request.POST.get('indicar_motivo')
-        indique_folio = request.POST.get('indique_folio')
-        candidato = request.POST.get('candidato')
-        multiple_persona_cartel = request.POST.get('multiple_persona_cartel')
-        nombre_personas = request.POST.get('nombre_personas')
-        medio_utilizado = request.POST.get('medio_utilizado')
-        rrss_utilizada = request.POST.get('rrss_utilizada')
-        rrss_cual = request.POST.get('rrss_cual')
-        rrss_link = request.POST.get('rrss_link')
-        hallazgo_tipo = request.POST.get('hallazgo_tipo')
-        contenido_organico = request.POST.get('contenido_organico')
-        radio_prensa_nombre = request.POST.get('radio_prensa_nombre')
-        radio_prensa_link = request.POST.get('radio_prensa_link')
-        medio_tarifario = request.POST.get('medio_tarifario')
-        hallazgo_indicado = request.POST.get('hallazgo_indicado')
-        hallazgo_cual = request.POST.get('hallazgo_cual')
-        hallazgo_link = request.POST.get('hallazgo_link')
-        hallazgo_tipo_otro = request.POST.get('hallazgo_tipo_otro')
-        hallazgo_cual_otro = request.POST.get('hallazgo_cual_otro')
-        observaciones = request.POST.get('observaciones')
-        id_inspeccion = request.POST.get('id_inspeccion')
-        creation_date = request.POST.get('creation_date')
-        creator = request.POST.get('creator')
-        edit_date = request.POST.get('edit_date')
-        editor = request.POST.get('editor')
-        x_coord = request.POST.get('x_coord')
-        y_coord = request.POST.get('y_coord')
-        tok = request.POST.get('token')
-        # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
-        acta_remota = ActasRemotas(
-            object_id=object_id,
-            global_id=global_id,
-            fecha=fecha,
-            region=region,
-            motivo_inspeccion=motivo_inspeccion,
-            motivo_inspeccion_no_programada=motivo_inspeccion_no_programada,
-            indicar_motivo=indicar_motivo,
-            indique_folio=indique_folio,
-            candidato=candidato,
-            multiple_persona_cartel=multiple_persona_cartel,
-            nombre_personas=nombre_personas,
-            medio_utilizado=medio_utilizado,
-            rrss_utilizada=rrss_utilizada,
-            rrss_cual=rrss_cual,
-            rrss_link=rrss_link,
-            hallazgo_tipo=hallazgo_tipo,
-            contenido_organico=contenido_organico,
-            radio_prensa_nombre=radio_prensa_nombre,
-            radio_prensa_link=radio_prensa_link,
-            medio_tarifario=medio_tarifario,
-            hallazgo_indicado=hallazgo_indicado,
-            hallazgo_cual=hallazgo_cual,
-            hallazgo_link=hallazgo_link,
-            hallazgo_tipo_otro=hallazgo_tipo_otro,
-            hallazgo_cual_otro=hallazgo_cual_otro,
-            observaciones=observaciones,
-            id_inspeccion=id_inspeccion,
-            creation_date=creation_date,
-            creator=creator,
-            edit_date=edit_date,
-            editor=editor,
-            x_coord=x_coord,
-            y_coord=y_coord
-        )
+        acta_remota_data = {
+            'object_id': request.POST.get('object_id'),
+            'global_id': request.POST.get('global_id').replace('{','').replace('}',''),
+            'fecha': request.POST.get('fecha'),
+            'region': request.POST.get('region'),
+            'seleccion_motivo_inspeccion': request.POST.get('seleccion_motivo_inspeccion'),
+            'indique_folio': request.POST.get('indique_folio'),
+            'indique_otro': request.POST.get('indique_otro'),
+            'sujeto_fiscalizado': request.POST.get('sujeto_fiscalizado'),
+            'partido_politico_habilitado': request.POST.get('partido_politico_habilitado'),
+            'otro_sujeto_fiscalizado': request.POST.get('otro_sujeto_fiscalizado'),
+            'opcion_plebiscitaria': request.POST.get('opcion_plebiscitaria'),
+            'es_medio_pagado': request.POST.get('es_medio_pagado'),
+            'medio_fiscalizado': request.POST.get('medio_fiscalizado'),
+            'nombre_medio': request.POST.get('nombre_medio'),
+            'soporte_material_link': request.POST.get('soporte_material_link'),
+            'medio_tiene_tarifario': request.POST.get('medio_tiene_tarifario'),
+            'radiofrecuencia_medio': request.POST.get('radiofrecuencia_medio'),
+            'rrss_fiscalizada': request.POST.get('rrss_fiscalizada'),
+            'usuario_perfil_rrss': request.POST.get('usuario_perfil_rrss'),
+            'corresponde_medio_prensa': request.POST.get('corresponde_medio_prensa'),
+            'otro_antecente': request.POST.get('otro_antecente'),
+            'medios_respaldo_adjunto': request.POST.get('medios_respaldo_adjunto'),
+            'ingrese_audios': request.POST.get('ingrese_audios'),
+            'link_firma_cargo_timbre': request.POST.get('link_firma_cargo_timbre'),
+            'id_inspeccion': request.POST.get('id_inspeccion'),
+            'id_workforce': request.POST.get('id_workforce'),
+            'creation_date': request.POST.get('creation_date'),
+            'creator': request.POST.get('creator'),
+            'edit_date': request.POST.get('edit_date'),
+            'editor': request.POST.get('editor'),
+        }
+
+        # Crea una instancia de tu modelo de datos y asigna los valores
+        acta_remota = ActasRemotas(**acta_remota_data)
 
         try:
-            objeto_token = Tokens(Token=tok,
-                           Fecha = datetime.now())
+            tok = request.POST.get('token')
+            objeto_token = Tokens(Token=tok, Fecha=datetime.now())
             objeto_token.save()
         except:
             print("Error Token")
+
         # Guarda la instancia en la base de datos
         acta_remota.save()
 
@@ -633,7 +599,6 @@ def carga_datos_actas_remotas(request):
     else:
         # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
         return HttpResponse(status=405)
-
 
 
 def terreno_pendiente_clasificacion(request):
