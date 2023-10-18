@@ -72,7 +72,7 @@ $(document).ready(function() {
             <th>Sujeto Fiscalizado</th>
             <th>Motivo Inspeccion</th>
             <th>Materia Fiscalizada</th>
-            <th>Opcion</th>
+
             <th>Detalle</th>
             <th style="text-align: center">Clasificación</th>
             <th style="text-align: center">Código</th>
@@ -92,7 +92,7 @@ $(document).ready(function() {
             <td>{% if acta.Sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}} {% elif acta.Sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }} {% else %} Sin Despliegue{% endif %}</td>
             <td>{{ acta.seleccion_motivo_inspeccion}}</td>
             <td>{{ acta.materia_fiscalizada }}</td>
-            <td>{{ acta.opcion_plebiscitaria}}</td>
+
            <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
 
 <td>
