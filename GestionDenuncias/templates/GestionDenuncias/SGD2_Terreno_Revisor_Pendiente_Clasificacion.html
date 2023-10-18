@@ -172,7 +172,7 @@ $(document).ready(function() {
             <div class="modal-body">
 
                 <!-- 1. Datos generales -->
-                {% if acta.object_id %}<p><strong>ID Inspección:</strong> {{ acta.object_id }}</p>{% endif %}
+                {% if acta.id_inspeccion %}<p><strong>ID Inspección:</strong> {{ acta.id_inspeccion }}</p>{% endif %}
                 {% if acta.fecha %}<p><strong>Fecha:</strong> {{ acta.fecha }}</p>{% endif %}
                 {% if acta.region %}<p><strong>Región:</strong> {{ acta.region }}</p>{% endif %}
                 {% if acta.ubicacion %}<p><strong>Ubicación:</strong> {{ acta.ubicacion }}</p>{% endif %}
@@ -180,11 +180,8 @@ $(document).ready(function() {
 
                 <!-- 2. Motivo de inspección -->
                 {% if acta.seleccion_motivo_inspeccion %}<p><strong>Selección Motivo Inspección:</strong> {{ acta.seleccion_motivo_inspeccion }}</p>{% endif %}
-                {% if acta.indique_folio_denuncia %}<p><strong>Folio Denuncia:</strong> {{ acta.indique_folio_denuncia }}</p>{% endif %}
-                {% if acta.indique_folio_revision_fiscalizada_previamente %}<p><strong>Folio Revisión Fiscalizada Previamente:</strong> {{ acta.indique_folio_revision_fiscalizada_previamente }}</p>{% endif %}
-                {% if acta.indique_folio_revision_acta_remota %}<p><strong>Folio Revisión Acta Remota:</strong> {{ acta.indique_folio_revision_acta_remota }}</p>{% endif %}
+                {% if acta.indique_folio %}<p><strong>Folio Denuncia:</strong> {{ acta.indique_folio }}</p>{% endif %}
                 {% if acta.existe_despliegue_propaganda %}<p><strong>Existe Despliegue Propaganda:</strong> {{ acta.existe_despliegue_propaganda }}</p>{% endif %}
-                {% if acta.indique_folio_f104 %}<p><strong>Folio F104:</strong> {{ acta.indique_folio_f104 }}</p>{% endif %}
                 {% if acta.indique_otro %}<p><strong>Indique Otro:</strong> {{ acta.indique_otro }}</p>{% endif %}
 
                 <!-- 3. Sujeto fiscalizado -->
