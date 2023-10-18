@@ -485,6 +485,10 @@ def carga_datos_actas_terreno(request):
         evidencia_fotografica = request.POST.get('evidencia_fotografica')
         link_firma_cargo_timbre = request.POST.get('link_firma_cargo_timbre')
         id_inspeccion = request.POST.get('id_inspeccion')
+        existe_despliegue_propaganda = request.POST.get('existe_despliegue_propaganda')
+        otro_sujeto_fiscalizado = request.POST.get('otro_sujeto_fiscalizado')
+        actividad_fiscalizada = request.POST.get('actividad_fiscalizada')
+        indique_cantidad_brigadistas_lugar = request.POST.get('indique_cantidad_brigadistas_lugar')
 
         # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
         acta_terreno = ActasTerreno(
@@ -517,7 +521,11 @@ def carga_datos_actas_terreno(request):
             y_coord=y_coord,
             evidencia_fotografica=evidencia_fotografica,
             link_firma_cargo_timbre=link_firma_cargo_timbre,
-            id_inspeccion=id_inspeccion
+            id_inspeccion=id_inspeccion,
+            existe_despliegue_propaganda=existe_despliegue_propaganda,
+            otro_sujeto_fiscalizado=otro_sujeto_fiscalizado,
+            actividad_fiscalizada=actividad_fiscalizada,
+            indique_cantidad_brigadistas_lugar=indique_cantidad_brigadistas_lugar
         )
 
         try:
