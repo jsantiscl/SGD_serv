@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from django.db.models import Count
 from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formulariosig, EncargadosRegionales
 from .forms import *
+from .forms import GestionTerreno
 from django.contrib.auth.models import User
 from django.db.models import Q
 from .models import ActasTerreno, ActasRemotas, Tokens
@@ -669,6 +670,8 @@ def pasar_acta(request):
         #                                       nueva_etapa=str(data['datos']['etapa']),
         #                                       fecha_cambio=datetime.now())
 
+
+
     return JsonResponse([str(data['datos']['global_id']), 'Asignado'], safe=False)
 
 def remota_pendiente_clasificacion(request):
@@ -780,3 +783,296 @@ def remota_archivo(request):
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
     context = {'latest_token': latest_token, 'actas_remota': actas_remota}
     return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Archivo.html', context)
+
+
+def terreno_con_infraccion_gestiones(request, id):
+    actas_terreno = ActasTerreno.objects.filter(global_id=id)
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    if request.method == 'POST':
+        GestionTerrenoForm = GestionTerreno(request.POST, instance=acta)
+        if GestionTerrenoForm.is_valid():
+            GestionTerrenoForm.save()
+            return redirect('terreno_con_infraccion')
+    else:
+        GestionTerrenoForm = GestionTerreno(instance=acta)
+
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno, 'GestionTerrenoForm': GestionTerrenoForm}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Con_Infraccion_Gestiones.html', context)
+
+
+def remotas_con_infraccion(request):
+    actas_remota = ActasRemotas.objects.filter(sis_clasificacion="con_infraccion_revisor_remota", creator='Unidad_Fiscalizacion')
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Con_Infraccion.html', context)
+
+def remota_con_infraccion_gestiones(request, id):
+    actas_remota = ActasRemotas.objects.filter(global_id=id)
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    if request.method == 'POST':
+        GestionRemotaForm = GestionRemota(request.POST, instance=acta)
+        if GestionRemotaForm.is_valid():
+            GestionRemotaForm.save()
+            return redirect('remotas_con_infraccion')
+    else:
+        GestionRemotaForm = GestionRemota(instance=acta)
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'GestionRemotaForm': GestionRemotaForm}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Con_Infraccion_Gestiones.html', context)
+
+
+def efr_terreno_con_infraccion(request):
+    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="EFR_Validacion", creator='Unidad_Fiscalizacion')
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_EFR_Con_Infraccion.html', context)
+
+def efr_remota_con_infraccion(request):
+    actas_remota = ActasRemotas.objects.filter(sis_clasificacion="EFR_Validacion",
+                                               creator='Unidad_Fiscalizacion')
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    # actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota}
+    return render(request, 'GestionDenuncias/SGD2_Remota_EFR_Con_Infraccion.html', context)
+
+def efr_terreno_con_infraccion_gestiones(request, id):
+    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="EFR_Validacion",
+                                               creator='Unidad_Fiscalizacion', global_id=id)
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+        if request.method == 'POST':
+            GestionTerrenoEFRForm = GestionTerrenoEFR(request.POST, instance=acta)
+            if GestionTerrenoEFRForm.is_valid():
+                acta = GestionTerrenoEFRForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
+                acta.sis_resultado_efr = GestionTerrenoEFRForm.cleaned_data['sis_resultado_efr']
+                acta.sis_motivo_rechazo = GestionTerrenoEFRForm.cleaned_data['sis_motivo_rechazo']
+                acta.sis_clasificacion = GestionTerrenoEFRForm.cleaned_data['sis_clasificacion']
+                acta.save(update_fields=['sis_resultado_efr','sis_motivo_rechazo', 'sis_clasificacion' ])
+                return redirect('efr_terreno_con_infraccion')
+            else:
+                print(GestionTerrenoEFRForm.errors)
+                return redirect('efr_terreno_con_infraccion')
+        else:
+            GestionTerrenoEFRForm = GestionTerrenoEFR(instance=acta)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno, 'GestionTerrenoEFRForm': GestionTerrenoEFRForm}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_EFR_Con_Infraccion_Gestiones.html', context)
+
+
+def efr_remota_con_infraccion_gestiones(request, id):
+    actas_remota = ActasRemotas.objects.filter(global_id=id)
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+        try:
+            latest_token = Tokens.objects.latest('id')
+        except ObjectDoesNotExist:
+            latest_token = None
+
+        if request.method == 'POST':
+            GestionRemotasEFRForm = GestionRemotasEFR(request.POST, instance=acta)
+            if GestionRemotasEFRForm.is_valid():
+                acta = GestionRemotasEFRForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
+                acta.sis_resultado_efr = GestionRemotasEFRForm.cleaned_data['sis_resultado_efr']
+                acta.sis_motivo_rechazo = GestionRemotasEFRForm.cleaned_data['sis_motivo_rechazo']
+                acta.sis_clasificacion = GestionRemotasEFRForm.cleaned_data['sis_clasificacion']
+                acta.save(update_fields=['sis_resultado_efr', 'sis_motivo_rechazo', 'sis_clasificacion'])
+                return redirect('efr_remota_con_infraccion')
+            else:
+                print(GestionRemotasEFRForm.errors)
+                return redirect('efr_remota_con_infraccion')
+        else:
+            GestionRemotasEFRForm = GestionRemotasEFR(instance=acta)
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'GestionRemotasEFRForm': GestionRemotasEFRForm}
+    return render(request, 'GestionDenuncias/SGD2_Remota_EFR_Con_Infraccion_Gestiones.html', context)
+
+def terreno_con_infraccion_rechazo(request):
+    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="revisor_rechazo", creator='Unidad_Fiscalizacion')
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Con_Infraccion_Rechazo.html', context)
+
+
+def terreno_con_infraccion_rechazo_gestiones(request, id):
+    actas_terreno = ActasTerreno.objects.filter(global_id=id)
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    if request.method == 'POST':
+        GestionTerrenoForm = GestionTerreno(request.POST, instance=acta)
+        if GestionTerrenoForm.is_valid():
+            GestionTerrenoForm.save()
+            return redirect('terreno_con_infraccion_rechazo')
+    else:
+        GestionTerrenoForm = GestionTerreno(instance=acta)
+
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno, 'GestionTerrenoForm': GestionTerrenoForm}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Con_Infraccion_Rechazo_Gestiones.html', context)

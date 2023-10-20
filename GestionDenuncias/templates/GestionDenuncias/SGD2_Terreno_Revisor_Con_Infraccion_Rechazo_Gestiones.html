@@ -51,63 +51,36 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
-<h3>Actas en Terreno - Con Infracción</h3>
 
+<div class="w3-responsive">
+<div class = "w3-row">
+     <div class="w3-half w3-container">
+ <br>
 
-<div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
-
-
-</div>
-
-    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
-    <thead>
-        <tr>
-            <th>ID Inspeccion</th>
-            <th>Fecha Inspeccion</th>
-            <th>Comuna</th>
-            <th>Nombre del Fiscalizador</th>
-            <th>Sujeto Fiscalizado</th>
-            <th>Motivo Inspeccion</th>
-            <th>Materia Fiscalizada</th>
-            <th>Opción</th>
-            <th>Detalle</th>
-            <th>Gestiones</th>
-
-        </tr>
-            </thead>
-    <tbody>
-        {% load humanize %}
         {% for acta in actas_terreno %}
+        {% if acta.sis_clasificacion == 'revisor_rechazo'%}
+         <h3>Gestionar Acta {{ acta.id_inspeccion }}</h3>
+             <br>
+    <form action="{% url 'terreno_con_infraccion_rechazo_gestiones' id=acta.global_id %}" method = "POST" enctype="multipart/form-data" id="myForm">{% csrf_token %}
+        {% csrf_token %}
+        {{ GestionTerrenoForm.as_p }}
 
-       <tr>
-
-            <td>{{ acta.id_inspeccion}}</td>
-            <td>{{ acta.fecha|date:'Ymd'}}</td>
-         <td>{{ acta.comuna }}</td>
-            <td>{{ acta.creator}}</td>
-           <td>{% if acta.Sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}} {% elif acta.Sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }} {% else %} Sin Despliegue{% endif %}</td>
-            <td>{{ acta.seleccion_motivo_inspeccion}}</td>
-       <td>{{ acta.materia_fiscalizada }}</td>
-           <td>{{ acta.opcion_plebiscitaria }}</td>
-           <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
-         <td style="text-align: center"> <a href="{% url 'terreno_con_infraccion_gestiones' id=acta.global_id %}" class="btn btn-success">Ir</a></td>
-
-
-
-
-</tr>
-
-            <!-- Modal -->
-<div class="modal fade" id="detailsModal{{ acta.global_id }}" tabindex="-1" aria-labelledby="detailsModalLabel{{ acta.global_id }}" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="detailsModalLabel{{ acta.global_id }}">Detalles del Acta {{ acta.object_id }}</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+         <br>
+        <input class="btn btn-primary" type="submit" name="button_guardar" value="Guardar Datos">
+        <input class="btn btn-success" id="button_enviar" name="button_enviar" value="Enviar a Siguiente Paso" onclick="enviar_formulario()">
+    <br>
+    </form>
             </div>
+              <div class="w3-half w3-container">
+               <br>
+                 <h3>Detalles Acta</h3>
+                 <br>
+               <div class="modal-content">
+
             <div class="modal-body">
 
                 <!-- 1. Datos generales -->
+                {% if acta.sis_motivo_rechazo %}<p><strong>Motivo Rechazo:</strong> {{ acta.sis_motivo_rechazo }}</p>{% endif %}
                 {% if acta.id_inspeccion %}<p><strong>ID Inspección:</strong> {{ acta.id_inspeccion }}</p>{% endif %}
                 {% if acta.fecha %}<p><strong>Fecha:</strong> {{ acta.fecha }}</p>{% endif %}
                 {% if acta.region %}<p><strong>Región:</strong> {{ acta.region }}</p>{% endif %}
@@ -177,29 +150,19 @@ $(document).ready(function() {
                 {% if acta.link_firma_cargo_timbre %}<p><strong>Link Firma y Cargo con Timbre:</strong> <a href="{{ acta.link_firma_cargo_timbre }}?token={{ latest_token.Token }}" target="_blank">Ver Firma</a></p>{% endif %}
             </div>
         </div>
-    </div>
-</div>
+                  <br>
 
-
-            <!-- Modal para ver imagen grande -->
-<div class="modal fade" id="imageModal{{ acta.global_id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ acta.global_id }}" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="imageModalLabel{{ acta.global_id }}">Adjunto del Acta {{ acta.global_id }}</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <img src="https://services7.arcgis.com/NfMCco52hDki1c8M/arcgis/rest/services/service_677ef362f30b4961b9f393cdeba403c3/FeatureServer/0/2/attachments/3?token=Eqmr-CJdLDSBnGBYburtg6m_WGyt4h_WQpfNtVd_Yul44hEj1TOuugAwSVbPH5z8cATf8_IGmy4LkFht10wiT8YisJbd1yFd4oJBIAZ0r-x7zYBwwjQPYLErj9Q8wNEPZsPBgUdHk6ZvTEjLK08bdZgSTvjwKYSAMD1tamOke8gLKjtfpJ0cIcH6EYqINA4QxOK-bBQnyldkS3Pt8YwUBHgk51mJR-a6W0BfuTIZb4Q." style="width: 100%; height: auto;" alt="Imagen adjunta"/>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+              <br>
+             </div>
+        {% else %}
+        <h3>No Autorizado</h3>
+        {% endif %}
         {% endfor %}
-    </tbody>
-    </table>
+
+</div>
+</div>
+<br>
+<br>
 <td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
 
 </section>
@@ -232,73 +195,30 @@ const csrftoken = getCookie('csrftoken');
     return `${year}-${month}-${day}`;
 }
 
-  function pasar(global_id) {
-    const sis_link = document.getElementById(`sis_link${global_id}`);
-    const sis_nro_requerimiento = document.getElementById(`sis_nro_requerimiento${global_id}`);
-    const selectorCodigo = document.getElementById(`selectorCodigo${global_id}`);
-    const sis_fecha_sub = document.getElementById(`sis_fecha_sub${global_id}`);
-    const sis_plazo_respuesta = document.getElementById(`sis_plazo_respuesta${global_id}`);
-    const sis_respuesta = document.getElementById(`sis_respuesta${global_id}`);
-    const sis_oficio_retiro = document.getElementById(`sis_oficio_retiro${global_id}`);
-    const sis_certificado = document.getElementById(`sis_certificado${global_id}`);
-    const sis_propuesta = document.getElementById(`sis_propuesta${global_id}`);
-    const sis_motivo = document.getElementById(`sis_motivo${global_id}`);
+  function enviar_formulario() {
+    const sis_link = document.getElementById(`sis_link`);
+    const sis_nro_requerimiento = document.getElementById(`sis_nro_requerimiento`);
+    const selectorCodigo = document.getElementById(`selectorCodigo`);
+    const sis_fe_sub = document.getElementById(`sis_fe_sub`);
+    const sis_plazo_respuesta = document.getElementById(`sis_plazo_respuesta`);
+    const sis_respuesta = document.getElementById(`sis_respuesta`);
+    const sis_oficio_retiro = document.getElementById(`sis_oficio_retiro`);
+    const sis_certificado = document.getElementById(`sis_certificado`);
+    const sis_propuesta = document.getElementById(`sis_propuesta`);
+    const sis_motivo = document.getElementById(`sis_motivo`);
 
-    const sis_linkValue = sis_link.value;
-    const sis_nro_requerimientoValue = sis_nro_requerimiento.value;
-    const codigoValue = selectorCodigo.value;
-    const sis_fecha_subValue = Date(sis_fecha_sub);
-    const sis_plazo_respuestaValue = Date(sis_plazo_respuesta);
-    const sis_respuestaValue = sis_respuesta.value;
-    const sis_oficio_retiroValue = sis_oficio_retiro.value;
-    const sis_certificadoValue = sis_certificado.value;
-    const sis_propuestaValue = sis_propuesta.value;
-    const sis_motivoValue = sis_motivo.value;
-    console.log(sis_nro_requerimientoValue)
-    // Habilitar el botón según las condiciones dadas
-        if (confirm('¿Esta Seguro que Desea Pasar la Etapa Con Infracción?')) {
-          // Save it!
-
-          pasar_etapa(global_id, 'EFR_Validacion', codigoValue, sis_linkValue, sis_nro_requerimientoValue,  sis_fecha_subValue, sis_plazo_respuestaValue, sis_respuestaValue, sis_oficio_retiroValue, sis_certificadoValue,  sis_propuestaValue, sis_motivoValue);
-            setTimeout(() => {   return window.location.replace("{% url 'terreno_con_infraccion' %}"); }, 1000);
-        } else {
+        if (confirm('¿Esta Seguro que quiere enviar el Acta ?')) {
+        // Save it!
+          console.log('Enviado Formulario');
+          document.getElementById("id_sis_clasificacion").value = "EFR_Validacion";
+          console.log('pasa 1');
+          document.getElementById("myForm").submit();
+          console.log('pasa 2');
+} else {
           // Do nothing!
-          console.log('No Finalizado Confirmado');
-        }
+      }
+
 }
-
-
-    function pasar_etapa(global_id,etapa,codigo, sis_linkValue, sis_nro_requerimientoValue, sis_fecha_subValue, sis_plazo_respuestaValue, sis_respuestaValue, sis_oficio_retiroValue, sis_certificadoValue, sis_propuestaValue, sis_motivoValue) {
-
-        var datos = {
-                'respuesta':'',
-				'global_id': global_id.toString(),
-                'etapa': etapa.toString(),
-                'codigo' : codigo.toString(),
-                'sis_linkValue' : sis_linkValue.toString(),
-            'sis_nro_requerimientoValue' : sis_nro_requerimientoValue.toString(),
-            'sis_fecha_subValue' : formatDate(sis_fecha_subValue),
-            'sis_plazo_respuestaValue' : formatDate(sis_plazo_respuestaValue),
-            'sis_respuestaValue' : sis_respuestaValue.toString(),
-            'sis_oficio_retiroValue' : sis_oficio_retiroValue.toString(),
-            'sis_certificadoValue' : sis_certificadoValue.toString(),
-            'sis_propuestaValue' : sis_propuestaValue.toString(),
-            'sis_motivoValue' : sis_motivoValue.toString(),
-
-			}
-    var url = "/sgd/pasar_acta/"
-        fetch(url, {
-	    		method:'POST',
-	    		headers:{
-	    			'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-	    			'X-CSRFToken':csrftoken
-	    		},
-	    		body:JSON.stringify({'datos':datos}),
-
-	    	})
-            .then((response) => response.json())
-            }
 
 
 

@@ -90,7 +90,7 @@ $(document).ready(function() {
        <td>{{ acta.materia_fiscalizada }}</td>
            <td>{{ acta.opcion_plebiscitaria }}</td>
            <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
-         <td style="text-align: center"> <a href="{% url 'terreno_con_infraccion_gestiones' id=acta.global_id %}" class="btn btn-success">Ir</a></td>
+         <td style="text-align: center"> <a href="{% url 'efr_terreno_con_infraccion_gestiones' id=acta.global_id %}" class="btn btn-success">Ir</a></td>
 
 
 

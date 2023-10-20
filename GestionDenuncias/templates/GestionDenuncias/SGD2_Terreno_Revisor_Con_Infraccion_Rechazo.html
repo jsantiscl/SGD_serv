@@ -51,7 +51,7 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
-<h3>Actas en Terreno - Con Infracción</h3>
+<h3>Actas en Terreno - Con Infracción Rechazo</h3>
 
 
 <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
@@ -90,7 +90,7 @@ $(document).ready(function() {
        <td>{{ acta.materia_fiscalizada }}</td>
            <td>{{ acta.opcion_plebiscitaria }}</td>
            <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
-         <td style="text-align: center"> <a href="{% url 'terreno_con_infraccion_gestiones' id=acta.global_id %}" class="btn btn-success">Ir</a></td>
+         <td style="text-align: center"> <a href="{% url 'terreno_con_infraccion_rechazo_gestiones' id=acta.global_id %}" class="btn btn-success">Ir</a></td>
 
 
 
@@ -108,6 +108,7 @@ $(document).ready(function() {
             <div class="modal-body">
 
                 <!-- 1. Datos generales -->
+                {% if acta.sis_motivo_rechazo %}<p><strong>Motivo Rechazo:</strong> {{ acta.sis_motivo_rechazo }}</p>{% endif %}
                 {% if acta.id_inspeccion %}<p><strong>ID Inspección:</strong> {{ acta.id_inspeccion }}</p>{% endif %}
                 {% if acta.fecha %}<p><strong>Fecha:</strong> {{ acta.fecha }}</p>{% endif %}
                 {% if acta.region %}<p><strong>Región:</strong> {{ acta.region }}</p>{% endif %}

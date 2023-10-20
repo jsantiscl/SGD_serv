@@ -1,5 +1,5 @@
 from django import forms
-from .models import Denuncias, Abogados
+from .models import Denuncias, Abogados, ActasTerreno, ActasRemotas
 from GestionRecursos.models import *
 from django.forms import ClearableFileInput
 from django.db.models.functions import Concat
@@ -305,3 +305,213 @@ class RevisaCasos(forms.ModelForm):
             'propuesta': forms.Select(attrs={'class': 'form-control'}),
             'comentarios_revisor': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+
+class GestionTerreno(forms.ModelForm):
+    class Meta:
+        model = ActasTerreno
+        fields = [
+
+            'sis_codigo',
+            'sis_link',
+            'sis_nro_requerimiento',
+            'sis_fe_sub',
+            'sis_plazo_respuesta',
+            'sis_respuesta',
+            'sis_oficio_retiro',
+            'sis_certificado',
+            'sis_propuesta',
+            'sis_motivo',
+            'sis_clasificacion',
+
+]
+        widgets = {
+
+            'sis_codigo': forms.Select(attrs={'class': 'form-control'}),
+            'sis_link': forms.TextInput(attrs={'class': 'form-control'}),
+            'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control'}),
+            'sis_fe_sub': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'sis_plazo_respuesta': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'sis_respuesta': forms.Select(attrs={'class': 'form-control'}),
+            'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control'}),
+            'sis_certificado': forms.TextInput(attrs={'class': 'form-control'}),
+            'sis_propuesta': forms.Select(attrs={'class': 'form-control'}),
+            'sis_motivo': forms.Textarea(attrs={'class': 'form-control'}),
+            'sis_clasificacion': forms.HiddenInput(),
+
+        }
+        labels = {
+
+            'sis_codigo' : 'Codigo',
+            'sis_link' : 'Indicar Link Carpeta Sharepoint*',
+            'sis_nro_requerimiento': 'Número Requerimiento:',
+            'sis_fe_sub' : 'Fecha de requerimiento de subsanación:',
+            'sis_plazo_respuesta': 'Plazo de Respuesta:',
+            'sis_respuesta': 'Respuesta:',
+            'sis_oficio_retiro': 'Oficio retiro al municipio:',
+            'sis_certificado': 'Certificado:',
+            'sis_propuesta': 'Propuesta*:',
+            'sis_motivo': 'Motivo Revisor*:',
+            'sis_clasificacion':'sis_clasificacion'
+
+        }
+
+class GestionRemota(forms.ModelForm):
+    class Meta:
+        model = ActasRemotas
+        fields = [
+
+            'sis_codigo',
+            'sis_link',
+            'sis_nro_requerimiento',
+            'sis_fe_sub',
+            'sis_plazo_respuesta',
+            'sis_respuesta',
+            'sis_oficio_retiro',
+            'sis_certificado',
+            'sis_propuesta',
+            'sis_motivo',
+            'sis_clasificacion',
+
+]
+        widgets = {
+
+            'sis_codigo': forms.Select(attrs={'class': 'form-control'}),
+            'sis_link': forms.TextInput(attrs={'class': 'form-control'}),
+            'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control'}),
+            'sis_fe_sub': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'sis_plazo_respuesta': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'sis_respuesta': forms.Select(attrs={'class': 'form-control'}),
+            'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control'}),
+            'sis_certificado': forms.TextInput(attrs={'class': 'form-control'}),
+            'sis_propuesta': forms.Select(attrs={'class': 'form-control'}),
+            'sis_motivo': forms.Textarea(attrs={'class': 'form-control'}),
+            'sis_clasificacion': forms.HiddenInput(),
+
+        }
+        labels = {
+
+            'sis_codigo' : 'Codigo',
+            'sis_link' : 'Indicar Link Carpeta Sharepoint*',
+            'sis_nro_requerimiento': 'Número Requerimiento:',
+            'sis_fe_sub' : 'Fecha de requerimiento de subsanación:',
+            'sis_plazo_respuesta': 'Plazo de Respuesta:',
+            'sis_respuesta': 'Respuesta:',
+            'sis_oficio_retiro': 'Oficio retiro al municipio:',
+            'sis_certificado': 'Certificado:',
+            'sis_propuesta': 'Propuesta*:',
+            'sis_motivo': 'Motivo Revisor*:',
+            'sis_clasificacion':'sis_clasificacion'
+
+        }
+
+class GestionTerrenoEFR(forms.ModelForm):
+    class Meta:
+        model = ActasTerreno
+        fields = [
+
+            'sis_codigo',
+            'sis_link',
+            'sis_nro_requerimiento',
+            'sis_fe_sub',
+            'sis_plazo_respuesta',
+            'sis_respuesta',
+            'sis_oficio_retiro',
+            'sis_certificado',
+            'sis_propuesta',
+            'sis_motivo',
+            'sis_resultado_efr',
+            'sis_motivo_rechazo',
+            'sis_clasificacion',
+
+]
+        widgets = {
+
+            'sis_codigo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_link': forms.TextInput(attrs={'class': 'form-control','readonly': 'readonly'}),
+            'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_fe_sub': forms.DateInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_plazo_respuesta': forms.DateInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_certificado': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_propuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_motivo': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_resultado_efr': forms.Select(attrs={'class': 'form-control'}),
+            'sis_motivo_rechazo': forms.Textarea(attrs={'class': 'form-control', }),
+            'sis_clasificacion': forms.HiddenInput(),
+
+        }
+        labels = {
+
+            'sis_codigo' : 'Codigo',
+            'sis_link' : 'Indicar Link Carpeta Sharepoint*',
+            'sis_nro_requerimiento': 'Número Requerimiento:',
+            'sis_fe_sub' : 'Fecha de requerimiento de subsanación:',
+            'sis_plazo_respuesta': 'Plazo de Respuesta:',
+            'sis_respuesta': 'Respuesta:',
+            'sis_oficio_retiro': 'Oficio retiro al municipio:',
+            'sis_certificado': 'Certificado:',
+            'sis_propuesta': 'Propuesta*:',
+            'sis_motivo': 'Motivo Revisor*:',
+            'sis_resultado_efr': 'Validacion Resultado',
+            'sis_motivo_rechazo': 'Motivo Rechazo:',
+            'sis_clasificacion':'sis_clasificacion'
+
+        }
+
+class GestionRemotasEFR(forms.ModelForm):
+    class Meta:
+        model = ActasRemotas
+        fields = [
+
+            'sis_codigo',
+            'sis_link',
+            'sis_nro_requerimiento',
+            'sis_fe_sub',
+            'sis_plazo_respuesta',
+            'sis_respuesta',
+            'sis_oficio_retiro',
+            'sis_certificado',
+            'sis_propuesta',
+            'sis_motivo',
+            'sis_resultado_efr',
+            'sis_motivo_rechazo',
+            'sis_clasificacion',
+
+]
+        widgets = {
+
+            'sis_codigo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_link': forms.TextInput(attrs={'class': 'form-control','readonly': 'readonly'}),
+            'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_fe_sub': forms.DateInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_plazo_respuesta': forms.DateInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_certificado': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_propuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_motivo': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_resultado_efr': forms.Select(attrs={'class': 'form-control'}),
+            'sis_motivo_rechazo': forms.Textarea(attrs={'class': 'form-control', }),
+            'sis_clasificacion': forms.HiddenInput(),
+
+        }
+        labels = {
+
+            'sis_codigo' : 'Codigo',
+            'sis_link' : 'Indicar Link Carpeta Sharepoint*',
+            'sis_nro_requerimiento': 'Número Requerimiento:',
+            'sis_fe_sub' : 'Fecha de requerimiento de subsanación:',
+            'sis_plazo_respuesta': 'Plazo de Respuesta:',
+            'sis_respuesta': 'Respuesta:',
+            'sis_oficio_retiro': 'Oficio retiro al municipio:',
+            'sis_certificado': 'Certificado:',
+            'sis_propuesta': 'Propuesta*:',
+            'sis_motivo': 'Motivo Revisor*:',
+            'sis_resultado_efr': 'Validacion Resultado',
+            'sis_motivo_rechazo': 'Motivo Rechazo:',
+            'sis_clasificacion':'sis_clasificacion'
+
+        }
+

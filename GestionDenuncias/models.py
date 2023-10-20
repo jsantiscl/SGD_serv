@@ -516,16 +516,72 @@ class ActasTerreno(models.Model):
     link_firma_cargo_timbre = models.CharField(max_length=2000, null=True, blank=True)
     id_inspeccion = models.CharField(max_length=255, null=True)
     sis_clasificacion = models.CharField(max_length=300, default="Pendiente", null=True, blank=True)
-    sis_codigo = models.CharField(max_length=300, null=True, blank=True)
-    sis_link = models.CharField(max_length=1000, null=True, blank=True)
-    sis_subsanacion = models.CharField(max_length=5000, null=True, blank=True)
-    sis_fecha_sub = models.DateField(null=True, blank=True)
-    sis_respuesta = models.CharField(max_length=5000, null=True, blank=True)
-    sis_oficio_retiro = models.CharField(max_length=1000, null=True, blank=True)
-    sis_certificado = models.CharField(max_length=5000, null=True, blank=True)
-    sis_propuesta = models.CharField(max_length=300, default="Pendiente", null=True, blank=True)
-    sis_motivo= models.CharField(max_length=5000, null=True, blank=True)
+    CODIGOS = (
+        ("p1", "P1"),
+        ("p2", "P2"),
+        ("p3", "P3"),
+        ("p3-b", "P3-B"),
+        ("p4", "P4"),
+        ("p5", "P5"),
+        ("p5-b", "P5-B"),
+        ("p5-c", "P5-C"),
+        ("p6", "P6"),
+        ("p6-b", "P6-B"),
+        ("p7", "P7"),
+        ("p9", "P9"),
+        ("p10", "P10"),
+        ("p11", "P11"),
+        ("p12", "P12"),
+        ("p13", "P13"),
+        ("p14", "P14"),
+        ("p15", "P15"),
+        ("p16", "P16"),
+        ("p17", "P17"),
+        ("p19", "P19"),
+        ("p20", "P20"),
+        ("p21", "P21"),
+        ("p22", "P22"),
+        ("p25", "P25"),
+        ("p26", "P26"),
+        ("p27", "P27"),
+        ("p28", "P28"),
+        ("p29", "P29"),
+        ("p29-b", "P29-B"),
+        ("p30", "P30"),
+        ("p100", "P100")
 
+    )
+    sis_codigo = models.CharField(max_length=300, null=True, blank=True, choices=CODIGOS)
+    sis_link = models.CharField(max_length=1000, null=True, blank=True) #ok
+    sis_nro_requerimiento = models.CharField(max_length=300, null=True, blank=True) #ok
+    sis_fe_sub = models.DateField(null=True, blank=True) #ok
+    sis_plazo_respuesta = models.DateField(null=True, blank=True)  # ok
+    RESPUESTA = (
+        ("Pendiente", "Pendiente"),
+        ("Sin Respuesta", "Sin Respuesta"),
+        ("Con Respuesta - Subsana", "Con Respuesta - Subsana"),
+        ("Con Respuesta - No Subsana", "Con Respuesta - No Subsana")
+
+    )
+    sis_respuesta = models.CharField(max_length=5000, null=True, blank=True, choices=RESPUESTA) #ok
+    sis_oficio_retiro = models.CharField(max_length=1000, null=True, blank=True) #ok
+    sis_certificado = models.CharField(max_length=5000, null=True, blank=True) #ok
+    PROPUESTA = (
+        ("Pendiente", "Pendiente"),
+        ("Con Infraccion", "Con Infraccion"),
+        ("Sin Infraccion", "Sin Infraccion")
+
+    )
+    sis_propuesta = models.CharField(max_length=300, default="Pendiente", choices=PROPUESTA) #ok
+    sis_motivo= models.CharField(max_length=5000, null=True, blank=True) #ok
+    RESULTADOEFR = (
+        ("Pendiente", "Pendiente"),
+        ("Acepta", "Acepta"),
+        ("Rechaza", "Rechaza")
+
+    )
+    sis_resultado_efr = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOEFR) #ok
+    sis_motivo_rechazo = models.CharField(max_length=5000, null=True, blank=True) #ok
     def __str__(self):
         return str(self.object_id)
 
@@ -579,15 +635,65 @@ class ActasRemotas(models.Model):
     editor = models.CharField(max_length=255, null=True)
 
     sis_clasificacion = models.CharField(max_length=300, default="Pendiente")
-    sis_codigo = models.CharField(max_length=300, null=True, blank=True)
-    sis_link = models.CharField(max_length=1000, null=True, blank=True)
-    sis_subsanacion = models.CharField(max_length=5000, null=True, blank=True)
-    sis_fecha_sub = models.DateField(null=True, blank=True)
-    sis_respuesta = models.CharField(max_length=5000, null=True, blank=True)
-    sis_oficio_retiro = models.CharField(max_length=1000, null=True, blank=True)
-    sis_certificado = models.CharField(max_length=5000, null=True, blank=True)
-    sis_propuesta = models.CharField(max_length=300, default="Pendiente")
-    sis_motivo= models.CharField(max_length=5000, null=True, blank=True)
+    CODIGOS = (
+        ("p1", "P1"),
+        ("p2", "P2"),
+        ("p3", "P3"),
+        ("p3-b", "P3-B"),
+        ("p4", "P4"),
+        ("p5", "P5"),
+        ("p5-b", "P5-B"),
+        ("p5-c", "P5-C"),
+        ("p6", "P6"),
+        ("p6-b", "P6-B"),
+        ("p7", "P7"),
+        ("p9", "P9"),
+        ("p10", "P10"),
+        ("p11", "P11"),
+        ("p12", "P12"),
+        ("p13", "P13"),
+        ("p14", "P14"),
+        ("p15", "P15"),
+        ("p16", "P16"),
+        ("p17", "P17"),
+        ("p19", "P19"),
+        ("p20", "P20"),
+        ("p21", "P21"),
+        ("p22", "P22"),
+        ("p25", "P25"),
+        ("p26", "P26"),
+        ("p27", "P27"),
+        ("p28", "P28"),
+        ("p29", "P29"),
+        ("p29-b", "P29-B"),
+        ("p30", "P30"),
+        ("p100", "P100")
+
+    )
+    sis_codigo = models.CharField(max_length=300, null=True, blank=True, choices=CODIGOS) #ok
+    sis_link = models.CharField(max_length=1000, null=True, blank=True) #ok
+    sis_nro_requerimiento = models.CharField(max_length=300, null=True, blank=True) #ok
+    sis_fe_sub = models.DateField(null=True, blank=True) #ok
+    sis_plazo_respuesta = models.DateField(null=True, blank=True)  # ok
+    sis_respuesta = models.CharField(max_length=5000, null=True, blank=True) #ok
+    sis_oficio_retiro = models.CharField(max_length=1000, null=True, blank=True) #ok
+    sis_certificado = models.CharField(max_length=5000, null=True, blank=True) #ok
+    PROPUESTA = (
+        ("Pendiente", "Pendiente"),
+        ("Con Infraccion", "Con Infraccion"),
+        ("Sin Infraccion", "Sin Infraccion")
+
+    )
+    sis_propuesta = models.CharField(max_length=300, default="Pendiente", choices=PROPUESTA) #ok
+    sis_motivo= models.CharField(max_length=5000, null=True, blank=True) #ok
+    RESULTADOEFR = (
+        ("Pendiente", "Pendiente"),
+        ("Acepta", "Acepta"),
+        ("Rechaza", "Rechaza")
+
+    )
+    sis_resultado_efr = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOEFR) #ok
+    sis_motivo_rechazo = models.CharField(max_length=5000, null=True, blank=True)  # ok
     def __str__(self):
         return str(self.object_id)
 

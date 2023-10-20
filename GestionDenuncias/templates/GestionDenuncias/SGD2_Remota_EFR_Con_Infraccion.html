@@ -3,6 +3,7 @@
 
 {% block body %}
 
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -51,9 +52,11 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
-<h3>Actas en Terreno - Con Infracción</h3>
+<h3>Actas en Remotas - Con Infraccion</h3>
+<div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
+    <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" onclick="asignar_todos()">Pasar Seleccionados</button></td>
 
-
+</div>
 <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
 
 
@@ -64,35 +67,30 @@ $(document).ready(function() {
         <tr>
             <th>ID Inspeccion</th>
             <th>Fecha Inspeccion</th>
-            <th>Comuna</th>
             <th>Nombre del Fiscalizador</th>
             <th>Sujeto Fiscalizado</th>
             <th>Motivo Inspeccion</th>
-            <th>Materia Fiscalizada</th>
-            <th>Opción</th>
-            <th>Detalle</th>
-            <th>Gestiones</th>
+            <th>Medio Fiscalizado</th>
 
+            <th>Detalle</th>
+<th>Gestiones</th>
         </tr>
             </thead>
     <tbody>
         {% load humanize %}
-        {% for acta in actas_terreno %}
+        {% for acta in actas_remota %}
 
        <tr>
 
             <td>{{ acta.id_inspeccion}}</td>
             <td>{{ acta.fecha|date:'Ymd'}}</td>
-         <td>{{ acta.comuna }}</td>
             <td>{{ acta.creator}}</td>
-           <td>{% if acta.Sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}} {% elif acta.Sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }} {% else %} Sin Despliegue{% endif %}</td>
+            <td>{% if acta.sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}} {% elif acta.sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }} {% else %} Sin Despliegue{% endif %}</td>
             <td>{{ acta.seleccion_motivo_inspeccion}}</td>
-       <td>{{ acta.materia_fiscalizada }}</td>
-           <td>{{ acta.opcion_plebiscitaria }}</td>
+            <td>{{ acta.medio_fiscalizado }}</td>
+
            <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
-         <td style="text-align: center"> <a href="{% url 'terreno_con_infraccion_gestiones' id=acta.global_id %}" class="btn btn-success">Ir</a></td>
-
-
+     <td style="text-align: center"> <a href="{% url 'efr_remota_con_infraccion_gestiones' id=acta.global_id %}" class="btn btn-success">Ir</a></td>
 
 
 </tr>
@@ -111,20 +109,14 @@ $(document).ready(function() {
                 {% if acta.id_inspeccion %}<p><strong>ID Inspección:</strong> {{ acta.id_inspeccion }}</p>{% endif %}
                 {% if acta.fecha %}<p><strong>Fecha:</strong> {{ acta.fecha }}</p>{% endif %}
                 {% if acta.region %}<p><strong>Región:</strong> {{ acta.region }}</p>{% endif %}
-                {% if acta.ubicacion %}<p><strong>Ubicación:</strong> {{ acta.ubicacion }}</p>{% endif %}
-                {% if acta.comuna %}<p><strong>Comuna:</strong> {{ acta.comuna }}</p>{% endif %}
 
                 <!-- 2. Motivo de inspección -->
                 {% if acta.seleccion_motivo_inspeccion %}<p><strong>Selección Motivo Inspección:</strong> {{ acta.seleccion_motivo_inspeccion }}</p>{% endif %}
-                {% if acta.indique_folio_denuncia %}<p><strong>Folio Denuncia:</strong> {{ acta.indique_folio_denuncia }}</p>{% endif %}
-                {% if acta.indique_folio_revision_fiscalizada_previamente %}<p><strong>Folio Revisión Fiscalizada Previamente:</strong> {{ acta.indique_folio_revision_fiscalizada_previamente }}</p>{% endif %}
-                {% if acta.indique_folio_revision_acta_remota %}<p><strong>Folio Revisión Acta Remota:</strong> {{ acta.indique_folio_revision_acta_remota }}</p>{% endif %}
-                {% if acta.existe_despliegue_propaganda %}<p><strong>Existe Despliegue Propaganda:</strong> {{ acta.existe_despliegue_propaganda }}</p>{% endif %}
-                {% if acta.indique_folio_f104 %}<p><strong>Folio F104:</strong> {{ acta.indique_folio_f104 }}</p>{% endif %}
+                {% if acta.indique_folio %}<p><strong>Folio Denuncia:</strong> {{ acta.indique_folio_denuncia }}</p>{% endif %}
                 {% if acta.indique_otro %}<p><strong>Indique Otro:</strong> {{ acta.indique_otro }}</p>{% endif %}
 
                 <!-- 3. Sujeto fiscalizado -->
-                {% if acta.Sujeto_fiscalizado %}<p><strong>Sujeto Fiscalizado:</strong> {{ acta.Sujeto_fiscalizado }}</p>{% endif %}
+                {% if acta.sujeto_fiscalizado %}<p><strong>Sujeto Fiscalizado:</strong> {{ acta.sujeto_fiscalizado }}</p>{% endif %}
                 {% if acta.partido_politico_habilitado %}<p><strong>Partido Político Habilitado:</strong> {{ acta.partido_politico_habilitado }}</p>{% endif %}
                 {% if acta.otro_sujeto_fiscalizado %}<p><strong>Otro Sujeto Fiscalizado:</strong> {{ acta.otro_sujeto_fiscalizado }}</p>{% endif %}
 
@@ -132,31 +124,28 @@ $(document).ready(function() {
                 {% if acta.opcion_plebiscitaria %}<p><strong>Opción Plebiscitaria:</strong> {{ acta.opcion_plebiscitaria }}</p>{% endif %}
 
                 <!-- 5. Materia fiscalizada -->
-                {% if acta.materia_fiscalizada %}<p><strong>Materia Fiscalizada:</strong> {{ acta.materia_fiscalizada }}</p>{% endif %}
-                {% if acta.corresponde_espacio_publico_autorizado %}<p><strong>Corresponde Espacio Público Autorizado:</strong> {{ acta.corresponde_espacio_publico_autorizado }}</p>{% endif %}
-                {% if acta.seleccione_espacio %}<p><strong>Seleccione Espacio:</strong> {{ acta.seleccione_espacio }}</p>{% endif %}
-                {% if acta.adosada_bien_nacional %}<p><strong>Adosada a Bien Nacional:</strong> {{ acta.adosada_bien_nacional }}</p>{% endif %}
-                {% if acta.nombre_bienes %}<p><strong>Nombre de Bienes:</strong> {{ acta.nombre_bienes }}</p>{% endif %}
-                {% if acta.cantidad_elementos_propaganda_publico %}<p><strong>Cantidad de Elementos Propaganda Público:</strong> {{ acta.cantidad_elementos_propaganda_publico }}</p>{% endif %}
-                {% if acta.seleccione_tipo_espacio %}<p><strong>Seleccione Tipo Espacio:</strong> {{ acta.seleccione_tipo_espacio }}</p>{% endif %}
-                {% if acta.seleccione_lugar %}<p><strong>Seleccione Lugar:</strong> {{ acta.seleccione_lugar }}</p>{% endif %}
-                {% if acta.propaganda_excede_dimensiones %}<p><strong>Propaganda Excede Dimensiones:</strong> {{ acta.propaganda_excede_dimensiones }}</p>{% endif %}
-                {% if acta.indique_tipo_espacio_fiscalizado %}<p><strong>Indique Tipo Espacio Fiscalizado:</strong> {{ acta.indique_tipo_espacio_fiscalizado }}</p>{% endif %}
-                {% if acta.actividad_fiscalizada %}<p><strong>Actividad Fiscalizada:</strong> {{ acta.actividad_fiscalizada }}</p>{% endif %}
-                {% if acta.indique_cantidad_brigadistas_lugar %}<p><strong>Indique Cantidad Brigadistas en Lugar:</strong> {{ acta.indique_cantidad_brigadistas_lugar }}</p>{% endif %}
+                {% if acta.es_medio_pagado %}<p><strong>Es Medio Pagado:</strong> {{ acta.es_medio_pagado }}</p>{% endif %}
+                {% if acta.medio_fiscalizado %}<p><strong>Medio Fiscalizado:</strong> {{ acta.medio_fiscalizado }}</p>{% endif %}
+                {% if acta.nombre_medio %}<p><strong>Nombre Medio:</strong> {{ acta.nombre_medio }}</p>{% endif %}
+                {% if acta.soporte_material_link %}<p><strong>Soporte Material Link:</strong> <a href="{{ acta.soporte_material_link }}"> Link</a></p>{% endif %}
+                {% if acta.medio_tiene_tarifario %}<p><strong>Tiene Tarifario:</strong> {{ acta.medio_tiene_tarifario }}</p>{% endif %}
+                {% if acta.radiofrecuencia_medio %}<p><strong>Radiofrecuencia Medio:</strong> {{ acta.radiofrecuencia_medio }}</p>{% endif %}
+                {% if acta.rrss_fiscalizada %}<p><strong>RRSS Fiscalizada:</strong> {{ acta.rrss_fiscalizada }}</p>{% endif %}
+                {% if acta.usuario_perfil_rrss %}<p><strong>Usuario Perfil RRSS:</strong> {{ acta.usuario_perfil_rrss }}</p>{% endif %}
+                {% if acta.corresponde_medio_prensa %}<p><strong>Corresponde Medio Prensa:</strong> {{ acta.corresponde_medio_prensa }}</p>{% endif %}
                 {% if acta.otro_antecente %}<p><strong>Otro Antecedente:</strong> {{ acta.otro_antecente }}</p>{% endif %}
 
-                {% if acta.evidencia_fotografica %}
+                {% if acta.medios_respaldo_adjunto %}
                 <p><strong>Adjuntos:</strong>
-                    <a href="{{ acta.evidencia_fotografica }}?token={{ latest_token.Token }}" target="_blank">
-                        <img src="{{ acta.evidencia_fotografica }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt="Evidencia Fotográfica"/>
+                    <a href="{{ acta.medios_respaldo_adjunto }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.medios_respaldo_adjunto }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
                     </a>
                                   <a href="{{ acta.adjunto2 }}?token={{ latest_token.Token }}" target="_blank">
-                        <img src="{{ acta.adjunto2 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt="Evidencia Fotográfica"/>
+                        <img src="{{ acta.adjunto2 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
                     </a>
                     </a>
                                   <a href="{{ acta.adjunto3 }}?token={{ latest_token.Token }}" target="_blank">
-                        <img src="{{ acta.adjunto3 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt="Evidencia Fotográfica"/>
+                        <img src="{{ acta.adjunto3 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
                     </a>
 
                     </a>
@@ -174,11 +163,27 @@ $(document).ready(function() {
                 </p>
                 {% endif %}
 
+
+                            {% if acta.ingrese_audios %}
+                <p><strong>Audio:</strong>
+{% if acta.ingrese_audios %}
+    <audio controls>
+        <source src="{{ acta.ingrese_audios }}?token={{ latest_token.Token }}" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
+{% endif %}
+
+
+                </p>
+                {% endif %}
+
+
                 {% if acta.link_firma_cargo_timbre %}<p><strong>Link Firma y Cargo con Timbre:</strong> <a href="{{ acta.link_firma_cargo_timbre }}?token={{ latest_token.Token }}" target="_blank">Ver Firma</a></p>{% endif %}
             </div>
         </div>
     </div>
 </div>
+
 
 
             <!-- Modal para ver imagen grande -->
@@ -190,7 +195,7 @@ $(document).ready(function() {
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img src="https://services7.arcgis.com/NfMCco52hDki1c8M/arcgis/rest/services/service_677ef362f30b4961b9f393cdeba403c3/FeatureServer/0/2/attachments/3?token=Eqmr-CJdLDSBnGBYburtg6m_WGyt4h_WQpfNtVd_Yul44hEj1TOuugAwSVbPH5z8cATf8_IGmy4LkFht10wiT8YisJbd1yFd4oJBIAZ0r-x7zYBwwjQPYLErj9Q8wNEPZsPBgUdHk6ZvTEjLK08bdZgSTvjwKYSAMD1tamOke8gLKjtfpJ0cIcH6EYqINA4QxOK-bBQnyldkS3Pt8YwUBHgk51mJR-a6W0BfuTIZb4Q." style="width: 100%; height: auto;" alt="Imagen adjunta"/>
+                <img src="{{ acta.medios_respaldo_adjunto }}?token={{ latest_token.Token }}" style="width: 100%; height: auto;" alt="Imagen adjunta"/>
             </div>
         </div>
     </div>
@@ -224,67 +229,77 @@ $(document).ready(function() {
 }
 const csrftoken = getCookie('csrftoken');
 
- function formatDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
-
   function pasar(global_id) {
-    const sis_link = document.getElementById(`sis_link${global_id}`);
-    const sis_nro_requerimiento = document.getElementById(`sis_nro_requerimiento${global_id}`);
-    const selectorCodigo = document.getElementById(`selectorCodigo${global_id}`);
-    const sis_fecha_sub = document.getElementById(`sis_fecha_sub${global_id}`);
-    const sis_plazo_respuesta = document.getElementById(`sis_plazo_respuesta${global_id}`);
-    const sis_respuesta = document.getElementById(`sis_respuesta${global_id}`);
-    const sis_oficio_retiro = document.getElementById(`sis_oficio_retiro${global_id}`);
-    const sis_certificado = document.getElementById(`sis_certificado${global_id}`);
-    const sis_propuesta = document.getElementById(`sis_propuesta${global_id}`);
-    const sis_motivo = document.getElementById(`sis_motivo${global_id}`);
 
-    const sis_linkValue = sis_link.value;
-    const sis_nro_requerimientoValue = sis_nro_requerimiento.value;
+
+
+
+    const selectorClasificacion = document.getElementById(`selectorClasificacion${global_id}`);
+    const selectorCodigo = document.getElementById(`selectorCodigo${global_id}`);
+    const clasificacionValue = selectorClasificacion.value;
     const codigoValue = selectorCodigo.value;
-    const sis_fecha_subValue = Date(sis_fecha_sub);
-    const sis_plazo_respuestaValue = Date(sis_plazo_respuesta);
-    const sis_respuestaValue = sis_respuesta.value;
-    const sis_oficio_retiroValue = sis_oficio_retiro.value;
-    const sis_certificadoValue = sis_certificado.value;
-    const sis_propuestaValue = sis_propuesta.value;
-    const sis_motivoValue = sis_motivo.value;
-    console.log(sis_nro_requerimientoValue)
+
     // Habilitar el botón según las condiciones dadas
+    if (clasificacionValue === "archivo") {
+        console.log("Entramos a archivo");
+        if (confirm('¿Esta Seguro que Archivar?')) {
+          // Save it!
+
+            pasar_etapa(global_id, 'archivo_remota', 'archivo');
+            setTimeout(() => {   return window.location.replace("{% url 'remota_pendiente_clasificacion' %}"); }, 1000);
+        } else {
+          // Do nothing!
+          console.log('No Finalizado Confirmado');
+}
+    } else if (clasificacionValue === "con_infraccion" && codigoValue !== "Pendiente") {
         if (confirm('¿Esta Seguro que Desea Pasar la Etapa Con Infracción?')) {
           // Save it!
 
-          pasar_etapa(global_id, 'EFR_Validacion', codigoValue, sis_linkValue, sis_nro_requerimientoValue,  sis_fecha_subValue, sis_plazo_respuestaValue, sis_respuestaValue, sis_oficio_retiroValue, sis_certificadoValue,  sis_propuestaValue, sis_motivoValue);
-            setTimeout(() => {   return window.location.replace("{% url 'terreno_con_infraccion' %}"); }, 1000);
+          pasar_etapa(global_id, 'con_infraccion_revisor_remota', codigoValue);
+            setTimeout(() => {   return window.location.replace("{% url 'remota_pendiente_clasificacion' %}"); }, 1000);
         } else {
           // Do nothing!
           console.log('No Finalizado Confirmado');
         }
+        console.log("Entramos a coninfraccion")
+    } else {
+        console.log("deshabilita")
+        window.alert("Datos Faltantes");
+    }
+
+
+}
+
+ function pasar_individual_masivo(global_id) {
+
+
+    const selectorClasificacion = document.getElementById(`selectorClasificacion${global_id}`);
+    const selectorCodigo = document.getElementById(`selectorCodigo${global_id}`);
+    const clasificacionValue = selectorClasificacion.value;
+    const codigoValue = selectorCodigo.value;
+
+    // Habilitar el botón según las condiciones dadas
+    if (clasificacionValue === "archivo") {
+        console.log("Entramos a archivo");
+
+          // Save it!
+
+            pasar_etapa(global_id, 'archivo_remota', 'archivo');
+    } else if (clasificacionValue === "con_infraccion" && codigoValue !== "Pendiente") {
+        pasar_etapa(global_id, 'con_infraccion_revisor_remota', codigoValue);
+         console.log("Entramos a coninfraccion")
+    }
+
 }
 
 
-    function pasar_etapa(global_id,etapa,codigo, sis_linkValue, sis_nro_requerimientoValue, sis_fecha_subValue, sis_plazo_respuestaValue, sis_respuestaValue, sis_oficio_retiroValue, sis_certificadoValue, sis_propuestaValue, sis_motivoValue) {
+    function pasar_etapa(global_id,etapa,codigo) {
 
         var datos = {
                 'respuesta':'',
 				'global_id': global_id.toString(),
                 'etapa': etapa.toString(),
-                'codigo' : codigo.toString(),
-                'sis_linkValue' : sis_linkValue.toString(),
-            'sis_nro_requerimientoValue' : sis_nro_requerimientoValue.toString(),
-            'sis_fecha_subValue' : formatDate(sis_fecha_subValue),
-            'sis_plazo_respuestaValue' : formatDate(sis_plazo_respuestaValue),
-            'sis_respuestaValue' : sis_respuestaValue.toString(),
-            'sis_oficio_retiroValue' : sis_oficio_retiroValue.toString(),
-            'sis_certificadoValue' : sis_certificadoValue.toString(),
-            'sis_propuestaValue' : sis_propuestaValue.toString(),
-            'sis_motivoValue' : sis_motivoValue.toString(),
-
+                'codigo' : codigo.toString()
 			}
     var url = "/sgd/pasar_acta/"
         fetch(url, {
@@ -299,6 +314,30 @@ const csrftoken = getCookie('csrftoken');
 	    	})
             .then((response) => response.json())
             }
+
+    function asignar_todos() {
+
+  if (confirm('¿Esta Seguro que Desea Clasificar Todos los Modificados?')) {
+  // Save it!
+  console.log('Asignar Recurso N°');
+
+       {% for acta in actas_remota %}
+        {% if acta.sis_clasificacion == 'Pendiente'%}
+              try {
+                  pasar_individual_masivo('{{ acta.global_id }}');
+              }
+              catch (e) {
+
+                console.log(e); // pasa el objeto de la excepción al manejador de errores
+                    }
+        {% endif %}
+        {% endfor %}
+  window.alert('Listo');
+  return window.location.replace("{% url 'remota_pendiente_clasificacion' %}")
+} else {
+  // Do nothing!
+  console.log('No Finalizado Confirmado');
+}}
 
 
 

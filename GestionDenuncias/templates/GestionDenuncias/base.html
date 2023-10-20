@@ -540,7 +540,7 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
 
               <a href="{% url 'terreno_con_infraccion' %}" class="w3-bar-item w3-button">A. Terreno - Menu Infraccion</a>
-              <a href="{% url 'terreno_pendiente_clasificacion' %}" class="w3-bar-item w3-button">A. Remotas - Menu Infraccion</a>
+              <a href="{% url 'remotas_con_infraccion' %}" class="w3-bar-item w3-button">A. Remotas - Menu Infraccion</a>
 
             </div>
                      </div>
@@ -548,7 +548,7 @@
       <button class="w3-button">Rechazos EFR</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
 
-              <a href="{% url 'terreno_con_infraccion' %}" class="w3-bar-item w3-button">A. Terreno - Rechazo</a>
+              <a href="{% url 'terreno_con_infraccion_rechazo' %}" class="w3-bar-item w3-button">A. Terreno - Rechazo</a>
               <a href="{% url 'terreno_pendiente_clasificacion' %}" class="w3-bar-item w3-button">A. Remotas - Rechazo</a>
 
             </div>
@@ -557,14 +557,15 @@
          {% endif %}
 
                                 {% if group.name == 'Fiscalizacion_EFR' %}
-                                     <div class="w3-dropdown-hover">
-      <button class="w3-button">Actas Ingresadas</button>
+                                      <div class="w3-dropdown-hover">
+      <button class="w3-button">Actas con Infraccion</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
 
-              <a href="{% url 'pendiente_clasificacion' %}" class="w3-bar-item w3-button">Pendientes Clasificacion</a>
+              <a href="{% url 'efr_terreno_con_infraccion' %}" class="w3-bar-item w3-button">A. Terreno - Menu Infraccion</a>
+              <a href="{% url 'efr_remota_con_infraccion' %}" class="w3-bar-item w3-button">A. Remotas - Menu Infraccion</a>
 
             </div>
-      </div>
+                                      </div>
          {% endif %}
 
 
