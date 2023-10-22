@@ -5,11 +5,29 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
+<style>
+   #id_sis_motivo_rechazo { display: none; }
+</style>
+
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 
             <script type="text/javascript" class="init">
+
+$(document).ready(function() {
+    // Escuchar cambios en el campo 'Validacion Resultado'
+    $('#id_sis_resultado_efr').change(function() {
+        if ($(this).val() == 'Rechaza') {
+            // Mostrar el campo 'Motivo Rechazo' si 'Validacion Resultado' es 'Rechazo'
+            $('#id_sis_motivo_rechazo').show();
+        } else {
+            // Ocultar el campo 'Motivo Rechazo' si 'Validacion Resultado' no es 'Rechazo'
+            $('#id_sis_motivo_rechazo').hide();
+        }
+    });
+});
 
 
 $(document).ready(function() {
@@ -66,8 +84,8 @@ $(document).ready(function() {
         {{ GestionRemotasEFRForm.as_table }}
 
          <br>
-        <input class="btn btn-primary" type="submit" name="button_guardar" value="Guardar Datos">
-        <input class="btn btn-success" id="button_enviar" name="button_enviar" value="Enviar a Siguiente Paso" onclick="enviar_formulario()">
+        <input class="btn btn-primary" type="submit" name="button_guardar" value="Guardar Datos y Salir">
+        <input class="btn btn-success" id="button_enviar" name="button_enviar" value="Guardar Datos y Enviar" onclick="enviar_formulario()">
     <br>
     </form>
             </div>

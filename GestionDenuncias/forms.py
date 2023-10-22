@@ -330,9 +330,9 @@ class GestionTerreno(forms.ModelForm):
             'sis_codigo': forms.Select(attrs={'class': 'form-control'}),
             'sis_link': forms.TextInput(attrs={'class': 'form-control'}),
             'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control'}),
-            'sis_fe_sub': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'sis_plazo_respuesta': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'sis_respuesta': forms.Select(attrs={'class': 'form-control'}),
+            'sis_fe_sub': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'sis_plazo_respuesta': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'sis_respuesta': forms.TextInput(attrs={'class': 'form-control'}),
             'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control'}),
             'sis_certificado': forms.TextInput(attrs={'class': 'form-control'}),
             'sis_propuesta': forms.Select(attrs={'class': 'form-control'}),
@@ -379,9 +379,9 @@ class GestionRemota(forms.ModelForm):
             'sis_codigo': forms.Select(attrs={'class': 'form-control'}),
             'sis_link': forms.TextInput(attrs={'class': 'form-control'}),
             'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control'}),
-            'sis_fe_sub': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'sis_plazo_respuesta': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'sis_respuesta': forms.Select(attrs={'class': 'form-control'}),
+            'sis_fe_sub': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'sis_plazo_respuesta': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'sis_respuesta': forms.TextInput(attrs={'class': 'form-control'}),
             'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control'}),
             'sis_certificado': forms.TextInput(attrs={'class': 'form-control'}),
             'sis_propuesta': forms.Select(attrs={'class': 'form-control'}),
@@ -430,15 +430,15 @@ class GestionTerrenoEFR(forms.ModelForm):
             'sis_codigo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_link': forms.TextInput(attrs={'class': 'form-control','readonly': 'readonly'}),
             'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_fe_sub': forms.DateInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_plazo_respuesta': forms.DateInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_fe_sub': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_plazo_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_certificado': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_propuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_motivo': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_resultado_efr': forms.Select(attrs={'class': 'form-control'}),
-            'sis_motivo_rechazo': forms.Textarea(attrs={'class': 'form-control', }),
+            'sis_motivo_rechazo': forms.Textarea(attrs={'class': 'form-control','placeholder': 'Escribir Motivo Rechazo...' }),
             'sis_clasificacion': forms.HiddenInput(),
 
         }
@@ -455,7 +455,7 @@ class GestionTerrenoEFR(forms.ModelForm):
             'sis_propuesta': 'Propuesta*:',
             'sis_motivo': 'Motivo Revisor*:',
             'sis_resultado_efr': 'Validacion Resultado',
-            'sis_motivo_rechazo': 'Motivo Rechazo:',
+            'sis_motivo_rechazo': '',
             'sis_clasificacion':'sis_clasificacion'
 
         }
@@ -485,15 +485,15 @@ class GestionRemotasEFR(forms.ModelForm):
             'sis_codigo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_link': forms.TextInput(attrs={'class': 'form-control','readonly': 'readonly'}),
             'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_fe_sub': forms.DateInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_plazo_respuesta': forms.DateInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_fe_sub': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_plazo_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_certificado': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_propuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_motivo': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'sis_resultado_efr': forms.Select(attrs={'class': 'form-control'}),
-            'sis_motivo_rechazo': forms.Textarea(attrs={'class': 'form-control', }),
+            'sis_motivo_rechazo': forms.Textarea(attrs={'class': 'form-control','placeholder': 'Escribir Motivo Rechazo...' }),
             'sis_clasificacion': forms.HiddenInput(),
 
         }
@@ -510,7 +510,7 @@ class GestionRemotasEFR(forms.ModelForm):
             'sis_propuesta': 'Propuesta*:',
             'sis_motivo': 'Motivo Revisor*:',
             'sis_resultado_efr': 'Validacion Resultado',
-            'sis_motivo_rechazo': 'Motivo Rechazo:',
+            'sis_motivo_rechazo': '',
             'sis_clasificacion':'sis_clasificacion'
 
         }

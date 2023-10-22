@@ -66,8 +66,8 @@ $(document).ready(function() {
         {{ GestionRemotaForm.as_table }}
 
          <br>
-        <input class="btn btn-primary" type="submit" name="button_guardar" value="Guardar Datos">
-        <input class="btn btn-success" id="button_enviar" name="button_enviar" value="Enviar a Siguiente Paso" onclick="enviar_formulario()">
+        <input class="btn btn-primary" type="submit" name="button_guardar" value="Guardar Datos y Salir">
+        <input class="btn btn-success" id="button_enviar" name="button_enviar" value="Guardar Datos y Enviar" onclick="enviar_formulario()">
     <br>
     </form>
             </div>
@@ -202,28 +202,32 @@ const csrftoken = getCookie('csrftoken');
 }
 
   function enviar_formulario() {
-    const sis_link = document.getElementById(`sis_link`);
-    const sis_nro_requerimiento = document.getElementById(`sis_nro_requerimiento`);
-    const selectorCodigo = document.getElementById(`selectorCodigo`);
-    const sis_fecha_sub = document.getElementById(`sis_fecha_sub`);
-    const sis_plazo_respuesta = document.getElementById(`sis_plazo_respuesta`);
-    const sis_respuesta = document.getElementById(`sis_respuesta`);
-    const sis_oficio_retiro = document.getElementById(`sis_oficio_retiro`);
-    const sis_certificado = document.getElementById(`sis_certificado`);
-    const sis_propuesta = document.getElementById(`sis_propuesta`);
-    const sis_motivo = document.getElementById(`sis_motivo`);
+    const sis_link = document.getElementById(`id_sis_link`);
+    const sis_nro_requerimiento = document.getElementById(`id_sis_nro_requerimiento`);
+    const selectorCodigo = document.getElementById(`id_selectorCodigo`);
+    const sis_fe_sub = document.getElementById(`id_sis_fe_sub`);
+    const sis_plazo_respuesta = document.getElementById(`id_sis_plazo_respuesta`);
+    const sis_respuesta = document.getElementById(`id_sis_respuesta`);
+    const sis_oficio_retiro = document.getElementById(`id_sis_oficio_retiro`);
+    const sis_certificado = document.getElementById(`id_sis_certificado`);
+    const sis_propuesta = document.getElementById(`id_sis_propuesta`);
+    const sis_motivo = document.getElementById(`id_sis_motivo`);
 
-        if (confirm('¿Esta Seguro que quiere enviar el Acta ?')) {
-        // Save it!
-          console.log('Enviado Formulario');
-          document.getElementById("id_sis_clasificacion").value = "EFR_Validacion";
-          console.log('pasa 1');
-          document.getElementById("myForm").submit();
-          console.log('pasa 2');
-} else {
-          // Do nothing!
-      }
+       if (sis_link.value === "" || sis_propuesta.value ==="Pendiente"|| sis_motivo.value ==="") {
 
+            window.alert("Datos Faltantes");
+       } else {
+           if (confirm('¿Esta Seguro que quiere enviar el Acta ?')) {
+               // Save it!
+               console.log('Enviado Formulario');
+               document.getElementById("id_sis_clasificacion").value = "EFR_Validacion";
+               console.log('pasa 1');
+               document.getElementById("myForm").submit();
+               console.log('pasa 2');
+           } else {
+               // Do nothing!
+           }
+       }
 }
 
 

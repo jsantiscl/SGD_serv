@@ -698,7 +698,7 @@ def remota_pendiente_clasificacion(request):
 
     if region_usuario:
         # Filtra las ActasTerreno basadas en la región del usuario
-        actas_remota = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", region=region_usuario)
+        actas_remota = ActasRemotas.objects.filter(sis_clasificacion="Pendiente", region=region_usuario)
     else:
         actas_remota = []
 
@@ -813,7 +813,7 @@ def remota_archivo(request):
 
     if region_usuario:
         # Filtra las ActasTerreno basadas en la región del usuario
-        actas_remota = ActasTerreno.objects.filter(sis_clasificacion="archivo_remota", region=region_usuario)
+        actas_remota = ActasRemotas.objects.filter(sis_clasificacion="archivo_remota", region=region_usuario)
     else:
         actas_remota = []
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
@@ -890,7 +890,7 @@ def remotas_con_infraccion(request):
 
     if region_usuario:
         # Filtra las ActasTerreno basadas en la región del usuario
-        actas_remota = ActasTerreno.objects.filter(sis_clasificacion="con_infraccion_revisor_remota", region=region_usuario)
+        actas_remota = ActasRemotas.objects.filter(sis_clasificacion="con_infraccion_revisor_remota", region=region_usuario)
     else:
         actas_remota = []
 
@@ -1005,7 +1005,7 @@ def efr_remota_con_infraccion(request):
 
     if region_usuario:
         # Filtra las ActasTerreno basadas en la región del usuario
-        actas_remota = ActasTerreno.objects.filter(sis_clasificacion="EFR_Validacion", region=region_usuario)
+        actas_remota = ActasRemotas.objects.filter(sis_clasificacion="EFR_Validacion", region=region_usuario)
     else:
         actas_remota = []
 
