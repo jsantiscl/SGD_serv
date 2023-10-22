@@ -697,3 +697,15 @@ class ActasRemotas(models.Model):
     def __str__(self):
         return str(self.object_id)
 
+class RevisoresDR(models.Model):
+    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    Region = models.CharField(max_length=50, null=True, blank=True)  # ok
+    def __str__(self):
+        return str(self.Region)
+
+class EFRDR(models.Model):
+    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    Region = models.CharField(max_length=50, null=True, blank=True)  # ok
+    def __str__(self):
+        return str(self.Region)
+

@@ -24,3 +24,6 @@ admin.site.register(AlertasMeta)
 admin.site.register(AnunciosMeta)
 
 admin.site.register(ConsultasFormulario)
+
+admin.site.register(RevisoresDR)
+admin.site.register(EFRDR)

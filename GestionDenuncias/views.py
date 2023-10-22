@@ -7,7 +7,7 @@ from .forms import *
 from .forms import GestionTerreno
 from django.contrib.auth.models import User
 from django.db.models import Q
-from .models import ActasTerreno, ActasRemotas, Tokens
+from .models import ActasTerreno, ActasRemotas, Tokens, RevisoresDR, EFRDR
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
@@ -603,12 +603,25 @@ def carga_datos_actas_remotas(request):
 
 
 def terreno_pendiente_clasificacion(request):
+
+    try:
+        revisor = RevisoresDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+    except RevisoresDR.DoesNotExist:
+        # Manejo de error en caso de que no se encuentre la región del usuario
+        region_usuario = None
+
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", region=region_usuario)
+    else:
+        actas_terreno = []
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", creator='Unidad_Fiscalizacion')
+
     for acta in actas_terreno:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
         local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
-        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto2 = increment_url_numbers(acta.evidencia_fotografica)
         acta.adjunto3 = increment_url_numbers(acta.adjunto2)
         acta.adjunto4 = increment_url_numbers(acta.adjunto3)
         acta.adjunto5 = increment_url_numbers(acta.adjunto4)
@@ -676,7 +689,19 @@ def pasar_acta(request):
 
 def remota_pendiente_clasificacion(request):
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    actas_remota = ActasRemotas.objects.filter(sis_clasificacion="Pendiente", creator='Unidad_Fiscalizacion')
+    try:
+        revisor = RevisoresDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+    except RevisoresDR.DoesNotExist:
+        # Manejo de error en caso de que no se encuentre la región del usuario
+        region_usuario = None
+
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_remota = ActasTerreno.objects.filter(sis_clasificacion="Pendiente", region=region_usuario)
+    else:
+        actas_remota = []
+
     for acta in actas_remota:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
         local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
@@ -707,7 +732,19 @@ def remota_pendiente_clasificacion(request):
 
 
 def terreno_con_infraccion(request):
-    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="con_infraccion_revisor_terreno", creator='Unidad_Fiscalizacion')
+    try:
+        revisor = RevisoresDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+    except RevisoresDR.DoesNotExist:
+        # Manejo de error en caso de que no se encuentre la región del usuario
+        region_usuario = None
+
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="con_infraccion_revisor_terreno", region=region_usuario)
+    else:
+        actas_terreno = []
+
     for acta in actas_terreno:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
         local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
@@ -731,8 +768,21 @@ def terreno_con_infraccion(request):
     return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Con_Infraccion.html', context)
 
 def terreno_archivo(request):
+    try:
+        revisor = RevisoresDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+    except RevisoresDR.DoesNotExist:
+        # Manejo de error en caso de que no se encuentre la región del usuario
+        region_usuario = None
+
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="archivo_terreno", region=region_usuario)
+    else:
+        actas_terreno = []
+
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="archivo_terreno", creator='Unidad_Fiscalizacion')
+
     for acta in actas_terreno:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
         local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
@@ -754,8 +804,20 @@ def terreno_archivo(request):
     return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Archivo.html', context)
 
 def remota_archivo(request):
+    try:
+        revisor = RevisoresDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+    except RevisoresDR.DoesNotExist:
+        # Manejo de error en caso de que no se encuentre la región del usuario
+        region_usuario = None
+
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_remota = ActasTerreno.objects.filter(sis_clasificacion="archivo_remota", region=region_usuario)
+    else:
+        actas_remota = []
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
-    actas_remota = ActasRemotas.objects.filter(sis_clasificacion="archivo_remota", creator='Unidad_Fiscalizacion')
+
     for acta in actas_remota:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
         local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
@@ -819,7 +881,19 @@ def terreno_con_infraccion_gestiones(request, id):
 
 
 def remotas_con_infraccion(request):
-    actas_remota = ActasRemotas.objects.filter(sis_clasificacion="con_infraccion_revisor_remota", creator='Unidad_Fiscalizacion')
+    try:
+        revisor = RevisoresDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+    except RevisoresDR.DoesNotExist:
+        # Manejo de error en caso de que no se encuentre la región del usuario
+        region_usuario = None
+
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_remota = ActasTerreno.objects.filter(sis_clasificacion="con_infraccion_revisor_remota", region=region_usuario)
+    else:
+        actas_remota = []
+
     for acta in actas_remota:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
         local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
@@ -886,7 +960,19 @@ def remota_con_infraccion_gestiones(request, id):
 
 
 def efr_terreno_con_infraccion(request):
-    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="EFR_Validacion", creator='Unidad_Fiscalizacion')
+    try:
+        revisor = EFRDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+    except EFRDR.DoesNotExist:
+        # Manejo de error en caso de que no se encuentre la región del usuario
+        region_usuario = None
+
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="EFR_Validacion", region=region_usuario)
+    else:
+        actas_terreno = []
+
     for acta in actas_terreno:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
         local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
@@ -910,8 +996,19 @@ def efr_terreno_con_infraccion(request):
     return render(request, 'GestionDenuncias/SGD2_Terreno_EFR_Con_Infraccion.html', context)
 
 def efr_remota_con_infraccion(request):
-    actas_remota = ActasRemotas.objects.filter(sis_clasificacion="EFR_Validacion",
-                                               creator='Unidad_Fiscalizacion')
+    try:
+        revisor = EFRDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+    except EFRDR.DoesNotExist:
+        # Manejo de error en caso de que no se encuentre la región del usuario
+        region_usuario = None
+
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_remota = ActasTerreno.objects.filter(sis_clasificacion="EFR_Validacion", region=region_usuario)
+    else:
+        actas_remota = []
+
     for acta in actas_remota:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
         local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
@@ -939,8 +1036,7 @@ def efr_remota_con_infraccion(request):
     return render(request, 'GestionDenuncias/SGD2_Remota_EFR_Con_Infraccion.html', context)
 
 def efr_terreno_con_infraccion_gestiones(request, id):
-    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="EFR_Validacion",
-                                               creator='Unidad_Fiscalizacion', global_id=id)
+    actas_terreno = ActasTerreno.objects.filter(global_id=id)
     for acta in actas_terreno:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
         local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
@@ -1021,7 +1117,19 @@ def efr_remota_con_infraccion_gestiones(request, id):
     return render(request, 'GestionDenuncias/SGD2_Remota_EFR_Con_Infraccion_Gestiones.html', context)
 
 def terreno_con_infraccion_rechazo(request):
-    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="revisor_rechazo", creator='Unidad_Fiscalizacion')
+    try:
+        revisor = RevisoresDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+    except RevisoresDR.DoesNotExist:
+        # Manejo de error en caso de que no se encuentre la región del usuario
+        region_usuario = None
+
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="revisor_rechazo", region=region_usuario)
+    else:
+        actas_terreno = []
+
     for acta in actas_terreno:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
         local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
@@ -1076,3 +1184,83 @@ def terreno_con_infraccion_rechazo_gestiones(request, id):
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
     context = {'latest_token': latest_token, 'actas_terreno': actas_terreno, 'GestionTerrenoForm': GestionTerrenoForm}
     return render(request, 'GestionDenuncias/SGD2_Terreno_Revisor_Con_Infraccion_Rechazo_Gestiones.html', context)
+
+
+def remotas_con_infraccion_rechazo(request):
+    try:
+        revisor = RevisoresDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+        print("Reg_ok")
+    except RevisoresDR.DoesNotExist:
+        # Manejo de error en caso de que no se encuentre la región del usuario
+        region_usuario = None
+        print("Reg_vacia")
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_remota = ActasRemotas.objects.filter(sis_clasificacion="revisor_rechazo", region=region_usuario)
+
+    else:
+        actas_remota = []
+
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Con_Infraccion_Rechazo.html', context)
+
+def remota_con_infraccion_gestiones_rechazo(request, id):
+    actas_remota = ActasRemotas.objects.filter(global_id=id)
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    if request.method == 'POST':
+        GestionRemotaForm = GestionRemota(request.POST, instance=acta)
+        if GestionRemotaForm.is_valid():
+            GestionRemotaForm.save()
+            return redirect('remotas_con_infraccion_rechazo')
+    else:
+        GestionRemotaForm = GestionRemota(instance=acta)
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'GestionRemotaForm': GestionRemotaForm}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Con_Infraccion_Gestiones_Rechazo.html', context)
