@@ -650,8 +650,10 @@ def increment_url_numbers(url):
         return str(int(m.group(1)) + 1)
 
     # Usa una expresión regular para identificar y modificar los números al final de la URL
-    new_url = re.sub(r'(\d+)$', replacer, url)
-
+    try:
+        new_url = re.sub(r'(\d+)$', replacer, url)
+    except:
+        return 'Http://'
     return new_url
 
 
