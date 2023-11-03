@@ -195,7 +195,7 @@ const csrftoken = getCookie('csrftoken');
         {% endif %}
         {% endfor %}
   window.alert('Listo');
-  return window.location.replace("{% url 'gd_en_firma_director' %}")
+  return window.location.replace("{% url 'gd_en_notificacion' %}")
 } else {
   // Do nothing!
   console.log('No Finalizado Confirmado');
