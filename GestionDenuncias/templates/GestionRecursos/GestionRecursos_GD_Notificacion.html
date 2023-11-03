@@ -141,7 +141,7 @@ const csrftoken = getCookie('csrftoken');
   // Do nothing!
   console.log('No Finalizado Confirmado');
 }
-  setTimeout(() => {   return window.location.replace("{% url 'gd_en_firma_director' %}"); }, 1000);
+  setTimeout(() => {   return window.location.replace("{% url 'gd_en_notificacion' %}"); }, 1000);
   } else {
         window.alert('Seleccione al Siguiente Usuario');
   }
