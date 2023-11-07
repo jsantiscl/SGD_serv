@@ -556,14 +556,7 @@ class ActasTerreno(models.Model):
     sis_nro_requerimiento = models.CharField(max_length=300, null=True, blank=True) #ok
     sis_fe_sub = models.DateField(null=True, blank=True) #ok
     sis_plazo_respuesta = models.DateField(null=True, blank=True)  # ok
-    RESPUESTA = (
-        ("Pendiente", "Pendiente"),
-        ("Sin Respuesta", "Sin Respuesta"),
-        ("Con Respuesta - Subsana", "Con Respuesta - Subsana"),
-        ("Con Respuesta - No Subsana", "Con Respuesta - No Subsana")
-
-    )
-    sis_respuesta = models.CharField(max_length=5000, null=True, blank=True, choices=RESPUESTA) #ok
+    sis_respuesta = models.CharField(max_length=5000, null=True, blank=True) #ok
     sis_oficio_retiro = models.CharField(max_length=1000, null=True, blank=True) #ok
     sis_certificado = models.CharField(max_length=5000, null=True, blank=True) #ok
     PROPUESTA = (
