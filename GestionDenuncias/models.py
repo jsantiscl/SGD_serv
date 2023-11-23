@@ -575,6 +575,8 @@ class ActasTerreno(models.Model):
     )
     sis_resultado_efr = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOEFR) #ok
     sis_motivo_rechazo = models.CharField(max_length=5000, null=True, blank=True) #ok
+    sis_motivo_inicial = models.CharField(max_length=5000, null=True, blank=True)  # ok
+
     def __str__(self):
         return str(self.object_id)
 
@@ -687,6 +689,7 @@ class ActasRemotas(models.Model):
     )
     sis_resultado_efr = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOEFR) #ok
     sis_motivo_rechazo = models.CharField(max_length=5000, null=True, blank=True)  # ok
+    sis_motivo_inicial = models.CharField(max_length=5000, null=True, blank=True)  # ok
     def __str__(self):
         return str(self.object_id)
 

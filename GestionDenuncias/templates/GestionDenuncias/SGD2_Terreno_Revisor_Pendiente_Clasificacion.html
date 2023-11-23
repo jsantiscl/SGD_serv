@@ -54,7 +54,7 @@ $(document).ready(function() {
 <section class="section1">
 <h3>Actas en Terreno - Pendientes de Clasificación</h3>
 <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
-    <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" onclick="asignar_todos()">Pasar Seleccionados</button></td>
+    <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" data-toggle="modal" data-target="#motivoModalmasivo">Pasar Seleccionados</button></td>
 
 </div>
 <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
@@ -152,7 +152,7 @@ $(document).ready(function() {
     <a
         class="btn btn-success"
         id="pasar{{ acta.global_id|stringformat:'s' }}"
-        onclick="pasar('{{ acta.global_id|stringformat:'s' }}')"
+        data-toggle="modal" data-target="#motivoModal{{ acta.global_id|stringformat:'s' }}"
         disabled
     >
         Siguiente
@@ -258,8 +258,56 @@ $(document).ready(function() {
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="motivoModal{{ acta.global_id }}" tabindex="-1" role="dialog" aria-labelledby="motivoModalLabel{{ acta.global_id }}" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="motivoModalLabel{{ acta.global_id }}">Ingresar Motivo</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formMotivo{{ acta.global_id }}">
+          <div class="mb-3">
+            <label for="motivoInput{{ acta.global_id }}" class="form-label">Motivo</label>
+            <input type="text" class="form-control" id="motivoInput{{ acta.global_id }}" name="motivo">
+          </div>
+           <a id="finalizar{{ acta.global_id|stringformat:'s' }}" class="btn btn-primary" onclick="pasar('{{ acta.global_id|stringformat:'s' }}')">Finalizar</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
         {% endfor %}
+
+
+    <!-- Modal -->
+<div class="modal fade" id="motivoModalmasivo" tabindex="-1" role="dialog" aria-labelledby="motivoModalLabelmasivo" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="motivoModalLabelmasivo">Ingresar Motivo</h5>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formMotivomasivo">
+          <div class="mb-3">
+            <label for="motivoInputmasivo" class="form-label">Motivo</label>
+            <input type="text" class="form-control" id="motivoInputmasivo" name="motivo">
+          </div>
+          <a id="finalizarmasivo" class="btn btn-primary" onclick="asignar_todos()">Finalizar</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
     </tbody>
     </table>
 <td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
@@ -293,8 +341,11 @@ const csrftoken = getCookie('csrftoken');
 
     const selectorClasificacion = document.getElementById(`selectorClasificacion${global_id}`);
     const selectorCodigo = document.getElementById(`selectorCodigo${global_id}`);
+    const inputmotivo = document.getElementById(`motivoInput${global_id}`);
+
     const clasificacionValue = selectorClasificacion.value;
     const codigoValue = selectorCodigo.value;
+    const inputmotivoValue = inputmotivo.value;
 
     // Habilitar el botón según las condiciones dadas
     if (clasificacionValue === "archivo") {
@@ -302,7 +353,7 @@ const csrftoken = getCookie('csrftoken');
         if (confirm('¿Esta Seguro que Archivar?')) {
           // Save it!
 
-            pasar_etapa(global_id, 'archivo_terreno', 'archivo');
+            pasar_etapa(global_id, 'archivo_terreno', 'archivo', inputmotivoValue);
             setTimeout(() => {   return window.location.replace("{% url 'terreno_pendiente_clasificacion' %}"); }, 1000);
         } else {
           // Do nothing!
@@ -312,7 +363,7 @@ const csrftoken = getCookie('csrftoken');
         if (confirm('¿Esta Seguro que Desea Pasar la Etapa Con Infracción?')) {
           // Save it!
 
-          pasar_etapa(global_id, 'con_infraccion_revisor_terreno', codigoValue);
+          pasar_etapa(global_id, 'con_infraccion_revisor_terreno', codigoValue, inputmotivoValue);
             setTimeout(() => {   return window.location.replace("{% url 'terreno_pendiente_clasificacion' %}"); }, 1000);
         } else {
           // Do nothing!
@@ -332,8 +383,11 @@ const csrftoken = getCookie('csrftoken');
 
     const selectorClasificacion = document.getElementById(`selectorClasificacion${global_id}`);
     const selectorCodigo = document.getElementById(`selectorCodigo${global_id}`);
+    const inputmotivomasivo = document.getElementById(`motivoInputmasivo`);
+
     const clasificacionValue = selectorClasificacion.value;
     const codigoValue = selectorCodigo.value;
+    const inputmotivomasivoValue = inputmotivomasivo.value;
 
     // Habilitar el botón según las condiciones dadas
     if (clasificacionValue === "archivo") {
@@ -341,22 +395,23 @@ const csrftoken = getCookie('csrftoken');
 
           // Save it!
 
-            pasar_etapa(global_id, 'archivo_terreno', 'archivo');
+            pasar_etapa(global_id, 'archivo_terreno', 'archivo',inputmotivomasivoValue);
     } else if (clasificacionValue === "con_infraccion" && codigoValue !== "Pendiente") {
-        pasar_etapa(global_id, 'con_infraccion_revisor_terreno', codigoValue);
+        pasar_etapa(global_id, 'con_infraccion_revisor_terreno', codigoValue,inputmotivomasivoValue);
          console.log("Entramos a coninfraccion")
     }
 
 }
 
 
-    function pasar_etapa(global_id,etapa,codigo) {
+    function pasar_etapa(global_id,etapa,codigo, inputmotivoValue) {
 
         var datos = {
                 'respuesta':'',
 				'global_id': global_id.toString(),
                 'etapa': etapa.toString(),
-                'codigo' : codigo.toString()
+                'codigo' : codigo.toString(),
+                'inputmotivoValue' : inputmotivoValue.toString()
 			}
     var url = "/sgd/pasar_acta/"
         fetch(url, {

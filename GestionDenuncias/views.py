@@ -660,27 +660,31 @@ def increment_url_numbers(url):
 def pasar_acta(request):
     data = json.loads(request.body)
     if data['datos']['etapa'] == 'archivo_terreno':
-         ActasTerreno.objects.filter(global_id=str(data['datos']['global_id'])).update(sis_clasificacion=str(data['datos']['etapa']))
+         ActasTerreno.objects.filter(global_id=str(data['datos']['global_id'])).update(sis_clasificacion=str(data['datos']['etapa']),
+                                                                                       sis_motivo_inicial = str(data['datos']['inputmotivoValue']))
          #WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
          #                                       nueva_etapa=str(data['datos']['etapa']),
          #                                       fecha_cambio=datetime.now())
     if data['datos']['etapa'] == 'con_infraccion_revisor_terreno':
         if data['datos']['codigo'] != 'Pendiente':
             ActasTerreno.objects.filter(global_id=str(data['datos']['global_id'])).update(
-                sis_clasificacion=str(data['datos']['etapa']), sis_codigo = str(data['datos']['codigo']))
+                sis_clasificacion=str(data['datos']['etapa']), sis_codigo = str(data['datos']['codigo']),
+                                                                                       sis_motivo_inicial = str(data['datos']['inputmotivoValue']))
         # WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
         #                                       nueva_etapa=str(data['datos']['etapa']),
         #                                       fecha_cambio=datetime.now())
 
     if data['datos']['etapa'] == 'archivo_remota':
-         ActasRemotas.objects.filter(global_id=str(data['datos']['global_id'])).update(sis_clasificacion=str(data['datos']['etapa']))
+         ActasRemotas.objects.filter(global_id=str(data['datos']['global_id'])).update(sis_clasificacion=str(data['datos']['etapa']),
+                                                                                       sis_motivo_inicial = str(data['datos']['inputmotivoValue']))
          #WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
          #                                       nueva_etapa=str(data['datos']['etapa']),
          #                                       fecha_cambio=datetime.now())
     if data['datos']['etapa'] == 'con_infraccion_revisor_remota':
         if data['datos']['codigo'] != 'Pendiente':
             ActasRemotas.objects.filter(global_id=str(data['datos']['global_id'])).update(
-                sis_clasificacion=str(data['datos']['etapa']), sis_codigo = str(data['datos']['codigo']))
+                sis_clasificacion=str(data['datos']['etapa']), sis_codigo = str(data['datos']['codigo']),
+                                                                                       sis_motivo_inicial = str(data['datos']['inputmotivoValue']))
         # WorkflowSCP.objects.create(rut_candidato_partido=str(data['datos']['rut']), usuario=str(request.user),
         #                                       nueva_etapa=str(data['datos']['etapa']),
         #                                       fecha_cambio=datetime.now())
