@@ -1314,7 +1314,7 @@ def expcsv(request, lc):
         ws.append(column_names)
 
         # Escribir los datos del modelo
-        for obj in ActasTerreno.objects.all():
+        for obj in ActasRemotas.objects.all():
             ws.append([getattr(obj, field.name) for field in ActasRemotas._meta.fields])
 
         # Configurar la respuesta HTTP
