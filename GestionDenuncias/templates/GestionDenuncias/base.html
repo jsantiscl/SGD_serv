@@ -568,6 +568,17 @@
                                       </div>
          {% endif %}
 
+                                                {% if group.name == 'Fiscalizacion_Admin' %}
+                                      <div class="w3-dropdown-hover">
+      <button class="w3-button">Actas con Infraccion - Admin</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'admin_terreno_con_infraccion' %}" class="w3-bar-item w3-button">A. Terreno - Menu Infraccion</a>
+              <a href="{% url 'admin_remota_con_infraccion' %}" class="w3-bar-item w3-button">A. Remotas - Menu Infraccion</a>
+
+            </div>
+                                      </div>
+         {% endif %}
 
         {% endfor %}
          {% if user.is_staff %}

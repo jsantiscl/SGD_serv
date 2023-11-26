@@ -127,10 +127,19 @@ urlpatterns = [
     path('revisor/terreno_con_infraccion_rechazo/', login_required(terreno_con_infraccion_rechazo),
          name='terreno_con_infraccion_rechazo'),
     path('revisor/terreno_con_infraccion_rechazo_gestiones/<str:id>', login_required(terreno_con_infraccion_rechazo_gestiones),
-         name='terreno_con_infraccion_rechazo_gestiones'),
+         name='terreno_con_infraccion_rechazo_gesticones'),
     path('revisor/remota_con_infraccion_rechazo/', login_required(remotas_con_infraccion_rechazo),
          name='remotas_con_infraccion_rechazo'),
     path('revisor/remota_con_infraccion_rechazo_gestiones/<str:id>',
          login_required(remota_con_infraccion_gestiones_rechazo),
          name='remota_con_infraccion_rechazo_gestiones'),
+
+    path('expcsv/<str:lc>', expcsv, name='expcsv'),
+
+    path('admin/terreno_con_infraccion/', login_required(admin_terreno_con_infraccion),
+         name='admin_terreno_con_infraccion'),
+    path('admin/remota_con_infraccion/', login_required(admin_remota_con_infraccion),
+         name='admin_remota_con_infraccion'),
+
 ]
+

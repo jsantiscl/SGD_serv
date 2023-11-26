@@ -3,6 +3,7 @@
 
 {% block body %}
 
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -51,36 +52,70 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
+<h3>Actas en Remotas - Con Infraccion</h3>
 
-<div class="w3-responsive">
-<div class = "w3-row">
-     <div class="w3-half w3-container">
- <br>
+<div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
 
+
+</div>
+
+    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
+    <thead>
+        <tr>
+            <th>ID Inspeccion</th>
+            <th>Fecha Inspeccion</th>
+            <th>Nombre del Fiscalizador</th>
+            <th>Sujeto Fiscalizado</th>
+            <th>Motivo Inspeccion</th>
+            <th>Medio Fiscalizado</th>
+
+            <th>Detalle</th>
+            <th>Asignación</th>
+            <th>Acciones</th>
+        </tr>
+            </thead>
+    <tbody>
+        {% load humanize %}
         {% for acta in actas_remota %}
-        {% if acta.sis_clasificacion == 'revisor_rechazo'%}
-         <h3>Gestionar Acta {{ acta.id_inspeccion }}</h3>
-             <br>
-    <form action="{% url 'remota_con_infraccion_rechazo_gestiones' id=acta.global_id %}" method = "POST" enctype="multipart/form-data" id="myForm">{% csrf_token %}
-        {% csrf_token %}
-        {{ GestionRemotaForm.as_table }}
 
-         <br>
-        <input class="btn btn-primary" type="submit" name="button_guardar" value="Guardar Datos y Salir">
-        <input class="btn btn-success" id="button_enviar" name="button_enviar" value="Guardar Datos y Enviar" onclick="enviar_formulario()">
-    <br>
-    </form>
+       <tr>
+
+            <td>{{ acta.id_inspeccion}}</td>
+            <td>{{ acta.fecha|date:'Ymd'}}</td>
+            <td>{{ acta.creator}}</td>
+            <td>{% if acta.sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}} {% elif acta.sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }} {% else %} Sin Despliegue{% endif %}</td>
+            <td>{{ acta.seleccion_motivo_inspeccion}}</td>
+            <td>{{ acta.medio_fiscalizado }}</td>
+
+           <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
+      <td>
+
+            <select name="asignacion" id="selectorasignacion{{acta.global_id}}">
+              <option selected value="Pendiente">Pendiente</option>
+                {% for abogado in abogados %}
+              <option value={{ abogado.rut }}>{{ abogado.nombre }}</option>
+                {% endfor %}
+
+            </select>
+
+            </td>
+
+          <td><a class="btn btn-success" onclick="pasar('{{ acta.global_id }}')">Asignar</a></td>
+
+
+</tr>
+
+            <!-- Modal -->
+<div class="modal fade" id="detailsModal{{ acta.global_id }}" tabindex="-1" aria-labelledby="detailsModalLabel{{ acta.global_id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel{{ acta.global_id }}">Detalles del Acta {{ acta.object_id }}</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
-              <div class="w3-half w3-container">
-               <br>
-                 <h3>Detalles Acta</h3>
-                 <br>
-               <div class="modal-content">
-
             <div class="modal-body">
 
                 <!-- 1. Datos generales -->
-                {% if acta.sis_motivo_rechazo %}<p><strong>Motivo Rechazo:</strong> {{ acta.sis_motivo_rechazo }}</p>{% endif %}
                 {% if acta.id_inspeccion %}<p><strong>ID Inspección:</strong> {{ acta.id_inspeccion }}</p>{% endif %}
                 {% if acta.fecha %}<p><strong>Fecha:</strong> {{ acta.fecha }}</p>{% endif %}
                 {% if acta.region %}<p><strong>Región:</strong> {{ acta.region }}</p>{% endif %}
@@ -154,23 +189,33 @@ $(document).ready(function() {
 
 
                 {% if acta.link_firma_cargo_timbre %}<p><strong>Link Firma y Cargo con Timbre:</strong> <a href="{{ acta.link_firma_cargo_timbre }}?token={{ latest_token.Token }}" target="_blank">Ver Firma</a></p>{% endif %}
-                           {% if acta.sis_motivo_inicial %}<p><strong>Motivo Revisor:</strong> {{ acta.sis_motivo_inicial }}</p>{% endif %}
-
+            {% if acta.sis_motivo_inicial %}<p><strong>Motivo Revisor:</strong> {{ acta.sis_motivo_inicial }}</p>{% endif %}
             </div>
         </div>
-                  <br>
+    </div>
+</div>
 
-              <br>
-             </div>
-        {% else %}
-        <h3>No Autorizado</h3>
-        {% endif %}
+
+
+            <!-- Modal para ver imagen grande -->
+<div class="modal fade" id="imageModal{{ acta.global_id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ acta.global_id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel{{ acta.global_id }}">Adjunto del Acta {{ acta.global_id }}</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="{{ acta.medios_respaldo_adjunto }}?token={{ latest_token.Token }}" style="width: 100%; height: auto;" alt="Imagen adjunta"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
         {% endfor %}
-
-</div>
-</div>
-<br>
-<br>
+    </tbody>
+    </table>
 <td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
 
 </section>
@@ -195,47 +240,50 @@ $(document).ready(function() {
 }
 const csrftoken = getCookie('csrftoken');
 
- function formatDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+   function pasar(global_id) {
+
+    const asignacion = document.getElementById(`selectorasignacion${global_id}`);
+    var asignacion_selected = asignacion.options[asignacion.selectedIndex].value;
+    // Habilitar el botón según las condiciones dadas
+      console.log(asignacion_selected);
+        if (confirm('¿Esta Seguro que Desea Asignar?')) {
+          // Save it!
+
+          pasar_etapa(global_id, 'asignado_Abogado', asignacion_selected );
+            setTimeout(() => {   return window.location.replace("{% url 'admin_remota_con_infraccion' %}"); }, 1000);
+        } else {
+          // Do nothing!
+          console.log('No Finalizado Confirmado');
+        }
 }
 
-  function enviar_formulario() {
-    const sis_link = document.getElementById(`id_sis_link`);
-    const sis_nro_requerimiento = document.getElementById(`id_sis_nro_requerimiento`);
-    const selectorCodigo = document.getElementById(`id_selectorCodigo`);
-    const sis_fe_sub = document.getElementById(`id_sis_fe_sub`);
-    const sis_plazo_respuesta = document.getElementById(`id_sis_plazo_respuesta`);
-    const sis_respuesta = document.getElementById(`id_sis_respuesta`);
-    const sis_oficio_retiro = document.getElementById(`id_sis_oficio_retiro`);
-    const sis_certificado = document.getElementById(`id_sis_certificado`);
-    const sis_propuesta = document.getElementById(`id_sis_propuesta`);
-    const sis_motivo = document.getElementById(`id_sis_motivo`);
 
-       if (sis_link.value === "" || sis_propuesta.value ==="Pendiente"|| sis_motivo.value ==="") {
+    function pasar_etapa(global_id,etapa, asignacion_selected) {
 
-            window.alert("Datos Faltantes");
-       } else {
-           if (confirm('¿Esta Seguro que quiere enviar el Acta ?')) {
-               // Save it!
-               console.log('Enviado Formulario');
-               document.getElementById("id_sis_clasificacion").value = "EFR_Validacion";
-               console.log('pasa 1');
-               document.getElementById("myForm").submit();
-               console.log('pasa 2');
-           } else {
-               // Do nothing!
-           }
-       }
-}
+        var datos = {
+                'respuesta':'',
+				'global_id': global_id.toString(),
+                'etapa': etapa.toString(),
+                'asignacion_selected' : asignacion_selected.toString()
+
+			}
+    var url = "/sgd/pasar_acta/"
+        fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+	    			'X-CSRFToken':csrftoken
+	    		},
+	    		body:JSON.stringify({'datos':datos}),
+
+	    	})
+            .then((response) => response.json())
+            }
 
 
 
 </script>
-
 
 
 {% endblock %}
