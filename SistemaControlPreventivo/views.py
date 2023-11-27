@@ -685,9 +685,12 @@ def control_preventivo_pleb(request):
     # Obtiene todos los usuarios que pertenecen al grupo
     auditores = group.user_set.all()
     usuario_actual=request.user.username
-    grupo_usuario = usuarios_Plebiscito2023.objects.filter(username__exact=usuario_actual)
+    #grupo_usuario = usuarios_Plebiscito2023.objects.filter(username__exact=usuario_actual)
+    grupos_usuario = usuarios_Plebiscito2023.objects.filter(username=usuario_actual).values_list('grupo', flat=True)
     # Filtrar los candidatos como lo hacías antes
-    partidos = listado_PP_Plebiscito2023.objects.filter(asignacion=grupo_usuario.first().grupo)
+    #partidos = listado_PP_Plebiscito2023.objects.filter(asignacion=grupo_usuario.first().grupo)
+    partidos = listado_PP_Plebiscito2023.objects.filter(asignacion__in=grupos_usuario)
+
     print(usuario_actual)
     # Agregar el campo 'cod' a los candidatos
     candidatos_cod = []
