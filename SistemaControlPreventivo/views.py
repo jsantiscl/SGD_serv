@@ -678,3 +678,26 @@ def pasadiasrespuesta(request):
 
 
     return JsonResponse('Cambiado', 'Asignado')
+
+def control_preventivo_pleb(request):
+    group = Group.objects.get(name="Control_Preventivo")
+
+    # Obtiene todos los usuarios que pertenecen al grupo
+    auditores = group.user_set.all()
+    usuario_actual=request.user.username
+    grupo_usuario = usuarios_Plebiscito2023.objects.filter(username__exact=usuario_actual)
+    # Filtrar los candidatos como lo hacías antes
+    partidos = listado_PP_Plebiscito2023.objects.filter(asignacion=grupo_usuario.first().grupo)
+    print(usuario_actual)
+    # Agregar el campo 'cod' a los candidatos
+    candidatos_cod = []
+    for partido in partidos:
+        cod_rel_candidato = rel_partido.objects.filter(rut=partido.par_rut).first()
+        if cod_rel_candidato:
+            partido.cod = cod_rel_candidato.cod
+        else:
+            partido.cod = None
+        candidatos_cod.append(partido)
+    # Agregar los auditores al contexto
+    context = {'partidos': partidos, 'auditores': auditores}
+    return render(request, 'SistemaControlPreventivo/SCP_Control_Preventivo_pleb.html', context)

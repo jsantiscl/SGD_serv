@@ -51,4 +51,6 @@ urlpatterns = [
     #Respuestas
     path('cambia_respuesta/', login_required(cambia_respuesta), name='cambia_respuesta'),
 
+    # Respuestas
+    path('vista_general/', login_required(control_preventivo_pleb), name='control_preventivo_pleb'),
 ]

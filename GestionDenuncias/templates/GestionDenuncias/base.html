@@ -580,6 +580,17 @@
                                       </div>
          {% endif %}
 
+                 {% if group.name == 'Control_Preventivo' %}
+                                      <div class="w3-dropdown-hover">
+      <button class="w3-button">Bandejas</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'control_preventivo_pleb' %}" class="w3-bar-item w3-button">Listado Partidos</a>
+
+            </div>
+                                      </div>
+         {% endif %}
+
         {% endfor %}
          {% if user.is_staff %}
             {% if 'serv.jasb.cl' in request.build_absolute_uri %}

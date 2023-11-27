@@ -179,3 +179,23 @@ class F87_F88(models.Model):
     hoja = models.CharField(max_length=20, null=True, blank=True)
     linea = models.CharField(max_length=20, null=True, blank=True)
 
+class listado_PP_Plebiscito2023(models.Model):
+    eleccion = models.CharField(max_length=50, null=True, blank=True)
+    par_rut = models.CharField(max_length=20, null=True, blank=True)
+    par_nombre = models.CharField(max_length=50, null=True, blank=True)
+    asignacion = models.CharField(max_length=20, null=True, blank=True)
+    codigo = models.CharField(max_length=50, null=True, blank=True)
+
+class usuarios_Plebiscito2023(models.Model):
+    username = models.CharField(max_length=50, null=True, blank=True)
+    grupo = models.CharField(max_length=50, null=True, blank=True)
+
+class RRSS(models.Model):
+    fecha_inicio = models.DateTimeField()
+    fecha_fin = models.DateTimeField()
+    plataforma = models.DateTimeField()
+    gasto = models.IntegerField()
+    rut_partido = models.CharField(max_length=50, null=True, blank=True)
+    nombre_partido = models.CharField(max_length=50, null=True, blank=True)
+    texto = models.CharField(max_length=5000, null=True, blank=True)
+    link = models.CharField(max_length=300, null=True, blank=True)
