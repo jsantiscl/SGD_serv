@@ -27,3 +27,7 @@ admin.site.register(ConsultasFormulario)
 
 admin.site.register(RevisoresDR)
 admin.site.register(EFRDR)
+
+
+admin.site.register(ActasTerreno)
+admin.site.register(ActasRemotas)
