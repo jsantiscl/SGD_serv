@@ -1385,3 +1385,410 @@ def admin_remota_con_infraccion(request):
     # actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
     context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'abogados':abogados}
     return render(request, 'GestionDenuncias/SGD2_Remota_Admin_Con_Infraccion.html', context)
+
+def abogado_evaluacion_terreno(request):
+
+    usuario_actual=request.user.username
+    abogado_actual = Abogados.objects.filter(username=usuario_actual)
+
+    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="asignado_Abogado", abogado_asignado=abogado_actual.first().rut)
+
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Abogado_Evaluacion.html', context)
+
+def abogado_activar_terreno(request, id):
+    actas_terreno = ActasTerreno.objects.filter(global_id=id)
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+        if request.method == 'POST':
+            GestionTerrenoAbogadoActivarForm = GestionTerrenoAbogadoActivar(request.POST, instance=acta)
+            if GestionTerrenoAbogadoActivarForm.is_valid():
+                acta = GestionTerrenoAbogadoActivarForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
+                acta.abogado_resultado = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_resultado']
+                acta.abogado_motivo_devolucion = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_motivo_devolucion']
+                acta.sis_clasificacion = GestionTerrenoAbogadoActivarForm.cleaned_data['sis_clasificacion']
+                acta.abogado_eleccion = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_eleccion']
+                acta.abogado_presunto_infractor = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_presunto_infractor']
+                acta.abogado_codigo_activa = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_codigo_activa']
+                acta.abogado_obs = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_obs']
+
+                acta.save(update_fields=['abogado_resultado','abogado_motivo_devolucion', 'sis_clasificacion', 'abogado_eleccion', 'abogado_presunto_infractor' , 'abogado_codigo_activa', 'abogado_obs'])
+                return redirect('abogado_evaluacion_terreno')
+            else:
+                print(GestionTerrenoAbogadoActivar.errors)
+                return redirect('abogado_evaluacion_terreno')
+        else:
+            GestionTerrenoAbogadoActivarForm = GestionTerrenoAbogadoActivar(instance=acta)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno, 'GestionTerrenoAbogadoActivarForm': GestionTerrenoAbogadoActivarForm}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Abogado_Activar.html', context)
+
+
+def abogado_evaluacion_remota(request):
+
+    usuario_actual=request.user.username
+    abogado_actual = Abogados.objects.filter(username=usuario_actual)
+
+    actas_remota = ActasRemotas.objects.filter(sis_clasificacion="asignado_Abogado", abogado_asignado=abogado_actual.first().rut)
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    # actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Abogado_Evaluacion.html', context)
+
+def abogado_desactivar_terreno(request, id):
+    actas_terreno = ActasTerreno.objects.filter(global_id=id)
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+        if request.method == 'POST':
+            GestionTerrenoAbogadoActivarForm = GestionTerrenoAbogadoActivar(request.POST, instance=acta)
+            if GestionTerrenoAbogadoActivarForm.is_valid():
+                acta = GestionTerrenoAbogadoActivarForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
+                acta.abogado_resultado = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_resultado']
+                acta.abogado_motivo_devolucion = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_motivo_devolucion']
+                acta.sis_clasificacion = GestionTerrenoAbogadoActivarForm.cleaned_data['sis_clasificacion']
+                acta.abogado_eleccion = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_eleccion']
+                acta.abogado_presunto_infractor = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_presunto_infractor']
+                acta.abogado_codigo_desactiva = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_codigo_desactiva']
+                acta.abogado_obs = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_obs']
+
+                acta.save(update_fields=['abogado_resultado','abogado_motivo_devolucion', 'sis_clasificacion', 'abogado_eleccion', 'abogado_presunto_infractor' , 'abogado_codigo_activa', 'abogado_obs'])
+                return redirect('abogado_evaluacion_terreno')
+            else:
+                print(GestionTerrenoAbogadoActivar.errors)
+                return redirect('abogado_evaluacion_terreno')
+        else:
+            GestionTerrenoAbogadoActivarForm = GestionTerrenoAbogadoActivar(instance=acta)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno, 'GestionTerrenoAbogadoActivarForm': GestionTerrenoAbogadoActivarForm}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Abogado_Desactivar.html', context)
+
+def abogado_activar_remota(request, id):
+    actas_remota = ActasRemotas.objects.filter(global_id=id)
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+        try:
+            latest_token = Tokens.objects.latest('id')
+        except ObjectDoesNotExist:
+            latest_token = None
+
+        if request.method == 'POST':
+            GestionRemotasAbogadoActivarForm = GestionRemotasAbogadoActivar(request.POST, instance=acta)
+            if GestionRemotasAbogadoActivarForm.is_valid():
+                acta = GestionRemotasAbogadoActivarForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
+                acta.abogado_resultado = GestionRemotasAbogadoActivarForm.cleaned_data['abogado_resultado']
+                acta.abogado_motivo_devolucion = GestionRemotasAbogadoActivarForm.cleaned_data[
+                    'abogado_motivo_devolucion']
+                acta.sis_clasificacion = GestionRemotasAbogadoActivarForm.cleaned_data['sis_clasificacion']
+                acta.abogado_eleccion = GestionRemotasAbogadoActivarForm.cleaned_data['abogado_eleccion']
+                acta.abogado_presunto_infractor = GestionRemotasAbogadoActivarForm.cleaned_data[
+                    'abogado_presunto_infractor']
+                acta.abogado_codigo_activa = GestionRemotasAbogadoActivarForm.cleaned_data['abogado_codigo_activa']
+                acta.abogado_obs = GestionRemotasAbogadoActivarForm.cleaned_data['abogado_obs']
+
+                acta.save(update_fields=['abogado_resultado', 'abogado_motivo_devolucion', 'sis_clasificacion',
+                                         'abogado_eleccion', 'abogado_presunto_infractor', 'abogado_codigo_activa',
+                                         'abogado_obs'])
+                return redirect('abogado_evaluacion_remota')
+            else:
+                print(GestionRemotasAbogadoActivarForm.errors)
+                return redirect('abogado_evaluacion_remota')
+        else:
+            GestionRemotasAbogadoActivarForm = GestionRemotasAbogadoActivar(instance=acta)
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'GestionRemotasAbogadoActivarForm': GestionRemotasAbogadoActivarForm}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Abogado_Activar.html', context)
+
+def abogado_desactivar_remota(request, id):
+    actas_remota = ActasRemotas.objects.filter(global_id=id)
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+        try:
+            latest_token = Tokens.objects.latest('id')
+        except ObjectDoesNotExist:
+            latest_token = None
+
+        if request.method == 'POST':
+            GestionRemotasAbogadoDesactivarForm = GestionRemotasAbogadoDesactivar(request.POST, instance=acta)
+            if GestionRemotasAbogadoDesactivarForm.is_valid():
+                acta = GestionRemotasAbogadoDesactivarForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
+                acta.abogado_resultado = GestionRemotasAbogadoDesactivarForm.cleaned_data['abogado_resultado']
+                acta.abogado_motivo_devolucion = GestionRemotasAbogadoDesactivarForm.cleaned_data[
+                    'abogado_motivo_devolucion']
+                acta.sis_clasificacion = GestionRemotasAbogadoDesactivarForm.cleaned_data['sis_clasificacion']
+                acta.abogado_eleccion = GestionRemotasAbogadoDesactivarForm.cleaned_data['abogado_eleccion']
+                acta.abogado_presunto_infractor = GestionRemotasAbogadoDesactivarForm.cleaned_data[
+                    'abogado_presunto_infractor']
+                acta.abogado_codigo_desactiva = GestionRemotasAbogadoDesactivarForm.cleaned_data['abogado_codigo_desactiva']
+                acta.abogado_obs = GestionRemotasAbogadoDesactivarForm.cleaned_data['abogado_obs']
+
+                acta.save(update_fields=['abogado_resultado', 'abogado_motivo_devolucion', 'sis_clasificacion',
+                                         'abogado_eleccion', 'abogado_presunto_infractor', 'abogado_codigo_activa',
+                                         'abogado_obs'])
+                return redirect('abogado_evaluacion_remota')
+            else:
+                print(GestionRemotasAbogadoDesactivarForm.errors)
+                return redirect('abogado_evaluacion_remota')
+        else:
+            GestionRemotasAbogadoDesactivarForm = GestionRemotasAbogadoDesactivar(instance=acta)
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'GestionRemotasAbogadoDesactivarForm': GestionRemotasAbogadoDesactivarForm}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Abogado_Desactivar.html', context)
+
+def abogado_activadas_terreno(request):
+
+    usuario_actual=request.user.username
+    abogado_actual = Abogados.objects.filter(username=usuario_actual)
+
+    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="abogado_activado", abogado_asignado=abogado_actual.first().rut)
+
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Abogado_Activadas.html', context)
+
+def abogado_activadas_terreno_gestiones(request, id):
+    actas_terreno = ActasTerreno.objects.filter(global_id=id)
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+        if request.method == 'POST':
+            GestionTerrenoAbogadoActivarGestionesForm = GestionTerrenoAbogadoActivarGestiones(request.POST, instance=acta)
+            if GestionTerrenoAbogadoActivarGestionesForm.is_valid():
+                acta = GestionTerrenoAbogadoActivarGestionesForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
+
+
+                acta.sis_clasificacion = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['sis_clasificacion']
+                acta.abogado_eleccion = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['abogado_eleccion']
+                acta.abogado_presunto_infractor = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['abogado_presunto_infractor']
+                acta.abogado_codigo_activa = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['abogado_codigo_activa']
+                acta.abogado_obs = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['abogado_obs']
+
+                acta.abogado_folio = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['abogado_folio']
+                acta.abogado_obs_finales = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['abogado_obs_finales']
+                acta.abogado_resultado_final = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['abogado_resultado_final']
+
+                acta.save(update_fields=['sis_clasificacion', 'abogado_eleccion', 'abogado_presunto_infractor' , 'abogado_codigo_activa', 'abogado_obs','abogado_folio','abogado_obs_finales','abogado_resultado_final'])
+                return redirect('abogado_activadas_terreno')
+            else:
+                print(GestionTerrenoAbogadoActivarGestiones.errors)
+                return redirect('abogado_activadas_terreno')
+        else:
+            GestionTerrenoAbogadoActivarGestionesForm = GestionTerrenoAbogadoActivarGestiones(instance=acta)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno, 'GestionTerrenoAbogadoActivarGestionesForm': GestionTerrenoAbogadoActivarGestionesForm}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Abogado_Activadas_Gestiones.html', context)
+
+def abogado_activadas_remotas(request):
+
+    usuario_actual=request.user.username
+    abogado_actual = Abogados.objects.filter(username=usuario_actual)
+
+    actas_remota = ActasRemotas.objects.filter(sis_clasificacion="abogado_activado", abogado_asignado=abogado_actual.first().rut)
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    # actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Abogado_Activadas.html', context)
+
+def abogado_activadas_remotas_gestiones(request, id):
+    actas_remota = ActasRemotas.objects.filter(global_id=id)
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+        try:
+            latest_token = Tokens.objects.latest('id')
+        except ObjectDoesNotExist:
+            latest_token = None
+
+        if request.method == 'POST':
+            GestionRemotasAbogadoActivarGestionesForm = GestionRemotasAbogadoActivarGestiones(request.POST, instance=acta)
+            if GestionRemotasAbogadoActivarGestionesForm.is_valid():
+                acta = GestionRemotasAbogadoActivarGestionesForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
+                acta.sis_clasificacion = GestionRemotasAbogadoActivarGestionesForm.cleaned_data['sis_clasificacion']
+                acta.abogado_eleccion = GestionRemotasAbogadoActivarGestionesForm.cleaned_data['abogado_eleccion']
+                acta.abogado_presunto_infractor = GestionRemotasAbogadoActivarGestionesForm.cleaned_data['abogado_presunto_infractor']
+                acta.abogado_codigo_activa = GestionRemotasAbogadoActivarGestionesForm.cleaned_data['abogado_codigo_activa']
+                acta.abogado_obs = GestionRemotasAbogadoActivarGestionesForm.cleaned_data['abogado_obs']
+
+                acta.abogado_folio = GestionRemotasAbogadoActivarGestionesForm.cleaned_data['abogado_folio']
+                acta.abogado_obs_finales = GestionRemotasAbogadoActivarGestionesForm.cleaned_data['abogado_obs_finales']
+                acta.abogado_resultado_final = GestionRemotasAbogadoActivarGestionesForm.cleaned_data['abogado_resultado_final']
+
+                acta.save(update_fields=['sis_clasificacion', 'abogado_eleccion', 'abogado_presunto_infractor' , 'abogado_codigo_activa', 'abogado_obs','abogado_folio','abogado_obs_finales','abogado_resultado_final'])
+                return redirect('abogado_activadas_remotas')
+            else:
+                print(GestionRemotasAbogadoActivarGestionesForm.errors)
+                return redirect('abogado_activadas_remotas')
+        else:
+            GestionRemotasAbogadoActivarGestionesForm = GestionRemotasAbogadoActivarGestiones(instance=acta)
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'GestionRemotasAbogadoActivarGestionesForm': GestionRemotasAbogadoActivarGestionesForm}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Abogado_Activadas_Gestiones.html', context)

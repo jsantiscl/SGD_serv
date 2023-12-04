@@ -101,7 +101,7 @@
                 {% endif %}
          {% if group.name == 'Abogado' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandeja</button>
+      <button class="w3-button">Bandejas Denuncias</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
 
           <a href="{% url 'abogado_evaluacion' %}" class="w3-bar-item w3-button">Evaluación</a>
@@ -111,12 +111,13 @@
             </div>
       </div>
 
-                                                  <div class="w3-dropdown-hover">
-      <button class="w3-button">Fiscalizacion</button>
+               <div class="w3-dropdown-hover">
+      <button class="w3-button">Bandejas Actas</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
-                <a href="{% url 'alertas_asignadas' %}" class="w3-bar-item w3-button">Alertas Asignadas</a>
-          <a href="{% url 'base_completa' %}" class="w3-bar-item w3-button">Base Total</a>
-
+                <a href="{% url 'abogado_evaluacion_terreno' %}" class="w3-bar-item w3-button">1 Actas Terreno - Evaluación</a>
+                       <a href="{% url 'abogado_activadas_terreno' %}" class="w3-bar-item w3-button">2 Actas Terreno - Activadas</a>
+          <a href="{% url 'abogado_evaluacion_remota' %}" class="w3-bar-item w3-button">1 Actas Remotas - Evaluación</a>
+         <a href="{% url 'abogado_activadas_remotas' %}" class="w3-bar-item w3-button">2 Actas Remotas - Activadas</a>
 
             </div>
       </div>

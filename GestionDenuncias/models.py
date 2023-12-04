@@ -577,6 +577,73 @@ class ActasTerreno(models.Model):
     sis_motivo_rechazo = models.CharField(max_length=5000, null=True, blank=True) #ok
     sis_motivo_inicial = models.CharField(max_length=5000, null=True, blank=True)  # ok
     abogado_asignado = models.IntegerField(null=True, blank=True)  #
+    ELECCIONES = (
+        ("Plebiscito-Apruebo", "Plebiscito-Apruebo"),
+        ("Plebiscito-Rechazo", "Plebiscito-Rechazo"),
+        ("Consejero Regional", "Consejero Regional"),
+        ("Plebiscito", "Plebiscito"),
+        ("Primarias Presidencial", "Primarias Presidencial"),
+        ("Primarias Parlamentarias", "Primarias Parlamentarias"),
+        ("Municipales", "Municipales"),
+        ("Regionales", "Regionales"),
+        ("Segunda Votación Gob. Regionales", "Segunda Votación Gob. Regionales"),
+        ("Parlamentarias", "Parlamentarias"),
+        ("Presidencial", "Presidencial"),
+        ("Convencionales Constituyentes", "Convencionales Constituyentes"),
+        ("Consejo Constitucional 2023", "Consejo Constitucional 2023"),
+        ("Plebiscito Constitucional 2023", "Plebiscito Constitucional 2023"),
+        ("No Aplica", "No Aplica"),
+
+    )
+    abogado_eleccion = models.CharField(max_length=255, null=True, choices=ELECCIONES)
+    abogado_presunto_infractor = models.CharField(max_length=500, null=True)
+    abogado_codigo_activa = models.CharField(max_length=300, null=True, blank=True, choices=CODIGOS)
+    DESACTIVACIONES = (
+        ("A1", "A1"),
+        ("A2", "A2"),
+        ("A3", "A3"),
+        ("A4", "A4"),
+        ("A5", "A5"),
+        ("A6", "A6"),
+        ("A7", "A7"),
+        ("A8", "A8"),
+        ("A9", "A9"),
+        ("A10", "A10"),
+        ("A11", "A11"),
+        ("A12", "A12"),
+        ("A13", "A13"),
+        ("A14", "A14"),
+        ("A15", "A15"),
+        ("A16", "A16"),
+        ("A17", "A17"),
+        ("A18", "A18"),
+        ("A19", "A19"),
+        ("A20", "A20"),
+        ("A21", "A21"),
+        ("A22", "A22"),
+        ("A23", "A23"),
+        ("A24", "A24"),
+        ("Null", "Null"),
+    )
+    abogado_codigo_desactiva = models.CharField(max_length=300, null=True, blank=True, choices=DESACTIVACIONES)
+    abogado_obs = models.CharField(max_length=5000, null=True, blank=True)  # ok
+    abogado_motivo_devolucion = models.CharField(max_length=5000, null=True, blank=True)  # ok
+    RESULTADOABOGADO = (
+        ("Pendiente", "Pendiente"),
+        ("Acepta", "Acepta"),
+        ("Devuelve", "Devuelve")
+
+    )
+    abogado_resultado = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOABOGADO)
+    FINALABOGADO = (
+        ("Pendiente", "Pendiente"),
+        ("Con Infraccion", "Con Infraccion"),
+        ("Sin Infraccion", "Sin Infraccion")
+
+    )
+    abogado_resultado_final = models.CharField(max_length=300, default="Pendiente", choices=FINALABOGADO)
+    abogado_folio = models.CharField(max_length=500, null=True)
+    abogado_obs_finales = models.CharField(max_length=5000, null=True, blank=True)  # ok
     def __str__(self):
         return str(self.object_id)
 
@@ -691,6 +758,73 @@ class ActasRemotas(models.Model):
     sis_motivo_rechazo = models.CharField(max_length=5000, null=True, blank=True)  # ok
     sis_motivo_inicial = models.CharField(max_length=5000, null=True, blank=True)  # ok
     abogado_asignado = models.IntegerField(null=True, blank=True)  #
+    ELECCIONES = (
+        ("Plebiscito-Apruebo", "Plebiscito-Apruebo"),
+        ("Plebiscito-Rechazo", "Plebiscito-Rechazo"),
+        ("Consejero Regional", "Consejero Regional"),
+        ("Plebiscito", "Plebiscito"),
+        ("Primarias Presidencial", "Primarias Presidencial"),
+        ("Primarias Parlamentarias", "Primarias Parlamentarias"),
+        ("Municipales", "Municipales"),
+        ("Regionales", "Regionales"),
+        ("Segunda Votación Gob. Regionales", "Segunda Votación Gob. Regionales"),
+        ("Parlamentarias", "Parlamentarias"),
+        ("Presidencial", "Presidencial"),
+        ("Convencionales Constituyentes", "Convencionales Constituyentes"),
+        ("Consejo Constitucional 2023", "Consejo Constitucional 2023"),
+        ("Plebiscito Constitucional 2023", "Plebiscito Constitucional 2023"),
+        ("No Aplica", "No Aplica"),
+
+    )
+    abogado_eleccion = models.CharField(max_length=255, null=True, choices=ELECCIONES)
+    abogado_presunto_infractor = models.CharField(max_length=500, null=True)
+    abogado_codigo_activa = models.CharField(max_length=300, null=True, blank=True, choices=CODIGOS)
+    DESACTIVACIONES = (
+        ("A1", "A1"),
+        ("A2", "A2"),
+        ("A3", "A3"),
+        ("A4", "A4"),
+        ("A5", "A5"),
+        ("A6", "A6"),
+        ("A7", "A7"),
+        ("A8", "A8"),
+        ("A9", "A9"),
+        ("A10", "A10"),
+        ("A11", "A11"),
+        ("A12", "A12"),
+        ("A13", "A13"),
+        ("A14", "A14"),
+        ("A15", "A15"),
+        ("A16", "A16"),
+        ("A17", "A17"),
+        ("A18", "A18"),
+        ("A19", "A19"),
+        ("A20", "A20"),
+        ("A21", "A21"),
+        ("A22", "A22"),
+        ("A23", "A23"),
+        ("A24", "A24"),
+        ("Null", "Null"),
+    )
+    abogado_codigo_desactiva = models.CharField(max_length=300, null=True, blank=True, choices=DESACTIVACIONES)
+    abogado_obs = models.CharField(max_length=5000, null=True, blank=True)  # ok
+    abogado_motivo_devolucion = models.CharField(max_length=5000, null=True, blank=True)  # ok
+    RESULTADOABOGADO = (
+        ("Pendiente", "Pendiente"),
+        ("Acepta", "Acepta"),
+        ("Devuelve", "Devuelve")
+
+    )
+    abogado_resultado = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOABOGADO)
+    FINALABOGADO = (
+        ("Pendiente", "Pendiente"),
+        ("Con Infraccion", "Con Infraccion"),
+        ("Sin Infraccion", "Sin Infraccion")
+
+    )
+    abogado_resultado_final = models.CharField(max_length=300, default="Pendiente", choices=FINALABOGADO)
+    abogado_folio = models.CharField(max_length=500, null=True)
+    abogado_obs_finales = models.CharField(max_length=5000, null=True, blank=True)  # ok
     def __str__(self):
         return str(self.object_id)
 

@@ -65,6 +65,8 @@ $(document).ready(function() {
             <th style="text-align: center">RRSS</th>
             <th style="text-align: center">Actas Terreno</th>
             <th style="text-align: center">Actas Remotas</th>
+            <th style="text-align: center">F87</th>
+            <th style="text-align: center">F88</th>
         </tr>
             </thead>
     <tbody>
@@ -76,26 +78,26 @@ $(document).ready(function() {
             <td>{{ linea.par_rut}}</td>
             <td>{{ linea.par_nombre}}</td>
             <td style="text-align: center"><a href="{% url 'sra_partidos' cod=linea.cod %}" target="_blank">
-    <button class="btn btn-outline-secondary">
+    <button class="btn btn-outline-warning">
         <i class="bi bi-cash"></i>
     </button>
 </a>
 </td>
 
  <td style="text-align: center"><a href="{% url 'cartolas_partidos' cod=linea.cod %}" target="_blank">
-    <button class="btn btn-outline-info">
+    <button class="btn btn-outline-primary">
         <i class="bi bi-bank"></i>
     </button>
 </a>
 </td>
              <td style="text-align: center"><a href="{% url 'cartolas_partidos' cod=linea.cod %}" target="_blank">
-    <button class="btn btn-outline-info">
+    <button class="btn btn-outline-secondary">
         <i class="bi bi-virus"></i>
     </button>
 </a>
 </td>
              <td style="text-align: center"><a href="{% url 'cartolas_partidos' cod=linea.cod %}" target="_blank">
-    <button class="btn btn-outline-info">
+    <button class="btn btn-outline-success">
         <i class="bi bi-clipboard2"></i>
     </button>
 </a>
@@ -106,6 +108,20 @@ $(document).ready(function() {
     </button>
 </a>
 </td>
+                         <td style="text-align: center"><a href="{% url 'cartolas_partidos' cod=linea.cod %}" target="_blank">
+    <button class="btn btn-outline-dark">
+        <i class="bi bi-piggy-bank"></i>
+    </button>
+</a>
+</td>
+
+                         <td style="text-align: center"><a href="{% url 'cartolas_partidos' cod=linea.cod %}" target="_blank">
+    <button class="btn btn-outline-danger">
+        <i class="bi bi-currency-exchange"></i>
+    </button>
+</a>
+</td>
+
         {% endfor %}
     </tbody>
     </table>
