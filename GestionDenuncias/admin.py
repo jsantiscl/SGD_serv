@@ -7,7 +7,10 @@ from GestionPAS.models import *
 from AlertasFiscalizacion.models import *
 from ConsultasSCGYFE.models import *
 
-admin.site.register(Denuncias)
+class DenunciasAdmin(admin.ModelAdmin):
+    search_fields = ['Numero']  # Puedes agregar más campos separados por comas
+
+admin.site.register(Denuncias, DenunciasAdmin)
 admin.site.register(Abogados)
 admin.site.register(DireccionesRegionales)
 admin.site.register(EncargadosRegionales)
@@ -29,5 +32,9 @@ admin.site.register(RevisoresDR)
 admin.site.register(EFRDR)
 
 
-admin.site.register(ActasTerreno)
-admin.site.register(ActasRemotas)
+class ActasTerrenoAdmin(admin.ModelAdmin):  ##Esto permite buscar por estos campos en el menu admin
+    search_fields = ['id_inspeccion']  # Puedes agregar más campos separados por comas
+class ActasRemotasAdmin(admin.ModelAdmin): ##Esto permite buscar por estos campos en el menu admin
+    search_fields = ['id_inspeccion']  # Puedes agregar más campos separados por comas
+admin.site.register(ActasTerreno, ActasTerrenoAdmin)
+admin.site.register(ActasRemotas, ActasRemotasAdmin)
