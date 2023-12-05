@@ -1504,24 +1504,24 @@ def abogado_desactivar_terreno(request, id):
         acta.fecha = local_date - timedelta(hours=3)
 
         if request.method == 'POST':
-            GestionTerrenoAbogadoActivarForm = GestionTerrenoAbogadoActivar(request.POST, instance=acta)
-            if GestionTerrenoAbogadoActivarForm.is_valid():
-                acta = GestionTerrenoAbogadoActivarForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
-                acta.abogado_resultado = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_resultado']
-                acta.abogado_motivo_devolucion = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_motivo_devolucion']
-                acta.sis_clasificacion = GestionTerrenoAbogadoActivarForm.cleaned_data['sis_clasificacion']
-                acta.abogado_eleccion = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_eleccion']
-                acta.abogado_presunto_infractor = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_presunto_infractor']
-                acta.abogado_codigo_desactiva = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_codigo_desactiva']
-                acta.abogado_obs = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_obs']
+            GestionTerrenoAbogadoDesactivarForm = GestionTerrenoAbogadoDesactivar(request.POST, instance=acta)
+            if GestionTerrenoAbogadoDesactivarForm.is_valid():
+                acta = GestionTerrenoAbogadoDesactivarForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
+                acta.abogado_resultado = GestionTerrenoAbogadoDesactivarForm.cleaned_data['abogado_resultado']
+                acta.abogado_motivo_devolucion = GestionTerrenoAbogadoDesactivarForm.cleaned_data['abogado_motivo_devolucion']
+                acta.sis_clasificacion = GestionTerrenoAbogadoDesactivarForm.cleaned_data['sis_clasificacion']
+                acta.abogado_eleccion = GestionTerrenoAbogadoDesactivarForm.cleaned_data['abogado_eleccion']
+                acta.abogado_presunto_infractor = GestionTerrenoAbogadoDesactivarForm.cleaned_data['abogado_presunto_infractor']
+                acta.abogado_codigo_desactiva = GestionTerrenoAbogadoDesactivarForm.cleaned_data['abogado_codigo_desactiva']
+                acta.abogado_obs = GestionTerrenoAbogadoDesactivarForm.cleaned_data['abogado_obs']
 
-                acta.save(update_fields=['abogado_resultado','abogado_motivo_devolucion', 'sis_clasificacion', 'abogado_eleccion', 'abogado_presunto_infractor' , 'abogado_codigo_activa', 'abogado_obs'])
+                acta.save(update_fields=['abogado_resultado','abogado_motivo_devolucion', 'sis_clasificacion', 'abogado_eleccion', 'abogado_presunto_infractor' , 'abogado_codigo_desactiva', 'abogado_obs'])
                 return redirect('abogado_evaluacion_terreno')
             else:
-                print(GestionTerrenoAbogadoActivar.errors)
+                print(GestionTerrenoAbogadoDesactivar.errors)
                 return redirect('abogado_evaluacion_terreno')
         else:
-            GestionTerrenoAbogadoActivarForm = GestionTerrenoAbogadoActivar(instance=acta)
+            GestionTerrenoAbogadoDesactivarForm = GestionTerrenoAbogadoDesactivar(instance=acta)
 
     try:
         latest_token = Tokens.objects.latest('id')
@@ -1529,7 +1529,7 @@ def abogado_desactivar_terreno(request, id):
         latest_token = None
 
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
-    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno, 'GestionTerrenoAbogadoActivarForm': GestionTerrenoAbogadoActivarForm}
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno, 'GestionTerrenoAbogadoDesactivarForm': GestionTerrenoAbogadoDesactivarForm}
     return render(request, 'GestionDenuncias/SGD2_Terreno_Abogado_Desactivar.html', context)
 
 def abogado_activar_remota(request, id):
@@ -1623,7 +1623,7 @@ def abogado_desactivar_remota(request, id):
                 acta.abogado_obs = GestionRemotasAbogadoDesactivarForm.cleaned_data['abogado_obs']
 
                 acta.save(update_fields=['abogado_resultado', 'abogado_motivo_devolucion', 'sis_clasificacion',
-                                         'abogado_eleccion', 'abogado_presunto_infractor', 'abogado_codigo_activa',
+                                         'abogado_eleccion', 'abogado_presunto_infractor', 'abogado_codigo_desactiva',
                                          'abogado_obs'])
                 return redirect('abogado_evaluacion_remota')
             else:

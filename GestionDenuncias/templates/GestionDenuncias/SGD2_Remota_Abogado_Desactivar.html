@@ -171,6 +171,17 @@ $(document).ready(function() {
 
 
                 {% if acta.link_firma_cargo_timbre %}<p><strong>Link Firma y Cargo con Timbre:</strong> <a href="{{ acta.link_firma_cargo_timbre }}?token={{ latest_token.Token }}" target="_blank">Ver Firma</a></p>{% endif %}
+                       {% if acta.sis_codigo %}<p><strong>DR Código Infraccion:</strong> {{ acta.sis_codigo }}</p>{% endif %}
+            {% if acta.sis_link %}<p><strong>DR Enlace Carpeta:</strong> <a href="{{ acta.sis_link }}" target="_blank">{{ acta.sis_link }}</a></p>{% endif %}
+            {% if acta.sis_nro_requerimiento %}<p><strong>DR Número de Requerimiento:</strong> {{ acta.sis_nro_requerimiento }}</p>{% endif %}
+            {% if acta.sis_fe_sub %}<p><strong>DR Fecha de Subsanación:</strong> {{ acta.sis_fe_sub }}</p>{% endif %}
+            {% if acta.sis_plazo_respuesta %}<p><strong>DR Plazo de Respuesta:</strong> {{ acta.sis_plazo_respuesta }}</p>{% endif %}
+            {% if acta.sis_respuesta %}<p><strong>DR Respuesta:</strong> {{ acta.sis_respuesta }}</p>{% endif %}
+            {% if acta.sis_oficio_retiro %}<p><strong>DR Oficio de Retiro:</strong> {{ acta.sis_oficio_retiro }}</p>{% endif %}
+            {% if acta.sis_certificado %}<p><strong>DR Certificado:</strong> {{ acta.sis_certificado }}</p>{% endif %}
+            {% if acta.sis_propuesta %}<p><strong>DR Propuesta:</strong> {{ acta.get_sis_propuesta_display }}</p>{% endif %}
+            {% if acta.sis_motivo %}<p><strong>DR Motivo:</strong> {{ acta.sis_motivo }}</p>{% endif %}
+
             </div>
         </div>
                   <br>

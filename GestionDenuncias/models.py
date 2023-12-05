@@ -515,7 +515,21 @@ class ActasTerreno(models.Model):
     evidencia_fotografica = models.CharField(max_length=2000, null=True, blank=True)
     link_firma_cargo_timbre = models.CharField(max_length=2000, null=True, blank=True)
     id_inspeccion = models.CharField(max_length=255, null=True)
-    sis_clasificacion = models.CharField(max_length=300, default="Pendiente", null=True, blank=True)
+    CLASIFICACIONES = (
+        ("Pendiente", "Pendiente"),
+        ("con_infraccion_revisor_remota", "Con Infracción - Revisor Remota"),
+        ("archivo_remota", "Archivo - Remota"),
+        ("con_infraccion_revisor_terreno", "Con Infracción - Revisor Terreno"),
+        ("archivo_terreno", "Archivo - Terreno"),
+        ("EFR_Validacion", "Validación EFR"),
+        ("efr_aceptado", "EFR Aceptado"),
+        ("revisor_rechazo", "Rechazo EFR - Revisor"),
+        ("asignado_Abogado", "Asignado a Abogado"),
+        ("abogado_activado", "Activado Abogado"),
+        ("abogado_devuelto", "Devuelto a DR por Abogado"),
+        ("abogado_desactivado", "Desactivado Abogado"),
+    )
+    sis_clasificacion = models.CharField(max_length=300, default="Pendiente", choices=CLASIFICACIONES)
     CODIGOS = (
         ("p1", "P1"),
         ("p2", "P2"),
@@ -578,20 +592,9 @@ class ActasTerreno(models.Model):
     sis_motivo_inicial = models.CharField(max_length=5000, null=True, blank=True)  # ok
     abogado_asignado = models.IntegerField(null=True, blank=True)  #
     ELECCIONES = (
-        ("Plebiscito-Apruebo", "Plebiscito-Apruebo"),
-        ("Plebiscito-Rechazo", "Plebiscito-Rechazo"),
-        ("Consejero Regional", "Consejero Regional"),
-        ("Plebiscito", "Plebiscito"),
-        ("Primarias Presidencial", "Primarias Presidencial"),
-        ("Primarias Parlamentarias", "Primarias Parlamentarias"),
-        ("Municipales", "Municipales"),
-        ("Regionales", "Regionales"),
-        ("Segunda Votación Gob. Regionales", "Segunda Votación Gob. Regionales"),
-        ("Parlamentarias", "Parlamentarias"),
-        ("Presidencial", "Presidencial"),
-        ("Convencionales Constituyentes", "Convencionales Constituyentes"),
-        ("Consejo Constitucional 2023", "Consejo Constitucional 2023"),
-        ("Plebiscito Constitucional 2023", "Plebiscito Constitucional 2023"),
+        ("Plebiscito Constitucional 2023 - A Favor", "Plebiscito Constitucional 2023 - A Favor"),
+        ("Plebiscito Constitucional 2023 - En Contra", "Plebiscito Constitucional 2023 - En Contra"),
+        ("Municipales-Gore 2024", "Municipales-Gore 2024"),
         ("No Aplica", "No Aplica"),
 
     )
@@ -645,7 +648,7 @@ class ActasTerreno(models.Model):
     abogado_folio = models.CharField(max_length=500, null=True)
     abogado_obs_finales = models.CharField(max_length=5000, null=True, blank=True)  # ok
     def __str__(self):
-        return str(self.object_id)
+        return str(self.id_inspeccion)
 
 class Tokens(models.Model):
     Token = models.CharField(max_length=1000, null=True, blank=True)
@@ -695,8 +698,21 @@ class ActasRemotas(models.Model):
     creator = models.CharField(max_length=255, null=True)
     edit_date = models.CharField(max_length=255, null=True)  #RE # RE
     editor = models.CharField(max_length=255, null=True)
-
-    sis_clasificacion = models.CharField(max_length=300, default="Pendiente")
+    CLASIFICACIONES = (
+        ("Pendiente", "Pendiente"),
+        ("con_infraccion_revisor_remota", "Con Infracción - Revisor Remota"),
+        ("archivo_remota", "Archivo - Remota"),
+        ("con_infraccion_revisor_terreno", "Con Infracción - Revisor Terreno"),
+        ("archivo_terreno", "Archivo - Terreno"),
+        ("EFR_Validacion", "Validación EFR"),
+        ("efr_aceptado", "EFR Aceptado"),
+        ("revisor_rechazo", "Rechazo EFR - Revisor"),
+        ("asignado_Abogado", "Asignado a Abogado"),
+        ("abogado_activado", "Activado Abogado"),
+        ("abogado_devuelto", "Devuelto a DR por Abogado"),
+        ("abogado_desactivado", "Desactivado Abogado"),
+    )
+    sis_clasificacion = models.CharField(max_length=300, default="Pendiente", choices=CLASIFICACIONES)
     CODIGOS = (
         ("p1", "P1"),
         ("p2", "P2"),
@@ -759,20 +775,9 @@ class ActasRemotas(models.Model):
     sis_motivo_inicial = models.CharField(max_length=5000, null=True, blank=True)  # ok
     abogado_asignado = models.IntegerField(null=True, blank=True)  #
     ELECCIONES = (
-        ("Plebiscito-Apruebo", "Plebiscito-Apruebo"),
-        ("Plebiscito-Rechazo", "Plebiscito-Rechazo"),
-        ("Consejero Regional", "Consejero Regional"),
-        ("Plebiscito", "Plebiscito"),
-        ("Primarias Presidencial", "Primarias Presidencial"),
-        ("Primarias Parlamentarias", "Primarias Parlamentarias"),
-        ("Municipales", "Municipales"),
-        ("Regionales", "Regionales"),
-        ("Segunda Votación Gob. Regionales", "Segunda Votación Gob. Regionales"),
-        ("Parlamentarias", "Parlamentarias"),
-        ("Presidencial", "Presidencial"),
-        ("Convencionales Constituyentes", "Convencionales Constituyentes"),
-        ("Consejo Constitucional 2023", "Consejo Constitucional 2023"),
-        ("Plebiscito Constitucional 2023", "Plebiscito Constitucional 2023"),
+        ("Plebiscito Constitucional 2023 - A Favor", "Plebiscito Constitucional 2023 - A Favor"),
+        ("Plebiscito Constitucional 2023 - En Contra", "Plebiscito Constitucional 2023 - En Contra"),
+        ("Municipales-Gore 2024", "Municipales-Gore 2024"),
         ("No Aplica", "No Aplica"),
 
     )
@@ -826,7 +831,7 @@ class ActasRemotas(models.Model):
     abogado_folio = models.CharField(max_length=500, null=True)
     abogado_obs_finales = models.CharField(max_length=5000, null=True, blank=True)  # ok
     def __str__(self):
-        return str(self.object_id)
+        return str(self.id_inspeccion)
 
 class RevisoresDR(models.Model):
     id_usuario = models.ForeignKey(User, on_delete=models.CASCADE, default=None)

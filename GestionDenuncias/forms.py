@@ -520,17 +520,6 @@ class GestionTerrenoAbogadoActivar(forms.ModelForm):
         model = ActasTerreno
         fields = [
 
-            'sis_codigo',
-            'sis_link',
-            'sis_nro_requerimiento',
-            'sis_fe_sub',
-            'sis_plazo_respuesta',
-            'sis_respuesta',
-            'sis_oficio_retiro',
-            'sis_certificado',
-            'sis_propuesta',
-            'sis_motivo',
-
             'abogado_eleccion',
             'abogado_presunto_infractor',
             'abogado_codigo_activa',
@@ -542,16 +531,6 @@ class GestionTerrenoAbogadoActivar(forms.ModelForm):
 ]
         widgets = {
 
-            'sis_codigo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_link': forms.TextInput(attrs={'class': 'form-control','readonly': 'readonly'}),
-            'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_fe_sub': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_plazo_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_certificado': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_propuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_motivo': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'abogado_eleccion': forms.Select(attrs={'class': 'form-control'}),
             'abogado_presunto_infractor': forms.TextInput(attrs={'class': 'form-control'}),
             'abogado_codigo_activa': forms.Select(attrs={'class': 'form-control'}),
@@ -565,17 +544,6 @@ class GestionTerrenoAbogadoActivar(forms.ModelForm):
 
         }
         labels = {
-
-            'sis_codigo' : 'Codigo',
-            'sis_link' : 'Indicar Link Carpeta Sharepoint*',
-            'sis_nro_requerimiento': 'Número Requerimiento:',
-            'sis_fe_sub' : 'Fecha de requerimiento de subsanación:',
-            'sis_plazo_respuesta': 'Plazo de Respuesta:',
-            'sis_respuesta': 'Respuesta:',
-            'sis_oficio_retiro': 'Oficio retiro al municipio:',
-            'sis_certificado': 'Certificado:',
-            'sis_propuesta': 'Propuesta*:',
-            'sis_motivo': 'Motivo Revisor*:',
 
             'abogado_eleccion' : 'Elección',
             'abogado_presunto_infractor' : 'Presunto Infractor',
@@ -593,17 +561,6 @@ class GestionTerrenoAbogadoDesactivar(forms.ModelForm):
         model = ActasTerreno
         fields = [
 
-            'sis_codigo',
-            'sis_link',
-            'sis_nro_requerimiento',
-            'sis_fe_sub',
-            'sis_plazo_respuesta',
-            'sis_respuesta',
-            'sis_oficio_retiro',
-            'sis_certificado',
-            'sis_propuesta',
-            'sis_motivo',
-
             'abogado_eleccion',
             'abogado_presunto_infractor',
             'abogado_codigo_desactiva',
@@ -615,16 +572,6 @@ class GestionTerrenoAbogadoDesactivar(forms.ModelForm):
 ]
         widgets = {
 
-            'sis_codigo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_link': forms.TextInput(attrs={'class': 'form-control','readonly': 'readonly'}),
-            'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_fe_sub': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_plazo_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_certificado': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_propuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_motivo': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'abogado_eleccion': forms.Select(attrs={'class': 'form-control'}),
             'abogado_presunto_infractor': forms.TextInput(attrs={'class': 'form-control'}),
             'abogado_codigo_desactiva': forms.Select(attrs={'class': 'form-control'}),
@@ -638,17 +585,6 @@ class GestionTerrenoAbogadoDesactivar(forms.ModelForm):
 
         }
         labels = {
-
-            'sis_codigo' : 'Codigo',
-            'sis_link' : 'Indicar Link Carpeta Sharepoint*',
-            'sis_nro_requerimiento': 'Número Requerimiento:',
-            'sis_fe_sub' : 'Fecha de requerimiento de subsanación:',
-            'sis_plazo_respuesta': 'Plazo de Respuesta:',
-            'sis_respuesta': 'Respuesta:',
-            'sis_oficio_retiro': 'Oficio retiro al municipio:',
-            'sis_certificado': 'Certificado:',
-            'sis_propuesta': 'Propuesta*:',
-            'sis_motivo': 'Motivo Revisor*:',
 
             'abogado_eleccion' : 'Elección',
             'abogado_presunto_infractor' : 'Presunto Infractor',
@@ -666,16 +602,6 @@ class GestionRemotasAbogadoActivar(forms.ModelForm):
         model = ActasRemotas
         fields = [
 
-            'sis_codigo',
-            'sis_link',
-            'sis_nro_requerimiento',
-            'sis_fe_sub',
-            'sis_plazo_respuesta',
-            'sis_respuesta',
-            'sis_oficio_retiro',
-            'sis_certificado',
-            'sis_propuesta',
-            'sis_motivo',
             'abogado_eleccion',
             'abogado_presunto_infractor',
             'abogado_codigo_activa',
@@ -688,16 +614,6 @@ class GestionRemotasAbogadoActivar(forms.ModelForm):
 ]
         widgets = {
 
-            'sis_codigo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_link': forms.TextInput(attrs={'class': 'form-control','readonly': 'readonly'}),
-            'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_fe_sub': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_plazo_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_certificado': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_propuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_motivo': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'abogado_eleccion': forms.Select(attrs={'class': 'form-control'}),
             'abogado_presunto_infractor': forms.TextInput(attrs={'class': 'form-control'}),
             'abogado_codigo_activa': forms.Select(attrs={'class': 'form-control'}),
@@ -712,16 +628,6 @@ class GestionRemotasAbogadoActivar(forms.ModelForm):
         }
         labels = {
 
-            'sis_codigo' : 'Codigo',
-            'sis_link' : 'Indicar Link Carpeta Sharepoint*',
-            'sis_nro_requerimiento': 'Número Requerimiento:',
-            'sis_fe_sub' : 'Fecha de requerimiento de subsanación:',
-            'sis_plazo_respuesta': 'Plazo de Respuesta:',
-            'sis_respuesta': 'Respuesta:',
-            'sis_oficio_retiro': 'Oficio retiro al municipio:',
-            'sis_certificado': 'Certificado:',
-            'sis_propuesta': 'Propuesta*:',
-            'sis_motivo': 'Motivo Revisor*:',
             'abogado_eleccion' : 'Elección',
             'abogado_presunto_infractor' : 'Presunto Infractor',
             'abogado_codigo_activa': 'Codigo Activacion',
@@ -737,16 +643,6 @@ class GestionRemotasAbogadoDesactivar(forms.ModelForm):
         model = ActasRemotas
         fields = [
 
-            'sis_codigo',
-            'sis_link',
-            'sis_nro_requerimiento',
-            'sis_fe_sub',
-            'sis_plazo_respuesta',
-            'sis_respuesta',
-            'sis_oficio_retiro',
-            'sis_certificado',
-            'sis_propuesta',
-            'sis_motivo',
             'abogado_eleccion',
             'abogado_presunto_infractor',
             'abogado_codigo_desactiva',
@@ -759,16 +655,6 @@ class GestionRemotasAbogadoDesactivar(forms.ModelForm):
 ]
         widgets = {
 
-            'sis_codigo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_link': forms.TextInput(attrs={'class': 'form-control','readonly': 'readonly'}),
-            'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_fe_sub': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_plazo_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_certificado': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_propuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_motivo': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'abogado_eleccion': forms.Select(attrs={'class': 'form-control'}),
             'abogado_presunto_infractor': forms.TextInput(attrs={'class': 'form-control'}),
             'abogado_codigo_desactiva': forms.Select(attrs={'class': 'form-control'}),
@@ -783,16 +669,6 @@ class GestionRemotasAbogadoDesactivar(forms.ModelForm):
         }
         labels = {
 
-            'sis_codigo' : 'Codigo',
-            'sis_link' : 'Indicar Link Carpeta Sharepoint*',
-            'sis_nro_requerimiento': 'Número Requerimiento:',
-            'sis_fe_sub' : 'Fecha de requerimiento de subsanación:',
-            'sis_plazo_respuesta': 'Plazo de Respuesta:',
-            'sis_respuesta': 'Respuesta:',
-            'sis_oficio_retiro': 'Oficio retiro al municipio:',
-            'sis_certificado': 'Certificado:',
-            'sis_propuesta': 'Propuesta*:',
-            'sis_motivo': 'Motivo Revisor*:',
             'abogado_eleccion' : 'Elección',
             'abogado_presunto_infractor' : 'Presunto Infractor',
             'abogado_codigo_desactiva': 'Codigo Desactivacion',
@@ -808,16 +684,6 @@ class GestionTerrenoAbogadoActivarGestiones(forms.ModelForm):
         model = ActasTerreno
         fields = [
 
-            'sis_codigo',
-            'sis_link',
-            'sis_nro_requerimiento',
-            'sis_fe_sub',
-            'sis_plazo_respuesta',
-            'sis_respuesta',
-            'sis_oficio_retiro',
-            'sis_certificado',
-            'sis_propuesta',
-            'sis_motivo',
 
             'abogado_eleccion',
             'abogado_presunto_infractor',
@@ -831,16 +697,6 @@ class GestionTerrenoAbogadoActivarGestiones(forms.ModelForm):
 ]
         widgets = {
 
-            'sis_codigo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_link': forms.TextInput(attrs={'class': 'form-control','readonly': 'readonly'}),
-            'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_fe_sub': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_plazo_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_certificado': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_propuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_motivo': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'abogado_eleccion': forms.Select(attrs={'class': 'form-control'}),
             'abogado_presunto_infractor': forms.TextInput(attrs={'class': 'form-control'}),
             'abogado_codigo_activa': forms.Select(attrs={'class': 'form-control'}),
@@ -855,17 +711,6 @@ class GestionTerrenoAbogadoActivarGestiones(forms.ModelForm):
 
         }
         labels = {
-
-            'sis_codigo' : 'Codigo',
-            'sis_link' : 'Indicar Link Carpeta Sharepoint*',
-            'sis_nro_requerimiento': 'Número Requerimiento:',
-            'sis_fe_sub' : 'Fecha de requerimiento de subsanación:',
-            'sis_plazo_respuesta': 'Plazo de Respuesta:',
-            'sis_respuesta': 'Respuesta:',
-            'sis_oficio_retiro': 'Oficio retiro al municipio:',
-            'sis_certificado': 'Certificado:',
-            'sis_propuesta': 'Propuesta*:',
-            'sis_motivo': 'Motivo Revisor*:',
 
             'abogado_eleccion' : 'Elección',
             'abogado_presunto_infractor' : 'Presunto Infractor',
@@ -885,16 +730,6 @@ class GestionRemotasAbogadoActivarGestiones(forms.ModelForm):
         model = ActasRemotas
         fields = [
 
-            'sis_codigo',
-            'sis_link',
-            'sis_nro_requerimiento',
-            'sis_fe_sub',
-            'sis_plazo_respuesta',
-            'sis_respuesta',
-            'sis_oficio_retiro',
-            'sis_certificado',
-            'sis_propuesta',
-            'sis_motivo',
             'abogado_eleccion',
             'abogado_presunto_infractor',
             'abogado_codigo_activa',
@@ -908,16 +743,6 @@ class GestionRemotasAbogadoActivarGestiones(forms.ModelForm):
 ]
         widgets = {
 
-            'sis_codigo': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_link': forms.TextInput(attrs={'class': 'form-control','readonly': 'readonly'}),
-            'sis_nro_requerimiento': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_fe_sub': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_plazo_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_respuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_oficio_retiro': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_certificado': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_propuesta': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
-            'sis_motivo': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly'}),
             'abogado_eleccion': forms.Select(attrs={'class': 'form-control'}),
             'abogado_presunto_infractor': forms.TextInput(attrs={'class': 'form-control'}),
             'abogado_codigo_activa': forms.Select(attrs={'class': 'form-control'}),
@@ -933,16 +758,6 @@ class GestionRemotasAbogadoActivarGestiones(forms.ModelForm):
         }
         labels = {
 
-            'sis_codigo' : 'Codigo',
-            'sis_link' : 'Indicar Link Carpeta Sharepoint*',
-            'sis_nro_requerimiento': 'Número Requerimiento:',
-            'sis_fe_sub' : 'Fecha de requerimiento de subsanación:',
-            'sis_plazo_respuesta': 'Plazo de Respuesta:',
-            'sis_respuesta': 'Respuesta:',
-            'sis_oficio_retiro': 'Oficio retiro al municipio:',
-            'sis_certificado': 'Certificado:',
-            'sis_propuesta': 'Propuesta*:',
-            'sis_motivo': 'Motivo Revisor*:',
             'abogado_eleccion' : 'Elección',
             'abogado_presunto_infractor' : 'Presunto Infractor',
             'abogado_codigo_activa': 'Codigo Activacion',
