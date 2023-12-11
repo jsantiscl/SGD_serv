@@ -590,7 +590,15 @@ class ActasTerreno(models.Model):
     sis_resultado_efr = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOEFR) #ok
     sis_motivo_rechazo = models.CharField(max_length=5000, null=True, blank=True) #ok
     sis_motivo_inicial = models.CharField(max_length=5000, null=True, blank=True)  # ok
-    abogado_asignado = models.IntegerField(null=True, blank=True)  #
+    ABOGADOAS = (
+        (16749632, "maburto"),
+        (16835392, "mramirezo"),
+        (17995568, "nbarraza"),
+        (17051087, "dguevara"),
+        (16964946, "fundurraga")
+    )
+
+    abogado_asignado = models.IntegerField(null=True, blank=True, choices=ABOGADOAS)  #
     ELECCIONES = (
         ("Plebiscito Constitucional 2023 - A Favor", "Plebiscito Constitucional 2023 - A Favor"),
         ("Plebiscito Constitucional 2023 - En Contra", "Plebiscito Constitucional 2023 - En Contra"),
@@ -773,7 +781,15 @@ class ActasRemotas(models.Model):
     sis_resultado_efr = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOEFR) #ok
     sis_motivo_rechazo = models.CharField(max_length=5000, null=True, blank=True)  # ok
     sis_motivo_inicial = models.CharField(max_length=5000, null=True, blank=True)  # ok
-    abogado_asignado = models.IntegerField(null=True, blank=True)  #
+    ABOGADOAS = (
+        (16749632, "maburto"),
+        (16835392, "mramirezo"),
+        (17995568, "nbarraza"),
+        (17051087, "dguevara"),
+        (16964946, "fundurraga")
+    )
+
+    abogado_asignado = models.IntegerField(null=True, blank=True, choices=ABOGADOAS)  #
     ELECCIONES = (
         ("Plebiscito Constitucional 2023 - A Favor", "Plebiscito Constitucional 2023 - A Favor"),
         ("Plebiscito Constitucional 2023 - En Contra", "Plebiscito Constitucional 2023 - En Contra"),
