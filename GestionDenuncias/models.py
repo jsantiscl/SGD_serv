@@ -675,29 +675,29 @@ class ActasRemotas(models.Model):
 
     ### 3.Materia fiscalizada
 
-    es_medio_pagado = models.CharField(max_length=255, null=True)
-    medio_fiscalizado = models.CharField(max_length=255, null=True)
-    nombre_medio = models.CharField(max_length=255, null=True)
-    soporte_material_link = models.CharField(max_length=500, null=True)
-    medio_tiene_tarifario = models.CharField(max_length=500, null=True)
+    es_medio_pagado = models.CharField(max_length=255, null=True, blank=True)
+    medio_fiscalizado = models.CharField(max_length=255, null=True, blank=True)
+    nombre_medio = models.CharField(max_length=255, null=True, blank=True)
+    soporte_material_link = models.CharField(max_length=500, null=True, blank=True)
+    medio_tiene_tarifario = models.CharField(max_length=500, null=True, blank=True)
 
-    radiofrecuencia_medio = models.CharField(max_length=500, null=True)
-    rrss_fiscalizada = models.CharField(max_length=255, null=True)
+    radiofrecuencia_medio = models.CharField(max_length=500, null=True, blank=True)
+    rrss_fiscalizada = models.CharField(max_length=255, null=True, blank=True)
 
-    usuario_perfil_rrss = models.CharField(max_length=500, null=True)
+    usuario_perfil_rrss = models.CharField(max_length=500, null=True, blank=True)
 
-    corresponde_medio_prensa = models.CharField(max_length=255, null=True)
-    otro_antecente = models.CharField(max_length=5000, null=True)
+    corresponde_medio_prensa = models.CharField(max_length=255, null=True, blank=True)
+    otro_antecente = models.CharField(max_length=5000, null=True, blank=True)
     medios_respaldo_adjunto = models.CharField(max_length=2000, null=True, blank=True)
     ingrese_audios = models.CharField(max_length=2000, null=True, blank=True)
     link_firma_cargo_timbre = models.CharField(max_length=2000, null=True, blank=True)
 
-    id_inspeccion = models.CharField(max_length=255, null=True)
-    id_workforce = models.CharField(max_length=255, null=True)
-    creation_date = models.CharField(max_length=255, null=True)  #RE # RE
-    creator = models.CharField(max_length=255, null=True)
-    edit_date = models.CharField(max_length=255, null=True)  #RE # RE
-    editor = models.CharField(max_length=255, null=True)
+    id_inspeccion = models.CharField(max_length=255, null=True, blank=True)
+    id_workforce = models.CharField(max_length=255, null=True, blank=True)
+    creation_date = models.CharField(max_length=255, null=True, blank=True)  #RE # RE
+    creator = models.CharField(max_length=255, null=True, blank=True)
+    edit_date = models.CharField(max_length=255, null=True, blank=True)  #RE # RE
+    editor = models.CharField(max_length=255, null=True, blank=True)
     CLASIFICACIONES = (
         ("Pendiente", "Pendiente"),
         ("con_infraccion_revisor_remota", "Con Infracción - Revisor Remota"),
