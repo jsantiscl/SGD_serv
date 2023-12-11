@@ -467,12 +467,12 @@ class Formulariosig(models.Model):
 ###1.Antecedentes
 
 class ActasTerreno(models.Model):
-    object_id = models.IntegerField(null=True)  #
-    global_id = models.CharField(max_length=255, null=True)  #
-    fecha = models.CharField(max_length=255, null=True)  #RE
-    region = models.CharField(max_length=255, null=True)  #
-    ubicacion = models.CharField(max_length=255, null=True)  #
-    comuna = models.CharField(max_length=255, null=True)  #
+    object_id = models.IntegerField(null=True, blank=True)  #
+    global_id = models.CharField(max_length=255, null=True, blank=True)  #
+    fecha = models.CharField(max_length=255, null=True, blank=True)  #RE
+    region = models.CharField(max_length=255, null=True, blank=True)  #
+    ubicacion = models.CharField(max_length=255, null=True, blank=True)  #
+    comuna = models.CharField(max_length=255, null=True, blank=True)  #
 
     ### 2. Motivo de inspección
 
