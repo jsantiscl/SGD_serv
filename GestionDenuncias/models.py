@@ -658,13 +658,13 @@ class Tokens(models.Model):
 class ActasRemotas(models.Model):
 
     ### 1. Antecedentes
-    object_id = models.IntegerField(null=True)
-    global_id = models.CharField(max_length=255, null=True)
-    fecha = models.CharField(max_length=255, null=True)  #RE
-    region = models.CharField(max_length=255, null=True)
-    seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True)  #
-    indique_folio = models.CharField(max_length=255, null=True)  #
-    indique_otro = models.CharField(max_length=255, null=True)  #
+    object_id = models.IntegerField(null=True, blank=True)
+    global_id = models.CharField(max_length=255, null=True, blank=True)
+    fecha = models.CharField(max_length=255, null=True, blank=True)  #RE
+    region = models.CharField(max_length=255, null=True, blank=True)
+    seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True, blank=True)  #
+    indique_folio = models.CharField(max_length=255, null=True, blank=True)  #
+    indique_otro = models.CharField(max_length=255, null=True, blank=True)  #
 
     ### 2.sujeto fiscalizado
 
