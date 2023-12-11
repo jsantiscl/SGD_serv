@@ -489,32 +489,32 @@ class ActasTerreno(models.Model):
 
     ### 4.opción plebiscitaria
 
-    opcion_plebiscitaria = models.CharField(max_length=30, null=True)
+    opcion_plebiscitaria = models.CharField(max_length=30, null=True, blank=True)
 
     ###5.Materia fiscalizada
 
-    materia_fiscalizada = models.CharField(max_length=255, null=True)
-    corresponde_espacio_publico_autorizado = models.CharField(max_length=255, null=True)
-    seleccione_espacio = models.CharField(max_length=255, null=True)
-    adosada_bien_nacional = models.CharField(max_length=255, null=True)
-    nombre_bienes = models.CharField(max_length=255, null=True)
-    cantidad_elementos_propaganda_publico = models.CharField(max_length=255, null=True)
-    seleccione_tipo_espacio = models.CharField(max_length=255, null=True)
-    seleccione_lugar= models.CharField(max_length=255, null=True)
-    propaganda_excede_dimensiones = models.CharField(max_length=255, null=True)
-    indique_tipo_espacio_fiscalizado = models.CharField(max_length=255, null=True)
-    actividad_fiscalizada = models.CharField(max_length=255, null=True)
-    indique_cantidad_brigadistas_lugar = models.CharField(max_length=255, null=True)
-    otro_antecente = models.CharField(max_length=5000, null=True)
-    creation_date = models.CharField(max_length=255, null=True)  #RE  # RE
-    creator = models.CharField(max_length=255, null=True)
-    edit_date = models.CharField(max_length=255, null=True)   # RE
-    editor = models.CharField(max_length=255, null=True)
-    x_coord = models.CharField(max_length=255, null=True)
-    y_coord = models.CharField(max_length=255, null=True)
+    materia_fiscalizada = models.CharField(max_length=255, null=True, blank=True)
+    corresponde_espacio_publico_autorizado = models.CharField(max_length=255, null=True, blank=True)
+    seleccione_espacio = models.CharField(max_length=255, null=True, blank=True)
+    adosada_bien_nacional = models.CharField(max_length=255, null=True, blank=True)
+    nombre_bienes = models.CharField(max_length=255, null=True, blank=True)
+    cantidad_elementos_propaganda_publico = models.CharField(max_length=255, null=True, blank=True)
+    seleccione_tipo_espacio = models.CharField(max_length=255, null=True, blank=True)
+    seleccione_lugar= models.CharField(max_length=255, null=True, blank=True)
+    propaganda_excede_dimensiones = models.CharField(max_length=255, null=True, blank=True)
+    indique_tipo_espacio_fiscalizado = models.CharField(max_length=255, null=True, blank=True)
+    actividad_fiscalizada = models.CharField(max_length=255, null=True, blank=True)
+    indique_cantidad_brigadistas_lugar = models.CharField(max_length=255, null=True, blank=True)
+    otro_antecente = models.CharField(max_length=5000, null=True, blank=True)
+    creation_date = models.CharField(max_length=255, null=True, blank=True)  #RE  # RE
+    creator = models.CharField(max_length=255, null=True, blank=True)
+    edit_date = models.CharField(max_length=255, null=True, blank=True)   # RE
+    editor = models.CharField(max_length=255, null=True, blank=True)
+    x_coord = models.CharField(max_length=255, null=True, blank=True)
+    y_coord = models.CharField(max_length=255, null=True, blank=True)
     evidencia_fotografica = models.CharField(max_length=2000, null=True, blank=True)
     link_firma_cargo_timbre = models.CharField(max_length=2000, null=True, blank=True)
-    id_inspeccion = models.CharField(max_length=255, null=True)
+    id_inspeccion = models.CharField(max_length=255, null=True, blank=True)
     CLASIFICACIONES = (
         ("Pendiente", "Pendiente"),
         ("con_infraccion_revisor_remota", "Con Infracción - Revisor Remota"),
