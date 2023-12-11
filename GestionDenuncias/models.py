@@ -322,7 +322,7 @@ class Denuncias(models.Model):
     guarda_evaluacion = models.BooleanField(default=False)
     fecha_requer = models.DateField(null=True, blank=True)
     plazo_investigacion = models.CharField(max_length=50,  choices=PLAZO, null=True, blank=True)
-    abogado_asistente = models.ForeignKey(Abogados, on_delete=models.SET_NULL, null=True)
+    abogado_asistente = models.ForeignKey(Abogados, on_delete=models.SET_NULL, null=True, blank=True)
 
     resultado_abogado = models.CharField(max_length=50, choices=RESULTADO_ABG, null=True, blank=True)
     motivo_abogado = models.CharField(max_length=50, choices=MOTIVO_ABG, null=True, blank=True)
@@ -468,53 +468,53 @@ class Formulariosig(models.Model):
 
 class ActasTerreno(models.Model):
     object_id = models.IntegerField(null=True)  #
-    global_id = models.CharField(max_length=255, null=True)  #
-    fecha = models.CharField(max_length=255, null=True)  #RE
-    region = models.CharField(max_length=255, null=True)  #
-    ubicacion = models.CharField(max_length=255, null=True)  #
-    comuna = models.CharField(max_length=255, null=True)  #
+    global_id = models.CharField(max_length=255, null=True, blank=True)  #
+    fecha = models.CharField(max_length=255, null=True, blank=True)  #RE
+    region = models.CharField(max_length=255, null=True, blank=True)  #
+    ubicacion = models.CharField(max_length=255, null=True, blank=True)  #
+    comuna = models.CharField(max_length=255, null=True, blank=True)  #
 
     ### 2. Motivo de inspección
 
-    seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True)  #
-    indique_folio = models.CharField(max_length=255, null=True)  #
-    existe_despliegue_propaganda = models.CharField(max_length=255, null=True)  #
-    indique_otro = models.CharField(max_length=255, null=True)  #
+    seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True, blank=True)  #
+    indique_folio = models.CharField(max_length=255, null=True, blank=True)  #
+    existe_despliegue_propaganda = models.CharField(max_length=255, null=True, blank=True)  #
+    indique_otro = models.CharField(max_length=255, null=True, blank=True)  #
 
     ### 3.sujeto fiscalizado
 
-    Sujeto_fiscalizado = models.CharField(max_length=255, null=True)  #
-    partido_politico_habilitado = models.CharField(max_length=255, null=True)  #
-    otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True)  #
+    Sujeto_fiscalizado = models.CharField(max_length=255, null=True, blank=True)  #
+    partido_politico_habilitado = models.CharField(max_length=255, null=True, blank=True)  #
+    otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True, blank=True)  #
 
     ### 4.opción plebiscitaria
 
-    opcion_plebiscitaria = models.CharField(max_length=30, null=True)
+    opcion_plebiscitaria = models.CharField(max_length=30, null=True, blank=True)
 
     ###5.Materia fiscalizada
 
-    materia_fiscalizada = models.CharField(max_length=255, null=True)
-    corresponde_espacio_publico_autorizado = models.CharField(max_length=255, null=True)
-    seleccione_espacio = models.CharField(max_length=255, null=True)
-    adosada_bien_nacional = models.CharField(max_length=255, null=True)
-    nombre_bienes = models.CharField(max_length=255, null=True)
-    cantidad_elementos_propaganda_publico = models.CharField(max_length=255, null=True)
-    seleccione_tipo_espacio = models.CharField(max_length=255, null=True)
-    seleccione_lugar= models.CharField(max_length=255, null=True)
-    propaganda_excede_dimensiones = models.CharField(max_length=255, null=True)
-    indique_tipo_espacio_fiscalizado = models.CharField(max_length=255, null=True)
-    actividad_fiscalizada = models.CharField(max_length=255, null=True)
-    indique_cantidad_brigadistas_lugar = models.CharField(max_length=255, null=True)
-    otro_antecente = models.CharField(max_length=5000, null=True)
-    creation_date = models.CharField(max_length=255, null=True)  #RE  # RE
-    creator = models.CharField(max_length=255, null=True)
-    edit_date = models.CharField(max_length=255, null=True)   # RE
-    editor = models.CharField(max_length=255, null=True)
-    x_coord = models.CharField(max_length=255, null=True)
-    y_coord = models.CharField(max_length=255, null=True)
+    materia_fiscalizada = models.CharField(max_length=255, null=True, blank=True)
+    corresponde_espacio_publico_autorizado = models.CharField(max_length=255, null=True, blank=True)
+    seleccione_espacio = models.CharField(max_length=255, null=True, blank=True)
+    adosada_bien_nacional = models.CharField(max_length=255, null=True, blank=True)
+    nombre_bienes = models.CharField(max_length=255, null=True, blank=True)
+    cantidad_elementos_propaganda_publico = models.CharField(max_length=255, null=True, blank=True)
+    seleccione_tipo_espacio = models.CharField(max_length=255, null=True, blank=True)
+    seleccione_lugar= models.CharField(max_length=255, null=True, blank=True)
+    propaganda_excede_dimensiones = models.CharField(max_length=255, null=True, blank=True)
+    indique_tipo_espacio_fiscalizado = models.CharField(max_length=255, null=True, blank=True)
+    actividad_fiscalizada = models.CharField(max_length=255, null=True, blank=True)
+    indique_cantidad_brigadistas_lugar = models.CharField(max_length=255, null=True, blank=True)
+    otro_antecente = models.CharField(max_length=5000, null=True, blank=True)
+    creation_date = models.CharField(max_length=255, null=True, blank=True)  #RE  # RE
+    creator = models.CharField(max_length=255, null=True, blank=True)
+    edit_date = models.CharField(max_length=255, null=True, blank=True)   # RE
+    editor = models.CharField(max_length=255, null=True, blank=True)
+    x_coord = models.CharField(max_length=255, null=True, blank=True)
+    y_coord = models.CharField(max_length=255, null=True, blank=True)
     evidencia_fotografica = models.CharField(max_length=2000, null=True, blank=True)
     link_firma_cargo_timbre = models.CharField(max_length=2000, null=True, blank=True)
-    id_inspeccion = models.CharField(max_length=255, null=True)
+    id_inspeccion = models.CharField(max_length=255, null=True, blank=True)
     CLASIFICACIONES = (
         ("Pendiente", "Pendiente"),
         ("con_infraccion_revisor_remota", "Con Infracción - Revisor Remota"),
@@ -590,7 +590,14 @@ class ActasTerreno(models.Model):
     sis_resultado_efr = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOEFR) #ok
     sis_motivo_rechazo = models.CharField(max_length=5000, null=True, blank=True) #ok
     sis_motivo_inicial = models.CharField(max_length=5000, null=True, blank=True)  # ok
-    abogado_asignado = models.IntegerField(null=True, blank=True)  #
+    ABOASIGNADOS = (
+        (16749632, "maburto"),
+        (16835392, "mramirezo"),
+        (17995568, "nbarraza"),
+        (17051087, "dguevara"),
+        (16964946, "fundurraga")
+    )
+    abogado_asignado = models.IntegerField(null=True, blank=True, choices=ABOASIGNADOS)  #
     ELECCIONES = (
         ("Plebiscito Constitucional 2023 - A Favor", "Plebiscito Constitucional 2023 - A Favor"),
         ("Plebiscito Constitucional 2023 - En Contra", "Plebiscito Constitucional 2023 - En Contra"),
@@ -598,8 +605,8 @@ class ActasTerreno(models.Model):
         ("No Aplica", "No Aplica"),
 
     )
-    abogado_eleccion = models.CharField(max_length=255, null=True, choices=ELECCIONES)
-    abogado_presunto_infractor = models.CharField(max_length=500, null=True)
+    abogado_eleccion = models.CharField(max_length=255, null=True, blank=True, choices=ELECCIONES)
+    abogado_presunto_infractor = models.CharField(max_length=500, null=True, blank=True)
     abogado_codigo_activa = models.CharField(max_length=300, null=True, blank=True, choices=CODIGOS)
     DESACTIVACIONES = (
         ("A1", "A1"),
@@ -645,7 +652,7 @@ class ActasTerreno(models.Model):
 
     )
     abogado_resultado_final = models.CharField(max_length=300, default="Pendiente", choices=FINALABOGADO)
-    abogado_folio = models.CharField(max_length=500, null=True)
+    abogado_folio = models.CharField(max_length=500, null=True, blank=True)
     abogado_obs_finales = models.CharField(max_length=5000, null=True, blank=True)  # ok
     def __str__(self):
         return str(self.id_inspeccion)
@@ -659,45 +666,45 @@ class ActasRemotas(models.Model):
 
     ### 1. Antecedentes
     object_id = models.IntegerField(null=True)
-    global_id = models.CharField(max_length=255, null=True)
-    fecha = models.CharField(max_length=255, null=True)  #RE
-    region = models.CharField(max_length=255, null=True)
-    seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True)  #
-    indique_folio = models.CharField(max_length=255, null=True)  #
-    indique_otro = models.CharField(max_length=255, null=True)  #
+    global_id = models.CharField(max_length=255, null=True, blank=True)
+    fecha = models.CharField(max_length=255, null=True, blank=True)  #RE
+    region = models.CharField(max_length=255, null=True, blank=True)
+    seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True, blank=True)  #
+    indique_folio = models.CharField(max_length=255, null=True, blank=True)  #
+    indique_otro = models.CharField(max_length=255, null=True, blank=True)  #
 
     ### 2.sujeto fiscalizado
 
-    sujeto_fiscalizado = models.CharField(max_length=255, null=True)
-    partido_politico_habilitado = models.CharField(max_length=255, null=True)  #
-    otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True)  #
-    opcion_plebiscitaria = models.CharField(max_length=30, null=True)
+    sujeto_fiscalizado = models.CharField(max_length=255, null=True, blank=True)
+    partido_politico_habilitado = models.CharField(max_length=255, null=True, blank=True)  #
+    otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True, blank=True)  #
+    opcion_plebiscitaria = models.CharField(max_length=30, null=True, blank=True)
 
     ### 3.Materia fiscalizada
 
-    es_medio_pagado = models.CharField(max_length=255, null=True)
-    medio_fiscalizado = models.CharField(max_length=255, null=True)
-    nombre_medio = models.CharField(max_length=255, null=True)
-    soporte_material_link = models.CharField(max_length=500, null=True)
-    medio_tiene_tarifario = models.CharField(max_length=500, null=True)
+    es_medio_pagado = models.CharField(max_length=255, null=True, blank=True)
+    medio_fiscalizado = models.CharField(max_length=255, null=True, blank=True)
+    nombre_medio = models.CharField(max_length=255, null=True, blank=True)
+    soporte_material_link = models.CharField(max_length=500, null=True, blank=True)
+    medio_tiene_tarifario = models.CharField(max_length=500, null=True, blank=True)
 
-    radiofrecuencia_medio = models.CharField(max_length=500, null=True)
-    rrss_fiscalizada = models.CharField(max_length=255, null=True)
+    radiofrecuencia_medio = models.CharField(max_length=500, null=True, blank=True)
+    rrss_fiscalizada = models.CharField(max_length=255, null=True, blank=True)
 
-    usuario_perfil_rrss = models.CharField(max_length=500, null=True)
+    usuario_perfil_rrss = models.CharField(max_length=500, null=True, blank=True)
 
-    corresponde_medio_prensa = models.CharField(max_length=255, null=True)
-    otro_antecente = models.CharField(max_length=5000, null=True)
+    corresponde_medio_prensa = models.CharField(max_length=255, null=True, blank=True)
+    otro_antecente = models.CharField(max_length=5000, null=True, blank=True)
     medios_respaldo_adjunto = models.CharField(max_length=2000, null=True, blank=True)
     ingrese_audios = models.CharField(max_length=2000, null=True, blank=True)
     link_firma_cargo_timbre = models.CharField(max_length=2000, null=True, blank=True)
 
-    id_inspeccion = models.CharField(max_length=255, null=True)
-    id_workforce = models.CharField(max_length=255, null=True)
-    creation_date = models.CharField(max_length=255, null=True)  #RE # RE
-    creator = models.CharField(max_length=255, null=True)
-    edit_date = models.CharField(max_length=255, null=True)  #RE # RE
-    editor = models.CharField(max_length=255, null=True)
+    id_inspeccion = models.CharField(max_length=255, null=True, blank=True)
+    id_workforce = models.CharField(max_length=255, null=True, blank=True)
+    creation_date = models.CharField(max_length=255, null=True, blank=True)  #RE # RE
+    creator = models.CharField(max_length=255, null=True, blank=True)
+    edit_date = models.CharField(max_length=255, null=True, blank=True)  #RE # RE
+    editor = models.CharField(max_length=255, null=True, blank=True)
     CLASIFICACIONES = (
         ("Pendiente", "Pendiente"),
         ("con_infraccion_revisor_remota", "Con Infracción - Revisor Remota"),
@@ -773,7 +780,14 @@ class ActasRemotas(models.Model):
     sis_resultado_efr = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOEFR) #ok
     sis_motivo_rechazo = models.CharField(max_length=5000, null=True, blank=True)  # ok
     sis_motivo_inicial = models.CharField(max_length=5000, null=True, blank=True)  # ok
-    abogado_asignado = models.IntegerField(null=True, blank=True)  #
+    ABOASIGNADOS = (
+        (16749632, "maburto"),
+        (16835392, "mramirezo"),
+        (17995568, "nbarraza"),
+        (17051087, "dguevara"),
+        (16964946, "fundurraga")
+    )
+    abogado_asignado = models.IntegerField(null=True, blank=True, choices=ABOASIGNADOS)  #
     ELECCIONES = (
         ("Plebiscito Constitucional 2023 - A Favor", "Plebiscito Constitucional 2023 - A Favor"),
         ("Plebiscito Constitucional 2023 - En Contra", "Plebiscito Constitucional 2023 - En Contra"),
@@ -781,8 +795,8 @@ class ActasRemotas(models.Model):
         ("No Aplica", "No Aplica"),
 
     )
-    abogado_eleccion = models.CharField(max_length=255, null=True, choices=ELECCIONES)
-    abogado_presunto_infractor = models.CharField(max_length=500, null=True)
+    abogado_eleccion = models.CharField(max_length=255, null=True, blank=True, choices=ELECCIONES)
+    abogado_presunto_infractor = models.CharField(max_length=500, null=True, blank=True)
     abogado_codigo_activa = models.CharField(max_length=300, null=True, blank=True, choices=CODIGOS)
     DESACTIVACIONES = (
         ("A1", "A1"),
@@ -828,7 +842,7 @@ class ActasRemotas(models.Model):
 
     )
     abogado_resultado_final = models.CharField(max_length=300, default="Pendiente", choices=FINALABOGADO)
-    abogado_folio = models.CharField(max_length=500, null=True)
+    abogado_folio = models.CharField(max_length=500, null=True, blank=True)
     abogado_obs_finales = models.CharField(max_length=5000, null=True, blank=True)  # ok
     def __str__(self):
         return str(self.id_inspeccion)
