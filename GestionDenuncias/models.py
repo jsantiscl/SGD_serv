@@ -668,10 +668,10 @@ class ActasRemotas(models.Model):
 
     ### 2.sujeto fiscalizado
 
-    sujeto_fiscalizado = models.CharField(max_length=255, null=True)
-    partido_politico_habilitado = models.CharField(max_length=255, null=True)  #
-    otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True)  #
-    opcion_plebiscitaria = models.CharField(max_length=30, null=True)
+    sujeto_fiscalizado = models.CharField(max_length=255, null=True, blank=True)
+    partido_politico_habilitado = models.CharField(max_length=255, null=True, blank=True)  #
+    otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True, blank=True)  #
+    opcion_plebiscitaria = models.CharField(max_length=30, null=True, blank=True)
 
     ### 3.Materia fiscalizada
 
