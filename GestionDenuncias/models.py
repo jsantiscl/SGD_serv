@@ -828,7 +828,7 @@ class ActasRemotas(models.Model):
 
     )
     abogado_resultado_final = models.CharField(max_length=300, default="Pendiente", choices=FINALABOGADO)
-    abogado_folio = models.CharField(max_length=500, null=True)
+    abogado_folio = models.CharField(max_length=500, null=True, blank=True)
     abogado_obs_finales = models.CharField(max_length=5000, null=True, blank=True)  # ok
     def __str__(self):
         return str(self.id_inspeccion)
