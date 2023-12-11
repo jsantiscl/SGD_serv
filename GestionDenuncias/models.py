@@ -781,8 +781,8 @@ class ActasRemotas(models.Model):
         ("No Aplica", "No Aplica"),
 
     )
-    abogado_eleccion = models.CharField(max_length=255, null=True, choices=ELECCIONES)
-    abogado_presunto_infractor = models.CharField(max_length=500, null=True)
+    abogado_eleccion = models.CharField(max_length=255, null=True, blank=True, choices=ELECCIONES)
+    abogado_presunto_infractor = models.CharField(max_length=500, null=True, blank=True)
     abogado_codigo_activa = models.CharField(max_length=300, null=True, blank=True, choices=CODIGOS)
     DESACTIVACIONES = (
         ("A1", "A1"),
