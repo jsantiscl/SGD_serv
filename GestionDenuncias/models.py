@@ -476,16 +476,16 @@ class ActasTerreno(models.Model):
 
     ### 2. Motivo de inspección
 
-    seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True)  #
-    indique_folio = models.CharField(max_length=255, null=True)  #
-    existe_despliegue_propaganda = models.CharField(max_length=255, null=True)  #
-    indique_otro = models.CharField(max_length=255, null=True)  #
+    seleccion_motivo_inspeccion = models.CharField(max_length=255, null=True, blank=True)  #
+    indique_folio = models.CharField(max_length=255, null=True, blank=True)  #
+    existe_despliegue_propaganda = models.CharField(max_length=255, null=True, blank=True)  #
+    indique_otro = models.CharField(max_length=255, null=True, blank=True)  #
 
     ### 3.sujeto fiscalizado
 
-    Sujeto_fiscalizado = models.CharField(max_length=255, null=True)  #
-    partido_politico_habilitado = models.CharField(max_length=255, null=True)  #
-    otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True)  #
+    Sujeto_fiscalizado = models.CharField(max_length=255, null=True, blank=True)  #
+    partido_politico_habilitado = models.CharField(max_length=255, null=True, blank=True)  #
+    otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True, blank=True)  #
 
     ### 4.opción plebiscitaria
 
