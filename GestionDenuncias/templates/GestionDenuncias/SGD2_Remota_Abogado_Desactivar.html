@@ -18,13 +18,13 @@
 
 $(document).ready(function() {
     // Escuchar cambios en el campo 'Validacion Resultado'
-    $('#id_sis_resultado_efr').change(function() {
-        if ($(this).val() == 'Rechaza') {
+    $('#id_abogado_resultado').change(function() {
+        if ($(this).val() == 'Devuelve') {
             // Mostrar el campo 'Motivo Rechazo' si 'Validacion Resultado' es 'Rechazo'
-            $('#id_sis_motivo_rechazo').show();
+            $('#id_abogado_motivo_devolucion').show();
         } else {
             // Ocultar el campo 'Motivo Rechazo' si 'Validacion Resultado' no es 'Rechazo'
-            $('#id_sis_motivo_rechazo').hide();
+            $('#id_abogado_motivo_devolucion').hide();
         }
     });
 });

@@ -160,5 +160,17 @@ urlpatterns = [
          name='abogado_activadas_remotas'),
     path('abogado/activadas_remotas_gestiones/<str:id>', login_required(abogado_activadas_remotas_gestiones),
          name='abogado_activadas_remotas_gestiones'),
+
+    path('efr/remota_devuelto_abogado/', login_required(efr_remota_devuelto_abogado),
+         name='efr_remota_devuelto_abogado'),
+
+    path('efr/remota_devuelta_abogado_gestiones/<str:id>', login_required(efr_remota_devuelta_abogado_gestiones),
+         name='efr_remota_devuelta_abogado_gestiones'),
+
+    path('efr/terreno_devuelto_abogado/', login_required(efr_terreno_devuelto_abogado),
+         name='efr_terreno_devuelto_abogado'),
+
+    path('efr/terreno_devuelta_abogado_gestiones/<str:id>', login_required(efr_terreno_devuelta_abogado_gestiones),
+         name='efr_terreno_devuelta_abogado_gestiones'),
 ]
 

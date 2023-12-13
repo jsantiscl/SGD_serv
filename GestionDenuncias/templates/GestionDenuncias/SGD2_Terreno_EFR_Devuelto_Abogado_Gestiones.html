@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 <style>
-   #id_abogado_motivo_devolucion { display: none; }
+   #id_sis_motivo_rechazo { display: none; }
 </style>
 
 
@@ -18,17 +18,16 @@
 
 $(document).ready(function() {
     // Escuchar cambios en el campo 'Validacion Resultado'
-    $('#id_abogado_resultado').change(function() {
-        if ($(this).val() == 'Devuelve') {
+    $('#id_sis_resultado_efr').change(function() {
+        if ($(this).val() == 'Rechaza') {
             // Mostrar el campo 'Motivo Rechazo' si 'Validacion Resultado' es 'Rechazo'
-            $('#id_abogado_motivo_devolucion').show();
+            $('#id_sis_motivo_rechazo').show();
         } else {
             // Ocultar el campo 'Motivo Rechazo' si 'Validacion Resultado' no es 'Rechazo'
-            $('#id_abogado_motivo_devolucion').hide();
+            $('#id_sis_motivo_rechazo').hide();
         }
     });
 });
-
 
 $(document).ready(function() {
 	$('#example2').DataTable({
@@ -76,12 +75,12 @@ $(document).ready(function() {
  <br>
 
         {% for acta in actas_terreno %}
-        {% if acta.sis_clasificacion == 'asignado_Abogado'%}
-         <h3>Activar Acta {{ acta.id_inspeccion }}</h3>
+        {% if acta.sis_clasificacion == 'abogado_devuelto'%}
+         <h3>Gestionar Acta {{ acta.id_inspeccion }}</h3>
              <br>
-    <form action="{% url 'abogado_activar_terreno' id=acta.global_id %}" method = "POST" enctype="multipart/form-data" id="myForm">{% csrf_token %}
+    <form action="{% url 'efr_terreno_devuelta_abogado_gestiones' id=acta.global_id %}" method = "POST" enctype="multipart/form-data" id="myForm">{% csrf_token %}
         {% csrf_token %}
-        {{ GestionTerrenoAbogadoActivarForm.as_p  }}
+        {{ GestionTerrenoEFRForm.as_p  }}
 
          <br>
         <input class="btn btn-primary" type="submit" name="button_guardar" value="Guardar Datos y Salir">
@@ -98,7 +97,7 @@ $(document).ready(function() {
             <div class="modal-body">
 
                 <!-- 1. Datos generales -->
-
+                {% if acta.abogado_motivo_devolucion %}<p><i><strong>Motivo Devolución Abogado:</strong>{{ acta.abogado_motivo_devolucion }}</i> </p>{% endif %}
                 {% if acta.id_inspeccion %}<p><strong>ID Inspección:</strong> {{ acta.id_inspeccion }}</p>{% endif %}
                 {% if acta.fecha %}<p><strong>Fecha:</strong> {{ acta.fecha }}</p>{% endif %}
                 {% if acta.region %}<p><strong>Región:</strong> {{ acta.region }}</p>{% endif %}
@@ -168,16 +167,7 @@ $(document).ready(function() {
                 {% if acta.link_firma_cargo_timbre %}<p><strong>Link Firma y Cargo con Timbre:</strong> <a href="{{ acta.link_firma_cargo_timbre }}?token={{ latest_token.Token }}" target="_blank">Ver Firma</a></p>{% endif %}
 
                            {% if acta.sis_motivo_inicial %}<p><strong>Motivo Revisor:</strong> {{ acta.sis_motivo_inicial }}</p>{% endif %}
-            {% if acta.sis_codigo %}<p><strong>DR Código Infraccion:</strong> {{ acta.sis_codigo }}</p>{% endif %}
-            {% if acta.sis_link %}<p><strong>DR Enlace Carpeta:</strong> <a href="{{ acta.sis_link }}" target="_blank">{{ acta.sis_link }}</a></p>{% endif %}
-            {% if acta.sis_nro_requerimiento %}<p><strong>DR Número de Requerimiento:</strong> {{ acta.sis_nro_requerimiento }}</p>{% endif %}
-            {% if acta.sis_fe_sub %}<p><strong>DR Fecha de Subsanación:</strong> {{ acta.sis_fe_sub }}</p>{% endif %}
-            {% if acta.sis_plazo_respuesta %}<p><strong>DR Plazo de Respuesta:</strong> {{ acta.sis_plazo_respuesta }}</p>{% endif %}
-            {% if acta.sis_respuesta %}<p><strong>DR Respuesta:</strong> {{ acta.sis_respuesta }}</p>{% endif %}
-            {% if acta.sis_oficio_retiro %}<p><strong>DR Oficio de Retiro:</strong> {{ acta.sis_oficio_retiro }}</p>{% endif %}
-            {% if acta.sis_certificado %}<p><strong>DR Certificado:</strong> {{ acta.sis_certificado }}</p>{% endif %}
-            {% if acta.sis_propuesta %}<p><strong>DR Propuesta:</strong> {{ acta.get_sis_propuesta_display }}</p>{% endif %}
-            {% if acta.sis_motivo %}<p><strong>DR Motivo:</strong> {{ acta.sis_motivo }}</p>{% endif %}
+
             </div>
         </div>
                   <br>
@@ -227,12 +217,9 @@ const csrftoken = getCookie('csrftoken');
 
   function enviar_formulario() {
 
-    const validacion_resultado =  document.getElementById("id_abogado_resultado").value
-    const motivo_devolucion =  document.getElementById("id_abogado_motivo_devolucion").value
-    const abogado_eleccion =  document.getElementById("id_abogado_eleccion").value
-    const abogado_presunto_infractor =  document.getElementById("id_abogado_presunto_infractor").value
-    const abogado_codigo_activa =  document.getElementById("id_abogado_codigo_activa").value
-    const abogado_obs =  document.getElementById("id_abogado_obs").value
+    const sis_motivo = document.getElementById(`sis_motivo`);
+    const validacion_resultado =  document.getElementById("id_sis_resultado_efr").value
+    const motivo_rechazo =  document.getElementById("id_sis_motivo_rechazo").value
 
        if (validacion_resultado === "Pendiente") {
 
@@ -243,7 +230,8 @@ const csrftoken = getCookie('csrftoken');
                    if (confirm('¿Esta Seguro que quiere Aceptar el Acta ?')) {
         // Save it!
           console.log('Enviado Formulario');
-          document.getElementById("id_sis_clasificacion").value = "abogado_activado";
+          document.getElementById("id_sis_propuesta").disabled = false;
+          document.getElementById("id_sis_clasificacion").value = "efr_aceptado";
 
           console.log('pasa 1');
           document.getElementById("myForm").submit();
@@ -254,16 +242,16 @@ const csrftoken = getCookie('csrftoken');
 
 
        }
-       else if (validacion_resultado === "Devuelve")  {
+       else if (validacion_resultado === "Rechaza")  {
 
-           if (motivo_devolucion == "") {
+           if (motivo_rechazo == "") {
                window.alert("Ingrese Motivo");
            }
            else {
-                   if (confirm('¿Esta Seguro que quiere Devolver el Acta ?')) {
+                   if (confirm('¿Esta Seguro que quiere Rechazar el Acta ?')) {
         // Save it!
           console.log('Enviado Formulario');
-          document.getElementById("id_sis_clasificacion").value = "abogado_devuelto";
+          document.getElementById("id_sis_clasificacion").value = "revisor_rechazo";
 
           console.log('pasa 1');
           document.getElementById("myForm").submit();
