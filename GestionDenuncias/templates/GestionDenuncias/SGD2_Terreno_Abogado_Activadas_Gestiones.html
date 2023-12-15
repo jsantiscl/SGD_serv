@@ -239,7 +239,7 @@ const csrftoken = getCookie('csrftoken');
        }
        else if (validacion_resultado === "Con Infraccion")  {
 
-                   if (confirm('¿Esta Seguro que quiere ingresar con infraccion ?')) {
+                   if (confirm('¿Esta Seguro que desea Dejar con Infraccion ?')) {
         // Save it!
           console.log('Enviado Formulario');
           document.getElementById("id_sis_clasificacion").value = "abogado_con_infraccion";
@@ -247,6 +247,7 @@ const csrftoken = getCookie('csrftoken');
           console.log('pasa 1');
           document.getElementById("myForm").submit();
           console.log('pasa 2');
+          console.log(document.getElementById("id_sis_clasificacion").value);
 } else {
           // Do nothing!
       }
@@ -256,7 +257,7 @@ const csrftoken = getCookie('csrftoken');
        else if (validacion_resultado === "Sin Infraccion")  {
 
 
-                   if (confirm('¿Esta Seguro que quiere Devolver el Acta ?')) {
+                   if (confirm('¿Esta Seguro que desea Dejar sin Infraccion ?')) {
         // Save it!
           console.log('Enviado Formulario');
           document.getElementById("id_sis_clasificacion").value = "abogado_sin_infraccion";

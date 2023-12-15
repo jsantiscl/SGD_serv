@@ -1695,10 +1695,13 @@ def abogado_activadas_terreno_gestiones(request, id):
                 acta.abogado_resultado_final = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['abogado_resultado_final']
 
                 acta.save(update_fields=['sis_clasificacion', 'abogado_eleccion', 'abogado_presunto_infractor' , 'abogado_codigo_activa', 'abogado_obs','abogado_folio','abogado_obs_finales','abogado_resultado_final'])
+                print(GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['sis_clasificacion'])
                 return redirect('abogado_activadas_terreno')
             else:
-                print(GestionTerrenoAbogadoActivarGestiones.errors)
+                print(GestionTerrenoAbogadoActivarGestionesForm.errors)
+                print(acta.sis_clasificacion)
                 return redirect('abogado_activadas_terreno')
+
         else:
             GestionTerrenoAbogadoActivarGestionesForm = GestionTerrenoAbogadoActivarGestiones(instance=acta)
 

@@ -528,6 +528,8 @@ class ActasTerreno(models.Model):
         ("abogado_activado", "Activado Abogado"),
         ("abogado_devuelto", "Devuelto a DR por Abogado"),
         ("abogado_desactivado", "Desactivado Abogado"),
+        ("abogado_con_infraccion", "Abogado con Infracción"),
+        ("abogado_sin_infraccion", "Abogado sin Infracción"),
     )
     sis_clasificacion = models.CharField(max_length=300, default="Pendiente", choices=CLASIFICACIONES)
     CODIGOS = (
@@ -719,6 +721,8 @@ class ActasRemotas(models.Model):
         ("abogado_activado", "Activado Abogado"),
         ("abogado_devuelto", "Devuelto a DR por Abogado"),
         ("abogado_desactivado", "Desactivado Abogado"),
+        ("abogado_con_infraccion", "Abogado con Infracción"),
+        ("abogado_sin_infraccion", "Abogado sin Infracción"),
     )
     sis_clasificacion = models.CharField(max_length=300, default="Pendiente", choices=CLASIFICACIONES)
     CODIGOS = (
