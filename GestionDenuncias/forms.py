@@ -767,3 +767,6 @@ class GestionRemotasAbogadoActivarGestiones(forms.ModelForm):
             'abogado_motivo_devolucion': '',
             'sis_clasificacion':'sis_clasificacion'
         }
+
+class TokenForm(forms.Form):
+    token_value = forms.CharField(label='Token Value', max_length=500)

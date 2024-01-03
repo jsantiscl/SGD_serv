@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from datetime import datetime, timedelta
 from django.db.models import Count
+from django.db import connection
 from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formulariosig, EncargadosRegionales
 from .forms import *
 from .forms import GestionTerreno
@@ -1954,3 +1955,25 @@ def efr_terreno_devuelta_abogado_gestiones(request, id):
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
     context = {'latest_token': latest_token, 'actas_terreno': actas_terreno, 'GestionTerrenoEFRForm': GestionTerrenoEFRForm}
     return render(request, 'GestionDenuncias/SGD2_Terreno_EFR_Devuelto_Abogado_Gestiones.html', context)
+
+
+
+
+def insert_token(request):
+    if request.method == 'POST':
+        form = TokenForm(request.POST)
+        if form.is_valid():
+            token_value = form.cleaned_data['token_value']
+            # Asegúrate de limpiar y validar este valor adecuadamente
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO public.\"GestionDenuncias_tokens\" (\"Token\", \"Fecha\") VALUES (%s, NOW())", [token_value])
+            # Redirecciona o muestra un mensaje de éxito
+    else:
+        form = TokenForm()
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    return render(request, 'GestionDenuncias/SGD2_ingresa_Token.html', {'latest_token': latest_token,'form': form})

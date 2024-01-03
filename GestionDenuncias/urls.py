@@ -172,5 +172,6 @@ urlpatterns = [
 
     path('efr/terreno_devuelta_abogado_gestiones/<str:id>', login_required(efr_terreno_devuelta_abogado_gestiones),
          name='efr_terreno_devuelta_abogado_gestiones'),
+        path('insert_token/', insert_token, name='insert_token'),
 ]
 
