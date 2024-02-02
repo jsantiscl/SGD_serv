@@ -1977,3 +1977,144 @@ def insert_token(request):
         latest_token = None
 
     return render(request, 'GestionDenuncias/SGD2_ingresa_Token.html', {'latest_token': latest_token,'form': form})
+
+
+def encargado_terreno_revision(request):
+
+    actas_terreno = ActasTerreno.objects.filter(Q(sis_clasificacion__iexact="abogado_con_infraccion")|Q(sis_clasificacion__iexact="abogado_sin_infraccion"))
+
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Encargado.html', context)
+
+def encargado_terreno_revision_gestiones(request, id):
+    actas_terreno = ActasTerreno.objects.filter(global_id=id)
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+        if request.method == 'POST':
+            GestionTerrenoEncargadoGestionesForm = GestionTerrenoEncargadoGestiones(request.POST, instance=acta)
+            if GestionTerrenoEncargadoGestionesForm.is_valid():
+                acta = GestionTerrenoEncargadoGestionesForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
+                acta.sis_encargado_resultado = GestionTerrenoEncargadoGestionesForm.cleaned_data['sis_encargado_resultado']
+                acta.sis_motivo_rechazo_encargado = GestionTerrenoEncargadoGestionesForm.cleaned_data['sis_motivo_rechazo_encargado']
+                acta.sis_clasificacion = GestionTerrenoEncargadoGestionesForm.cleaned_data['sis_clasificacion']
+                acta.save(update_fields=['sis_encargado_resultado','sis_motivo_rechazo_encargado', 'sis_clasificacion' ])
+                return redirect('encargado_terreno_revision')
+            else:
+                print(GestionTerrenoEncargadoGestionesForm.errors)
+                return redirect('encargado_terreno_revision')
+        else:
+            GestionTerrenoEncargadoGestionesForm = GestionTerrenoEncargadoGestiones(instance=acta)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno, 'GestionTerrenoEncargadoGestionesForm': GestionTerrenoEncargadoGestionesForm}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Encargado_Gestiones.html', context)
+
+
+def encargado_remota_revision(request):
+
+    actas_remota = ActasRemotas.objects.filter(Q(sis_clasificacion__iexact="abogado_con_infraccion")|Q(sis_clasificacion__iexact="abogado_sin_infraccion"))
+
+
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    # actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Encargado.html', context)
+
+def encargado_remota_revision_gestiones(request, id):
+    actas_remota = ActasRemotas.objects.filter(global_id=id)
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+        try:
+            latest_token = Tokens.objects.latest('id')
+        except ObjectDoesNotExist:
+            latest_token = None
+
+        if request.method == 'POST':
+            GestionRemotasEncargadoGestionesForm = GestionRemotasEncargadoGestiones(request.POST, instance=acta)
+            if GestionRemotasEncargadoGestionesForm.is_valid():
+                acta = GestionRemotasEncargadoGestionesForm.save(commit=False)  # Esto no guarda el objeto en la base de datos todavía
+                acta.sis_clasificacion = GestionRemotasEncargadoGestionesForm.cleaned_data['sis_clasificacion']
+                acta.sis_encargado_resultado = GestionRemotasEncargadoGestionesForm.cleaned_data['sis_encargado_resultado']
+                acta.sis_motivo_rechazo_encargado = GestionRemotasEncargadoGestionesForm.cleaned_data['sis_motivo_rechazo_encargado']
+
+
+                acta.save(update_fields=['sis_clasificacion', 'sis_encargado_resultado', 'sis_motivo_rechazo_encargado' ])
+                return redirect('encargado_remota_revision')
+            else:
+                print(GestionRemotasEncargadoGestionesForm.errors)
+                return redirect('encargado_remota_revision')
+        else:
+            GestionRemotasEncargadoGestionesForm = GestionRemotasEncargadoGestiones(instance=acta)
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'GestionRemotasEncargadoGestionesForm': GestionRemotasEncargadoGestionesForm}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Encargado_Gestiones.html', context)

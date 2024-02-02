@@ -530,6 +530,8 @@ class ActasTerreno(models.Model):
         ("abogado_desactivado", "Desactivado Abogado"),
         ("abogado_con_infraccion", "Abogado con Infracción"),
         ("abogado_sin_infraccion", "Abogado sin Infracción"),
+        ("acepta_encargado", "Acepta Encargado"),
+        ("rechaza_encargado", "Rechaza Encargado"),
     )
     sis_clasificacion = models.CharField(max_length=300, default="Pendiente", choices=CLASIFICACIONES)
     CODIGOS = (
@@ -657,6 +659,8 @@ class ActasTerreno(models.Model):
     abogado_resultado_final = models.CharField(max_length=300, default="Pendiente", choices=FINALABOGADO)
     abogado_folio = models.CharField(max_length=500, null=True, blank=True)
     abogado_obs_finales = models.CharField(max_length=5000, null=True, blank=True)  # ok
+    sis_encargado_resultado = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOABOGADO)
+    sis_motivo_rechazo_encargado = models.CharField(max_length=5000, null=True, blank=True)  # ok
     def __str__(self):
         return str(self.id_inspeccion)
 
@@ -723,6 +727,8 @@ class ActasRemotas(models.Model):
         ("abogado_desactivado", "Desactivado Abogado"),
         ("abogado_con_infraccion", "Abogado con Infracción"),
         ("abogado_sin_infraccion", "Abogado sin Infracción"),
+        ("acepta_encargado", "Acepta Encargado"),
+        ("rechaza_encargado", "Rechaza Encargado"),
     )
     sis_clasificacion = models.CharField(max_length=300, default="Pendiente", choices=CLASIFICACIONES)
     CODIGOS = (
@@ -850,6 +856,8 @@ class ActasRemotas(models.Model):
     abogado_resultado_final = models.CharField(max_length=300, default="Pendiente", choices=FINALABOGADO)
     abogado_folio = models.CharField(max_length=500, null=True, blank=True)
     abogado_obs_finales = models.CharField(max_length=5000, null=True, blank=True)  # ok
+    sis_encargado_resultado = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOABOGADO)
+    sis_motivo_rechazo_encargado = models.CharField(max_length=5000, null=True, blank=True)  # ok
     def __str__(self):
         return str(self.id_inspeccion)
 

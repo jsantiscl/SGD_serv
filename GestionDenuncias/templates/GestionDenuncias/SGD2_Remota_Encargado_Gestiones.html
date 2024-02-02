@@ -1,0 +1,303 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Actas de Fiscalizacion</title> {% endblock %}
+
+{% block body %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<style>
+
+   #id_sis_motivo_rechazo_encargado { display: none; }
+</style>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+            <script type="text/javascript" class="init">
+
+$(document).ready(function() {
+    // Escuchar cambios en el campo 'Validacion Resultado'
+    $('#id_sis_encargado_resultado').change(function() {
+        if ($(this).val() == 'Devuelve') {
+            // Mostrar el campo 'Motivo Rechazo' si 'Validacion Resultado' es 'Rechazo'
+            $('#id_sis_motivo_rechazo_encargado').show();
+        } else {
+            // Ocultar el campo 'Motivo Rechazo' si 'Validacion Resultado' no es 'Rechazo'
+            $('#id_sis_motivo_rechazo_encargado').hide();
+        }
+    });
+});
+
+$(document).ready(function() {
+	$('#example2').DataTable({
+        "language": {
+            "lengthMenu": "Ver _MENU_ registros por pagina",
+            "zeroRecords": "Sin Resultados",
+            "info": "Mostrando pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin Resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros)"
+        },
+               dom: 'lfrtBip',
+        buttons: [
+             {
+      extend: 'excel',
+      exportOptions: {
+
+          format: {
+              body: function(data, row, column, node) {
+                  data = $('<p>' + data + '</p>').text();
+                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+              }
+          }
+      }
+  }
+        ]
+
+
+
+    } );
+} );
+            function goBack() {
+  window.history.back();
+}
+
+            </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<div class="w3-responsive">
+
+<section class="section1">
+
+<div class="w3-responsive">
+<div class = "w3-row">
+     <div class="w3-half w3-container">
+ <br>
+
+        {% for acta in actas_remota %}
+        {% if acta.sis_clasificacion == 'abogado_con_infraccion' or acta.sis_clasificacion == 'abogado_sin_infraccion'%}
+         <h3>Gestionar Acta {{ acta.id_inspeccion }}</h3>
+             <br>
+    <form action="{% url 'encargado_remota_revision_gestiones' id=acta.global_id %}" method = "POST" enctype="multipart/form-data" id="myForm">{% csrf_token %}
+        {% csrf_token %}
+        {{ GestionRemotasEncargadoGestionesForm.as_p  }}
+
+         <br>
+        <input class="btn btn-primary" type="submit" name="button_guardar" value="Guardar Datos y Salir">
+        <input class="btn btn-success" id="button_enviar" name="button_enviar" value="Guardar Datos y Enviar" onclick="enviar_formulario()">
+    <br>
+    </form>
+            </div>
+              <div class="w3-half w3-container">
+               <br>
+                 <h3>Detalles Acta</h3>
+                 <br>
+               <div class="modal-content">
+
+            <div class="modal-body">
+
+                <!-- 1. Datos generales -->
+
+                              <!-- 1. Datos generales -->
+
+                {% if acta.id_inspeccion %}<p><strong>ID Inspección:</strong> {{ acta.id_inspeccion }}</p>{% endif %}
+                {% if acta.fecha %}<p><strong>Fecha:</strong> {{ acta.fecha }}</p>{% endif %}
+                {% if acta.region %}<p><strong>Región:</strong> {{ acta.region }}</p>{% endif %}
+
+                <!-- 2. Motivo de inspección -->
+                {% if acta.seleccion_motivo_inspeccion %}<p><strong>Selección Motivo Inspección:</strong> {{ acta.seleccion_motivo_inspeccion }}</p>{% endif %}
+                {% if acta.indique_folio %}<p><strong>Folio Denuncia:</strong> {{ acta.indique_folio_denuncia }}</p>{% endif %}
+                {% if acta.indique_otro %}<p><strong>Indique Otro:</strong> {{ acta.indique_otro }}</p>{% endif %}
+
+                <!-- 3. Sujeto fiscalizado -->
+                {% if acta.sujeto_fiscalizado %}<p><strong>Sujeto Fiscalizado:</strong> {{ acta.sujeto_fiscalizado }}</p>{% endif %}
+                {% if acta.partido_politico_habilitado %}<p><strong>Partido Político Habilitado:</strong> {{ acta.partido_politico_habilitado }}</p>{% endif %}
+                {% if acta.otro_sujeto_fiscalizado %}<p><strong>Otro Sujeto Fiscalizado:</strong> {{ acta.otro_sujeto_fiscalizado }}</p>{% endif %}
+
+                <!-- 4. Opción plebiscitaria -->
+                {% if acta.opcion_plebiscitaria %}<p><strong>Opción Plebiscitaria:</strong> {{ acta.opcion_plebiscitaria }}</p>{% endif %}
+
+                <!-- 5. Materia fiscalizada -->
+                {% if acta.es_medio_pagado %}<p><strong>Es Medio Pagado:</strong> {{ acta.es_medio_pagado }}</p>{% endif %}
+                {% if acta.medio_fiscalizado %}<p><strong>Medio Fiscalizado:</strong> {{ acta.medio_fiscalizado }}</p>{% endif %}
+                {% if acta.nombre_medio %}<p><strong>Nombre Medio:</strong> {{ acta.nombre_medio }}</p>{% endif %}
+                {% if acta.soporte_material_link %}<p><strong>Soporte Material Link:</strong> <a href="{{ acta.soporte_material_link }}"> Link</a></p>{% endif %}
+                {% if acta.medio_tiene_tarifario %}<p><strong>Tiene Tarifario:</strong> {{ acta.medio_tiene_tarifario }}</p>{% endif %}
+                {% if acta.radiofrecuencia_medio %}<p><strong>Radiofrecuencia Medio:</strong> {{ acta.radiofrecuencia_medio }}</p>{% endif %}
+                {% if acta.rrss_fiscalizada %}<p><strong>RRSS Fiscalizada:</strong> {{ acta.rrss_fiscalizada }}</p>{% endif %}
+                {% if acta.usuario_perfil_rrss %}<p><strong>Usuario Perfil RRSS:</strong> {{ acta.usuario_perfil_rrss }}</p>{% endif %}
+                {% if acta.corresponde_medio_prensa %}<p><strong>Corresponde Medio Prensa:</strong> {{ acta.corresponde_medio_prensa }}</p>{% endif %}
+                {% if acta.otro_antecente %}<p><strong>Otro Antecedente:</strong> {{ acta.otro_antecente }}</p>{% endif %}
+
+                {% if acta.medios_respaldo_adjunto %}
+                <p><strong>Adjuntos:</strong>
+                    <a href="{{ acta.medios_respaldo_adjunto }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.medios_respaldo_adjunto }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                                  <a href="{{ acta.adjunto2 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto2 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                    </a>
+                                  <a href="{{ acta.adjunto3 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto3 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+
+                    </a>
+                                  <a href="{{ acta.adjunto4 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto4 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                                    </a>
+                                  <a href="{{ acta.adjunto5 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto5 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                                    </a>
+                                  <a href="{{ acta.adjunto6 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto6 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                </p>
+                {% endif %}
+
+
+                            {% if acta.ingrese_audios %}
+                <p><strong>Audio:</strong>
+{% if acta.ingrese_audios %}
+    <audio controls>
+        <source src="{{ acta.ingrese_audios }}?token={{ latest_token.Token }}" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
+{% endif %}
+
+
+                </p>
+                {% endif %}
+
+
+                {% if acta.link_firma_cargo_timbre %}<p><strong>Link Firma y Cargo con Timbre:</strong> <a href="{{ acta.link_firma_cargo_timbre }}?token={{ latest_token.Token }}" target="_blank">Ver Firma</a></p>{% endif %}
+            {% if acta.sis_motivo_inicial %}<p><strong>Motivo Revisor:</strong> {{ acta.sis_motivo_inicial }}</p>{% endif %}
+                        {% if acta.sis_codigo %}<p><strong>DR Código Infraccion:</strong> {{ acta.sis_codigo }}</p>{% endif %}
+            {% if acta.sis_link %}<p><strong>DR Enlace Carpeta:</strong> <a href="{{ acta.sis_link }}" target="_blank">{{ acta.sis_link }}</a></p>{% endif %}
+            {% if acta.sis_nro_requerimiento %}<p><strong>DR Número de Requerimiento:</strong> {{ acta.sis_nro_requerimiento }}</p>{% endif %}
+            {% if acta.sis_fe_sub %}<p><strong>DR Fecha de Subsanación:</strong> {{ acta.sis_fe_sub }}</p>{% endif %}
+            {% if acta.sis_plazo_respuesta %}<p><strong>DR Plazo de Respuesta:</strong> {{ acta.sis_plazo_respuesta }}</p>{% endif %}
+            {% if acta.sis_respuesta %}<p><strong>DR Respuesta:</strong> {{ acta.sis_respuesta }}</p>{% endif %}
+            {% if acta.sis_oficio_retiro %}<p><strong>DR Oficio de Retiro:</strong> {{ acta.sis_oficio_retiro }}</p>{% endif %}
+            {% if acta.sis_certificado %}<p><strong>DR Certificado:</strong> {{ acta.sis_certificado }}</p>{% endif %}
+            {% if acta.sis_propuesta %}<p><strong>DR Propuesta:</strong> {{ acta.get_sis_propuesta_display }}</p>{% endif %}
+            {% if acta.sis_motivo %}<p><strong>DR Motivo:</strong> {{ acta.sis_motivo }}</p>{% endif %}
+            {% if acta.abogado_asignado %}<p><strong>Abogado Asignado:</strong> {{ acta.get_abogado_asignado_display }}</p>{% endif %}
+{% if acta.abogado_eleccion %}<p><strong>Eleccion:</strong> {{ acta.get_abogado_eleccion_display }}</p>{% endif %}
+{% if acta.abogado_presunto_infractor %}<p><strong>Presunto Infractor:</strong> {{ acta.abogado_presunto_infractor }}</p>{% endif %}
+{% if acta.abogado_codigo_activa %}<p><strong>Codigo Activa:</strong> {{ acta.get_abogado_codigo_activa_display }}</p>{% endif %}
+{% if acta.abogado_codigo_desactiva %}<p><strong>Codigo Desactiva:</strong> {{ acta.get_abogado_codigo_desactiva_display }}</p>{% endif %}
+{% if acta.abogado_obs %}<p><strong>Observaciones:</strong> {{ acta.abogado_obs }}</p>{% endif %}
+
+{% if acta.abogado_resultado_final %}<p><strong>Resultado Final:</strong> {{ acta.get_abogado_resultado_final_display }}</p>{% endif %}
+{% if acta.abogado_folio %}<p><strong>Folio:</strong> {{ acta.abogado_folio }}</p>{% endif %}
+{% if acta.abogado_obs_finales %}<p><strong>Observaciones Finales:</strong> {{ acta.abogado_obs_finales }}</p>{% endif %}
+
+
+            </div>
+        </div>
+                  <br>
+
+              <br>
+             </div>
+        {% else %}
+        <h3>No Autorizado</h3>
+        {% endif %}
+        {% endfor %}
+
+</div>
+</div>
+<br>
+<br>
+<td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
+
+</section>
+</div>
+
+        <script type="text/javascript">
+    var order;
+ function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+ function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+  function enviar_formulario() {
+
+
+    const validacion_resultado =  document.getElementById("id_sis_encargado_resultado").value
+    const motivo_rechazo =  document.getElementById("id_sis_motivo_rechazo_encargado").value
+
+       if (validacion_resultado === "Pendiente") {
+
+            window.alert("Datos Faltantes");
+       }
+       else if (validacion_resultado === "Acepta")  {
+
+                   if (confirm('¿Esta Seguro que quiere Aceptar el Acta ?')) {
+        // Save it!
+          console.log('Enviado Formulario');
+          document.getElementById("id_sis_propuesta").disabled = false;
+          document.getElementById("id_sis_clasificacion").value = "acepta_encargado";
+
+          console.log('pasa 1');
+          document.getElementById("myForm").submit();
+          console.log('pasa 2');
+} else {
+          // Do nothing!
+      }
+
+
+       }
+       else if (validacion_resultado === "Devuelve")  {
+
+           if (motivo_rechazo == "") {
+               window.alert("Ingrese Motivo");
+           }
+           else {
+                   if (confirm('¿Esta Seguro que quiere Devolver el Acta ?')) {
+        // Save it!
+          console.log('Enviado Formulario');
+          document.getElementById("id_sis_clasificacion").value = "rechaza_encargado";
+
+          console.log('pasa 1');
+          document.getElementById("myForm").submit();
+          console.log('pasa 2');
+} else {
+          // Do nothing!
+      }
+
+       }
+}
+
+
+}
+
+
+</script>
+
+
+
+{% endblock %}

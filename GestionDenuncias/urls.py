@@ -172,6 +172,19 @@ urlpatterns = [
 
     path('efr/terreno_devuelta_abogado_gestiones/<str:id>', login_required(efr_terreno_devuelta_abogado_gestiones),
          name='efr_terreno_devuelta_abogado_gestiones'),
+
         path('insert_token/', insert_token, name='insert_token'),
+
+    path('encargado/terreno_revision/', login_required(encargado_terreno_revision),
+         name='encargado_terreno_revision'),
+
+    path('encargado/terreno_revision_gestiones/<str:id>', login_required(encargado_terreno_revision_gestiones),
+         name='encargado_terreno_revision_gestiones'),
+
+    path('encargado/remota_revision/', login_required(encargado_remota_revision),
+         name='encargado_remota_revision'),
+
+    path('encargado/remota_revision_gestiones/<str:id>', login_required(encargado_remota_revision_gestiones),
+         name='encargado_remota_revision_gestiones'),
 ]
 

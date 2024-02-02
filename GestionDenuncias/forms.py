@@ -770,3 +770,98 @@ class GestionRemotasAbogadoActivarGestiones(forms.ModelForm):
 
 class TokenForm(forms.Form):
     token_value = forms.CharField(label='Token Value', max_length=500)
+
+
+class GestionTerrenoEncargadoGestiones(forms.ModelForm):
+    class Meta:
+        model = ActasTerreno
+        fields = [
+
+
+            'abogado_eleccion',
+            'abogado_presunto_infractor',
+            'abogado_codigo_activa',
+            'abogado_obs',
+            'abogado_folio',
+            'abogado_obs_finales',
+            'abogado_resultado_final',
+            'sis_encargado_resultado',
+            'sis_motivo_rechazo_encargado',
+            'sis_clasificacion',
+]
+        widgets = {
+
+            'abogado_eleccion': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'abogado_presunto_infractor': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'abogado_codigo_activa': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'abogado_obs': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly' }),
+            'abogado_folio': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'abogado_obs_finales': forms.Textarea(attrs={'class': 'form-control', 'readonly': 'readonly' }),
+            'abogado_resultado_final': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_encargado_resultado': forms.Select(attrs={'class': 'form-control'}),
+            'sis_motivo_rechazo_encargado': forms.Textarea(
+                attrs={'class': 'form-control', 'placeholder': 'Escribir Motivo Devolucion...'}),
+
+            'sis_clasificacion': forms.HiddenInput(),
+
+        }
+        labels = {
+
+            'abogado_eleccion' : 'Elección',
+            'abogado_presunto_infractor' : 'Presunto Infractor',
+            'abogado_codigo_activa': 'Codigo Activacion',
+            'abogado_obs': 'Observaciones Abogado',
+            'abogado_folio': 'Folio',
+            'abogado_obs_finales': 'Observaciones Finales',
+            'abogado_resultado_final': 'Resultado Final Abogado',
+            'sis_encargado_resultado': 'Resultado Encargado',
+            'sis_motivo_rechazo_encargado': '',
+            'sis_clasificacion':'sis_clasificacion'
+
+        }
+
+class GestionRemotasEncargadoGestiones(forms.ModelForm):
+    class Meta:
+        model = ActasRemotas
+        fields = [
+
+            'abogado_eleccion',
+            'abogado_presunto_infractor',
+            'abogado_codigo_activa',
+            'abogado_obs',
+            'abogado_folio',
+            'abogado_obs_finales',
+            'abogado_resultado_final',
+            'sis_encargado_resultado',
+            'sis_motivo_rechazo_encargado',
+            'sis_clasificacion',
+
+]
+        widgets = {
+
+            'abogado_eleccion': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'abogado_presunto_infractor': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'abogado_codigo_activa': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'abogado_obs': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'abogado_folio': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'abogado_obs_finales': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'abogado_resultado_final': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}),
+            'sis_encargado_resultado': forms.Select(attrs={'class': 'form-control'}),
+            'sis_motivo_rechazo_encargado': forms.Textarea(
+                attrs={'class': 'form-control', 'placeholder': 'Escribir Motivo Devolucion...'}),
+
+            'sis_clasificacion': forms.HiddenInput(),
+
+        }
+        labels = {
+
+            'abogado_eleccion' : 'Elección',
+            'abogado_presunto_infractor' : 'Presunto Infractor',
+            'abogado_codigo_activa': 'Codigo Activacion',
+            'abogado_folio': 'Folio',
+            'abogado_obs_finales': 'Observaciones Finales',
+            'abogado_resultado_final': 'Resultado Final Abogado',
+            'sis_encargado_resultado': 'Resultado Encargado',
+            'sis_motivo_rechazo_encargado': '',
+            'sis_clasificacion':'sis_clasificacion'
+        }
