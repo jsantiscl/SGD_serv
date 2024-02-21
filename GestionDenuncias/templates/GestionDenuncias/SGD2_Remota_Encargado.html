@@ -69,6 +69,7 @@ $(document).ready(function() {
             <th>Motivo Inspeccion</th>
             <th>Medio Fiscalizado</th>
             <th>Abogado</th>
+            <th>Folio</th>
             <th>Detalle</th>
             <th>Gestiones</th>
         </tr>
@@ -86,6 +87,7 @@ $(document).ready(function() {
             <td>{{ acta.seleccion_motivo_inspeccion}}</td>
             <td>{{ acta.medio_fiscalizado }}</td>
              <td>{{ acta.get_abogado_asignado_display  }}</td>
+       <td>{{ acta.abogado_folio }}</td>
            <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
          <td style="text-align: center"> <a href="{% url 'encargado_remota_revision_gestiones' id=acta.global_id %}" class="btn btn-success">Ir</a></td>
 

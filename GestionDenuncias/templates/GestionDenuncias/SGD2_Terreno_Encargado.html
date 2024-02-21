@@ -70,6 +70,7 @@ $(document).ready(function() {
             <th>Materia Fiscalizada</th>
             <th>Abogado</th>
             <th>Resultado</th>
+            <th>Folio</th>
             <th>Detalle</th>
             <th>Gestiones</th>
 
@@ -90,6 +91,7 @@ $(document).ready(function() {
        <td>{{ acta.materia_fiscalizada }}</td>
            <td>{{ acta.get_abogado_asignado_display  }}</td>
        <td>{{ acta.abogado_resultado_final }}</td>
+       <td>{{ acta.abogado_folio }}</td>
            <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
          <td style="text-align: center"> <a href="{% url 'encargado_terreno_revision_gestiones' id=acta.global_id %}" class="btn btn-success">Ir</a></td>
 
