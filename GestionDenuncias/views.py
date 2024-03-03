@@ -1392,7 +1392,7 @@ def abogado_evaluacion_terreno(request):
     usuario_actual=request.user.username
     abogado_actual = Abogados.objects.filter(username=usuario_actual)
 
-    actas_terreno = ActasTerreno.objects.filter(sis_clasificacion="asignado_Abogado", abogado_asignado=abogado_actual.first().rut)
+    actas_terreno = ActasTerreno.objects.filter(Q(sis_clasificacion__iexact="asignado_Abogado")|Q(sis_clasificacion__iexact="rechaza_encargado"), abogado_asignado=abogado_actual.first().rut)
 
     for acta in actas_terreno:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
@@ -1464,7 +1464,7 @@ def abogado_evaluacion_remota(request):
     usuario_actual=request.user.username
     abogado_actual = Abogados.objects.filter(username=usuario_actual)
 
-    actas_remota = ActasRemotas.objects.filter(sis_clasificacion="asignado_Abogado", abogado_asignado=abogado_actual.first().rut)
+    actas_remota = ActasRemotas.objects.filter(Q(sis_clasificacion__iexact="asignado_Abogado")|Q(sis_clasificacion__iexact="rechaza_encargado"), abogado_asignado=abogado_actual.first().rut)
     for acta in actas_remota:
         # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
         local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)

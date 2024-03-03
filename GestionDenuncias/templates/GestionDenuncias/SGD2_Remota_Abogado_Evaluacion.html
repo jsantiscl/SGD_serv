@@ -68,7 +68,7 @@ $(document).ready(function() {
             <th>Sujeto Fiscalizado</th>
             <th>Motivo Inspeccion</th>
             <th>Medio Fiscalizado</th>
-
+            <th>Devuelta Encargado</th>
             <th>Detalle</th>
             <th colspan="2" style="text-align:center">Accion</th>
         </tr>
@@ -85,6 +85,19 @@ $(document).ready(function() {
             <td>{% if acta.sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}} {% elif acta.sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }} {% else %} Sin Despliegue{% endif %}</td>
             <td>{{ acta.seleccion_motivo_inspeccion}}</td>
             <td>{{ acta.medio_fiscalizado }}</td>
+
+<td>
+    {% if acta.sis_clasificacion == 'rechaza_encargado' %}
+    <div title="{{ acta.sis_motivo_rechazo_encargado }}" style="cursor: pointer;">
+        <span class="bi bi-info-circle"></span> Si (Ver Motivo)
+    </div>
+    {% else %}
+    -
+    {% endif %}
+</td>
+
+
+
 
            <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
  <td><a class="btn btn-success" href="{% url 'abogado_activar_remota' id=acta.global_id %}">Activar</a></td>
@@ -187,6 +200,7 @@ $(document).ready(function() {
             {% if acta.sis_certificado %}<p><strong>DR Certificado:</strong> {{ acta.sis_certificado }}</p>{% endif %}
             {% if acta.sis_propuesta %}<p><strong>DR Propuesta:</strong> {{ acta.get_sis_propuesta_display }}</p>{% endif %}
             {% if acta.sis_motivo %}<p><strong>DR Motivo:</strong> {{ acta.sis_motivo }}</p>{% endif %}
+            {% if acta.sis_motivo_rechazo_encargado %}<p><strong>Motivo Rechazo Encargado:</strong> {{ acta.sis_motivo_rechazo_encargado }}</p>{% endif %}
 
             </div>
         </div>
