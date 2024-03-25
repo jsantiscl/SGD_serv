@@ -73,7 +73,7 @@ $(document).ready(function() {
             <th>Folio</th>
             <th>Detalle</th>
             <th>Resultado</th>
-
+            <th>Link</th>
         </tr>
             </thead>
     <tbody>
@@ -94,7 +94,7 @@ $(document).ready(function() {
        <td>{{ acta.abogado_folio }}</td>
            <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
              <td>{{ acta.abogado_resultado_final }}</td>
-
+<td>{{ acta.sis_link }}</td>
 
 
 </tr>
