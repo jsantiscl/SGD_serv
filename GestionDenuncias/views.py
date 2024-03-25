@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from datetime import datetime, timedelta
 from django.db.models import Count
 from django.db import connection
-from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formulariosig, EncargadosRegionales
+from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formulariosig, EncargadosRegionales, WorkflowActas
 from .forms import *
 from .forms import GestionTerreno
 from openpyxl import Workbook
@@ -700,6 +700,10 @@ def pasar_acta(request):
         #                                       nueva_etapa=str(data['datos']['etapa']),
         #                                       fecha_cambio=datetime.now())
 
+    WorkflowActas.objects.create(GlobalID=str(data['datos']['global_id']),
+                                     Usuario=request.user.username, NuevaEtapa=str(data['datos']['etapa']),
+                                     FechaCambio=datetime.now())
+
     return JsonResponse([str(data['datos']['global_id']), 'Asignado'], safe=False)
 
 def remota_pendiente_clasificacion(request):
@@ -884,6 +888,10 @@ def terreno_con_infraccion_gestiones(request, id):
         GestionTerrenoForm = GestionTerreno(request.POST, instance=acta)
         if GestionTerrenoForm.is_valid():
             GestionTerrenoForm.save()
+            WorkflowActas.objects.create(GlobalID=str(actas_terreno[0].global_id),
+                                         Usuario=request.user.username, NuevaEtapa='EFR_Validacion',
+                                         FechaCambio=datetime.now())
+
             return redirect('terreno_con_infraccion')
     else:
         GestionTerrenoForm = GestionTerreno(instance=acta)
@@ -964,6 +972,9 @@ def remota_con_infraccion_gestiones(request, id):
         GestionRemotaForm = GestionRemota(request.POST, instance=acta)
         if GestionRemotaForm.is_valid():
             GestionRemotaForm.save()
+            WorkflowActas.objects.create(GlobalID=str(actas_remota[0].global_id),
+                                         Usuario=request.user.username, NuevaEtapa='EFR_Validacion',
+                                         FechaCambio=datetime.now())
             return redirect('remotas_con_infraccion')
     else:
         GestionRemotaForm = GestionRemota(instance=acta)
@@ -1071,6 +1082,9 @@ def efr_terreno_con_infraccion_gestiones(request, id):
                 acta.sis_motivo_rechazo = GestionTerrenoEFRForm.cleaned_data['sis_motivo_rechazo']
                 acta.sis_clasificacion = GestionTerrenoEFRForm.cleaned_data['sis_clasificacion']
                 acta.save(update_fields=['sis_resultado_efr','sis_motivo_rechazo', 'sis_clasificacion' ])
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username, NuevaEtapa=GestionTerrenoEFRForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
                 return redirect('efr_terreno_con_infraccion')
             else:
                 print(GestionTerrenoEFRForm.errors)
@@ -1120,6 +1134,11 @@ def efr_remota_con_infraccion_gestiones(request, id):
                 acta.sis_motivo_rechazo = GestionRemotasEFRForm.cleaned_data['sis_motivo_rechazo']
                 acta.sis_clasificacion = GestionRemotasEFRForm.cleaned_data['sis_clasificacion']
                 acta.save(update_fields=['sis_resultado_efr', 'sis_motivo_rechazo', 'sis_clasificacion'])
+
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username, NuevaEtapa=GestionRemotasEFRForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
+
                 return redirect('efr_remota_con_infraccion')
             else:
                 print(GestionRemotasEFRForm.errors)
@@ -1190,6 +1209,7 @@ def terreno_con_infraccion_rechazo_gestiones(request, id):
         GestionTerrenoForm = GestionTerreno(request.POST, instance=acta)
         if GestionTerrenoForm.is_valid():
             GestionTerrenoForm.save()
+
             return redirect('terreno_con_infraccion_rechazo')
     else:
         GestionTerrenoForm = GestionTerreno(instance=acta)
@@ -1271,6 +1291,9 @@ def remota_con_infraccion_gestiones_rechazo(request, id):
         GestionRemotaForm = GestionRemota(request.POST, instance=acta)
         if GestionRemotaForm.is_valid():
             GestionRemotaForm.save()
+            WorkflowActas.objects.create(GlobalID=str(actas_remota[0].global_id),
+                                         Usuario=request.user.username, NuevaEtapa='EFR_Validacion',
+                                         FechaCambio=datetime.now())
             return redirect('remotas_con_infraccion_rechazo')
     else:
         GestionRemotaForm = GestionRemota(instance=acta)
@@ -1321,6 +1344,27 @@ def expcsv(request, lc):
         # Configurar la respuesta HTTP
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename=ActasRemotas.xlsx'
+
+        # Guardar el libro de Excel en la respuesta
+        wb.save(response)
+
+        return response
+
+    elif lc == 'workflow':
+        wb = Workbook()
+        ws = wb.active
+
+        # Opcionalmente, escribir los nombres de las columnas
+        column_names = [field.name for field in ActasRemotas._meta.fields]
+        ws.append(column_names)
+
+        # Escribir los datos del modelo
+        for obj in WorkflowActas.objects.all():
+            ws.append([getattr(obj, field.name) for field in WorkflowActas._meta.fields])
+
+        # Configurar la respuesta HTTP
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=WorkflowActas.xlsx'
 
         # Guardar el libro de Excel en la respuesta
         wb.save(response)
@@ -1440,6 +1484,10 @@ def abogado_activar_terreno(request, id):
                 acta.abogado_presunto_infractor = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_presunto_infractor']
                 acta.abogado_codigo_activa = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_codigo_activa']
                 acta.abogado_obs = GestionTerrenoAbogadoActivarForm.cleaned_data['abogado_obs']
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username,
+                                             NuevaEtapa=GestionTerrenoAbogadoActivarForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
 
                 acta.save(update_fields=['abogado_resultado','abogado_motivo_devolucion', 'sis_clasificacion', 'abogado_eleccion', 'abogado_presunto_infractor' , 'abogado_codigo_activa', 'abogado_obs'])
                 return redirect('abogado_evaluacion_terreno')
@@ -1515,6 +1563,10 @@ def abogado_desactivar_terreno(request, id):
                 acta.abogado_presunto_infractor = GestionTerrenoAbogadoDesactivarForm.cleaned_data['abogado_presunto_infractor']
                 acta.abogado_codigo_desactiva = GestionTerrenoAbogadoDesactivarForm.cleaned_data['abogado_codigo_desactiva']
                 acta.abogado_obs = GestionTerrenoAbogadoDesactivarForm.cleaned_data['abogado_obs']
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username,
+                                             NuevaEtapa=GestionTerrenoAbogadoDesactivarForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
 
                 acta.save(update_fields=['abogado_resultado','abogado_motivo_devolucion', 'sis_clasificacion', 'abogado_eleccion', 'abogado_presunto_infractor' , 'abogado_codigo_desactiva', 'abogado_obs'])
                 return redirect('abogado_evaluacion_terreno')
@@ -1570,7 +1622,10 @@ def abogado_activar_remota(request, id):
                     'abogado_presunto_infractor']
                 acta.abogado_codigo_activa = GestionRemotasAbogadoActivarForm.cleaned_data['abogado_codigo_activa']
                 acta.abogado_obs = GestionRemotasAbogadoActivarForm.cleaned_data['abogado_obs']
-
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username,
+                                             NuevaEtapa=GestionRemotasAbogadoActivarForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
                 acta.save(update_fields=['abogado_resultado', 'abogado_motivo_devolucion', 'sis_clasificacion',
                                          'abogado_eleccion', 'abogado_presunto_infractor', 'abogado_codigo_activa',
                                          'abogado_obs'])
@@ -1622,7 +1677,10 @@ def abogado_desactivar_remota(request, id):
                     'abogado_presunto_infractor']
                 acta.abogado_codigo_desactiva = GestionRemotasAbogadoDesactivarForm.cleaned_data['abogado_codigo_desactiva']
                 acta.abogado_obs = GestionRemotasAbogadoDesactivarForm.cleaned_data['abogado_obs']
-
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username,
+                                             NuevaEtapa=GestionRemotasAbogadoDesactivarForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
                 acta.save(update_fields=['abogado_resultado', 'abogado_motivo_devolucion', 'sis_clasificacion',
                                          'abogado_eleccion', 'abogado_presunto_infractor', 'abogado_codigo_desactiva',
                                          'abogado_obs'])
@@ -1694,7 +1752,10 @@ def abogado_activadas_terreno_gestiones(request, id):
                 acta.abogado_folio = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['abogado_folio']
                 acta.abogado_obs_finales = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['abogado_obs_finales']
                 acta.abogado_resultado_final = GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['abogado_resultado_final']
-
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username,
+                                             NuevaEtapa=GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
                 acta.save(update_fields=['sis_clasificacion', 'abogado_eleccion', 'abogado_presunto_infractor' , 'abogado_codigo_activa', 'abogado_obs','abogado_folio','abogado_obs_finales','abogado_resultado_final'])
                 print(GestionTerrenoAbogadoActivarGestionesForm.cleaned_data['sis_clasificacion'])
                 return redirect('abogado_activadas_terreno')
@@ -1784,7 +1845,10 @@ def abogado_activadas_remotas_gestiones(request, id):
                 acta.abogado_folio = GestionRemotasAbogadoActivarGestionesForm.cleaned_data['abogado_folio']
                 acta.abogado_obs_finales = GestionRemotasAbogadoActivarGestionesForm.cleaned_data['abogado_obs_finales']
                 acta.abogado_resultado_final = GestionRemotasAbogadoActivarGestionesForm.cleaned_data['abogado_resultado_final']
-
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username,
+                                             NuevaEtapa=GestionRemotasAbogadoActivarGestionesForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
                 acta.save(update_fields=['sis_clasificacion', 'abogado_eleccion', 'abogado_presunto_infractor' , 'abogado_codigo_activa', 'abogado_obs','abogado_folio','abogado_obs_finales','abogado_resultado_final'])
                 return redirect('abogado_activadas_remotas')
             else:
@@ -1870,7 +1934,13 @@ def efr_remota_devuelta_abogado_gestiones(request, id):
                 acta.sis_resultado_efr = GestionRemotasEFRForm.cleaned_data['sis_resultado_efr']
                 acta.sis_motivo_rechazo = GestionRemotasEFRForm.cleaned_data['sis_motivo_rechazo']
                 acta.sis_clasificacion = GestionRemotasEFRForm.cleaned_data['sis_clasificacion']
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username,
+                                             NuevaEtapa=GestionRemotasEFRForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
+
                 acta.save(update_fields=['sis_resultado_efr', 'sis_motivo_rechazo', 'sis_clasificacion'])
+
                 return redirect('efr_remota_devuelto_abogado')
             else:
                 print(GestionRemotasEFRForm.errors)
@@ -1940,6 +2010,10 @@ def efr_terreno_devuelta_abogado_gestiones(request, id):
                 acta.sis_motivo_rechazo = GestionTerrenoEFRForm.cleaned_data['sis_motivo_rechazo']
                 acta.sis_clasificacion = GestionTerrenoEFRForm.cleaned_data['sis_clasificacion']
                 acta.save(update_fields=['sis_resultado_efr','sis_motivo_rechazo', 'sis_clasificacion' ])
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username,
+                                             NuevaEtapa=GestionTerrenoEFRForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
                 return redirect('efr_terreno_devuelto_abogado')
             else:
                 print(GestionTerrenoEFRForm.errors)
@@ -2025,6 +2099,10 @@ def encargado_terreno_revision_gestiones(request, id):
                 acta.sis_encargado_resultado = GestionTerrenoEncargadoGestionesForm.cleaned_data['sis_encargado_resultado']
                 acta.sis_motivo_rechazo_encargado = GestionTerrenoEncargadoGestionesForm.cleaned_data['sis_motivo_rechazo_encargado']
                 acta.sis_clasificacion = GestionTerrenoEncargadoGestionesForm.cleaned_data['sis_clasificacion']
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username,
+                                             NuevaEtapa=GestionTerrenoEncargadoGestionesForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
                 acta.save(update_fields=['sis_encargado_resultado','sis_motivo_rechazo_encargado', 'sis_clasificacion' ])
                 return redirect('encargado_terreno_revision')
             else:
@@ -2105,7 +2183,10 @@ def encargado_remota_revision_gestiones(request, id):
                 acta.sis_clasificacion = GestionRemotasEncargadoGestionesForm.cleaned_data['sis_clasificacion']
                 acta.sis_encargado_resultado = GestionRemotasEncargadoGestionesForm.cleaned_data['sis_encargado_resultado']
                 acta.sis_motivo_rechazo_encargado = GestionRemotasEncargadoGestionesForm.cleaned_data['sis_motivo_rechazo_encargado']
-
+                WorkflowActas.objects.create(GlobalID=str(acta.global_id),
+                                             Usuario=request.user.username,
+                                             NuevaEtapa=GestionRemotasEncargadoGestionesForm.cleaned_data['sis_clasificacion'],
+                                             FechaCambio=datetime.now())
 
                 acta.save(update_fields=['sis_clasificacion', 'sis_encargado_resultado', 'sis_motivo_rechazo_encargado' ])
                 return redirect('encargado_remota_revision')
@@ -2118,3 +2199,61 @@ def encargado_remota_revision_gestiones(request, id):
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
     context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'GestionRemotasEncargadoGestionesForm': GestionRemotasEncargadoGestionesForm}
     return render(request, 'GestionDenuncias/SGD2_Remota_Encargado_Gestiones.html', context)
+
+def encargado_remota_despacho(request):
+
+    actas_remota = ActasRemotas.objects.filter(sis_encargado_resultado="Acepta")
+
+
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    # actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Encargado_Despacho.html', context)
+
+
+def encargado_terreno_despacho(request):
+
+    actas_terreno = ActasTerreno.objects.filter(sis_encargado_resultado="Acepta")
+
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Encargado_Despacho.html', context)

@@ -475,6 +475,17 @@
 
             </div>
                                       </div>
+
+      <div class="w3-dropdown-hover">
+      <button class="w3-button">Actas Despacho - Encargado</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'encargado_terreno_despacho' %}" class="w3-bar-item w3-button">A. Terreno - Menu Encargado</a>
+              <a href="{% url 'encargado_remota_despacho' %}" class="w3-bar-item w3-button">A. Remotas - Menu Encargado</a>
+
+            </div>
+                                      </div>
+
          {% endif %}
 
                  {% if group.name == 'Control_Preventivo' %}

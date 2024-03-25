@@ -65,7 +65,7 @@ $(document).ready(function() {
             <th>ID Inspeccion</th>
             <th>Fecha Inspeccion</th>
             <th>Nombre del Fiscalizador</th>
-            <th>Sujeto Fiscalizado</th>
+            <th>Presunto Infractor</th>
             <th>Motivo Inspeccion</th>
             <th>Materia Fiscalizada</th>
             <th>Abogado</th>
@@ -86,7 +86,7 @@ $(document).ready(function() {
             <td>{{ acta.fecha|date:'Ymd'}}</td>
 
             <td>{{ acta.creator}}</td>
-           <td>{% if acta.Sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}} {% elif acta.Sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }} {% else %} Sin Despliegue{% endif %}</td>
+           <td>{{ acta.abogado_presunto_infractor  }}</td>
             <td>{{ acta.seleccion_motivo_inspeccion}}</td>
        <td>{{ acta.materia_fiscalizada }}</td>
            <td>{{ acta.get_abogado_asignado_display  }}</td>
@@ -127,9 +127,7 @@ $(document).ready(function() {
                 {% if acta.indique_otro %}<p><strong>Indique Otro:</strong> {{ acta.indique_otro }}</p>{% endif %}
 
                 <!-- 3. Sujeto fiscalizado -->
-                {% if acta.Sujeto_fiscalizado %}<p><strong>Sujeto Fiscalizado:</strong> {{ acta.Sujeto_fiscalizado }}</p>{% endif %}
-                {% if acta.partido_politico_habilitado %}<p><strong>Partido Político Habilitado:</strong> {{ acta.partido_politico_habilitado }}</p>{% endif %}
-                {% if acta.otro_sujeto_fiscalizado %}<p><strong>Otro Sujeto Fiscalizado:</strong> {{ acta.otro_sujeto_fiscalizado }}</p>{% endif %}
+                {% if acta.abogado_presunto_infractor  %}<p><strong>Presunto Infractor:</strong> {{ acta.abogado_presunto_infractor  }}</p>{% endif %}
 
                 <!-- 4. Opción plebiscitaria -->
                 {% if acta.opcion_plebiscitaria %}<p><strong>Opción Plebiscitaria:</strong> {{ acta.opcion_plebiscitaria }}</p>{% endif %}

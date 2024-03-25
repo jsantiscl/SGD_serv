@@ -873,3 +873,11 @@ class EFRDR(models.Model):
     def __str__(self):
         return str(self.Region)
 
+class WorkflowActas(models.Model):
+    AutoID = models.AutoField(primary_key=True)
+    GlobalID = models.CharField(max_length=500, default='SIN')
+    Usuario = models.CharField(max_length=500, default='SIN')
+    NuevaEtapa = models.CharField(max_length=500, default='SIN')
+    FechaCambio = models.DateTimeField(null=True, blank=True)
+    def __str__(self):
+        return self.ObjectID

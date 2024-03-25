@@ -117,9 +117,7 @@ $(document).ready(function() {
                 {% if acta.indique_otro %}<p><strong>Indique Otro:</strong> {{ acta.indique_otro }}</p>{% endif %}
 
                 <!-- 3. Sujeto fiscalizado -->
-                {% if acta.Sujeto_fiscalizado %}<p><strong>Sujeto Fiscalizado:</strong> {{ acta.Sujeto_fiscalizado }}</p>{% endif %}
-                {% if acta.partido_politico_habilitado %}<p><strong>Partido Político Habilitado:</strong> {{ acta.partido_politico_habilitado }}</p>{% endif %}
-                {% if acta.otro_sujeto_fiscalizado %}<p><strong>Otro Sujeto Fiscalizado:</strong> {{ acta.otro_sujeto_fiscalizado }}</p>{% endif %}
+                {% if acta.abogado_presunto_infractor  %}<p><strong>Presunto Infractor:</strong> {{ acta.abogado_presunto_infractor  }}</p>{% endif %}
 
                 <!-- 4. Opción plebiscitaria -->
                 {% if acta.opcion_plebiscitaria %}<p><strong>Opción Plebiscitaria:</strong> {{ acta.opcion_plebiscitaria }}</p>{% endif %}

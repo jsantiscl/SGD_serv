@@ -76,7 +76,7 @@ $(document).ready(function() {
  <br>
 
         {% for acta in actas_remota %}
-        {% if acta.sis_clasificacion == 'asignado_Abogado'%}
+        {% if acta.sis_clasificacion == 'asignado_Abogado' or acta.sis_clasificacion == 'rechaza_encargado'%}
          <h3>Gestionar Acta {{ acta.id_inspeccion }}</h3>
              <br>
     <form action="{% url 'abogado_activar_remota' id=acta.global_id %}" method = "POST" enctype="multipart/form-data" id="myForm">{% csrf_token %}
