@@ -486,6 +486,8 @@ class ActasTerreno(models.Model):
     Sujeto_fiscalizado = models.CharField(max_length=255, null=True, blank=True)  #
     partido_politico_habilitado = models.CharField(max_length=255, null=True, blank=True)  #
     otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True, blank=True)  #
+    alcalde = models.CharField(max_length=255, null=True, blank=True)
+    gore = models.CharField(max_length=255, null=True, blank=True)
 
     ### 4.opción plebiscitaria
 
@@ -501,6 +503,7 @@ class ActasTerreno(models.Model):
     cantidad_elementos_propaganda_publico = models.CharField(max_length=255, null=True, blank=True)
     seleccione_tipo_espacio = models.CharField(max_length=255, null=True, blank=True)
     seleccione_lugar= models.CharField(max_length=255, null=True, blank=True)
+    cuenta_con_104 = models.CharField(max_length=255, null=True, blank=True)
     propaganda_excede_dimensiones = models.CharField(max_length=255, null=True, blank=True)
     indique_tipo_espacio_fiscalizado = models.CharField(max_length=255, null=True, blank=True)
     actividad_fiscalizada = models.CharField(max_length=255, null=True, blank=True)
@@ -686,6 +689,8 @@ class ActasRemotas(models.Model):
     partido_politico_habilitado = models.CharField(max_length=255, null=True, blank=True)  #
     otro_sujeto_fiscalizado = models.CharField(max_length=255, null=True, blank=True)  #
     opcion_plebiscitaria = models.CharField(max_length=30, null=True, blank=True)
+    alcalde = models.CharField(max_length=255, null=True, blank=True)
+    gore = models.CharField(max_length=255, null=True, blank=True)
 
     ### 3.Materia fiscalizada
 

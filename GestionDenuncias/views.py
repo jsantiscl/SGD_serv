@@ -469,8 +469,11 @@ def carga_datos_actas_terreno(request):
         indique_folio = request.POST.get('indique_folio')
         indique_otro = request.POST.get('indique_otro')
         Sujeto_fiscalizado = request.POST.get('Sujeto_fiscalizado')
-        partido_politico_habilitado = request.POST.get('partido_politico_habilitado')
-        opcion_plebiscitaria = request.POST.get('opcion_plebiscitaria')
+        #partido_politico_habilitado = request.POST.get('partido_politico_habilitado')
+        #opcion_plebiscitaria = request.POST.get('opcion_plebiscitaria')
+        alcalde= request.POST.get('alcalde')
+        gore= request.POST.get('gore')
+        cuenta_con_104= request.POST.get('cuenta_con_104')
         materia_fiscalizada = request.POST.get('materia_fiscalizada')
         corresponde_espacio_publico_autorizado = request.POST.get('corresponde_espacio_publico_autorizado')
         seleccione_espacio = request.POST.get('seleccione_espacio')
@@ -506,8 +509,11 @@ def carga_datos_actas_terreno(request):
             indique_folio=indique_folio,
             indique_otro=indique_otro,
             Sujeto_fiscalizado=Sujeto_fiscalizado,
-            partido_politico_habilitado=partido_politico_habilitado,
-            opcion_plebiscitaria=opcion_plebiscitaria,
+            #partido_politico_habilitado=partido_politico_habilitado,
+            #opcion_plebiscitaria=opcion_plebiscitaria,
+            alcalde=alcalde,
+            gore=gore,
+            cuenta_con_104 = cuenta_con_104,
             materia_fiscalizada=materia_fiscalizada,
             corresponde_espacio_publico_autorizado=corresponde_espacio_publico_autorizado,
             seleccione_espacio=seleccione_espacio,
@@ -561,9 +567,11 @@ def carga_datos_actas_remotas(request):
             'indique_folio': request.POST.get('indique_folio'),
             'indique_otro': request.POST.get('indique_otro'),
             'sujeto_fiscalizado': request.POST.get('sujeto_fiscalizado'),
-            'partido_politico_habilitado': request.POST.get('partido_politico_habilitado'),
+            #'partido_politico_habilitado': request.POST.get('partido_politico_habilitado'),
             'otro_sujeto_fiscalizado': request.POST.get('otro_sujeto_fiscalizado'),
-            'opcion_plebiscitaria': request.POST.get('opcion_plebiscitaria'),
+            #'opcion_plebiscitaria': request.POST.get('opcion_plebiscitaria'),
+            'alcalde': request.POST.get('alcalde'),
+            'gore': request.POST.get('gore'),
             'es_medio_pagado': request.POST.get('es_medio_pagado'),
             'medio_fiscalizado': request.POST.get('medio_fiscalizado'),
             'nombre_medio': request.POST.get('nombre_medio'),
