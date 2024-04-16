@@ -115,6 +115,8 @@ $(document).ready(function() {
 
                 <!-- 3. Sujeto fiscalizado -->
                 {% if acta.abogado_presunto_infractor  %}<p><strong>Presunto Infractor:</strong> {{ acta.abogado_presunto_infractor  }}</p>{% endif %}
+                {% if acta.alcalde %}<p><strong>Nombre:</strong> {{ acta.alcalde }}</p>{% endif %}
+                {% if acta.gore %}<p><strong>Nombre:</strong> {{ acta.gore }}</p>{% endif %}
 
                 <!-- 4. Opción plebiscitaria -->
                 {% if acta.opcion_plebiscitaria %}<p><strong>Opción Plebiscitaria:</strong> {{ acta.opcion_plebiscitaria }}</p>{% endif %}

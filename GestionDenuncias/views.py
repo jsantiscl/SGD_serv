@@ -453,6 +453,14 @@ def modifica_candidato(request):
 
     return JsonResponse([str(data['datos']['id_candidato'])], safe=False)
 
+def numero_a_romano(num):
+    # Diccionario de números arábigos a romanos incluyendo el caso especial para el 13
+    roman_dict = {
+        1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V', 6: 'VI',
+        7: 'VII', 8: 'VIII', 9: 'IX', 10: 'X', 11: 'XI', 12: 'XII',
+        13: 'RM', 14: 'XIV', 15: 'XV', 16: 'XVI'
+    }
+    return roman_dict.get(num, "")
 
 @csrf_exempt
 def carga_datos_actas_terreno(request):
@@ -463,6 +471,10 @@ def carga_datos_actas_terreno(request):
         global_id = request.POST.get('global_id')
         fecha = request.POST.get('fecha')
         region = request.POST.get('region')
+        try:
+            region = numero_a_romano(region)
+        except:
+            print("numero")
         ubicacion = request.POST.get('ubicacion')
         comuna = request.POST.get('comuna')
         seleccion_motivo_inspeccion = request.POST.get('seleccion_motivo_inspeccion')
@@ -562,7 +574,7 @@ def carga_datos_actas_remotas(request):
             'object_id': request.POST.get('object_id'),
             'global_id': request.POST.get('global_id').replace('{','').replace('}',''),
             'fecha': request.POST.get('fecha'),
-            'region': request.POST.get('region'),
+            'region': numero_a_romano(request.POST.get('region')),
             'seleccion_motivo_inspeccion': request.POST.get('seleccion_motivo_inspeccion'),
             'indique_folio': request.POST.get('indique_folio'),
             'indique_otro': request.POST.get('indique_otro'),

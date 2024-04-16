@@ -114,6 +114,9 @@ $(document).ready(function() {
                 {% if acta.seleccion_motivo_inspeccion %}<p><strong>Selección Motivo Inspección:</strong> {{ acta.seleccion_motivo_inspeccion }}</p>{% endif %}
                 {% if acta.indique_folio %}<p><strong>Folio Denuncia:</strong> {{ acta.indique_folio_denuncia }}</p>{% endif %}
                 {% if acta.indique_otro %}<p><strong>Indique Otro:</strong> {{ acta.indique_otro }}</p>{% endif %}
+                {% if acta.alcalde %}<p><strong>Nombre:</strong> {{ acta.alcalde }}</p>{% endif %}
+                {% if acta.gore %}<p><strong>Nombre:</strong> {{ acta.gore }}</p>{% endif %}
+
 
                 <!-- 3. Sujeto fiscalizado -->
                 {% if acta.sujeto_fiscalizado %}<p><strong>Sujeto Fiscalizado:</strong> {{ acta.sujeto_fiscalizado }}</p>{% endif %}

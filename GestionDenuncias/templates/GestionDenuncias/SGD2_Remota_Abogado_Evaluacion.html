@@ -129,6 +129,8 @@ $(document).ready(function() {
                 {% if acta.sujeto_fiscalizado %}<p><strong>Sujeto Fiscalizado:</strong> {{ acta.sujeto_fiscalizado }}</p>{% endif %}
                 {% if acta.partido_politico_habilitado %}<p><strong>Partido Político Habilitado:</strong> {{ acta.partido_politico_habilitado }}</p>{% endif %}
                 {% if acta.otro_sujeto_fiscalizado %}<p><strong>Otro Sujeto Fiscalizado:</strong> {{ acta.otro_sujeto_fiscalizado }}</p>{% endif %}
+                {% if acta.alcalde %}<p><strong>Nombre:</strong> {{ acta.alcalde }}</p>{% endif %}
+                {% if acta.gore %}<p><strong>Nombre:</strong> {{ acta.gore }}</p>{% endif %}
 
                 <!-- 4. Opción plebiscitaria -->
                 {% if acta.opcion_plebiscitaria %}<p><strong>Opción Plebiscitaria:</strong> {{ acta.opcion_plebiscitaria }}</p>{% endif %}
