@@ -472,7 +472,7 @@ def carga_datos_actas_terreno(request):
         fecha = request.POST.get('fecha')
         region = request.POST.get('region')
         try:
-            region = numero_a_romano(region)
+            region = numero_a_romano(int(region))
         except:
             print("numero")
         ubicacion = request.POST.get('ubicacion')
