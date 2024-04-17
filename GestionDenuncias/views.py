@@ -456,9 +456,9 @@ def modifica_candidato(request):
 def numero_a_romano(num):
     # Diccionario de números arábigos a romanos incluyendo el caso especial para el 13
     roman_dict = {
-        1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V', 6: 'VI',
-        7: 'VII', 8: 'VIII', 9: 'IX', 10: 'X', 11: 'XI', 12: 'XII',
-        13: 'RM', 14: 'XIV', 15: 'XV', 16: 'XVI'
+        '1': 'I', '2': 'II', '3': 'III', '4': 'IV', '5': 'V', '6': 'VI',
+        '7': 'VII', '8': 'VIII', '9': 'IX', '10': 'X', '11': 'XI', '12': 'XII',
+        '13': 'RM', '14': 'XIV', '15': 'XV', '16': 'XVI'
     }
     return roman_dict.get(num, "")
 
@@ -470,11 +470,11 @@ def carga_datos_actas_terreno(request):
         object_id = request.POST.get('object_id')
         global_id = request.POST.get('global_id')
         fecha = request.POST.get('fecha')
-        region = request.POST.get('region')
+        region_inicial = request.POST.get('region')
         try:
-            region = numero_a_romano(int(region))
+            region = numero_a_romano(region_inicial)
         except:
-            print("numero")
+            region = region_inicial
         ubicacion = request.POST.get('ubicacion')
         comuna = request.POST.get('comuna')
         seleccion_motivo_inspeccion = request.POST.get('seleccion_motivo_inspeccion')
