@@ -89,10 +89,10 @@ $(document).ready(function() {
             <td>{{ acta.id_inspeccion}}</td>
             <td>{{ acta.fecha|date:'Ymd'}}</td>
             <td>{{ acta.creator}}</td>
-                        <td>{% if acta.Sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}}
-            {% elif acta.Sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }}
-            {% elif acta.Sujeto_fiscalizado == 'alcalde'%} {{ acta.alcalde }}
-            {% elif acta.Sujeto_fiscalizado == 'gore'%} {{ acta.gore }}
+                        <td>{% if acta.sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}}
+            {% elif acta.sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }}
+            {% elif acta.sujeto_fiscalizado == 'alcalde'%} {{ acta.alcalde }}
+            {% elif acta.sujeto_fiscalizado == 'gore'%} {{ acta.gore }}
             {% else %} Sin Despliegue{% endif %}</td>
             <td>{{ acta.seleccion_motivo_inspeccion}}</td>
             <td>{{ acta.medio_fiscalizado }}</td>
