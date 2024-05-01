@@ -71,6 +71,8 @@ class Denuncias(models.Model):
         ("Convencionales Constituyentes", "Convencionales Constituyentes"),
         ("Consejo Constitucional 2023", "Consejo Constitucional 2023"),
         ("Plebiscito 2023", "Plebiscito 2023"),
+        ("Primaria Alcalde 2024", "Primaria Alcalde 2024"),
+        ("Primaria GORE 2024", "Primaria GORE 2024"),
         ("No Aplica", "No Aplica"),
 
     )
