@@ -6,7 +6,16 @@ class ConsultasFormulario(models.Model):
     GlobalID = models.CharField(max_length=500, default='SIN')
     NombreCompleto = models.CharField(max_length=200, null=True, blank=True)
     Rut = models.CharField(max_length=50, null=True, blank=True)
-    TemaAsociado = models.CharField(max_length=50, null=True, blank=True)
+    TIPOS = (
+        ("RespuestaCP", "RespuestaCP"),
+        ("administracion", "administracion"),
+        ("contabilidad", "contabilidad"),
+        ("propaganda", "propaganda"),
+        ("financiamiento", "financiamiento"),
+        ("subirmandato", "subirmandato")
+
+    )
+    TemaAsociado = models.CharField(max_length=50, null=True, blank=True, choices=TIPOS)
     Pregunta = models.CharField(max_length=1000, null=True, blank=True)
     Email = models.CharField(max_length=50, default='SIN')
     FechaIngreso = models.DateTimeField(null=True, blank=True)
