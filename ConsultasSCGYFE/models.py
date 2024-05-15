@@ -16,7 +16,7 @@ class ConsultasFormulario(models.Model):
     Respuesta = models.CharField(max_length=5000, null=True, blank=True)
     Etapa = models.CharField(max_length=50, default='1_Nueva')
     def __str__(self):
-        return self.ObjectID
+        return str(self.ObjectID)
 
 class WorkflowConsultas(models.Model):
     AutoID = models.AutoField(primary_key=True)
