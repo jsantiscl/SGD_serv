@@ -571,6 +571,8 @@ class ActasTerreno(models.Model):
         ("p29", "P29"),
         ("p29-b", "P29-B"),
         ("p30", "P30"),
+        ("G1", "G1"),
+        ("G2", "G2"),
         ("p100", "P100")
 
     )
@@ -770,6 +772,8 @@ class ActasRemotas(models.Model):
         ("p29", "P29"),
         ("p29-b", "P29-B"),
         ("p30", "P30"),
+        ("G1", "G1"),
+        ("G2", "G2"),
         ("p100", "P100")
 
     )

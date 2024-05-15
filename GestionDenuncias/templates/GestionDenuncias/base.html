@@ -488,12 +488,13 @@
 
          {% endif %}
 
-                 {% if group.name == 'Control_Preventivo' %}
+                 {% if group.name == 'EncargadoControlPreventivo' %}
                                       <div class="w3-dropdown-hover">
       <button class="w3-button">Bandejas Control Preventivo</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
 
-              <a href="{% url 'control_preventivo_pleb' %}" class="w3-bar-item w3-button">Listado Partidos</a>
+              <a href="{% url 'admin_asignacion_partido' %}" class="w3-bar-item w3-button">Listado Partidos</a>
+              <a href="{% url 'admin_asignacion_candidato' %}" class="w3-bar-item w3-button">Listado Candidatos</a>
 
             </div>
                                       </div>
