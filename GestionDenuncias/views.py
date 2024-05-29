@@ -2294,7 +2294,7 @@ def dr_terreno_reporte(request):
 
     if region_usuario:
         # Filtra las ActasTerreno basadas en la región del usuario
-        actas_terreno = ActasTerreno.objects.filter(region=region_usuario)
+        actas_terreno = ActasTerreno.objects.filter(region=region_usuario).exclude(sis_clasificacion__in=['Pendiente', 'archivo_terreno'])
     else:
         actas_terreno = []
 
@@ -2336,7 +2336,7 @@ def dr_remota_reporte(request):
 
     if region_usuario:
         # Filtra las ActasTerreno basadas en la región del usuario
-        actas_remota = ActasRemotas.objects.filter(region=region_usuario)
+        actas_remota = ActasRemotas.objects.filter(region=region_usuario).exclude(sis_clasificacion__in=['Pendiente', 'archivo_remota'])
     else:
         actas_remota = []
     # Aca en icontains pongo el filtro con el metodo icontains que es un like
