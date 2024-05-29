@@ -500,6 +500,18 @@
                                       </div>
          {% endif %}
 
+                                 {% if group.name == 'Fiscalizacion_Revisor' or group.name == 'Fiscalizacion_EFR' %}
+                                      <div class="w3-dropdown-hover">
+      <button class="w3-button">Reportes</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+
+              <a href="{% url 'dr_terreno_reporte' %}" class="w3-bar-item w3-button">Actas Terreno</a>
+              <a href="{% url 'dr_remota_reporte' %}" class="w3-bar-item w3-button">Actas Remotas</a>
+
+            </div>
+                                      </div>
+         {% endif %}
+
         {% endfor %}
          {% if user.is_staff %}
             {% if 'serv.jasb.cl' in request.build_absolute_uri %}

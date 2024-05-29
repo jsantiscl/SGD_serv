@@ -193,5 +193,11 @@ urlpatterns = [
     path('encargado/terreno_despacho/', login_required(encargado_terreno_despacho),
          name='encargado_terreno_despacho'),
 
+    path('dr/terreno_reporte/', login_required(dr_terreno_reporte),
+         name='dr_terreno_reporte'),
+
+    path('dr/remota_reporte/', login_required(dr_remota_reporte),
+         name='dr_remota_reporte'),
+
 ]
 

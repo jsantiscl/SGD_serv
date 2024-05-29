@@ -2277,3 +2277,94 @@ def encargado_terreno_despacho(request):
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
     context = {'latest_token': latest_token, 'actas_terreno': actas_terreno}
     return render(request, 'GestionDenuncias/SGD2_Terreno_Encargado_Despacho.html', context)
+
+def dr_terreno_reporte(request):
+    try:
+        # Intenta obtener el revisor del modelo RevisoresDR
+        revisor = RevisoresDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+    except RevisoresDR.DoesNotExist:
+        try:
+            # Si no se encuentra en RevisoresDR, intenta obtenerlo del modelo EFRDR
+            revisor = EFRDR.objects.get(id_usuario__username=request.user)
+            region_usuario = revisor.Region
+        except EFRDR.DoesNotExist:
+            # Manejo de error en caso de que no se encuentre la región del usuario en ninguno de los modelos
+            region_usuario = None
+
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_terreno = ActasTerreno.objects.filter(region=region_usuario)
+    else:
+        actas_terreno = []
+
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+
+    for acta in actas_terreno:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 =  increment_url_numbers(acta.evidencia_fotografica)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_terreno': actas_terreno}
+    return render(request, 'GestionDenuncias/SGD2_Terreno_Reporte_DR.html', context)
+
+def dr_remota_reporte(request):
+    try:
+        # Intenta obtener el revisor del modelo RevisoresDR
+        revisor = RevisoresDR.objects.get(id_usuario__username=request.user)
+        region_usuario = revisor.Region
+    except RevisoresDR.DoesNotExist:
+        try:
+            # Si no se encuentra en RevisoresDR, intenta obtenerlo del modelo EFRDR
+            revisor = EFRDR.objects.get(id_usuario__username=request.user)
+            region_usuario = revisor.Region
+        except EFRDR.DoesNotExist:
+            # Manejo de error en caso de que no se encuentre la región del usuario en ninguno de los modelos
+            region_usuario = None
+
+    if region_usuario:
+        # Filtra las ActasTerreno basadas en la región del usuario
+        actas_remota = ActasRemotas.objects.filter(region=region_usuario)
+    else:
+        actas_remota = []
+    # Aca en icontains pongo el filtro con el metodo icontains que es un like
+
+    for acta in actas_remota:
+        # Asumiendo que tu valor epoch está en milisegundos. Si está en segundos, omite la división por 1000.
+        local_date = datetime.utcfromtimestamp(int(acta.creation_date) / 1000)
+        acta.adjunto2 = increment_url_numbers(acta.medios_respaldo_adjunto)
+        acta.adjunto3 = increment_url_numbers(acta.adjunto2)
+        acta.adjunto4 = increment_url_numbers(acta.adjunto3)
+        acta.adjunto5 = increment_url_numbers(acta.adjunto4)
+        acta.adjunto6 = increment_url_numbers(acta.adjunto5)
+
+        acta.audio2 = increment_url_numbers(acta.ingrese_audios)
+        acta.audio3 = increment_url_numbers(acta.audio2)
+        acta.audio4 = increment_url_numbers(acta.audio3)
+        acta.audio5 = increment_url_numbers(acta.audio4)
+        acta.audio6 = increment_url_numbers(acta.audio5)
+        # Restar 3 horas
+        acta.fecha = local_date - timedelta(hours=3)
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+
+
+
+    #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
+    context = {'latest_token': latest_token, 'actas_remota': actas_remota}
+    return render(request, 'GestionDenuncias/SGD2_Remota_Reporte_DR.html', context)

@@ -1,0 +1,346 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %} <title>Actas de Fiscalizacion</title> {% endblock %}
+
+{% block body %}
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+            <script type="text/javascript" class="init">
+
+
+$(document).ready(function() {
+	$('#example2').DataTable({
+        "language": {
+            "lengthMenu": "Ver _MENU_ registros por pagina",
+            "zeroRecords": "Sin Resultados",
+            "info": "Mostrando pagina _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin Resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros)"
+        },
+               dom: 'lfrtBip',
+        buttons: [
+             {
+      extend: 'excel',
+      exportOptions: {
+
+          format: {
+              body: function(data, row, column, node) {
+                  data = $('<p>' + data + '</p>').text();
+                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+              }
+          }
+      }
+  }
+        ]
+
+
+
+    } );
+} );
+            function goBack() {
+  window.history.back();
+}
+
+            </script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<div class="w3-responsive">
+
+<section class="section1">
+<h3>Actas en Terreno - Reporte</h3>
+
+<div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
+
+
+</div>
+
+    <table id="example2" class="table table-striped table-bordered dt-responsive" style="width:100%">
+    <thead>
+        <tr>
+            <th>ID Inspeccion</th>
+            <th>Fecha Inspeccion</th>
+            <th>Comuna</th>
+            <th>Nombre del Fiscalizador</th>
+            <th>Sujeto Fiscalizado</th>
+            <th>Motivo Inspeccion</th>
+            <th>Materia Fiscalizada</th>
+            <th>Estado</th>
+            <th>Link</th>
+            <th>Detalle</th>
+
+        </tr>
+            </thead>
+    <tbody>
+        {% load humanize %}
+        {% for acta in actas_terreno %}
+
+       <tr>
+
+            <td>{{ acta.id_inspeccion}}</td>
+            <td>{{ acta.fecha|date:'Ymd'}}</td>
+            <td>{{ acta.comuna }}</td>
+            <td>{{ acta.creator}}</td>
+                        <td>{% if acta.Sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}}
+            {% elif acta.Sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }}
+            {% elif acta.Sujeto_fiscalizado == 'alcalde'%} {{ acta.alcalde }}
+            {% elif acta.Sujeto_fiscalizado == 'gore'%} {{ acta.gore }}
+            {% else %} Sin Despliegue{% endif %}</td>
+
+           <td>{{ acta.seleccion_motivo_inspeccion}}</td>
+            <td>{{ acta.materia_fiscalizada }}</td>
+            <td>{{ acta.sis_clasificacion }}</td>
+       <td>{{ acta.sis_link }}</td>
+           <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
+
+</tr>
+ <!-- Modal -->
+<div class="modal fade" id="detailsModal{{ acta.global_id }}" tabindex="-1" aria-labelledby="detailsModalLabel{{ acta.global_id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel{{ acta.global_id }}">Detalles del Acta {{ acta.object_id }}</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <!-- 1. Datos generales -->
+                {% if acta.id_inspeccion %}<p><strong>ID Inspección:</strong> {{ acta.id_inspeccion }}</p>{% endif %}
+                {% if acta.fecha %}<p><strong>Fecha:</strong> {{ acta.fecha }}</p>{% endif %}
+                {% if acta.region %}<p><strong>Región:</strong> {{ acta.region }}</p>{% endif %}
+                {% if acta.ubicacion %}<p><strong>Ubicación:</strong> {{ acta.ubicacion }}</p>{% endif %}
+                {% if acta.comuna %}<p><strong>Comuna:</strong> {{ acta.comuna }}</p>{% endif %}
+
+                <!-- 2. Motivo de inspección -->
+                {% if acta.seleccion_motivo_inspeccion %}<p><strong>Selección Motivo Inspección:</strong> {{ acta.seleccion_motivo_inspeccion }}</p>{% endif %}
+                {% if acta.indique_folio_denuncia %}<p><strong>Folio Denuncia:</strong> {{ acta.indique_folio_denuncia }}</p>{% endif %}
+                {% if acta.indique_folio_revision_fiscalizada_previamente %}<p><strong>Folio Revisión Fiscalizada Previamente:</strong> {{ acta.indique_folio_revision_fiscalizada_previamente }}</p>{% endif %}
+                {% if acta.indique_folio_revision_acta_remota %}<p><strong>Folio Revisión Acta Remota:</strong> {{ acta.indique_folio_revision_acta_remota }}</p>{% endif %}
+                {% if acta.existe_despliegue_propaganda %}<p><strong>Existe Despliegue Propaganda:</strong> {{ acta.existe_despliegue_propaganda }}</p>{% endif %}
+                {% if acta.indique_folio_f104 %}<p><strong>Folio F104:</strong> {{ acta.indique_folio_f104 }}</p>{% endif %}
+                {% if acta.indique_otro %}<p><strong>Indique Otro:</strong> {{ acta.indique_otro }}</p>{% endif %}
+
+                <!-- 3. Sujeto fiscalizado -->
+                {% if acta.Sujeto_fiscalizado %}<p><strong>Sujeto Fiscalizado:</strong> {{ acta.Sujeto_fiscalizado }}</p>{% endif %}
+                {% if acta.partido_politico_habilitado %}<p><strong>Partido Político Habilitado:</strong> {{ acta.partido_politico_habilitado }}</p>{% endif %}
+                {% if acta.otro_sujeto_fiscalizado %}<p><strong>Otro Sujeto Fiscalizado:</strong> {{ acta.otro_sujeto_fiscalizado }}</p>{% endif %}
+                {% if acta.alcalde %}<p><strong>Nombre:</strong> {{ acta.alcalde }}</p>{% endif %}
+                {% if acta.gore %}<p><strong>Nombre:</strong> {{ acta.gore }}</p>{% endif %}
+
+                <!-- 4. Opción plebiscitaria -->
+                {% if acta.opcion_plebiscitaria %}<p><strong>Opción Plebiscitaria:</strong> {{ acta.opcion_plebiscitaria }}</p>{% endif %}
+
+                <!-- 5. Materia fiscalizada -->
+                {% if acta.materia_fiscalizada %}<p><strong>Materia Fiscalizada:</strong> {{ acta.materia_fiscalizada }}</p>{% endif %}
+                {% if acta.corresponde_espacio_publico_autorizado %}<p><strong>Corresponde Espacio Público Autorizado:</strong> {{ acta.corresponde_espacio_publico_autorizado }}</p>{% endif %}
+                {% if acta.seleccione_espacio %}<p><strong>Seleccione Espacio:</strong> {{ acta.seleccione_espacio }}</p>{% endif %}
+                {% if acta.adosada_bien_nacional %}<p><strong>Adosada a Bien Nacional:</strong> {{ acta.adosada_bien_nacional }}</p>{% endif %}
+                {% if acta.nombre_bienes %}<p><strong>Nombre de Bienes:</strong> {{ acta.nombre_bienes }}</p>{% endif %}
+                {% if acta.cantidad_elementos_propaganda_publico %}<p><strong>Cantidad de Elementos Propaganda Público:</strong> {{ acta.cantidad_elementos_propaganda_publico }}</p>{% endif %}
+                {% if acta.seleccione_tipo_espacio %}<p><strong>Seleccione Tipo Espacio:</strong> {{ acta.seleccione_tipo_espacio }}</p>{% endif %}
+                {% if acta.seleccione_lugar %}<p><strong>Seleccione Lugar:</strong> {{ acta.seleccione_lugar }}</p>{% endif %}
+                {% if acta.propaganda_excede_dimensiones %}<p><strong>Propaganda Excede Dimensiones:</strong> {{ acta.propaganda_excede_dimensiones }}</p>{% endif %}
+                {% if acta.indique_tipo_espacio_fiscalizado %}<p><strong>Indique Tipo Espacio Fiscalizado:</strong> {{ acta.indique_tipo_espacio_fiscalizado }}</p>{% endif %}
+                {% if acta.actividad_fiscalizada %}<p><strong>Actividad Fiscalizada:</strong> {{ acta.actividad_fiscalizada }}</p>{% endif %}
+                {% if acta.indique_cantidad_brigadistas_lugar %}<p><strong>Indique Cantidad Brigadistas en Lugar:</strong> {{ acta.indique_cantidad_brigadistas_lugar }}</p>{% endif %}
+                {% if acta.otro_antecente %}<p><strong>Otro Antecedente:</strong> {{ acta.otro_antecente }}</p>{% endif %}
+
+                {% if acta.evidencia_fotografica %}
+                <p><strong>Adjuntos:</strong>
+                    <a href="{{ acta.evidencia_fotografica }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.evidencia_fotografica }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                                  <a href="{{ acta.adjunto2 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto2 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                    </a>
+                                  <a href="{{ acta.adjunto3 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto3 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+
+                    </a>
+                                  <a href="{{ acta.adjunto4 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto4 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                                    </a>
+                                  <a href="{{ acta.adjunto5 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto5 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                                    </a>
+                                  <a href="{{ acta.adjunto6 }}?token={{ latest_token.Token }}" target="_blank">
+                        <img src="{{ acta.adjunto6 }}?token={{ latest_token.Token }}" style="width: 100px; height: auto; cursor: pointer;" alt=""/>
+                    </a>
+                </p>
+                {% endif %}
+
+                {% if acta.link_firma_cargo_timbre %}<p><strong>Link Firma y Cargo con Timbre:</strong> <a href="{{ acta.link_firma_cargo_timbre }}?token={{ latest_token.Token }}" target="_blank">Ver Firma</a></p>{% endif %}
+           {% if acta.sis_motivo_inicial %}<p><strong>Motivo Revisor:</strong> {{ acta.sis_motivo_inicial }}</p>{% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+            <!-- Modal para ver imagen grande -->
+<div class="modal fade" id="imageModal{{ acta.global_id }}" tabindex="-1" aria-labelledby="imageModalLabel{{ acta.global_id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel{{ acta.global_id }}">Adjunto del Acta {{ acta.global_id }}</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="{{ acta.evidencia_fotografica }}?token={{ latest_token.Token }}" style="width: 100%; height: auto;" alt="Imagen adjunta"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        {% endfor %}
+    </tbody>
+    </table>
+<td style="text-align:center" > <button class="btn btn-warning" onclick="goBack()">Volver</button></td>
+
+</section>
+</div>
+
+        <script type="text/javascript">
+    var order;
+ function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+  function pasar(global_id) {
+
+
+
+
+    const selectorClasificacion = document.getElementById(`selectorClasificacion${global_id}`);
+    const selectorCodigo = document.getElementById(`selectorCodigo${global_id}`);
+    const clasificacionValue = selectorClasificacion.value;
+    const codigoValue = selectorCodigo.value;
+
+    // Habilitar el botón según las condiciones dadas
+    if (clasificacionValue === "archivo") {
+        console.log("Entramos a archivo");
+        if (confirm('¿Esta Seguro que Archivar?')) {
+          // Save it!
+
+            pasar_etapa(global_id, 'archivo_terreno', 'archivo');
+            setTimeout(() => {   return window.location.replace("{% url 'terreno_pendiente_clasificacion' %}"); }, 1000);
+        } else {
+          // Do nothing!
+          console.log('No Finalizado Confirmado');
+}
+    } else if (clasificacionValue === "con_infraccion" && codigoValue !== "Pendiente") {
+        if (confirm('¿Esta Seguro que Desea Pasar la Etapa Con Infracción?')) {
+          // Save it!
+
+          pasar_etapa(global_id, 'con_infraccion_revisor_terreno', codigoValue);
+            setTimeout(() => {   return window.location.replace("{% url 'terreno_pendiente_clasificacion' %}"); }, 1000);
+        } else {
+          // Do nothing!
+          console.log('No Finalizado Confirmado');
+        }
+        console.log("Entramos a coninfraccion")
+    } else {
+        console.log("deshabilita")
+        window.alert("Datos Faltantes");
+    }
+
+
+}
+
+ function pasar_individual_masivo(global_id) {
+
+
+    const selectorClasificacion = document.getElementById(`selectorClasificacion${global_id}`);
+    const selectorCodigo = document.getElementById(`selectorCodigo${global_id}`);
+    const clasificacionValue = selectorClasificacion.value;
+    const codigoValue = selectorCodigo.value;
+
+    // Habilitar el botón según las condiciones dadas
+    if (clasificacionValue === "archivo") {
+        console.log("Entramos a archivo");
+
+          // Save it!
+
+            pasar_etapa(global_id, 'archivo_terreno', 'archivo');
+    } else if (clasificacionValue === "con_infraccion" && codigoValue !== "Pendiente") {
+        pasar_etapa(global_id, 'con_infraccion_revisor_terreno', codigoValue);
+         console.log("Entramos a coninfraccion")
+    }
+
+}
+
+
+    function pasar_etapa(global_id,etapa,codigo) {
+
+        var datos = {
+                'respuesta':'',
+				'global_id': global_id.toString(),
+                'etapa': etapa.toString(),
+                'codigo' : codigo.toString()
+			}
+    var url = "/sgd/pasar_acta/"
+        fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+	    			'X-CSRFToken':csrftoken
+	    		},
+	    		body:JSON.stringify({'datos':datos}),
+
+	    	})
+            .then((response) => response.json())
+            }
+
+    function asignar_todos() {
+
+  if (confirm('¿Esta Seguro que Desea Clasificar Todos los Modificados?')) {
+  // Save it!
+  console.log('Asignar Recurso N°');
+
+       {% for acta in actas_terreno %}
+        {% if acta.sis_clasificacion == 'Pendiente'%}
+              try {
+                  pasar_individual_masivo('{{ acta.global_id }}');
+              }
+              catch (e) {
+
+                console.log(e); // pasa el objeto de la excepción al manejador de errores
+                    }
+        {% endif %}
+        {% endfor %}
+  window.alert('Listo');
+  return window.location.replace("{% url 'terreno_pendiente_clasificacion' %}")
+} else {
+  // Do nothing!
+  console.log('No Finalizado Confirmado');
+}}
+
+
+
+</script>
+
+
+
+{% endblock %}
