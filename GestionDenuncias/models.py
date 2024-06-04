@@ -605,7 +605,7 @@ class ActasTerreno(models.Model):
         (16749632, "maburto"),
         (16835392, "mramirezo"),
         (17995568, "nbarraza"),
-        (17051087, "dguevara"),
+        (16278924, "jortizp"),
         (16964946, "fundurraga")
     )
 
@@ -806,7 +806,7 @@ class ActasRemotas(models.Model):
         (16749632, "maburto"),
         (16835392, "mramirezo"),
         (17995568, "nbarraza"),
-        (17051087, "dguevara"),
+        (16278924, "jortizp"),
         (16964946, "fundurraga")
     )
 
