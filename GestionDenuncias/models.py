@@ -606,7 +606,10 @@ class ActasTerreno(models.Model):
         (16835392, "mramirezo"),
         (17995568, "nbarraza"),
         (16278924, "jortizp"),
-        (16964946, "fundurraga")
+        (16964946, "fundurraga"),
+        (14083592, "rgarces"),
+        (17541020, "vvillasenor"),
+        (19309894, "cfrings")
     )
 
     abogado_asignado = models.IntegerField(null=True, blank=True, choices=ABOGADOAS)  #
@@ -807,7 +810,11 @@ class ActasRemotas(models.Model):
         (16835392, "mramirezo"),
         (17995568, "nbarraza"),
         (16278924, "jortizp"),
-        (16964946, "fundurraga")
+        (16964946, "fundurraga"),
+        (14083592, "rgarces"),
+        (17541020, "vvillasenor"),
+        (19309894, "cfrings")
+
     )
 
     abogado_asignado = models.IntegerField(null=True, blank=True, choices=ABOGADOAS)  #
