@@ -671,6 +671,13 @@ class ActasTerreno(models.Model):
     abogado_obs_finales = models.CharField(max_length=5000, null=True, blank=True)  # ok
     sis_encargado_resultado = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOABOGADO)
     sis_motivo_rechazo_encargado = models.CharField(max_length=5000, null=True, blank=True)  # ok
+
+    fecha_clasificacion_revisor = models.DateTimeField(null=True, blank=True)
+    fecha_envio_efr = models.DateTimeField(null=True, blank=True)
+    fecha_envio_ufisca = models.DateTimeField(null=True, blank=True)
+    fecha_evaluacion_abogado = models.DateTimeField(null=True, blank=True)
+    fecha_envio_abogado = models.DateTimeField(null=True, blank=True)
+
     def __str__(self):
         return str(self.id_inspeccion)
 
@@ -876,6 +883,13 @@ class ActasRemotas(models.Model):
     abogado_obs_finales = models.CharField(max_length=5000, null=True, blank=True)  # ok
     sis_encargado_resultado = models.CharField(max_length=300, default="Pendiente", choices=RESULTADOABOGADO)
     sis_motivo_rechazo_encargado = models.CharField(max_length=5000, null=True, blank=True)  # ok
+
+    fecha_clasificacion_revisor = models.DateTimeField(null=True, blank=True)
+    fecha_envio_efr = models.DateTimeField(null=True, blank=True)
+    fecha_envio_ufisca = models.DateTimeField(null=True, blank=True)
+    fecha_evaluacion_abogado = models.DateTimeField(null=True, blank=True)
+    fecha_envio_abogado = models.DateTimeField(null=True, blank=True)
+
     def __str__(self):
         return str(self.id_inspeccion)
 
