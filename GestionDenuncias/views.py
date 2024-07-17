@@ -1344,7 +1344,11 @@ def remota_con_infraccion_gestiones_rechazo(request, id):
 
 
 def expcsv(request, lc):
-    # Crear la respuesta HTTP como un archivo CSV
+    def remove_tzinfo(value):
+        if isinstance(value, (datetime.datetime, datetime.time)):
+            return value.replace(tzinfo=None)
+        return value
+
     if lc == 'abeced':
         wb = Workbook()
         ws = wb.active
@@ -1355,7 +1359,8 @@ def expcsv(request, lc):
 
         # Escribir los datos del modelo
         for obj in ActasTerreno.objects.all():
-            ws.append([getattr(obj, field.name) for field in ActasTerreno._meta.fields])
+            row = [remove_tzinfo(getattr(obj, field.name)) for field in ActasTerreno._meta.fields]
+            ws.append(row)
 
         # Configurar la respuesta HTTP
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -1363,10 +1368,7 @@ def expcsv(request, lc):
 
         # Guardar el libro de Excel en la respuesta
         wb.save(response)
-
         return response
-
-
 
     elif lc == 'obeced':
         wb = Workbook()
@@ -1378,7 +1380,8 @@ def expcsv(request, lc):
 
         # Escribir los datos del modelo
         for obj in ActasRemotas.objects.all():
-            ws.append([getattr(obj, field.name) for field in ActasRemotas._meta.fields])
+            row = [remove_tzinfo(getattr(obj, field.name)) for field in ActasRemotas._meta.fields]
+            ws.append(row)
 
         # Configurar la respuesta HTTP
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -1386,7 +1389,6 @@ def expcsv(request, lc):
 
         # Guardar el libro de Excel en la respuesta
         wb.save(response)
-
         return response
 
     elif lc == 'workflow':
@@ -1394,12 +1396,13 @@ def expcsv(request, lc):
         ws = wb.active
 
         # Opcionalmente, escribir los nombres de las columnas
-        column_names = [field.name for field in ActasRemotas._meta.fields]
+        column_names = [field.name for field in WorkflowActas._meta.fields]
         ws.append(column_names)
 
         # Escribir los datos del modelo
         for obj in WorkflowActas.objects.all():
-            ws.append([getattr(obj, field.name) for field in WorkflowActas._meta.fields])
+            row = [remove_tzinfo(getattr(obj, field.name)) for field in WorkflowActas._meta.fields]
+            ws.append(row)
 
         # Configurar la respuesta HTTP
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -1407,7 +1410,6 @@ def expcsv(request, lc):
 
         # Guardar el libro de Excel en la respuesta
         wb.save(response)
-
         return response
 
     else:
