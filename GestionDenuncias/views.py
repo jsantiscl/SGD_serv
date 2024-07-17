@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from django.db.models import Count
 from django.db import connection
 from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formulariosig, EncargadosRegionales, WorkflowActas
@@ -1345,7 +1345,7 @@ def remota_con_infraccion_gestiones_rechazo(request, id):
 
 def expcsv(request, lc):
     def remove_tzinfo(value):
-        if isinstance(value, (datetime.datetime, datetime.time)):
+        if isinstance(value, (datetime, time)):
             return value.replace(tzinfo=None)
         return value
 
