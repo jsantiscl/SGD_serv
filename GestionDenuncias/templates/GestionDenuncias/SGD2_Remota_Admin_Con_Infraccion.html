@@ -55,7 +55,7 @@ $(document).ready(function() {
 <h3>Actas en Remotas - Con Infraccion</h3>
 
 <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
-
+    <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" data-toggle="modal" data-target="#motivoModalmasivo">Pasar Seleccionados</button></td>
 
 </div>
 
@@ -263,6 +263,14 @@ const csrftoken = getCookie('csrftoken');
         }
 }
 
+  function pasar_masivo(global_id) {
+    const asignacion = document.getElementById(`selectorasignacion${global_id}`);
+    var asignacion_selected = asignacion.options[asignacion.selectedIndex].value;
+    // Habilitar el botón según las condiciones dadas
+      console.log(asignacion_selected);
+          pasar_etapa(global_id, 'asignado_Abogado', asignacion_selected );
+}
+
 
     function pasar_etapa(global_id,etapa, asignacion_selected) {
 
@@ -287,6 +295,29 @@ const csrftoken = getCookie('csrftoken');
             .then((response) => response.json())
             }
 
+    function asignar_todos() {
+
+  if (confirm('¿Esta Seguro que Desea Asignar Todos los Modificados?')) {
+  // Save it!
+  console.log('Asignar Recurso N°');
+
+       {% for acta in actas_remota %}
+        {% if acta.sis_clasificacion == 'efr_aceptado'%}
+              try {
+                  pasar_masivo('{{ acta.global_id }}');
+              }
+              catch (e) {
+
+                console.log(e); // pasa el objeto de la excepción al manejador de errores
+                    }
+        {% endif %}
+        {% endfor %}
+  window.alert('Listo');
+  return window.location.replace("{% url 'admin_remota_con_infraccion' %}")
+} else {
+  // Do nothing!
+  console.log('No Finalizado Confirmado');
+}}
 
 
 </script>
