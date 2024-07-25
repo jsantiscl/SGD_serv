@@ -70,7 +70,7 @@ $(document).ready(function() {
             <th>Medio Fiscalizado</th>
             <th>Devuelta Encargado</th>
             <th>Detalle</th>
-            <th colspan="2" style="text-align:center">Accion</th>
+            <th style="text-align:center">Accion</th>
         </tr>
             </thead>
     <tbody>
@@ -104,8 +104,8 @@ $(document).ready(function() {
 
 
            <td style="text-align: center"> <button class="btn btn-info details-btn" data-toggle="modal" data-target="#detailsModal{{ acta.global_id }}">Ver</button></td>
- <td><a class="btn btn-success" href="{% url 'abogado_activar_remota' id=acta.global_id %}">Activar</a></td>
-            <td><a class="btn btn-secondary" href="{% url 'abogado_desactivar_remota' id=acta.global_id %}">Desactivar</a></td>
+ <td><a class="btn btn-success" href="{% url 'abogado_activar_remota' id=acta.global_id %}">Activar</a> <a class="btn btn-secondary" href="{% url 'abogado_desactivar_remota' id=acta.global_id %}">Desactivar</a></td>
+
 
 </tr>
 
