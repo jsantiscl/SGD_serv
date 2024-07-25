@@ -8,7 +8,7 @@ from AlertasFiscalizacion.models import *
 from ConsultasSCGYFE.models import *
 
 class DenunciasAdmin(admin.ModelAdmin):
-    search_fields = ['Numero']  # Puedes agregar más campos separados por comas
+    search_fields = ['numero']  # Puedes agregar más campos separados por comas
 
 admin.site.register(Denuncias, DenunciasAdmin)
 admin.site.register(Abogados)
