@@ -678,6 +678,13 @@ class ActasTerreno(models.Model):
     fecha_evaluacion_abogado = models.DateTimeField(null=True, blank=True)
     fecha_envio_abogado = models.DateTimeField(null=True, blank=True)
 
+    candidato_def = models.CharField(max_length=255, null=True, blank=True)
+    rut_candidato = models.CharField(max_length=255, null=True, blank=True)
+    partido_candidato = models.CharField(max_length=255, null=True, blank=True)
+    mail_candidato = models.CharField(max_length=255, null=True, blank=True)
+    tipo_hallazgo = models.CharField(max_length=255, null=True, blank=True)
+    respaldo = models.CharField(max_length=2000, null=True, blank=True)
+
     def __str__(self):
         return str(self.id_inspeccion)
 
@@ -889,6 +896,13 @@ class ActasRemotas(models.Model):
     fecha_envio_ufisca = models.DateTimeField(null=True, blank=True)
     fecha_evaluacion_abogado = models.DateTimeField(null=True, blank=True)
     fecha_envio_abogado = models.DateTimeField(null=True, blank=True)
+
+    candidato_def = models.CharField(max_length=255, null=True, blank=True)
+    rut_candidato = models.CharField(max_length=255, null=True, blank=True)
+    partido_candidato = models.CharField(max_length=255, null=True, blank=True)
+    mail_candidato = models.CharField(max_length=255, null=True, blank=True)
+    tipo_hallazgo = models.CharField(max_length=255, null=True, blank=True)
+    respaldo = models.CharField(max_length=2000, null=True, blank=True)
 
     def __str__(self):
         return str(self.id_inspeccion)
