@@ -462,95 +462,71 @@ def numero_a_romano(num):
     }
     return roman_dict.get(num, "")
 
+def extraer_valor_campo(request, campos):
+    for campo in campos:
+        valor = request.POST.get(campo)
+        if valor:
+            return valor
+    return None
+
 @csrf_exempt
 def carga_datos_actas_terreno(request):
     if request.method == 'POST':
+        # Define las posibles categorías y sus respectivos campos
+        categorias = {
+            'candidato': ['candidato_gore', 'candidato_core', 'candidato_alcalde', 'candidato_concejal'],
+            'rut': ['rut_gore', 'rut_core', 'rut_alcalde', 'rut_concejal'],
+            'partido': ['partido_gore', 'partido_core', 'partido_alcalde', 'partido_concejal'],
+            'mail': ['mail_gore', 'mail_core', 'mail_alcalde', 'mail_concejal']
+        }
+
         # Extrae los datos de la solicitud POST
-        token = request.POST.get('token')
-        object_id = request.POST.get('object_id')
-        global_id = request.POST.get('global_id')
-        fecha = request.POST.get('fecha')
-        region_inicial = request.POST.get('region')
-        try:
-            region = numero_a_romano(region_inicial)
-        except:
-            region = region_inicial
-        ubicacion = request.POST.get('ubicacion')
-        comuna = request.POST.get('comuna')
-        seleccion_motivo_inspeccion = request.POST.get('seleccion_motivo_inspeccion')
-        indique_folio = request.POST.get('indique_folio')
-        indique_otro = request.POST.get('indique_otro')
-        Sujeto_fiscalizado = request.POST.get('Sujeto_fiscalizado')
-        #partido_politico_habilitado = request.POST.get('partido_politico_habilitado')
-        #opcion_plebiscitaria = request.POST.get('opcion_plebiscitaria')
-        alcalde= request.POST.get('alcalde')
-        gore= request.POST.get('gore')
-        cuenta_con_104= request.POST.get('cuenta_con_104')
-        materia_fiscalizada = request.POST.get('materia_fiscalizada')
-        corresponde_espacio_publico_autorizado = request.POST.get('corresponde_espacio_publico_autorizado')
-        seleccione_espacio = request.POST.get('seleccione_espacio')
-        adosada_bien_nacional = request.POST.get('adosada_bien_nacional')
-        nombre_bienes = request.POST.get('nombre_bienes')
-        cantidad_elementos_propaganda_publico = request.POST.get('cantidad_elementos_propaganda_publico')
-        propaganda_excede_dimensiones = request.POST.get('propaganda_excede_dimensiones')
-        seleccione_lugar = request.POST.get('seleccione_lugar')
-        otro_antecente = request.POST.get('otro_antecente')
-        creation_date = request.POST.get('creation_date')
-        creator = request.POST.get('creator')
-        edit_date = request.POST.get('edit_date')
-        editor = request.POST.get('editor')
-        x_coord = request.POST.get('x_coord')
-        y_coord = request.POST.get('y_coord')
-        evidencia_fotografica = request.POST.get('evidencia_fotografica')
-        link_firma_cargo_timbre = request.POST.get('link_firma_cargo_timbre')
-        id_inspeccion = request.POST.get('id_inspeccion')
-        existe_despliegue_propaganda = request.POST.get('existe_despliegue_propaganda')
-        otro_sujeto_fiscalizado = request.POST.get('otro_sujeto_fiscalizado')
-        actividad_fiscalizada = request.POST.get('actividad_fiscalizada')
-        indique_cantidad_brigadistas_lugar = request.POST.get('indique_cantidad_brigadistas_lugar')
+        acta_terreno_data = {
+            'object_id': int(request.POST.get('object_id')) + 333,
+            'global_id': request.POST.get('global_id').replace('{','').replace('}',''),
+            'fecha': request.POST.get('fecha'),
+            'region': numero_a_romano(request.POST.get('region')),
+            'ubicacion': request.POST.get('ubicacion'),
+            'comuna': request.POST.get('comuna'),
+            'seleccion_motivo_inspeccion': request.POST.get('seleccion_motivo_inspeccion'),
+            'indique_folio': request.POST.get('indique_folio'),
+            'indique_otro': request.POST.get('indique_otro'),
+            'cuenta_con_104': request.POST.get('cuenta_con_104'),
+            'materia_fiscalizada': request.POST.get('materia_fiscalizada'),
+            'corresponde_espacio_publico_autorizado': request.POST.get('corresponde_espacio_publico_autorizado'),
+            'seleccione_espacio': request.POST.get('seleccione_espacio'),
+            'adosada_bien_nacional': request.POST.get('adosada_bien_nacional'),
+            'nombre_bienes': request.POST.get('nombre_bienes'),
+            'cantidad_elementos_propaganda_publico': request.POST.get('cantidad_elementos_propaganda_publico'),
+            'propaganda_excede_dimensiones': request.POST.get('propaganda_excede_dimensiones'),
+            'seleccione_lugar': request.POST.get('seleccione_lugar'),
+            'otro_antecente': request.POST.get('otro_antecente'),
+            'creation_date': request.POST.get('creation_date'),
+            'creator': request.POST.get('creator'),
+            'edit_date': request.POST.get('edit_date'),
+            'editor': request.POST.get('editor'),
+            'x_coord': request.POST.get('x_coord'),
+            'y_coord': request.POST.get('y_coord'),
+            'evidencia_fotografica': request.POST.get('evidencia_fotografica'),
+            'link_firma_cargo_timbre': request.POST.get('link_firma_cargo_timbre'),
+            'id_inspeccion': request.POST.get('id_inspeccion'),
+            'existe_despliegue_propaganda': request.POST.get('existe_despliegue_propaganda'),
+            'otro_sujeto_fiscalizado': request.POST.get('otro_sujeto_fiscalizado'),
+            'actividad_fiscalizada': request.POST.get('actividad_fiscalizada'),
+            'indique_cantidad_brigadistas_lugar': request.POST.get('indique_cantidad_brigadistas_lugar'),
+            'candidato_def': extraer_valor_campo(request, categorias['candidato']),
+            'rut_candidato': extraer_valor_campo(request, categorias['rut']),
+            'partido_candidato': extraer_valor_campo(request, categorias['partido']),
+            'mail_candidato': extraer_valor_campo(request, categorias['mail']),
+            'tipo_hallazgo': request.POST.get('tipo_hallazgo'),
+            'respaldo': request.POST.get('respaldo'),
+        }
 
-        # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
-        acta_terreno = ActasTerreno(
-            object_id=int(object_id) + 333,
-            global_id=global_id.replace('{','').replace('}',''),
-            fecha=fecha,
-            region=region,
-            ubicacion=ubicacion,
-            comuna=comuna,
-            seleccion_motivo_inspeccion=seleccion_motivo_inspeccion,
-            indique_folio=indique_folio,
-            indique_otro=indique_otro,
-            Sujeto_fiscalizado=Sujeto_fiscalizado,
-            #partido_politico_habilitado=partido_politico_habilitado,
-            #opcion_plebiscitaria=opcion_plebiscitaria,
-            alcalde=alcalde,
-            gore=gore,
-            cuenta_con_104 = cuenta_con_104,
-            materia_fiscalizada=materia_fiscalizada,
-            corresponde_espacio_publico_autorizado=corresponde_espacio_publico_autorizado,
-            seleccione_espacio=seleccione_espacio,
-            adosada_bien_nacional=adosada_bien_nacional,
-            nombre_bienes=nombre_bienes,
-            cantidad_elementos_propaganda_publico=cantidad_elementos_propaganda_publico,
-            propaganda_excede_dimensiones=propaganda_excede_dimensiones,
-            seleccione_lugar=seleccione_lugar,
-            otro_antecente=otro_antecente,
-            creation_date=creation_date,
-            creator=creator,
-            edit_date=edit_date,
-            editor=editor,
-            x_coord=x_coord,
-            y_coord=y_coord,
-            evidencia_fotografica=evidencia_fotografica,
-            link_firma_cargo_timbre=link_firma_cargo_timbre,
-            id_inspeccion=id_inspeccion,
-            existe_despliegue_propaganda=existe_despliegue_propaganda,
-            otro_sujeto_fiscalizado=otro_sujeto_fiscalizado,
-            actividad_fiscalizada=actividad_fiscalizada,
-            indique_cantidad_brigadistas_lugar=indique_cantidad_brigadistas_lugar
-        )
+        # Crea una instancia de tu modelo de datos y asigna los valores
+        acta_terreno = ActasTerreno(**acta_terreno_data)
 
         try:
+            token = request.POST.get('token')
             objeto_token = Tokens(Token=token, Fecha=datetime.now())
             objeto_token.save()
         except Exception as e:
@@ -564,14 +540,6 @@ def carga_datos_actas_terreno(request):
     else:
         # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
         return HttpResponse(status=405)
-
-def extraer_valor_campo(request, campos):
-    for campo in campos:
-        valor = request.POST.get(campo)
-        if valor:
-            return valor
-    return None
-
 @csrf_exempt
 def carga_datos_actas_remotas(request):
     if request.method == 'POST':
