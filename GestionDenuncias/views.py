@@ -472,61 +472,135 @@ def extraer_valor_campo(request, campos):
 @csrf_exempt
 def carga_datos_actas_terreno(request):
     if request.method == 'POST':
-        # Define las posibles categorías y sus respectivos campos
-        categorias = {
-            'candidato': ['candidato_gore', 'candidato_core', 'candidato_alcalde', 'candidato_concejal'],
-            'rut': ['rut_gore', 'rut_core', 'rut_alcalde', 'rut_concejal'],
-            'partido': ['partido_gore', 'partido_core', 'partido_alcalde', 'partido_concejal'],
-            'mail': ['mail_gore', 'mail_core', 'mail_alcalde', 'mail_concejal']
-        }
-
         # Extrae los datos de la solicitud POST
-        acta_terreno_data = {
-            'object_id': int(request.POST.get('object_id')) + 333,
-            'global_id': request.POST.get('global_id').replace('{','').replace('}',''),
-            'fecha': request.POST.get('fecha'),
-            'region': request.POST.get('region'),
-            'ubicacion': request.POST.get('ubicacion'),
-            'comuna': request.POST.get('comuna'),
-            'seleccion_motivo_inspeccion': request.POST.get('seleccion_motivo_inspeccion'),
-            'indique_folio': request.POST.get('indique_folio'),
-            'indique_otro': request.POST.get('indique_otro'),
-            'cuenta_con_104': request.POST.get('cuenta_con_104'),
-            'materia_fiscalizada': request.POST.get('materia_fiscalizada'),
-            'corresponde_espacio_publico_autorizado': request.POST.get('corresponde_espacio_publico_autorizado'),
-            'seleccione_espacio': request.POST.get('seleccione_espacio'),
-            'adosada_bien_nacional': request.POST.get('adosada_bien_nacional'),
-            'nombre_bienes': request.POST.get('nombre_bienes'),
-            'cantidad_elementos_propaganda_publico': request.POST.get('cantidad_elementos_propaganda_publico'),
-            'propaganda_excede_dimensiones': request.POST.get('propaganda_excede_dimensiones'),
-            'seleccione_lugar': request.POST.get('seleccione_lugar'),
-            'otro_antecente': request.POST.get('otro_antecente'),
-            'creation_date': request.POST.get('creation_date'),
-            'creator': request.POST.get('creator'),
-            'edit_date': request.POST.get('edit_date'),
-            'editor': request.POST.get('editor'),
-            'x_coord': request.POST.get('x_coord'),
-            'y_coord': request.POST.get('y_coord'),
-            'evidencia_fotografica': request.POST.get('evidencia_fotografica'),
-            'link_firma_cargo_timbre': request.POST.get('link_firma_cargo_timbre'),
-            'id_inspeccion': request.POST.get('id_inspeccion'),
-            'existe_despliegue_propaganda': request.POST.get('existe_despliegue_propaganda'),
-            'otro_sujeto_fiscalizado': request.POST.get('otro_sujeto_fiscalizado'),
-            'actividad_fiscalizada': request.POST.get('actividad_fiscalizada'),
-            'indique_cantidad_brigadistas_lugar': request.POST.get('indique_cantidad_brigadistas_lugar'),
-            'candidato_def': extraer_valor_campo(request, categorias['candidato']),
-            'rut_candidato': extraer_valor_campo(request, categorias['rut']),
-            'partido_candidato': extraer_valor_campo(request, categorias['partido']),
-            'mail_candidato': extraer_valor_campo(request, categorias['mail']),
-            'tipo_hallazgo': request.POST.get('tipo_hallazgo'),
-            'respaldo': request.POST.get('respaldo'),
-        }
+        token = request.POST.get('token')
+        object_id = request.POST.get('object_id')
+        global_id = request.POST.get('global_id')
+        fecha = request.POST.get('fecha')
+        region_inicial = request.POST.get('region')
+        try:
+            region = region_inicial
+        except:
+            region = region_inicial
+        ubicacion = request.POST.get('ubicacion')
+        comuna = request.POST.get('comuna')
+        seleccion_motivo_inspeccion = request.POST.get('seleccion_motivo_inspeccion')
+        indique_folio = request.POST.get('indique_folio')
+        indique_otro = request.POST.get('indique_otro')
+        #Sujeto_fiscalizado = request.POST.get('Sujeto_fiscalizado')
+        #partido_politico_habilitado = request.POST.get('partido_politico_habilitado')
+        #opcion_plebiscitaria = request.POST.get('opcion_plebiscitaria')
+        #alcalde= request.POST.get('alcalde')
+        #gore= request.POST.get('gore')
+        cuenta_con_104= request.POST.get('cuenta_con_104')
+        materia_fiscalizada = request.POST.get('materia_fiscalizada')
+        corresponde_espacio_publico_autorizado = request.POST.get('corresponde_espacio_publico_autorizado')
+        seleccione_espacio = request.POST.get('seleccione_espacio')
+        adosada_bien_nacional = request.POST.get('adosada_bien_nacional')
+        nombre_bienes = request.POST.get('nombre_bienes')
+        cantidad_elementos_propaganda_publico = request.POST.get('cantidad_elementos_propaganda_publico')
+        propaganda_excede_dimensiones = request.POST.get('propaganda_excede_dimensiones')
+        seleccione_lugar = request.POST.get('seleccione_lugar')
+        otro_antecente = request.POST.get('otro_antecente')
+        creation_date = request.POST.get('creation_date')
+        creator = request.POST.get('creator')
+        edit_date = request.POST.get('edit_date')
+        editor = request.POST.get('editor')
+        x_coord = request.POST.get('x_coord')
+        y_coord = request.POST.get('y_coord')
+        evidencia_fotografica = request.POST.get('evidencia_fotografica')
+        link_firma_cargo_timbre = request.POST.get('link_firma_cargo_timbre')
+        id_inspeccion = request.POST.get('id_inspeccion')
+        existe_despliegue_propaganda = request.POST.get('existe_despliegue_propaganda')
+        otro_sujeto_fiscalizado = request.POST.get('otro_sujeto_fiscalizado')
+        actividad_fiscalizada = request.POST.get('actividad_fiscalizada')
+        indique_cantidad_brigadistas_lugar = request.POST.get('indique_cantidad_brigadistas_lugar')
 
-        # Crea una instancia de tu modelo de datos y asigna los valores
-        acta_terreno = ActasTerreno(**acta_terreno_data)
+        candidato_gore = request.POST.get('candidato_gore')
+        rut_gore = request.POST.get('rut_gore')
+        partido_gore = request.POST.get('partido_gore')
+        mail_gore = request.POST.get('mail_gore')
+        candidato_core = request.POST.get('candidato_core')
+        rut_core = request.POST.get('rut_core')
+        partido_core = request.POST.get('partido_core')
+        territorio_core = request.POST.get('territorio_core')
+        mail_core = request.POST.get('mail_core')
+        candidato_alcalde = request.POST.get('candidato_alcalde')
+        territorio_alcalde = request.POST.get('territorio_alcalde')
+        rut_alcalde = request.POST.get('rut_alcalde')
+        partido_alcalde = request.POST.get('partido_alcalde')
+        mail_alcalde = request.POST.get('mail_alcalde')
+        candidato_concejal = request.POST.get('candidato_concejal')
+        territorio_concejal = request.POST.get('territorio_concejal')
+        rut_concejal = request.POST.get('rut_concejal')
+        partido_concejal = request.POST.get('partido_concejal')
+        mail_concejal = request.POST.get('mail_concejal')
+        tipo_hallazgo = request.POST.get('tipo_hallazgo')
+        respaldo = request.POST.get('respaldo')
+
+        # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
+        acta_terreno = ActasTerreno(
+            object_id=int(object_id) + 333,
+            global_id=global_id.replace('{','').replace('}',''),
+            fecha=fecha,
+            region=region,
+            ubicacion=ubicacion,
+            comuna=comuna,
+            seleccion_motivo_inspeccion=seleccion_motivo_inspeccion,
+            indique_folio=indique_folio,
+            indique_otro=indique_otro,
+            #Sujeto_fiscalizado=Sujeto_fiscalizado,
+            #partido_politico_habilitado=partido_politico_habilitado,
+            #opcion_plebiscitaria=opcion_plebiscitaria,
+            #alcalde=alcalde,
+            #gore=gore,
+            cuenta_con_104 = cuenta_con_104,
+            materia_fiscalizada=materia_fiscalizada,
+            corresponde_espacio_publico_autorizado=corresponde_espacio_publico_autorizado,
+            seleccione_espacio=seleccione_espacio,
+            adosada_bien_nacional=adosada_bien_nacional,
+            nombre_bienes=nombre_bienes,
+            cantidad_elementos_propaganda_publico=cantidad_elementos_propaganda_publico,
+            propaganda_excede_dimensiones=propaganda_excede_dimensiones,
+            seleccione_lugar=seleccione_lugar,
+            otro_antecente=otro_antecente,
+            creation_date=creation_date,
+            creator=creator,
+            edit_date=edit_date,
+            editor=editor,
+            x_coord=x_coord,
+            y_coord=y_coord,
+            evidencia_fotografica=evidencia_fotografica,
+            link_firma_cargo_timbre=link_firma_cargo_timbre,
+            id_inspeccion=id_inspeccion,
+            existe_despliegue_propaganda=existe_despliegue_propaganda,
+            otro_sujeto_fiscalizado=otro_sujeto_fiscalizado,
+            actividad_fiscalizada=actividad_fiscalizada,
+            indique_cantidad_brigadistas_lugar=indique_cantidad_brigadistas_lugar,
+            candidato_gore=candidato_gore,
+            rut_gore=rut_gore,
+            partido_gore=partido_gore,
+            mail_gore=mail_gore,
+            candidato_core=candidato_core,
+            rut_core=rut_core,
+            partido_core=partido_core,
+            territorio_core=territorio_core,
+            mail_core=mail_core,
+            candidato_alcalde=candidato_alcalde,
+            territorio_alcalde=territorio_alcalde,
+            rut_alcalde=rut_alcalde,
+            partido_alcalde=partido_alcalde,
+            mail_alcalde=mail_alcalde,
+            candidato_concejal=candidato_concejal,
+            territorio_concejal=territorio_concejal,
+            rut_concejal=rut_concejal,
+            partido_concejal=partido_concejal,
+            mail_concejal=mail_concejal,
+            tipo_hallazgo=tipo_hallazgo,
+            respaldo=respaldo
+        )
 
         try:
-            token = request.POST.get('token')
             objeto_token = Tokens(Token=token, Fecha=datetime.now())
             objeto_token.save()
         except Exception as e:
@@ -543,14 +617,6 @@ def carga_datos_actas_terreno(request):
 @csrf_exempt
 def carga_datos_actas_remotas(request):
     if request.method == 'POST':
-        # Define las posibles categorías y sus respectivos campos
-        categorias = {
-            'candidato': ['candidato_gore', 'candidato_core', 'candidato_alcalde', 'candidato_concejal'],
-            'rut': ['rut_gore', 'rut_core', 'rut_alcalde', 'rut_concejal'],
-            'partido': ['partido_gore', 'partido_core', 'partido_alcalde', 'partido_concejal'],
-            'mail': ['mail_gore', 'mail_core', 'mail_alcalde', 'mail_concejal']
-        }
-
         # Extrae los datos de la solicitud POST
         acta_remota_data = {
             'object_id': request.POST.get('object_id'),
@@ -560,6 +626,13 @@ def carga_datos_actas_remotas(request):
             'seleccion_motivo_inspeccion': request.POST.get('seleccion_motivo_inspeccion'),
             'indique_folio': request.POST.get('indique_folio'),
             'indique_otro': request.POST.get('indique_otro'),
+            #'sujeto_fiscalizado': request.POST.get('sujeto_fiscalizado'),
+            #'partido_politico_habilitado': request.POST.get('partido_politico_habilitado'),
+            #'otro_sujeto_fiscalizado': request.POST.get('otro_sujeto_fiscalizado'),
+            #'opcion_plebiscitaria': request.POST.get('opcion_plebiscitaria'),
+            #'alcalde': request.POST.get('alcalde'),
+            #'gore': request.POST.get('gore'),
+            #'es_medio_pagado': request.POST.get('es_medio_pagado'),
             'medio_fiscalizado': request.POST.get('medio_fiscalizado'),
             'nombre_medio': request.POST.get('nombre_medio'),
             'soporte_material_link': request.POST.get('soporte_material_link'),
@@ -567,6 +640,7 @@ def carga_datos_actas_remotas(request):
             'radiofrecuencia_medio': request.POST.get('radiofrecuencia_medio'),
             'rrss_fiscalizada': request.POST.get('rrss_fiscalizada'),
             'usuario_perfil_rrss': request.POST.get('usuario_perfil_rrss'),
+            #'corresponde_medio_prensa': request.POST.get('corresponde_medio_prensa'),
             'otro_antecente': request.POST.get('otro_antecente'),
             'medios_respaldo_adjunto': request.POST.get('medios_respaldo_adjunto'),
             'ingrese_audios': request.POST.get('ingrese_audios'),
@@ -577,16 +651,40 @@ def carga_datos_actas_remotas(request):
             'creator': request.POST.get('creator'),
             'edit_date': request.POST.get('edit_date'),
             'editor': request.POST.get('editor'),
-            'candidato_def': extraer_valor_campo(request, categorias['candidato']),
-            'rut_candidato': extraer_valor_campo(request, categorias['rut']),
-            'partido_candidato': extraer_valor_campo(request, categorias['partido']),
-            'mail_candidato': extraer_valor_campo(request, categorias['mail']),
+
+            'candidato_gore': request.POST.get('candidato_gore'),
+            'rut_gore': request.POST.get('rut_gore'),
+            'partido_gore': request.POST.get('partido_gore'),
+            'mail_gore': request.POST.get('mail_gore'),
+            'candidato_core': request.POST.get('candidato_core'),
+            'rut_core': request.POST.get('rut_core'),
+            'partido_core': request.POST.get('partido_core'),
+            'territorio_core': request.POST.get('territorio_core'),
+            'mail_core': request.POST.get('mail_core'),
+            'candidato_alcalde': request.POST.get('candidato_alcalde'),
+            'territorio_alcalde': request.POST.get('territorio_alcalde'),
+            'rut_alcalde': request.POST.get('rut_alcalde'),
+            'partido_alcalde': request.POST.get('partido_alcalde'),
+            'mail_alcalde': request.POST.get('mail_alcalde'),
+            'candidato_concejal': request.POST.get('candidato_concejal'),
+            'territorio_concejal': request.POST.get('territorio_concejal'),
+            'rut_concejal': request.POST.get('rut_concejal'),
+            'partido_concejal': request.POST.get('partido_concejal'),
+            'mail_concejal': request.POST.get('mail_concejal'),
             'tipo_hallazgo': request.POST.get('tipo_hallazgo'),
             'respaldo': request.POST.get('respaldo'),
+
         }
 
         # Crea una instancia de tu modelo de datos y asigna los valores
         acta_remota = ActasRemotas(**acta_remota_data)
+
+        #try:
+        #    tok = request.POST.get('token')
+        #    objeto_token = Tokens(Token=tok, Fecha=datetime.now())
+        #    objeto_token.save()
+        #except:
+        #    print("Error Token")
 
         # Guarda la instancia en la base de datos
         acta_remota.save()
