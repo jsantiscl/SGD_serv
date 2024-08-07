@@ -565,10 +565,24 @@ def carga_datos_actas_terreno(request):
         # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
         return HttpResponse(status=405)
 
+def extraer_valor_campo(request, campos):
+    for campo in campos:
+        valor = request.POST.get(campo)
+        if valor:
+            return valor
+    return None
 
 @csrf_exempt
 def carga_datos_actas_remotas(request):
     if request.method == 'POST':
+        # Define las posibles categorías y sus respectivos campos
+        categorias = {
+            'candidato': ['candidato_gore', 'candidato_core', 'candidato_alcalde', 'candidato_concejal'],
+            'rut': ['rut_gore', 'rut_core', 'rut_alcalde', 'rut_concejal'],
+            'partido': ['partido_gore', 'partido_core', 'partido_alcalde', 'partido_concejal'],
+            'mail': ['mail_gore', 'mail_core', 'mail_alcalde', 'mail_concejal']
+        }
+
         # Extrae los datos de la solicitud POST
         acta_remota_data = {
             'object_id': request.POST.get('object_id'),
@@ -578,13 +592,6 @@ def carga_datos_actas_remotas(request):
             'seleccion_motivo_inspeccion': request.POST.get('seleccion_motivo_inspeccion'),
             'indique_folio': request.POST.get('indique_folio'),
             'indique_otro': request.POST.get('indique_otro'),
-            'sujeto_fiscalizado': request.POST.get('sujeto_fiscalizado'),
-            #'partido_politico_habilitado': request.POST.get('partido_politico_habilitado'),
-            'otro_sujeto_fiscalizado': request.POST.get('otro_sujeto_fiscalizado'),
-            #'opcion_plebiscitaria': request.POST.get('opcion_plebiscitaria'),
-            'alcalde': request.POST.get('alcalde'),
-            'gore': request.POST.get('gore'),
-            'es_medio_pagado': request.POST.get('es_medio_pagado'),
             'medio_fiscalizado': request.POST.get('medio_fiscalizado'),
             'nombre_medio': request.POST.get('nombre_medio'),
             'soporte_material_link': request.POST.get('soporte_material_link'),
@@ -592,7 +599,6 @@ def carga_datos_actas_remotas(request):
             'radiofrecuencia_medio': request.POST.get('radiofrecuencia_medio'),
             'rrss_fiscalizada': request.POST.get('rrss_fiscalizada'),
             'usuario_perfil_rrss': request.POST.get('usuario_perfil_rrss'),
-            'corresponde_medio_prensa': request.POST.get('corresponde_medio_prensa'),
             'otro_antecente': request.POST.get('otro_antecente'),
             'medios_respaldo_adjunto': request.POST.get('medios_respaldo_adjunto'),
             'ingrese_audios': request.POST.get('ingrese_audios'),
@@ -603,17 +609,16 @@ def carga_datos_actas_remotas(request):
             'creator': request.POST.get('creator'),
             'edit_date': request.POST.get('edit_date'),
             'editor': request.POST.get('editor'),
+            'candidato_def': extraer_valor_campo(request, categorias['candidato']),
+            'rut_candidato': extraer_valor_campo(request, categorias['rut']),
+            'partido_candidato': extraer_valor_campo(request, categorias['partido']),
+            'mail_candidato': extraer_valor_campo(request, categorias['mail']),
+            'tipo_hallazgo': request.POST.get('tipo_hallazgo'),
+            'respaldo': request.POST.get('respaldo'),
         }
 
         # Crea una instancia de tu modelo de datos y asigna los valores
         acta_remota = ActasRemotas(**acta_remota_data)
-
-        #try:
-        #    tok = request.POST.get('token')
-        #    objeto_token = Tokens(Token=tok, Fecha=datetime.now())
-        #    objeto_token.save()
-        #except:
-        #    print("Error Token")
 
         # Guarda la instancia en la base de datos
         acta_remota.save()
