@@ -60,6 +60,7 @@ $(document).ready(function() {
             <th>Tema</th>
             <th>Email</th>
             <th>Pregunta</th>
+            <th>Adjunto</th>
             <th>Respuesta</th>
             <th>Respondida</th>
             <th>Etapa</th>
@@ -78,8 +79,12 @@ $(document).ready(function() {
             <td>{{ linea.TemaAsociado}}</td>
             <td>{{ linea.Email}}</td>
             <td>{{ linea.Pregunta}}</td>
+            <td style="text-align: center">
+                  {% if linea.Adjunto %} <a href="{{ linea.Adjunto }}?token={{ latest_token.Token }}">Ver</a>{% endif %}
+            </td>
             <td>{{ linea.Respuesta}}</td>
             <td>{% if linea.Respondido %} SI {% else %} NO {% endif %}</td>
+
             <td>{{ linea.Etapa}}</td>
 
 </tr>

@@ -100,6 +100,7 @@ $(document).ready(function() {
             <th>Tema</th>
             <th>Email</th>
             <th>Pregunta</th>
+            <th>Adjunto</th>
             <th>Accion</th>
 
         </tr>
@@ -116,6 +117,9 @@ $(document).ready(function() {
             <td>{{ linea.TemaAsociado}}</td>
             <td>{{ linea.Email}}</td>
             <td>{{ linea.Pregunta}}</td>
+            <td style="text-align: center">
+                  {% if linea.Adjunto %} <a href="{{ linea.Adjunto }}?token={{ latest_token.Token }}">Ver</a>{% endif %}
+            </td>
             <td><a type="submit" class="btn btn-success" onclick="mostrarFormulario({{ linea.ObjectID }})">Responder</a></td>
 
   <div class="formularioEmergente" id="formularioEmergente{{ linea.ObjectID }}" style="display: none;">

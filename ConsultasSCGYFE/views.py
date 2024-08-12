@@ -9,11 +9,11 @@ from django.http import JsonResponse
 import json
 from django.shortcuts import get_object_or_404
 # Create your views here.
-
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 from django.core.mail import send_mail
 from ConsultasSCGYFE.models import *
-
+from GestionDenuncias.models import Tokens
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
@@ -22,7 +22,11 @@ def admin_consultas_total(request):
 
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
     denuncia_obj_3 = ConsultasFormulario.objects.all()
-    context = {'todasdenuncias': denuncia_obj_3}
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+    context = {'latest_token':latest_token, 'todasdenuncias': denuncia_obj_3}
     return render(request,'Consultas/Consultas.html', context)
 
 def consultas_nuevas(request):
@@ -41,7 +45,11 @@ def consultas_nuevas(request):
     elif request.user.groups.filter(name='Consultas_Contabilidad').exists():
         denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="1_Nueva",
                                                             TemaAsociado__icontains="contabilidad")
-    context = {'todasdenuncias': denuncia_obj_3}
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+    context = {'latest_token':latest_token, 'todasdenuncias': denuncia_obj_3}
     return render(request,'Consultas/Consultas_Nuevas.html', context)
 
 def consultas_pasar_etapa(request):
@@ -57,7 +65,12 @@ def consultas_respuesta(request):
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
 
     denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="2_Respuesta")
-    context = {'todasdenuncias': denuncia_obj_3, 'user': request.user}
+
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+    context = {'latest_token':latest_token,'todasdenuncias': denuncia_obj_3, 'user': request.user}
     return render(request,'Consultas/Consultas_Respuesta.html', context)
 
 def consultas_responder(request):
@@ -72,7 +85,11 @@ def consultas_envio_respuestas(request):
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
 
     denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="3_Resuelta")
-    context = {'todasdenuncias': denuncia_obj_3, 'user': request.user}
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+    context = {'latest_token':latest_token,'todasdenuncias': denuncia_obj_3, 'user': request.user}
     return render(request,'Consultas/Consultas_Envio_Respuesta.html', context)
 
 
@@ -81,7 +98,11 @@ def consultas_respondidas(request):
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
 
     denuncia_obj_3 = ConsultasFormulario.objects.filter(Q(Etapa__icontains="2_Respuesta") | Q(Etapa__icontains="3_Resuelta")| Q(Etapa__icontains="4_Enviada"))
-    context = {'todasdenuncias': denuncia_obj_3, 'user': request.user}
+    try:
+        latest_token = Tokens.objects.latest('id')
+    except ObjectDoesNotExist:
+        latest_token = None
+    context = {'latest_token':latest_token,'todasdenuncias': denuncia_obj_3, 'user': request.user}
     return render(request,'Consultas/Consultas_Respondidas.html', context)
 
 
