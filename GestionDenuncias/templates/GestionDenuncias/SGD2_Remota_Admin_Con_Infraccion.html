@@ -84,11 +84,37 @@ $(document).ready(function() {
             <td>{{ acta.id_inspeccion}}</td>
             <td>{{ acta.fecha|date:'Ymd'}}</td>
             <td>{{ acta.creator}}</td>
-                             <td>{% if acta.sujeto_fiscalizado == 'otro' %} {{ acta.otro_sujeto_fiscalizado}}
-            {% elif acta.sujeto_fiscalizado == 'partido_habilitado'%} {{ acta.partido_politico_habilitado }}
-            {% elif acta.sujeto_fiscalizado == 'alcalde'%} {{ acta.alcalde }}
-            {% elif acta.sujeto_fiscalizado == 'gore'%} {{ acta.gore }}
-            {% else %} Sin Despliegue{% endif %}</td>
+                 <td>
+    {% with "" as nombres %}
+        {% if acta.candidato_alcalde %}
+            {% if nombres %}{{ nombres }} - {% endif %}
+            {% with nombres=nombres|add:acta.candidato_alcalde|add:" (Alcalde)" %}
+                {{ nombres }}
+            {% endwith %}
+        {% endif %}
+        {% if acta.candidato_gore %}
+            {% if nombres %}{{ nombres }} - {% endif %}
+            {% with nombres=nombres|add:acta.candidato_gore|add:" (Gore)" %}
+                {{ nombres }}
+            {% endwith %}
+        {% endif %}
+        {% if acta.candidato_core %}
+            {% if nombres %}{{ nombres }} - {% endif %}
+            {% with nombres=nombres|add:acta.candidato_core|add:" (Core)" %}
+                {{ nombres }}
+            {% endwith %}
+        {% endif %}
+        {% if acta.candidato_concejal %}
+            {% if nombres %}{{ nombres }} - {% endif %}
+            {% with nombres=nombres|add:acta.candidato_concejal|add:" (Concejal)" %}
+                {{ nombres }}
+            {% endwith %}
+        {% endif %}
+    {% endwith %}
+
+    {% if not nombres %} {% endif %}
+</td>
+
             <td>{{ acta.seleccion_motivo_inspeccion}}</td>
             <td>{{ acta.medio_fiscalizado }}</td>
 
@@ -137,9 +163,29 @@ $(document).ready(function() {
                 {% if acta.alcalde %}<p><strong>Nombre:</strong> {{ acta.alcalde }}</p>{% endif %}
                 {% if acta.gore %}<p><strong>Nombre:</strong> {{ acta.gore }}</p>{% endif %}
 
+                            <!-- Nuevos campos -->
+                {% if acta.tipo_hallazgo %}<p><strong>Tipo de Hallazgo:</strong> {{ acta.tipo_hallazgo }}</p>{% endif %}
+                {% if acta.candidato_gore %}<p><strong>Candidato GORE:</strong> {{ acta.candidato_gore }}</p>{% endif %}
+                {% if acta.rut_gore %}<p><strong>RUT GORE:</strong> {{ acta.rut_gore }}</p>{% endif %}
+                {% if acta.partido_gore %}<p><strong>Partido GORE:</strong> {{ acta.partido_gore }}</p>{% endif %}
+                {% if acta.mail_gore %}<p><strong>Email GORE:</strong> {{ acta.mail_gore }}</p>{% endif %}
+                {% if acta.candidato_core %}<p><strong>Candidato CORE:</strong> {{ acta.candidato_core }}</p>{% endif %}
+                {% if acta.rut_core %}<p><strong>RUT CORE:</strong> {{ acta.rut_core }}</p>{% endif %}
+                {% if acta.partido_core %}<p><strong>Partido CORE:</strong> {{ acta.partido_core }}</p>{% endif %}
+                {% if acta.territorio_core %}<p><strong>Territorio CORE:</strong> {{ acta.territorio_core }}</p>{% endif %}
+                {% if acta.mail_core %}<p><strong>Email CORE:</strong> {{ acta.mail_core }}</p>{% endif %}
+                {% if acta.candidato_alcalde %}<p><strong>Candidato Alcalde:</strong> {{ acta.candidato_alcalde }}</p>{% endif %}
+                {% if acta.territorio_alcalde %}<p><strong>Territorio Alcalde:</strong> {{ acta.territorio_alcalde }}</p>{% endif %}
+                {% if acta.rut_alcalde %}<p><strong>RUT Alcalde:</strong> {{ acta.rut_alcalde }}</p>{% endif %}
+                {% if acta.partido_alcalde %}<p><strong>Partido Alcalde:</strong> {{ acta.partido_alcalde }}</p>{% endif %}
+                {% if acta.mail_alcalde %}<p><strong>Email Alcalde:</strong> {{ acta.mail_alcalde }}</p>{% endif %}
+                {% if acta.candidato_concejal %}<p><strong>Candidato Concejal:</strong> {{ acta.candidato_concejal }}</p>{% endif %}
+                {% if acta.territorio_concejal %}<p><strong>Territorio Concejal:</strong> {{ acta.territorio_concejal }}</p>{% endif %}
+                {% if acta.rut_concejal %}<p><strong>RUT Concejal:</strong> {{ acta.rut_concejal }}</p>{% endif %}
+                {% if acta.partido_concejal %}<p><strong>Partido Concejal:</strong> {{ acta.partido_concejal }}</p>{% endif %}
+                {% if acta.mail_concejal %}<p><strong>Email Concejal:</strong> {{ acta.mail_concejal }}</p>{% endif %}
                 <!-- 4. Opción plebiscitaria -->
                 {% if acta.opcion_plebiscitaria %}<p><strong>Opción Plebiscitaria:</strong> {{ acta.opcion_plebiscitaria }}</p>{% endif %}
-
                 <!-- 5. Materia fiscalizada -->
                 {% if acta.es_medio_pagado %}<p><strong>Es Medio Pagado:</strong> {{ acta.es_medio_pagado }}</p>{% endif %}
                 {% if acta.medio_fiscalizado %}<p><strong>Medio Fiscalizado:</strong> {{ acta.medio_fiscalizado }}</p>{% endif %}
