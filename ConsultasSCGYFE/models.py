@@ -24,6 +24,7 @@ class ConsultasFormulario(models.Model):
     Fecha_Respuesta = models.DateTimeField(null=True, blank=True)
     Respuesta = models.CharField(max_length=5000, null=True, blank=True)
     Etapa = models.CharField(max_length=50, default='1_Nueva')
+    Adjunto = models.CharField(max_length=2000, null=True, blank=True)
 
 class WorkflowConsultas(models.Model):
     AutoID = models.AutoField(primary_key=True)
