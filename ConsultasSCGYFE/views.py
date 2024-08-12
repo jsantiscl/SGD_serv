@@ -24,6 +24,8 @@ def admin_consultas_total(request):
     denuncia_obj_3 = ConsultasFormulario.objects.all()
     try:
         latest_token = Tokens.objects.latest('id')
+        if latest_token and "&w=400" in latest_token.Token:
+            latest_token.Token = latest_token.Token.replace("&w=400", "")
     except ObjectDoesNotExist:
         latest_token = None
     context = {'latest_token':latest_token, 'todasdenuncias': denuncia_obj_3}
@@ -47,6 +49,8 @@ def consultas_nuevas(request):
                                                             TemaAsociado__icontains="contabilidad")
     try:
         latest_token = Tokens.objects.latest('id')
+        if latest_token and "&w=400" in latest_token.Token:
+            latest_token.Token = latest_token.Token.replace("&w=400", "")
     except ObjectDoesNotExist:
         latest_token = None
     context = {'latest_token':latest_token, 'todasdenuncias': denuncia_obj_3}
@@ -68,6 +72,8 @@ def consultas_respuesta(request):
 
     try:
         latest_token = Tokens.objects.latest('id')
+        if latest_token and "&w=400" in latest_token.Token:
+            latest_token.Token = latest_token.Token.replace("&w=400", "")
     except ObjectDoesNotExist:
         latest_token = None
     context = {'latest_token':latest_token,'todasdenuncias': denuncia_obj_3, 'user': request.user}
@@ -87,6 +93,8 @@ def consultas_envio_respuestas(request):
     denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="3_Resuelta")
     try:
         latest_token = Tokens.objects.latest('id')
+        if latest_token and "&w=400" in latest_token.Token:
+            latest_token.Token = latest_token.Token.replace("&w=400", "")
     except ObjectDoesNotExist:
         latest_token = None
     context = {'latest_token':latest_token,'todasdenuncias': denuncia_obj_3, 'user': request.user}
@@ -100,6 +108,8 @@ def consultas_respondidas(request):
     denuncia_obj_3 = ConsultasFormulario.objects.filter(Q(Etapa__icontains="2_Respuesta") | Q(Etapa__icontains="3_Resuelta")| Q(Etapa__icontains="4_Enviada"))
     try:
         latest_token = Tokens.objects.latest('id')
+        if latest_token and "&w=400" in latest_token.Token:
+            latest_token.Token = latest_token.Token.replace("&w=400", "")
     except ObjectDoesNotExist:
         latest_token = None
     context = {'latest_token':latest_token,'todasdenuncias': denuncia_obj_3, 'user': request.user}
