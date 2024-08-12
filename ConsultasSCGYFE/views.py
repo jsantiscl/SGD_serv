@@ -102,7 +102,7 @@ def carga_datos_consulta(request):
         TemaAsociado = request.POST.get('TemaAsociado')
         Pregunta = request.POST.get('Pregunta')
         Email = request.POST.get('Email')
-
+        Adjunto = request.POST.get('Adjunto')
         # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
         data = ConsultasFormulario(ObjectID=ObjectID,
                                    GlobalID=GlobalID,
@@ -112,7 +112,8 @@ def carga_datos_consulta(request):
                                    Pregunta=Pregunta,
                                    Email=Email,
                                    FechaIngreso=datetime.now(),
-                                   Etapa='1_Nueva')
+                                   Etapa='1_Nueva',
+                                   Adjunto=Adjunto)
 
         # Guarda la instancia en la base de datos
         data.save()
