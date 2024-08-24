@@ -13,4 +13,5 @@ urlpatterns = [
     path('responder/', login_required(consultas_responder), name='consultas_responder'),
     path('sandbox/', login_required(sandbox), name='sandbox'),
     path('api/nueva_consulta/', carga_datos_consulta, name='carga_datos_consulta'),  # P
+    path('expcsv/<str:lc>', expcsv, name='expcsv'),
 ]

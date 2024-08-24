@@ -16,7 +16,7 @@ from ConsultasSCGYFE.models import *
 from GestionDenuncias.models import Tokens
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-
+from openpyxl import Workbook
 
 def admin_consultas_total(request):
 
@@ -154,3 +154,33 @@ def carga_datos_consulta(request):
     else:
         # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
         return HttpResponse(status=405)
+
+def expcsv(request, lc):
+    def remove_tzinfo(value):
+        if isinstance(value, (datetime, time)):
+            return value.replace(tzinfo=None)
+        return value
+
+    if lc == 'abecedconsultas':
+        wb = Workbook()
+        ws = wb.active
+
+        # Opcionalmente, escribir los nombres de las columnas
+        column_names = [field.name for field in ConsultasFormulario._meta.fields]
+        ws.append(column_names)
+
+        # Escribir los datos del modelo
+        for obj in ConsultasFormulario.objects.all():
+            row = [remove_tzinfo(getattr(obj, field.name)) for field in ConsultasFormulario._meta.fields]
+            ws.append(row)
+
+        # Configurar la respuesta HTTP
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=Consultas.xlsx'
+
+        # Guardar el libro de Excel en la respuesta
+        wb.save(response)
+        return response
+
+    else:
+        print("Error")
