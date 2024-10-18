@@ -27,6 +27,8 @@ urlpatterns = [
     path('pas/', include('GestionPAS.urls')),
     path('consultas/', include('ConsultasSCGYFE.urls')),
     path('scp/', include('SistemaControlPreventivo.urls')),
+    path('srg/', include('RegistroConexion.urls')),
+    path('reportes/', include('ReportesGestion.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

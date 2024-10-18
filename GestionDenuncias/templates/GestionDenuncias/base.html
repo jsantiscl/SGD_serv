@@ -52,6 +52,24 @@
      <a href="{% url 'abogado_inicio' %}" class="w3-bar-item w3-button">Inicio</a>
             {% for group in user.groups.all %}
 
+                      {% if group.name == 'Honorario' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Conexión</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="{% url 'registrar_horario' %}" class="w3-bar-item w3-button">Registro</a>
+            </div>
+      </div>
+         {% endif %}
+
+                                      {% if group.name == 'Reportes_Jefatura' %}
+                                     <div class="w3-dropdown-hover">
+      <button class="w3-button">Reportes Gestion</button>
+      <div class="w3-dropdown-content w3-bar-block w3-card-4">
+          <a href="{% url 'reportejd' %}" class="w3-bar-item w3-button">Panel</a>
+            </div>
+      </div>
+         {% endif %}
+
 
                 {% if group.name == 'Administrador' or group.name == 'Jefe'%}
     <div class="w3-dropdown-hover">
@@ -512,6 +530,7 @@
                                       </div>
          {% endif %}
 
+
         {% endfor %}
          {% if user.is_staff %}
             {% if 'serv.jasb.cl' in request.build_absolute_uri %}
@@ -535,7 +554,6 @@
             <!--<a href="" class="w3-bar-item w3-button w3-black w3-right"> {{ user.username }}</a>-->
         {% endif %}
   </div>
-
 
 
 
