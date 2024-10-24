@@ -42,8 +42,13 @@ def consultas_nuevas(request):
         denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="1_Nueva",
                                                             TemaAsociado__icontains="propaganda")
     elif request.user.groups.filter(name='Consultas_AdministracionE').exists():
-        denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="1_Nueva",
-                                                            TemaAsociado__icontains="administracion")
+        denuncia_obj_3 = ConsultasFormulario.objects.filter(
+        Etapa__icontains="1_Nueva",
+        TemaAsociado__icontains="administracion"
+    ) | ConsultasFormulario.objects.filter(
+        Etapa__icontains="1_Nueva",
+        TemaAsociado__icontains="informe_de_gastos"
+    )
     elif request.user.groups.filter(name='Consultas_Contabilidad').exists():
         denuncia_obj_3 = ConsultasFormulario.objects.filter(Etapa__icontains="1_Nueva",
                                                             TemaAsociado__icontains="contabilidad")
