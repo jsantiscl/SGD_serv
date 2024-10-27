@@ -23,10 +23,11 @@ from django.core.exceptions import ObjectDoesNotExist
 import re
 from django.conf import settings
 from django.views import View
-
+from django.http import StreamingHttpResponse
 from django.http import JsonResponse
 import json
 from django.shortcuts import get_object_or_404
+from io import BytesIO
 
 #Views Administrador
 
@@ -1413,9 +1414,6 @@ def remota_con_infraccion_gestiones_rechazo(request, id):
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
     context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'GestionRemotaForm': GestionRemotaForm}
     return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Con_Infraccion_Gestiones_Rechazo.html', context)
-
-
-
 def expcsv(request, lc):
     def remove_tzinfo(value):
         if isinstance(value, (datetime, time)):
@@ -1432,29 +1430,33 @@ def expcsv(request, lc):
     if not Model:
         return HttpResponse("Error")
 
+    # Crear el libro de Excel y la hoja activa
     wb = Workbook()
     ws = wb.active
 
-    # Obtener nombres de columnas
+    # Obtener los nombres de las columnas
     column_names = [field.name for field in Model._meta.fields]
     ws.append(column_names)
 
-    # Paginación
-    page_size = 500  # Ajustar según la capacidad del servidor
-    paginator = Paginator(Model.objects.values(*column_names), page_size)
-
-    for page_number in paginator.page_range:
-        page = paginator.page(page_number)
-        for obj in page.object_list:
-            row = [remove_tzinfo(obj[field]) for field in column_names]
+    # Generar las filas de datos de forma streaming
+    def data_generator():
+        # Usar BytesIO para el almacenamiento temporal
+        output = BytesIO()
+        for obj in Model.objects.all().iterator():
+            row = [remove_tzinfo(getattr(obj, field)) for field in column_names]
             ws.append(row)
 
-    # Configurar la respuesta HTTP
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # Guardar el archivo Excel en el buffer de memoria
+        wb.save(output)
+        output.seek(0)
+
+        # Leer y devolver el contenido en streaming
+        yield output.read()
+
+    # Crear la respuesta usando StreamingHttpResponse
+    response = StreamingHttpResponse(data_generator(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename={lc}.xlsx'
 
-    # Guardar el libro de Excel en la respuesta
-    wb.save(response)
     return response
 
 def admin_terreno_con_infraccion(request):
