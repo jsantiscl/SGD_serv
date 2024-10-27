@@ -1420,71 +1420,40 @@ def expcsv(request, lc):
             return value.replace(tzinfo=None)
         return value
 
-    if lc == 'abeced':
-        wb = Workbook()
-        ws = wb.active
+    model_mapping = {
+        'abeced': ActasTerreno,
+        'obeced': ActasRemotas,
+        'workflow': WorkflowActas,
+    }
 
-        # Opcionalmente, escribir los nombres de las columnas
-        column_names = [field.name for field in ActasTerreno._meta.fields]
-        ws.append(column_names)
+    Model = model_mapping.get(lc)
+    if not Model:
+        return HttpResponse("Error")
 
-        # Escribir los datos del modelo
-        for obj in ActasTerreno.objects.all():
-            row = [remove_tzinfo(getattr(obj, field.name)) for field in ActasTerreno._meta.fields]
-            ws.append(row)
+    wb = Workbook()
+    ws = wb.active
 
-        # Configurar la respuesta HTTP
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=ActasTerreno.xlsx'
+    # Obtener nombres de columnas
+    column_names = [field.name for field in Model._meta.fields]
+    ws.append(column_names)
 
-        # Guardar el libro de Excel en la respuesta
-        wb.save(response)
-        return response
+    # Obtener datos en formato de diccionario y sin cargar todo en memoria
+    rows = []
+    for obj in Model.objects.values(*column_names).iterator():
+        row = [remove_tzinfo(obj[field]) for field in column_names]
+        rows.append(row)
 
-    elif lc == 'obeced':
-        wb = Workbook()
-        ws = wb.active
+    # Agregar todas las filas de una sola vez
+    for row in rows:
+        ws.append(row)
 
-        # Opcionalmente, escribir los nombres de las columnas
-        column_names = [field.name for field in ActasRemotas._meta.fields]
-        ws.append(column_names)
+    # Configurar la respuesta HTTP
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename={lc}.xlsx'
 
-        # Escribir los datos del modelo
-        for obj in ActasRemotas.objects.all():
-            row = [remove_tzinfo(getattr(obj, field.name)) for field in ActasRemotas._meta.fields]
-            ws.append(row)
-
-        # Configurar la respuesta HTTP
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=ActasRemotas.xlsx'
-
-        # Guardar el libro de Excel en la respuesta
-        wb.save(response)
-        return response
-
-    elif lc == 'workflow':
-        wb = Workbook()
-        ws = wb.active
-
-        # Opcionalmente, escribir los nombres de las columnas
-        column_names = [field.name for field in WorkflowActas._meta.fields]
-        ws.append(column_names)
-
-        # Escribir los datos del modelo
-        for obj in WorkflowActas.objects.all():
-            row = [remove_tzinfo(getattr(obj, field.name)) for field in WorkflowActas._meta.fields]
-            ws.append(row)
-
-        # Configurar la respuesta HTTP
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=WorkflowActas.xlsx'
-
-        # Guardar el libro de Excel en la respuesta
-        wb.save(response)
-        return response
-
-    else:
-        print("Error")
+    # Guardar el libro de Excel en la respuesta
+    wb.save(response)
+    return response
 
 def admin_terreno_con_infraccion(request):
         # Filtra las ActasTerreno basadas en la región del usuario
