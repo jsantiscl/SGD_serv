@@ -7,6 +7,7 @@ from .models import Denuncias, Adjuntos, Abogados, Ire, Aportes, Cartola, Formul
 from .forms import *
 from .forms import GestionTerreno
 from openpyxl import Workbook
+from django.core.paginator import Paginator
 import csv
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -1414,6 +1415,7 @@ def remota_con_infraccion_gestiones_rechazo(request, id):
     return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Con_Infraccion_Gestiones_Rechazo.html', context)
 
 
+
 def expcsv(request, lc):
     def remove_tzinfo(value):
         if isinstance(value, (datetime, time)):
@@ -1437,15 +1439,15 @@ def expcsv(request, lc):
     column_names = [field.name for field in Model._meta.fields]
     ws.append(column_names)
 
-    # Obtener datos en formato de diccionario y sin cargar todo en memoria
-    rows = []
-    for obj in Model.objects.values(*column_names).iterator():
-        row = [remove_tzinfo(obj[field]) for field in column_names]
-        rows.append(row)
+    # Paginación
+    page_size = 500  # Ajustar según la capacidad del servidor
+    paginator = Paginator(Model.objects.values(*column_names), page_size)
 
-    # Agregar todas las filas de una sola vez
-    for row in rows:
-        ws.append(row)
+    for page_number in paginator.page_range:
+        page = paginator.page(page_number)
+        for obj in page.object_list:
+            row = [remove_tzinfo(obj[field]) for field in column_names]
+            ws.append(row)
 
     # Configurar la respuesta HTTP
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
