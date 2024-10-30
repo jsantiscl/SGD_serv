@@ -1,0 +1,65 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %}
+<title>Reporte Compensado - Unidad {{ unidad.nombre }}</title>
+{% endblock %}
+
+{% block body %}
+<div class="w3-responsive">
+    <section class="section1 contenedor">
+        <h3>Reporte Compensado - Unidad {{ unidad.nombre }}</h3>
+        <h4>Jefe de Unidad: {{ request.user.get_full_name }}</h4>
+
+        <!-- Tabla de reporte compensado -->
+        <table id="reporteCompensadoTable" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nombre del Usuario</th>
+                    <th>Compensado Generado</th>
+                    <th>Compensado Utilizado</th>
+                    <th>Compensado Disponible</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in reporte %}
+                <tr>
+                    <td>{{ usuario.usuario }}</td>
+                    <td>{{ usuario.compensado_generado }}</td>
+                    <td>{{ usuario.compensado_utilizado }}</td>
+                    <td>{{ usuario.compensado_disponible }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if reporte|length == 0 %}
+        <p>No hay registros de compensado disponibles para los usuarios de la unidad.</p>
+        {% endif %}
+    </section>
+</div>
+
+<!-- Inicialización de DataTables -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#reporteCompensadoTable').DataTable({
+            "ordering": true,
+            "searching": true,
+            "paging": true,
+            "info": true,
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

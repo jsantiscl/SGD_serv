@@ -1,0 +1,170 @@
+{% extends 'GestionDenuncias/base.html' %}
+{% block title %}
+<title>Historial de Marcaciones - Unidad {{ unidad.nombre }}</title>
+{% endblock %}
+
+{% block body %}
+<!-- Carga de DataTables CSS y JS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css"/>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+
+<style>
+    .text-danger {
+        color: red;
+    }
+</style>
+
+<div class="w3-responsive">
+    <section class="section1 contenedor">
+        <h3>
+            Historial de Marcaciones - Unidad {{ unidad.nombre }}
+            <!-- Botón de actualización -->
+            <button id="refreshButton" class="btn btn-success btn-sm" style="margin-left: 10px;">
+                &#x21bb;
+            </button>
+        </h3>
+        <h4>Jefe de Unidad: {{ request.user.get_full_name }}</h4>
+
+        <!-- Tabla de historial de usuarios -->
+        <table id="unidadHorariosTable" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nombre del Usuario</th>
+                    <th>Día</th>
+                    <th>Fecha</th>
+                    <th>Hora Entrada</th>
+                    <th>Hora Salida</th>
+                    <th>Potencial Compensado</th>
+                    <th>Forma de Trabajo</th>
+                    <th style="text-align: center;">Autorizar Compensación</th>
+                    <th>Motivo de Compensación</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for historial in historial_unidad %}
+                    {% for fecha, datos in historial.items %}
+                    <tr>
+                        <td>{{ datos.usuario }}</td>
+                       <td>
+    {% with day_of_week=fecha|date:"w" %}
+        {% if day_of_week == "0" %}
+            <span class="text-danger">Dom</span>
+        {% elif day_of_week == "6" %}
+            <span class="text-danger">Sáb</span>
+        {% elif datos.es_festivo %}
+            <span class="text-danger">{{ fecha|date:"D" }}</span>
+        {% else %}
+            {{ fecha|date:"D" }}
+        {% endif %}
+    {% endwith %}
+</td>
+                        <td>{{ fecha|date:"d/m/Y" }}</td>
+                        <td>
+                            {% if datos.entrada %}
+                                {{ datos.entrada|date:"H:i:s" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if datos.salida %}
+                                {{ datos.salida|date:"H:i:s" }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>{{ datos.compensacion }}</td>
+                        <td>{{ datos.tipo_trabajo }}</td>
+                        <td style="text-align: center;">
+                            <input type="checkbox" class="autorizar-compensacion" data-registro-id="{{ datos.registro_id }}" {% if datos.compensacion_autorizada %}checked disabled{% endif %}>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control motivo-compensacion" data-registro-id="{{ datos.registro_id }}" maxlength="100" placeholder="Escriba el motivo" {% if datos.compensacion_autorizada %}value="{{ datos.motivo_compensacion }}" disabled{% endif %}>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if historial_unidad|length == 0 %}
+        <p>No hay registros disponibles para los usuarios de la unidad.</p>
+        {% endif %}
+
+        <!-- Botón de exportación a Excel -->
+        <div style="margin-top: 20px; text-align: right;">
+            <button id="exportExcel" class="btn btn-primary">Exportar a Excel</button>
+        </div>
+    </section>
+</div>
+
+<!-- Inicialización de DataTables con exportación a Excel -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        var table = $('#unidadHorariosTable').DataTable({
+            "ordering": true,
+            "searching": true,
+            "paging": true,
+            "info": true,
+            "dom": 'lfrtip',
+            "buttons": [
+                {
+                    extend: 'excelHtml5',
+                    title: 'Historial de Marcaciones - Unidad {{ unidad.nombre }}',
+                    text: 'Exportar a Excel',
+                    className: 'd-none'
+                }
+            ],
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "No se encontraron resultados",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "search": "Buscar:",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+
+        // Función para actualizar la página
+        $('#refreshButton').on('click', function() {
+            location.reload();
+        });
+
+        // Función para autorizar compensación
+        $('.autorizar-compensacion').on('change', function() {
+            var registroId = $(this).data('registro-id');
+            var motivo = $(this).closest('tr').find('.motivo-compensacion').val();
+
+            if (!motivo) {
+                alert('Por favor, ingrese un motivo para la compensación.');
+                $(this).prop('checked', false);
+                return;
+            }
+
+            $.post("{% url 'autorizar_compensacion' %}", {
+                'registro_id': registroId,
+                'motivo': motivo,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            }, function(response) {
+                if (response.success) {
+                    alert('Compensación autorizada exitosamente.');
+                    location.reload();
+                } else {
+                    alert('Error al autorizar la compensación.');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

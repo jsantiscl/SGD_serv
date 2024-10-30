@@ -1,16 +1,11 @@
 {% extends 'GestionDenuncias/base.html' %}
 {% block title %}
-<title>Consultas Total</title>
+<title>Registro de Activación</title>
 {% endblock %}
 
 {% block body %}
 <script type="text/javascript" class="init">
-    function goBack() {
-        window.history.back();
-    }
-
     var fechaHoraActual = new Date("{{ hora_actual|date:'Y-m-d H:i:s' }}");
-
     var diasSemana = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
     var meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 
@@ -31,30 +26,14 @@
 
     setInterval(actualizarHoraYFecha, 1000);
 
-    // Función para registrar el inicio
-    function registrarInicio() {
-        var horas = fechaHoraActual.getHours().toString().padStart(2, '0');
-        var minutos = fechaHoraActual.getMinutes().toString().padStart(2, '0');
-        var segundos = fechaHoraActual.getSeconds().toString().padStart(2, '0');
-        document.getElementById("inicio").textContent = horas + ":" + minutos + ":" + segundos;
-
-        document.getElementById("btnInicio").disabled = true; // Deshabilitar botón de inicio
-        document.getElementById("btnTermino").disabled = false; // Habilitar botón de término
-        document.getElementById("modoTrabajo").disabled = true; // Deshabilitar selección de modo
-    }
-
-    // Función para registrar el término
-    function registrarTermino() {
-        var horas = fechaHoraActual.getHours().toString().padStart(2, '0');
-        var minutos = fechaHoraActual.getMinutes().toString().padStart(2, '0');
-        var segundos = fechaHoraActual.getSeconds().toString().padStart(2, '0');
-        document.getElementById("termino").textContent = horas + ":" + minutos + ":" + segundos;
-        document.getElementById("btnTermino").disabled = true; // Deshabilitar botón de término
-    }
-
     window.onload = function() {
-        // Asegúrate de que el botón "Ingresar Término" esté deshabilitado inicialmente
-        document.getElementById("btnTermino").disabled = true;
+        var entradaHoy = {{ entrada_hoy|yesno:"true,false" }};
+        var salidaHoy = {{ salida_hoy|yesno:"true,false" }};
+
+        // Habilitar/deshabilitar botones según los registros de hoy
+        document.getElementById("btnInicio").disabled = entradaHoy;
+        document.getElementById("modoTrabajo").disabled = entradaHoy;
+        document.getElementById("btnTermino").disabled = !entradaHoy || salidaHoy;
     };
 </script>
 
@@ -109,170 +88,35 @@
         <h4>División de Fiscalización del Gasto y Propaganda Electoral</h4>
 
         <div>
-            <h1><span id="hora"></span></h1>
-            <p id="fecha"></p>
+            <h1><span id="hora">{{ hora_actual|date:"H:i:s" }}</span></h1>
+            <p id="fecha">{{ hora_actual|date:"l d \\de F \\de Y" }}</p>
         </div>
 
         <!-- Modo de trabajo con selección -->
-        <div>
-            <label for="modoTrabajo">Modo de Trabajo:</label>
-            <select id="modoTrabajo" class="form-control">
-                <option value="telematico" selected>Telemático</option>
-                <option value="presencial">Presencial</option>
-            </select>
-        </div>
+        <form method="POST" action="{% url 'registrar_horario' %}">
+            {% csrf_token %}
+            <div>
+                <label for="modoTrabajo">Modo de Trabajo:</label>
+                <select id="modoTrabajo" name="tipo_trabajo" class="form-control">
+                    <option value="Teletrabajo" {% if entrada_hoy and entrada_hoy.tipo_trabajo == 'Teletrabajo' %}selected{% endif %}>Teletrabajo</option>
+                    <option value="Presencial" {% if entrada_hoy and entrada_hoy.tipo_trabajo == 'Presencial' %}selected{% endif %}>Presencial</option>
+                </select>
+            </div>
 
-        <div class="contenedor-botones">
-            <button id="btnInicio" class="btn btn-success boton" onclick="registrarInicio()">Ingresar Inicio</button>
-            <button id="btnTermino" class="btn btn-danger boton" onclick="registrarTermino()">Ingresar Término</button>
-        </div>
+            <div class="contenedor-botones">
+                <button id="btnInicio" class="btn btn-success boton" name="tipo_e_o_s" value="Entrada">Ingresar Inicio</button>
+                <button id="btnTermino" class="btn btn-danger boton" name="tipo_e_o_s" value="Salida">Ingresar Término</button>
+            </div>
 
-        <div class="contenedor-cuadros">
-            <div class="cuadro" id="inicio">Inicio</div>
-            <div class="cuadro" id="termino">Término</div>
-        </div>
+            <div class="contenedor-cuadros">
+                <div class="cuadro" id="inicio">
+                    {% if entrada_hoy %}{{ entrada_hoy.hora|date:"H:i:s" }}{% else %}Inicio{% endif %}
+                </div>
+                <div class="cuadro" id="termino">
+                    {% if salida_hoy %}{{ salida_hoy.hora|date:"H:i:s" }}{% else %}Término{% endif %}
+                </div>
+            </div>
+        </form>
     </section>
 </div>
 {% endblock %}
-
-
-{# prueba #}
-
-       <script type="text/javascript">
-    var order;
- function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-const csrftoken = getCookie('csrftoken');
-
-
-
-  function pasar(recurso) {
-  var selector_asignacion = document.getElementById('selectorasignacion'+ recurso);
-  var asignacion_selected = selector_asignacion.options[selector_asignacion.selectedIndex].value;
-  var folio = "";
-  var carpeta = "";
-  var texto = "";
-
-  var etapa = '1_Pendiente_Asignacion';
-  if (asignacion_selected != 'Pendiente') {
-  if (confirm('¿Esta Seguro que Desea Finalizar y Päsar a la Siguiente Etapa?')) {
-  // Save it!
-  console.log('Asignar Recurso N° '+ recurso);
-  if (asignacion_selected == '2' || asignacion_selected == '6' || asignacion_selected == '7' || asignacion_selected == '8'){
-     var folio = prompt("Ingrese Folio")
-     var carpeta =  prompt("Ingrese Link de Carpeta")
-     var texto =  prompt("Ingrese Texto")
-      etapa = '2_Asignado_Abogado'
-  }
-  if (asignacion_selected == '3'){
-      etapa = '4_Ya_Gestionado'
-  }
-  if (asignacion_selected == '4'){
-      etapa = '3_Derivado_Upas'
-  }
-  if (asignacion_selected == '5'){
-      etapa = '5_Archivar'
-  }
-  if (etapa == '2_Asignado_Abogado' && (folio == null || folio == '' || carpeta == null || carpeta == '' || texto == null || texto == '')){
-      alert("Datos Faltantes - Reintente")
-      console.log(folio)
-  } else {
-  asignar_recurso(recurso, asignacion_selected, etapa, folio, carpeta,texto);
-};
-} else {
-  // Do nothing!
-  console.log('No Finalizado Confirmado');
-}
-  setTimeout(() => {   return window.location.replace("{% url 'alertas' %}"); }, 1000);
-  } else {
-        window.alert('Seleccione el siguiente paso');
-  }
-
-}
-
-    function asignar_recurso(recurso, asignacion, etapa, folio, carpeta, texto) {
-
-        var datos = {
-				'id': recurso,
-                'asignacion': asignacion,
-                'etapa': etapa,
-                'folio':folio,
-                'carpeta':carpeta,
-                'texto':texto
-			}
-    var url = "/sgd/fiscalizacion/Alertas/pasar/"
-        fetch(url, {
-	    		method:'POST',
-	    		headers:{
-	    			'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-	    			'X-CSRFToken':csrftoken
-	    		},
-	    		body:JSON.stringify({'datos':datos}),
-
-	    	})
-            .then((response) => response.json())
-      }
-
-  function asignar_individual_masivo(recurso) {
-  var selector_asignacion = document.getElementById('selectorasignacion'+ recurso);
-  var asignacion_selected = selector_asignacion.options[selector_asignacion.selectedIndex].value;
-  var etapa = '1_Pendiente_Asignacion';
-  if (asignacion_selected != 'Pendiente') {
-  // Save it!
-  console.log('Asignar Recurso N° '+ recurso);
-  if (asignacion_selected == '2'|| asignacion_selected == '6' || asignacion_selected == '7' || asignacion_selected == '8'){
-      etapa = '2_Asignado_Abogado'
-  }
-  if (asignacion_selected == '3'){
-      etapa = '4_Ya_Gestionado'
-  }
-  if (asignacion_selected == '4'){
-      etapa = '3_Derivado_Upas'
-  }
-  if (asignacion_selected == '5'){
-      etapa = '5_Archivar'
-  }
-  asignar_recurso(recurso, asignacion_selected, etapa);
-}}
-      function asignar_todos() {
-
-  if (confirm('¿Esta Seguro que Desea Asignar Todos los Modificados?')) {
-  // Save it!
-  console.log('Asignar Recurso N°');
-
-      {% for linea in todasdenuncias %}
-        {% if linea.usuario_actual.username == user.get_username %}
-              try {
-                  console.log({{ linea.id }});
-                  asignar_individual_masivo({{ linea.id }});
-              }
-              catch (e) {
-
-                console.log(e); // pasa el objeto de la excepción al manejador de errores
-                    }
-        {% endif %}
-        {% endfor %}
-  window.alert('Listo');
-  return window.location.replace("{% url 'alertas' %}")
-} else {
-  // Do nothing!
-  console.log('No Finalizado Confirmado');
-}}
-
-  </script>
-
-
