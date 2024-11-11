@@ -610,6 +610,7 @@ class ActasTerreno(models.Model):
         (16964946, "fundurraga"),
         (14083592, "rgarces"),
         (17541020, "vvillasenor"),
+        (13353326, "jjorquera"),
         (19309894, "cfrings")
     )
 
@@ -849,6 +850,7 @@ class ActasRemotas(models.Model):
         (16964946, "fundurraga"),
         (14083592, "rgarces"),
         (17541020, "vvillasenor"),
+        (13353326, "jjorquera"),
         (19309894, "cfrings")
 
     )
