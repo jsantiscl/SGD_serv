@@ -50,6 +50,17 @@ class Recursos(models.Model):
         ("XV_monitoreo", "3 -(Rec) Monitoreo Sentencia"),
         ("ABDV_remitir_abogado", "4 -(Rec) Con Sentencia en Revision Abogado"),
         ("XV", "5 -(Rec) Registro Final"),
+        ("1_simpl_rep_asignacion_lider", "1_simpl_rep_asignacion_lider"),
+        ("2_simpl_rep_informe_tecnico", "2_simpl_rep_informe_tecnico"),
+        ("3_simpl_rep_informe_tecnico_revision_lider", "2_simpl_rep_informe_tecnico"),
+        ("4_simpl_rep_abogada_asignacion", "4_simpl_rep_abogada_asignacion"),
+        ("5_simpl_rep_abogados_propuesta", "5_simpl_rep_abogados_propuesta"),
+        ("6_simpl_rep_abogada_revision", "6_simpl_rep_abogada_revision"),
+        ("7_simpl_rep_revision_JD", "7_simpl_rep_revision_JD"),
+        ("8_simpl_rep_revision_SD", "8_simpl_rep_revision_SD"),
+        ("10_simpl_rep_subida_pasarela", "10_simpl_rep_subida_pasarela"),
+        ("11_simpl_rep_notificacion", "11_simpl_rep_notificacion"),
+        ("12_simpl_rep_fin", "12_simpl_rep_fin"),
      )
     Pago = (
         ("pendiente", "Pendiente"),

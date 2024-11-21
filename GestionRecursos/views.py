@@ -36,7 +36,8 @@ def admin_recursos_asigna(request):
 def ld_recursos_asigna(request):
 
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="LD_asignacion_Lider")
+   #denuncia_obj_3 = Recursos.objects.filter(estado__icontains="LD_asignacion_Lider")
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="1_simpl_rep_asignacion_lider")
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_LD_Asignacion.html', context)
 
@@ -52,11 +53,13 @@ def jc_recursos_asigna(request):
 
 def au_informe_tecnico(request):
     username_q = request.user.username
-    celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
-    auditores_celula = UsersRecursos.objects.filter(celula__iexact=celula_actual.celula, tipo__icontains="Jefe Celula")
+    #celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
+    #auditores_celula = UsersRecursos.objects.filter(celula__iexact=celula_actual.celula, tipo__icontains="Jefe Celula")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="AU_realizacion_informe_tecnico")
-    context = {'todasdenuncias': denuncia_obj_3, 'auditores': auditores_celula}
+    #denuncia_obj_3 = Recursos.objects.filter(estado__icontains="AU_realizacion_informe_tecnico")
+    #context = {'todasdenuncias': denuncia_obj_3, 'auditores': auditores_celula}
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="2_simpl_rep_informe_tecnico")
+    context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_AU_InformeTecnico.html', context)
 
 def jc_valida_informe_tecnico(request):
@@ -222,41 +225,14 @@ def asignar_recurso_lider(request):
     if data['datos']['asignacion'] == 'Pendiente':
          Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
     if data['datos']['asignacion'] != 'Pendiente':
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='2_simpl_rep_informe_tecnico')
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='c1')
 
-        if data['datos']['asignacion'] == '19116154':
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='JC_asignacion_jefe_celula')
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='c1')
-        if data['datos']['asignacion'] == '12812146':
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='JC_asignacion_jefe_celula')
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='c2')
-
-        if data['datos']['asignacion'] == '18383521':
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='JC_asignacion_jefe_celula')
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='c3')
-        if data['datos']['asignacion'] == '18535049':
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='JC_asignacion_jefe_celula')
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='c4')
-        if data['datos']['asignacion'] == '15665508':
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='JC_asignacion_jefe_celula')
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='ccac_1')
-        if data['datos']['asignacion'] == '16870114':
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='JC_asignacion_jefe_celula')
-            Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='ccac_2')
         Usuario = UsersRecursos.objects.filter(rut=int(data['datos']['asignacion']))[0]
         Recurso_dato = Recursos.objects.filter(id=int(data['datos']['id']))[0]
-        Bitacora.objects.create(username=Usuario, fecha_inicio=datetime.now(), id_recurso=Recurso_dato, etapa = 'JC_asignacion_jefe_celula' )
+        Bitacora.objects.create(username=Usuario, fecha_inicio=datetime.now(), id_recurso=Recurso_dato, etapa = '2_simpl_rep_informe_tecnico' )
 
     return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)
 

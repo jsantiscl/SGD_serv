@@ -64,7 +64,7 @@ $(document).ready(function() {
         {% for denuncia in todasdenuncias %}
         <tr>
             <td>{{ denuncia.numero }}</td>
-            <td>{{ denuncia.fecha_ingreso|date:'d-m-y' }}</td>
+            <td>{{ denuncia.fecha_ingreso|date:'Ymd' }}</td>
             <td>{{ denuncia.abogado_asistente }}</td>
             <td>{{ denuncia.nombre_denunciante }}</td>
             <td>{{ denuncia.nombre_denunciado }}</td>

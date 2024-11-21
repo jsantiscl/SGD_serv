@@ -103,16 +103,19 @@ $(document).ready(function() {
             </td>
             <td style="text-align: center"><a href="{{linea.link_carpeta}}" target="_blank">Ver</a></td>
             <td>
-            {% if request.user.username == 'jgallardo' %}
+            {% if request.user.username == 'mbaezap' %}
             <select name="asignacion" id="selectorasignacion{{linea.id}}">
               <option selected value="Pendiente">Pendiente</option>
               <option value="19116154">Genesis Lopez</option>
-              <option value="12812146">Julissa Lazo</option>
-              <option value="18383521">Carla Arriagada</option>
+              <option value="13693895">Felipe Sarabia</option>
+              <option value="15317687">José Celedon</option>
               <option value="18535049">Gabriela Rozas</option>
+              <option value="16870114">Stephano Saez</option>
+              <option value="18926275">Tamara Acuña</option>
+              <option value="12776215">Veronica Palavecino</option>
             </select>
             {% endif %}
-            {% if request.user.username == 'eparedes'  %}
+            {% if request.user.username == 'nnunez'  %}
             <select name="asignacion" id="selectorasignacion{{linea.id}}">
               <option selected value="Pendiente">Pendiente</option>
               <option value="15665508">Miguel Baeza</option>
