@@ -41,6 +41,15 @@ def ld_recursos_asigna(request):
     context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_LD_Asignacion.html', context)
 
+def ab_recursos_asigna(request):
+
+    #Aca en icontains pongo el filtro con el metodo icontains que es un like
+   #denuncia_obj_3 = Recursos.objects.filter(estado__icontains="LD_asignacion_Lider")
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="4_simpl_rep_abogada_asignacion")
+    context = {'todasdenuncias': denuncia_obj_3}
+    return render(request,'GestionRecursos/GestionRecursos_AB_Asignacion.html', context)
+
+
 def jc_recursos_asigna(request):
     username_q = request.user.username
     celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
@@ -73,11 +82,11 @@ def jc_valida_informe_tecnico(request):
 
 def ab_elabora_propuesta(request):
     username_q = request.user.username
-    celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
-    abogados_celula = UsersRecursos.objects.filter(celula__iexact=celula_actual.celula, tipo__icontains="Jefe Celula")
+    #celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
+    #abogados_celula = UsersRecursos.objects.filter(celula__iexact=celula_actual.celula, tipo__icontains="Jefe Celula")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="AB_elaboracion_Propuesta")
-    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="5_simpl_rep_abogados_propuesta")
+    context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_AB_ElaboracionPropuesta.html', context)
 
 def reporte_vista(request):
@@ -100,12 +109,12 @@ def jc_valida_propuesta(request):
     return render(request,'GestionRecursos/GestionRecursos_JC_ValidaPropuesta.html', context)
 
 def ab_valida_propuesta(request):
-    username_q = request.user.username
-    celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
-    abogados_celula = UsersRecursos.objects.filter(celula__iexact='NoDefinida', tipo__icontains="LiderAC")
+    #username_q = request.user.username
+    #celula_actual = UsersRecursos.objects.filter(username__icontains=username_q)[0]
+    #abogados_celula = UsersRecursos.objects.filter(celula__iexact='NoDefinida', tipo__icontains="LiderAC")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="ABVAL_revision_propuesta")
-    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="6_simpl_rep_abogada_revision")
+    context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_ABVAL_ValidacionPropuesta.html', context)
 
 def formatosydocumentos(request):
@@ -115,31 +124,33 @@ def formatosydocumentos(request):
     return render(request,'GestionRecursos/GestionRecursos_FormatosyDocumentos.html', context)
 
 def ld_valida_propuesta_ac(request):
-    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="LiderC")
+    #abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="LiderC")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="LD_en_validacion_lider")
-    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    #denuncia_obj_3 = Recursos.objects.filter(estado__icontains="LD_en_validacion_lider")
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="3_simpl_rep_informe_tecnico_revision_lider")
+    context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_LD_ValidacionPropuesta_ac.html', context)
 
 def ld_valida_propuesta(request):
-    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="JefeDivision")
+    #abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="JefeDivision")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="LD_en_validacion_lider")
-    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    #denuncia_obj_3 = Recursos.objects.filter(estado__icontains="LD_en_validacion_lider")
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="3_simpl_rep_informe_tecnico_revision_lider")
+    context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_LD_ValidacionPropuesta.html', context)
 
 def jd_valida_propuesta(request):
-    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Subdirector")
+    #abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Subdirector")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="JD_en_validacion_jd")
-    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="7_simpl_rep_revision_JD")
+    context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_JD_ValidacionPropuesta.html', context)
 
 def sd_valida_propuesta(request):
-    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
+    #abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="SD_en_validacion_sd")
-    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="8_simpl_rep_revision_SD")
+    context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_SD_ValidacionPropuesta.html', context)
 
 def xv_genera_expediente(request):
@@ -164,10 +175,10 @@ def xv_monitoreo_sentencia(request):
     return render(request,'GestionRecursos/GestionRecursos_XV_Bandeja3.html', context)
 
 def gd_subir_a_firma(request):
-    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
+    #abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="GD_Subir_sistema_datasoft")
-    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="10_simpl_rep_subida_pasarela")
+    context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_GD_SubiraFirma.html', context)
 
 def gd_en_firma_director(request):
@@ -178,10 +189,10 @@ def gd_en_firma_director(request):
     return render(request,'GestionRecursos/GestionRecursos_GD_en_Firma_Director.html', context)
 
 def gd_en_notificacion(request):
-    abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
+    #abogados_celula = UsersRecursos.objects.filter(celula__iexact="NoDefinida", tipo__icontains="Gest_Doc")
     #Aca en icontains pongo el filtro con el metodo icontains que es un like
-    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="GD_en_Notificacion")
-    context = {'todasdenuncias': denuncia_obj_3, 'auditores': abogados_celula}
+    denuncia_obj_3 = Recursos.objects.filter(estado__icontains="11_simpl_rep_notificacion")
+    context = {'todasdenuncias': denuncia_obj_3}
     return render(request,'GestionRecursos/GestionRecursos_GD_Notificacion.html', context)
 
 def gd_subir_sge(request):
@@ -219,6 +230,7 @@ def asignar_recurso(request):
 
 
 
+
 def asignar_recurso_lider(request):
     data = json.loads(request.body)
 
@@ -236,6 +248,22 @@ def asignar_recurso_lider(request):
 
     return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)
 
+def ab_asignar_recurso_lider(request):
+    data = json.loads(request.body)
+
+    if data['datos']['asignacion'] == 'Pendiente':
+         Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
+    if data['datos']['asignacion'] != 'Pendiente':
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(prioridad=str(data['datos']['prioridad']))
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(usuario_actual_id=str(data['datos']['asignacion']))
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(estado='5_simpl_rep_abogados_propuesta')
+        Recursos.objects.filter(id=str(data['datos']['id'])).update(celula='c1')
+
+        Usuario = UsersRecursos.objects.filter(rut=int(data['datos']['asignacion']))[0]
+        Recurso_dato = Recursos.objects.filter(id=int(data['datos']['id']))[0]
+        Bitacora.objects.create(username=Usuario, fecha_inicio=datetime.now(), id_recurso=Recurso_dato, etapa = '5_simpl_rep_abogados_propuesta' )
+
+    return JsonResponse([str(data['datos']['id']), 'Asignado'], safe=False)
 
 
 def asignar_recurso_jc(request):

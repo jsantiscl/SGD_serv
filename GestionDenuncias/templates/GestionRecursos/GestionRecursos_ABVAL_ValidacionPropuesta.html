@@ -84,9 +84,9 @@ $(document).ready(function() {
 
             <select name="asignacion" id="selectorasignacion{{linea.id}}">
               <option selected value="Pendiente">Pendiente</option>
-                {% for auditor in auditores %}
-              <option value={{ auditor.rut }}>{{ auditor.nombre }}</option>
-                {% endfor %}
+
+              <option value=12588570>Jaime Fuentes</option>
+
 
             </select>
 
@@ -150,7 +150,7 @@ const csrftoken = getCookie('csrftoken');
         var datos = {
 				'id': recurso,
                 'asignacion': asignacion,
-                'etapa': 'LD_en_validacion_lider'
+                'etapa': '7_simpl_rep_revision_JD'
 			}
     var url = "/sgd/recursos/au/pasar/"
         fetch(url, {

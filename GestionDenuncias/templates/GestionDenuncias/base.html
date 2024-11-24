@@ -178,7 +178,7 @@
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
                     <a href="{% url 'admin_recursos_total' %}" class="w3-bar-item w3-button">Total Recursos</a>
           <a href="{% url 'ld_recursos_asigna' %}" class="w3-bar-item w3-button">Bandeja Asignacion</a>
-        <a href="{% url 'ld_valida_propuesta' %}" class="w3-bar-item w3-button">Bandeja Validacion Propuesta Resolucion</a>
+        <a href="{% url 'ld_valida_propuesta' %}" class="w3-bar-item w3-button">Bandeja Validacion Informe Tecnico</a>
            <a href="{% url 'reporte_vista' %}" class="w3-bar-item w3-button">Reporte</a>
           <a href="{% url 'formatosydocumentos' %}" class="w3-bar-item w3-button">Formatos y Documentos</a>
             </div>
@@ -258,7 +258,7 @@
       <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'ab_elabora_propuesta' %}" class="w3-bar-item w3-button">Elaboracion Propuesta</a>
-          <a href="{% url 'au_informe_tecnico' %}" class="w3-bar-item w3-button">Devuelto para Revisión</a>
+          <a href="{% url 'ab_elabora_propuesta' %}" class="w3-bar-item w3-button">Propuestas Enviadas</a>
           <a href="{% url 'formatosydocumentos' %}" class="w3-bar-item w3-button">Formatos y Documentos</a>
 
             </div>
@@ -268,7 +268,8 @@
                                      <div class="w3-dropdown-hover">
       <button class="w3-button">Bandejas Validacion</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
-          <a href="{% url 'ab_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Abogado Validador</a>
+          <a href="{% url 'ab_recursos_asigna' %}" class="w3-bar-item w3-button">Asignacion Abogada Validadora</a>
+          <a href="{% url 'ab_valida_propuesta' %}" class="w3-bar-item w3-button">Validacion Propuesta Abogada Validadora</a>
             </div>
       </div>
 
@@ -305,13 +306,12 @@
       </div>
          {% endif %}
 
-                       {% if group.name == 'GestionRecursos_GestorDocumentos' %}
+                       {% if group.name == 'GestionRecursos_Admin' %}
                                      <div class="w3-dropdown-hover">
-      <button class="w3-button">Bandejas Firma</button>
+      <button class="w3-button">Bandejas Recursos</button>
       <div class="w3-dropdown-content w3-bar-block w3-card-4">
           <a href="{% url 'gd_subir_a_firma' %}" class="w3-bar-item w3-button">1 Subir a Firma</a>
-          <a href="{% url 'gd_en_firma_director' %}" class="w3-bar-item w3-button">2 En Firma Director</a>
-          <a href="{% url 'gd_subir_sge' %}" class="w3-bar-item w3-button">3 Subir a SGE</a>
+          <a href="{% url 'gd_en_notificacion' %}" class="w3-bar-item w3-button">2 Notificar</a>
 
             </div>
       </div>
