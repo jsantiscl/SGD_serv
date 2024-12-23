@@ -611,6 +611,9 @@ class ActasTerreno(models.Model):
         (14083592, "rgarces"),
         (17541020, "vvillasenor"),
         (13353326, "jjorquera"),
+        (18641745, "gsilva-riesco"),
+        (17769962, "scontrerass"),
+        (17909930, "igoic"),
         (19309894, "cfrings")
     )
 
@@ -851,6 +854,9 @@ class ActasRemotas(models.Model):
         (14083592, "rgarces"),
         (17541020, "vvillasenor"),
         (13353326, "jjorquera"),
+        (18641745, "gsilva-riesco"),
+        (17769962, "scontrerass"),
+        (17909930, "igoic"),
         (19309894, "cfrings")
 
     )
