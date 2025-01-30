@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from .models import ActasTerreno, ActasRemotas, Tokens, RevisoresDR, EFRDR
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from django.core.exceptions import ObjectDoesNotExist
 #from django.http import HttpResponse
 #from django.conf import settings
@@ -21,6 +21,7 @@ from django.core.exceptions import ObjectDoesNotExist
 #import os
 #import xlrd
 import re
+from tempfile import NamedTemporaryFile
 from django.conf import settings
 from django.views import View
 from django.http import StreamingHttpResponse
@@ -28,6 +29,7 @@ from django.http import JsonResponse
 import json
 from django.shortcuts import get_object_or_404
 from io import BytesIO
+import os
 from openpyxl.utils.exceptions import IllegalCharacterError
 #Views Administrador
 
@@ -1415,15 +1417,16 @@ def remota_con_infraccion_gestiones_rechazo(request, id):
     context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'GestionRemotaForm': GestionRemotaForm}
     return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Con_Infraccion_Gestiones_Rechazo.html', context)
 
+
 def expcsv(request, lc):
     def remove_tzinfo(value):
-        """Elimina información de zona horaria de datetime y time"""
+        """Elimina información de zona horaria de datetime y time."""
         if isinstance(value, (datetime, time)):
             return value.replace(tzinfo=None)
         return value
 
     def clean_excel_value(value):
-        """Limpia caracteres ilegales y maneja valores vacíos"""
+        """Limpia caracteres ilegales y maneja valores vacíos."""
         if value is None:
             return ""  # Evita valores None
         if isinstance(value, str):
@@ -1449,19 +1452,28 @@ def expcsv(request, lc):
     column_names = [field.name for field in Model._meta.fields]
     ws.append(column_names)
 
+    # Optimizar la consulta usando values_list y chunk_size
+    qs = Model.objects.values_list(*column_names).iterator(chunk_size=1000)
+
     # Llenar el archivo con los datos
-    for obj in Model.objects.all().iterator():
-        row = [clean_excel_value(remove_tzinfo(getattr(obj, field))) for field in column_names]
-        ws.append(row)
+    for row in qs:
+        cleaned_row = [clean_excel_value(remove_tzinfo(value)) for value in row]
+        ws.append(cleaned_row)
 
-    # Guardar en un buffer de memoria
-    output = BytesIO()
-    wb.save(output)
-    output.seek(0)
+    # Guardar en un archivo temporal en el servidor (modo lectura y escritura binaria "w+b")
+    with NamedTemporaryFile(delete=False, suffix=".xlsx", mode="w+b") as tmp_file:
+        file_path = tmp_file.name  # Guardamos la ruta del archivo
+        wb.save(file_path)  # Guardar en el archivo temporal
 
-    # Crear la respuesta usando StreamingHttpResponse
-    response = StreamingHttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    # Cerrar el archivo antes de enviarlo
+    response = FileResponse(open(file_path, 'rb'), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename={lc}.xlsx'
+
+    # Eliminar el archivo después de la respuesta sin bloquearlo
+    try:
+        os.remove(file_path)
+    except PermissionError:
+        pass  # En caso de que Windows aún lo tenga en uso, lo ignoramos
 
     return response
 
