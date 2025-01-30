@@ -28,7 +28,7 @@ from django.http import JsonResponse
 import json
 from django.shortcuts import get_object_or_404
 from io import BytesIO
-
+from openpyxl.utils.exceptions import IllegalCharacterError
 #Views Administrador
 
 def denuncias_ingreso(request):
@@ -1414,10 +1414,21 @@ def remota_con_infraccion_gestiones_rechazo(request, id):
     #actas_remotas = ActasRemotas.objects.filter(sis_clasificacion="Pendiente")
     context = {'latest_token': latest_token, 'actas_remota': actas_remota, 'GestionRemotaForm': GestionRemotaForm}
     return render(request, 'GestionDenuncias/SGD2_Remota_Revisor_Con_Infraccion_Gestiones_Rechazo.html', context)
+
 def expcsv(request, lc):
     def remove_tzinfo(value):
+        """Elimina información de zona horaria de datetime y time"""
         if isinstance(value, (datetime, time)):
             return value.replace(tzinfo=None)
+        return value
+
+    def clean_excel_value(value):
+        """Limpia caracteres ilegales y maneja valores vacíos"""
+        if value is None:
+            return ""  # Evita valores None
+        if isinstance(value, str):
+            # Eliminar caracteres no permitidos en Excel
+            return re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f]', '', value)
         return value
 
     model_mapping = {
@@ -1428,7 +1439,7 @@ def expcsv(request, lc):
 
     Model = model_mapping.get(lc)
     if not Model:
-        return HttpResponse("Error")
+        return HttpResponse("Error: Modelo no encontrado", status=400)
 
     # Crear el libro de Excel y la hoja activa
     wb = Workbook()
@@ -1438,23 +1449,18 @@ def expcsv(request, lc):
     column_names = [field.name for field in Model._meta.fields]
     ws.append(column_names)
 
-    # Generar las filas de datos de forma streaming
-    def data_generator():
-        # Usar BytesIO para el almacenamiento temporal
-        output = BytesIO()
-        for obj in Model.objects.all().iterator():
-            row = [remove_tzinfo(getattr(obj, field)) for field in column_names]
-            ws.append(row)
+    # Llenar el archivo con los datos
+    for obj in Model.objects.all().iterator():
+        row = [clean_excel_value(remove_tzinfo(getattr(obj, field))) for field in column_names]
+        ws.append(row)
 
-        # Guardar el archivo Excel en el buffer de memoria
-        wb.save(output)
-        output.seek(0)
-
-        # Leer y devolver el contenido en streaming
-        yield output.read()
+    # Guardar en un buffer de memoria
+    output = BytesIO()
+    wb.save(output)
+    output.seek(0)
 
     # Crear la respuesta usando StreamingHttpResponse
-    response = StreamingHttpResponse(data_generator(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response = StreamingHttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename={lc}.xlsx'
 
     return response
