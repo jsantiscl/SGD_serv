@@ -541,6 +541,22 @@ def carga_datos_actas_terreno(request):
         mail_concejal = request.POST.get('mail_concejal')
         tipo_hallazgo = request.POST.get('tipo_hallazgo')
         respaldo = request.POST.get('respaldo')
+        interseccion = request.POST.get('interseccion')
+        candidatura_principal = request.POST.get('candidatura_principal')
+        territorio_cp = request.POST.get('territorio_cp')
+        run_cp = request.POST.get('run_cp')
+        partido_cp = request.POST.get('partido_cp')
+        candidatura_secundaria_1 = request.POST.get('candidatura_secundaria_1')
+        territorio_cs1 = request.POST.get('territorio_cs1')
+        run_cs1 = request.POST.get('run_cs1')
+        partido_cs1 = request.POST.get('partido_cs1')
+        candidatura_secundaria_2 = request.POST.get('candidatura_secundaria_2')
+        territorio_cs2 = request.POST.get('territorio_cs2')
+        run_cs2 = request.POST.get('run_cs2')
+        partido_cs2 = request.POST.get('partido_cs2')
+        persona_fiscalizada = request.POST.get('persona_fiscalizada')
+        lugar_fiscalizado = request.POST.get('lugar_fiscalizado')
+        mep_presidente = request.POST.get('mep_presidente')
 
         # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
         acta_terreno = ActasTerreno(
@@ -601,7 +617,24 @@ def carga_datos_actas_terreno(request):
             partido_concejal=partido_concejal,
             mail_concejal=mail_concejal,
             tipo_hallazgo=tipo_hallazgo,
-            respaldo=respaldo
+            respaldo=respaldo,
+            interseccion=interseccion,
+            candidatura_principal=candidatura_principal,
+            territorio_cp=territorio_cp,
+            run_cp=run_cp,
+            partido_cp=partido_cp,
+            candidatura_secundaria_1=candidatura_secundaria_1,
+            territorio_cs1=territorio_cs1,
+            run_cs1=run_cs1,
+            partido_cs1=partido_cs1,
+            candidatura_secundaria_2=candidatura_secundaria_2,
+            territorio_cs2=territorio_cs2,
+            run_cs2=run_cs2,
+            partido_cs2=partido_cs2,
+            persona_fiscalizada=persona_fiscalizada,
+            lugar_fiscalizado=lugar_fiscalizado,
+            mep_presidente=mep_presidente
+
         )
 
         try:
@@ -677,6 +710,19 @@ def carga_datos_actas_remotas(request):
             'mail_concejal': request.POST.get('mail_concejal'),
             'tipo_hallazgo': request.POST.get('tipo_hallazgo'),
             'respaldo': request.POST.get('respaldo'),
+            'candidatura_principal': request.POST.get('candidatura_principal'),
+            'territorio_cp': request.POST.get('territorio_cp'),
+            'run_cp': request.POST.get('run_cp'),
+            'partido_cp': request.POST.get('partido_cp'),
+            'candidatura_secundaria_1': request.POST.get('candidatura_secundaria_1'),
+            'territorio_cs1': request.POST.get('territorio_cs1'),
+            'run_cs1': request.POST.get('run_cs1'),
+            'partido_cs1': request.POST.get('partido_cs1'),
+            'candidatura_secundaria_2': request.POST.get('candidatura_secundaria_2'),
+            'territorio_cs2': request.POST.get('territorio_cs2'),
+            'run_cs2': request.POST.get('run_cs2'),
+            'partido_cs2': request.POST.get('partido_cs2'),
+            'persona_fiscalizada': request.POST.get('persona_fiscalizada'),
 
         }
 

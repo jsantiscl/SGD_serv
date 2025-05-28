@@ -614,7 +614,8 @@ class ActasTerreno(models.Model):
         (18641745, "gsilva-riesco"),
         (17769962, "scontrerass"),
         (17909930, "igoic"),
-        (19309894, "cfrings")
+        (19309894, "cfrings"),
+        (18353316, "mjaraya")
     )
 
     abogado_asignado = models.IntegerField(null=True, blank=True, choices=ABOGADOAS)  #
@@ -709,6 +710,24 @@ class ActasTerreno(models.Model):
     rut_concejal = models.CharField(max_length=255, null=True, blank=True)
     partido_concejal = models.CharField(max_length=255, null=True, blank=True)
     mail_concejal = models.CharField(max_length=255, null=True, blank=True)
+
+    ##Nuevos Primarias 2025
+    interseccion = models.CharField(max_length=255, null=True, blank=True)
+    candidatura_principal = models.CharField(max_length=255, null=True, blank=True)
+    territorio_cp = models.CharField(max_length=255, null=True, blank=True)
+    run_cp = models.CharField(max_length=255, null=True, blank=True)
+    partido_cp = models.CharField(max_length=255, null=True, blank=True)
+    candidatura_secundaria_1 = models.CharField(max_length=255, null=True, blank=True)
+    territorio_cs1 = models.CharField(max_length=255, null=True, blank=True)
+    run_cs1 = models.CharField(max_length=255, null=True, blank=True)
+    partido_cs1 = models.CharField(max_length=255, null=True, blank=True)
+    candidatura_secundaria_2 = models.CharField(max_length=255, null=True, blank=True)
+    territorio_cs2 = models.CharField(max_length=255, null=True, blank=True)
+    run_cs2 = models.CharField(max_length=255, null=True, blank=True)
+    partido_cs2 = models.CharField(max_length=255, null=True, blank=True)
+    persona_fiscalizada = models.CharField(max_length=255, null=True, blank=True)
+    lugar_fiscalizado = models.CharField(max_length=255, null=True, blank=True)
+    mep_presidente = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return str(self.id_inspeccion)
@@ -857,7 +876,8 @@ class ActasRemotas(models.Model):
         (18641745, "gsilva-riesco"),
         (17769962, "scontrerass"),
         (17909930, "igoic"),
-        (19309894, "cfrings")
+        (19309894, "cfrings"),
+        (18353316, "mjaraya")
 
     )
 
@@ -954,6 +974,20 @@ class ActasRemotas(models.Model):
     partido_concejal = models.CharField(max_length=255, null=True, blank=True)
     mail_concejal = models.CharField(max_length=255, null=True, blank=True)
 
+    ##Nuevos Primarias 2025
+    candidatura_principal = models.CharField(max_length=255, null=True, blank=True)
+    territorio_cp = models.CharField(max_length=255, null=True, blank=True)
+    run_cp = models.CharField(max_length=255, null=True, blank=True)
+    partido_cp = models.CharField(max_length=255, null=True, blank=True)
+    candidatura_secundaria_1 = models.CharField(max_length=255, null=True, blank=True)
+    territorio_cs1 = models.CharField(max_length=255, null=True, blank=True)
+    run_cs1 = models.CharField(max_length=255, null=True, blank=True)
+    partido_cs1 = models.CharField(max_length=255, null=True, blank=True)
+    candidatura_secundaria_2 = models.CharField(max_length=255, null=True, blank=True)
+    territorio_cs2 = models.CharField(max_length=255, null=True, blank=True)
+    run_cs2 = models.CharField(max_length=255, null=True, blank=True)
+    partido_cs2 = models.CharField(max_length=255, null=True, blank=True)
+    persona_fiscalizada = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
         return str(self.id_inspeccion)
