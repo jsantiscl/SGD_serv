@@ -483,7 +483,7 @@ def carga_datos_actas_terreno(request):
         fecha = request.POST.get('fecha')
         region_inicial = request.POST.get('region')
         try:
-            region = region_inicial
+            region = numero_a_romano(region_inicial)
         except:
             region = region_inicial
         ubicacion = request.POST.get('ubicacion')
@@ -659,7 +659,7 @@ def carga_datos_actas_remotas(request):
             'object_id': request.POST.get('object_id'),
             'global_id': request.POST.get('global_id').replace('{','').replace('}',''),
             'fecha': request.POST.get('fecha'),
-            'region': request.POST.get('region'),
+            'region': numero_a_romano(request.POST.get('region')),
             'seleccion_motivo_inspeccion': request.POST.get('seleccion_motivo_inspeccion'),
             'indique_folio': request.POST.get('indique_folio'),
             'indique_otro': request.POST.get('indique_otro'),

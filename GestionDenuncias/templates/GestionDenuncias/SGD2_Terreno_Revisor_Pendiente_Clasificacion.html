@@ -115,6 +115,12 @@ $(document).ready(function() {
                 {{ nombres }}
             {% endwith %}
         {% endif %}
+        {% if acta.candidatura_principal %}
+            {% if nombres %}{{ nombres }} - {% endif %}
+            {% with nombres=candidatura_principal %}
+                {{ nombres }}
+            {% endwith %}
+        {% endif %}
     {% endwith %}
 
     {% if not nombres %} {% endif %}
