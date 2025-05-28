@@ -116,10 +116,7 @@ $(document).ready(function() {
             {% endwith %}
         {% endif %}
         {% if acta.candidatura_principal %}
-            {% if nombres %}{{ nombres }} - {% endif %}
-            {% with nombres=candidatura_principal %}
-                {{ nombres }}
-            {% endwith %}
+                {{ candidatura_principal }}
         {% endif %}
     {% endwith %}
 
