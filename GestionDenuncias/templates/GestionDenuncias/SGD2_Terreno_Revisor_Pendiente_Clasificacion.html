@@ -52,7 +52,7 @@ $(document).ready(function() {
 <div class="w3-responsive">
 
 <section class="section1">
-<h3>Actas en Terreno - Pendientes de Clasificación</h3>
+<h3>Actas en Terreno - Pendientes de Clasificación.</h3>
 <div style="display:flex; justify-content:flex-end; width:100%; padding:0;">
     <td style="position: absolute; right: 0;"> <button class="btn btn-outline-success" data-toggle="modal" data-target="#motivoModalmasivo">Pasar Seleccionados</button></td>
 
@@ -116,7 +116,10 @@ $(document).ready(function() {
             {% endwith %}
         {% endif %}
         {% if acta.candidatura_principal %}
-                {{ candidatura_principal }}
+            {% if nombres %}{{ nombres }} - {% endif %}
+            {% with nombres=nombres|add:acta.candidatura_principal|add:" (Presidencial)" %}
+                {{ nombres }}
+            {% endwith %}
         {% endif %}
     {% endwith %}
 
