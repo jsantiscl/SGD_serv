@@ -222,6 +222,25 @@ $(document).ready(function() {
                 {% if acta.alcalde %}<p><strong>Nombre:</strong> {{ acta.alcalde }}</p>{% endif %}
                 {% if acta.gore %}<p><strong>Nombre:</strong> {{ acta.gore }}</p>{% endif %}
 
+                <!-- 7. Información Fiscalización Primarias 2025 -->
+                {% if acta.candidatura_principal %}<p><strong>Candidatura Principal:</strong> {{ acta.candidatura_principal }}</p>{% endif %}
+                {% if acta.territorio_cp %}<p><strong>Territorio CP:</strong> {{ acta.territorio_cp }}</p>{% endif %}
+                {% if acta.run_cp %}<p><strong>RUN CP:</strong> {{ acta.run_cp }}</p>{% endif %}
+                {% if acta.partido_cp %}<p><strong>Partido CP:</strong> {{ acta.partido_cp }}</p>{% endif %}
+
+                {% if acta.candidatura_secundaria_1 %}<p><strong>Candidatura Secundaria 1:</strong> {{ acta.candidatura_secundaria_1 }}</p>{% endif %}
+                {% if acta.territorio_cs1 %}<p><strong>Territorio CS1:</strong> {{ acta.territorio_cs1 }}</p>{% endif %}
+                {% if acta.run_cs1 %}<p><strong>RUN CS1:</strong> {{ acta.run_cs1 }}</p>{% endif %}
+                {% if acta.partido_cs1 %}<p><strong>Partido CS1:</strong> {{ acta.partido_cs1 }}</p>{% endif %}
+
+                {% if acta.candidatura_secundaria_2 %}<p><strong>Candidatura Secundaria 2:</strong> {{ acta.candidatura_secundaria_2 }}</p>{% endif %}
+                {% if acta.territorio_cs2 %}<p><strong>Territorio CS2:</strong> {{ acta.territorio_cs2 }}</p>{% endif %}
+                {% if acta.run_cs2 %}<p><strong>RUN CS2:</strong> {{ acta.run_cs2 }}</p>{% endif %}
+                {% if acta.partido_cs2 %}<p><strong>Partido CS2:</strong> {{ acta.partido_cs2 }}</p>{% endif %}
+
+                {% if acta.persona_fiscalizada %}<p><strong>Persona Fiscalizada:</strong> {{ acta.persona_fiscalizada }}</p>{% endif %}
+
+
                             <!-- Nuevos campos -->
                 {% if acta.tipo_hallazgo %}<p><strong>Tipo de Hallazgo:</strong> {{ acta.tipo_hallazgo }}</p>{% endif %}
                 {% if acta.candidato_gore %}<p><strong>Candidato GORE:</strong> {{ acta.candidato_gore }}</p>{% endif %}
