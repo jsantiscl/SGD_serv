@@ -12,6 +12,7 @@ class ConsultasFormulario(models.Model):
         ("contabilidad", "contabilidad"),
         ("propaganda", "propaganda"),
         ("financiamiento", "financiamiento"),
+        ("declaracionprop", "declaracionprop"),
         ("informe_de_gastos", "informe_de_gastos"),
         ("subirmandato", "subirmandato")
 
