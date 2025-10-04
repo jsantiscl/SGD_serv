@@ -17,6 +17,12 @@ from GestionDenuncias.models import Tokens
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from openpyxl import Workbook
+import json, logging
+from django.http import JsonResponse, HttpResponseNotAllowed
+from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+from django.db import connection
+from .models import ConsultasFormulario
 
 def admin_consultas_total(request):
 
@@ -129,39 +135,43 @@ def sandbox(request):
     context = {}
     return render(request,'Consultas/Sandbox.html', context)
 
+logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def carga_datos_consulta(request):
-    if request.method == 'POST':
-        # Extrae los datos de la solicitud POST
-        ObjectID = request.POST.get('ObjectID')
-        GlobalID = request.POST.get('GlobalID')
-        NombreCompleto = request.POST.get('NombreCompleto')
-        Rut = request.POST.get('Rut')
-        TemaAsociado = request.POST.get('TemaAsociado')
-        Pregunta = request.POST.get('Pregunta')
-        Email = request.POST.get('Email')
-        Adjunto = request.POST.get('Adjunto')
-        # Crea una instancia de tu modelo de datos y asigna los valores de la solicitud POST
-        data = ConsultasFormulario(ObjectID=ObjectID,
-                                   GlobalID=GlobalID,
-                                   NombreCompleto=NombreCompleto,
-                                   Rut=Rut,
-                                   TemaAsociado=TemaAsociado,
-                                   Pregunta=Pregunta,
-                                   Email=Email,
-                                   FechaIngreso=datetime.now(),
-                                   Etapa='1_Nueva',
-                                   Adjunto=Adjunto)
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
 
-        # Guarda la instancia en la base de datos
-        data.save()
+    data = request.POST.dict() if request.content_type != "application/json" else json.loads(request.body or "{}")
+    tema = (data.get("TemaAsociado") or "").strip().lower()
 
-        # Retorna una respuesta HTTP 200 si
-        return HttpResponse('Datos guardados correctamente')
-    else:
-        # Retorna una respuesta HTTP 405 si se recibe una solicitud que no es POST
-        return HttpResponse(status=405)
+    logger.info("nueva_respuesta DB=%s ENGINE=%s tema=%r keys=%s",
+                connection.settings_dict.get("NAME"),
+                connection.settings_dict.get("ENGINE"),
+                tema,
+                list(data.keys()))
+
+    obj = ConsultasFormulario.objects.create(
+        ObjectID=int(data.get("ObjectID")),
+        GlobalID=data.get("GlobalID") or "SIN",
+        NombreCompleto=data.get("NombreCompleto"),
+        Rut=data.get("Rut"),
+        TemaAsociado=tema,
+        Pregunta=data.get("Pregunta"),
+        Email=data.get("Email") or "SIN",
+        FechaIngreso=timezone.now(),
+        Etapa="1_Nueva",
+        Adjunto=(data.get("Adjunto") or None),
+    )
+
+    logger.info("Insert OK tabla=%s id=%s", obj._meta.db_table, obj.pk)
+    return JsonResponse({
+        "ok": True,
+        "id": obj.pk,
+        "tabla": obj._meta.db_table,
+        "db": connection.settings_dict.get("NAME"),
+        "tema": tema,
+    }, status=201)
 
 def expcsv(request, lc):
     def remove_tzinfo(value):
